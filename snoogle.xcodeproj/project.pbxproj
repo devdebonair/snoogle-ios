@@ -7,17 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
+		56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6C1E0EDAEE0095AE93 /* Listing.swift */; };
+		56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6E1E0EE2E80095AE93 /* Subreddit.swift */; };
 		56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39A1E0C597700C6A08E /* AppDelegate.swift */; };
-		56A5B39D1E0C597700C6A08E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39C1E0C597700C6A08E /* ViewController.swift */; };
+		56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39C1E0C597700C6A08E /* FeedViewController.swift */; };
 		56A5B3A21E0C597700C6A08E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A5B3A11E0C597700C6A08E /* Assets.xcassets */; };
 		56A5B3A51E0C597700C6A08E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */; };
 		C54C438B155E98E4DF5ED4E9 /* Pods_snoogle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		56469C6C1E0EDAEE0095AE93 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
+		56469C6E1E0EE2E80095AE93 /* Subreddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subreddit.swift; sourceTree = "<group>"; };
 		56A5B3971E0C597700C6A08E /* snoogle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snoogle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A5B39A1E0C597700C6A08E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		56A5B39C1E0C597700C6A08E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		56A5B39C1E0C597700C6A08E /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		56A5B3A11E0C597700C6A08E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56A5B3A41E0C597700C6A08E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A5B3A61E0C597700C6A08E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -77,10 +83,13 @@
 			isa = PBXGroup;
 			children = (
 				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
-				56A5B39C1E0C597700C6A08E /* ViewController.swift */,
+				56A5B39C1E0C597700C6A08E /* FeedViewController.swift */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
+				56469C6C1E0EDAEE0095AE93 /* Listing.swift */,
+				56469C6E1E0EE2E80095AE93 /* Subreddit.swift */,
+				562C1F021E118E24001BA898 /* Config.swift */,
 			);
 			path = snoogle;
 			sourceTree = "<group>";
@@ -208,7 +217,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56A5B39D1E0C597700C6A08E /* ViewController.swift in Sources */,
+				56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */,
+				56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */,
+				562C1F031E118E24001BA898 /* Config.swift in Sources */,
+				56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
