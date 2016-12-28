@@ -11,6 +11,8 @@
 		562C1F071E11C921001BA898 /* CellNodeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F061E11C921001BA898 /* CellNodeDetail.swift */; };
 		562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */; };
 		562C1F0E1E145FE9001BA898 /* Date+TimeAgo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */; };
+		562C1F131E147E82001BA898 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F121E147E82001BA898 /* Photo.swift */; };
+		562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F151E147EB2001BA898 /* MediaElement.swift */; };
 		56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6C1E0EDAEE0095AE93 /* Listing.swift */; };
 		56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6E1E0EE2E80095AE93 /* Subreddit.swift */; };
 		56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39A1E0C597700C6A08E /* AppDelegate.swift */; };
@@ -25,6 +27,8 @@
 		562C1F061E11C921001BA898 /* CellNodeDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeDetail.swift; sourceTree = "<group>"; };
 		562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePhoto.swift; sourceTree = "<group>"; };
 		562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+TimeAgo.swift"; sourceTree = "<group>"; };
+		562C1F121E147E82001BA898 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		562C1F151E147EB2001BA898 /* MediaElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaElement.swift; sourceTree = "<group>"; };
 		56469C6C1E0EDAEE0095AE93 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		56469C6E1E0EE2E80095AE93 /* Subreddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subreddit.swift; sourceTree = "<group>"; };
 		56A5B3971E0C597700C6A08E /* snoogle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snoogle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +91,7 @@
 		562C1F101E14665D001BA898 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				562C1F121E147E82001BA898 /* Photo.swift */,
 				56469C6C1E0EDAEE0095AE93 /* Listing.swift */,
 				56469C6E1E0EE2E80095AE93 /* Subreddit.swift */,
 			);
@@ -99,6 +104,14 @@
 				56A5B39C1E0C597700C6A08E /* FeedViewController.swift */,
 			);
 			name = controllers;
+			sourceTree = "<group>";
+		};
+		562C1F141E147E9A001BA898 /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				562C1F151E147EB2001BA898 /* MediaElement.swift */,
+			);
+			name = protocols;
 			sourceTree = "<group>";
 		};
 		56A5B38E1E0C597600C6A08E = {
@@ -122,6 +135,7 @@
 		56A5B3991E0C597700C6A08E /* snoogle */ = {
 			isa = PBXGroup;
 			children = (
+				562C1F141E147E9A001BA898 /* protocols */,
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
@@ -259,8 +273,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */,
+				562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */,
 				562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */,
 				56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */,
+				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				562C1F031E118E24001BA898 /* Config.swift in Sources */,
 				562C1F0E1E145FE9001BA898 /* Date+TimeAgo.swift in Sources */,
 				56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */,
