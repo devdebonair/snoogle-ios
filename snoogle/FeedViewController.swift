@@ -35,7 +35,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         node.backgroundColor = UIColor(colorLiteralRed: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
         
-        Subreddit.fetchListing(name: "rocketleague") { (listings: [Listing]) in
+        Subreddit.fetchListing(name: "iosprogramming") { (listings: [Listing]) in
             self.model.append(contentsOf: listings)
             self.node.reloadData()
         }
@@ -76,12 +76,12 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             ]
             
             let cell = CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes)
-            cell.backgroundColor = .white
             
-            cell.shadowOpacity = 0.20
             cell.shadowOffset = CGSize(width: 0, height: 1.0)
-            cell.shadowRadius = 1.0
+            cell.backgroundColor = .white
             cell.clipsToBounds = false
+            cell.shadowOpacity = 0.20
+            cell.shadowRadius = 1.0
             cell.cornerRadius = 2.0
             
             return cell

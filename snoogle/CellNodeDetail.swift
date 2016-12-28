@@ -54,11 +54,11 @@ class CellNodeDetail: ASCellNode {
         separator.style.width = ASDimension(unit: .fraction, value: 1.0)
         separator.style.height = ASDimension(unit: .points, value: 1.0)
         
-        buttonDiscussion.style.flexGrow = 1.0
-        
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
+        
+        buttonDiscussion.style.flexBasis = ASDimension(unit: .fraction, value: 0.8)
         
         if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
             contentLayoutElements.append(textSubtitle)
@@ -75,7 +75,7 @@ class CellNodeDetail: ASCellNode {
             direction: .horizontal,
             spacing: 10.0,
             justifyContent: .end,
-            alignItems: .end,
+            alignItems: .center,
             children: [
                 buttonSave,
                 buttonDownVote,
