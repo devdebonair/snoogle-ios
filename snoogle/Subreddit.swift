@@ -65,7 +65,6 @@ struct Subreddit {
                 "after": after
             ]
             Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: { (response: DataResponse<Any>) in
-
                 if let json = response.result.value as? NSDictionary, let data = json["data"] as? NSArray, let listings = Listing.from(data) {
                     completion(listings)
                 } else {

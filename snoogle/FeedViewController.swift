@@ -9,11 +9,21 @@
 import UIKit
 import AsyncDisplayKit
 
-class FeedViewController: ASViewController<ASTableNode>, ASTableDelegate, ASTableDataSource {
-
+class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
+    
+    var model: [Listing] = []
+    let flowLayout: UICollectionViewFlowLayout
+    
     init() {
-        let tableNode = ASTableNode()
-        super.init(node: tableNode)
+        flowLayout = UICollectionViewFlowLayout()
+        let collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
+        
+        super.init(node: collectionNode)
+        
+        flowLayout.sectionInset = UIEdgeInsets(top: 7.5, left: 8.0, bottom: 7.5, right: 8.0)
+        
+        node.delegate = self
+        node.dataSource = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -22,35 +32,75 @@ class FeedViewController: ASViewController<ASTableNode>, ASTableDelegate, ASTabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let inset: CGFloat = 8.0
-        node.view.contentInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        
+        node.backgroundColor = UIColor(colorLiteralRed: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
+        
+        Subreddit.fetchListing(name: "rocketleague") { (listings: [Listing]) in
+            self.model.append(contentsOf: listings)
+            self.node.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
+        let nodeModel = model[indexPath.section]
         return { _ -> ASCellNode in
-            return ASCellNode()
+            let meta = NSAttributedString(
+                string: "\(nodeModel.author) • \(nodeModel.date_created.timeAgo(numericDates: true))",
+                attributes: [
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 12),
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+                ])
+            
+            let title = NSAttributedString(
+                string: nodeModel.title,
+                attributes: [
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 18),
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+                ])
+            
+            let description = NSAttributedString(
+                string: nodeModel.selftext_condensed,
+                attributes: [
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+                ])
+            
+            let buttonAttributes = [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+            ]
+            
+            let cell = CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes)
+            cell.backgroundColor = .white
+            
+            cell.shadowOpacity = 0.20
+            cell.shadowOffset = CGSize(width: 0, height: 1.0)
+            cell.shadowRadius = 1.0
+            cell.clipsToBounds = false
+            cell.cornerRadius = 2.0
+            
+            return cell
         }
     }
     
-    func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-        return 20
+    func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
+        return model.count
     }
     
-    func numberOfSections(in tableNode: ASTableNode) -> Int {
-        return 20
+    func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
+        return 1
     }
     
-    func shouldBatchFetch(for tableNode: ASTableNode) -> Bool {
-        return true
+    func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
+        let width: CGFloat = node.frame.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right
+        let max = CGSize(width: width, height: CGFloat(FLT_MAX))
+        let min = CGSize(width: width, height: 0.0)
+        return ASSizeRange(min: min, max: max)
     }
-    
-    func tableNode(_ tableNode: ASTableNode, willBeginBatchFetchWith context: ASBatchContext) {
-        return
-    }
-
 }
 

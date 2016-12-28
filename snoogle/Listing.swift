@@ -66,6 +66,14 @@ struct Listing: Mappable {
     let num_reports: Int
     let ups: Int
     
+    var selftext_condensed: String {
+        return selftext.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "#", with: "")
+    }
+    
+    var date_created: Date {
+        return Date(timeIntervalSince1970: created)
+    }
+    
     init(map: Mapper) throws {
         contest_mode = map.optionalFrom("contest_mode") ?? false
         banned_by = map.optionalFrom("banned_by") ?? ""

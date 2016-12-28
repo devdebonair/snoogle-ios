@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
+		562C1F071E11C921001BA898 /* CellNodeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F061E11C921001BA898 /* CellNodeDetail.swift */; };
+		562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */; };
+		562C1F0E1E145FE9001BA898 /* Date+TimeAgo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */; };
 		56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6C1E0EDAEE0095AE93 /* Listing.swift */; };
 		56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6E1E0EE2E80095AE93 /* Subreddit.swift */; };
 		56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39A1E0C597700C6A08E /* AppDelegate.swift */; };
@@ -19,6 +22,9 @@
 
 /* Begin PBXFileReference section */
 		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		562C1F061E11C921001BA898 /* CellNodeDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeDetail.swift; sourceTree = "<group>"; };
+		562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePhoto.swift; sourceTree = "<group>"; };
+		562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+TimeAgo.swift"; sourceTree = "<group>"; };
 		56469C6C1E0EDAEE0095AE93 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		56469C6E1E0EE2E80095AE93 /* Subreddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subreddit.swift; sourceTree = "<group>"; };
 		56A5B3971E0C597700C6A08E /* snoogle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snoogle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +67,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		562C1F0C1E145FD2001BA898 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */,
+			);
+			name = extensions;
+			sourceTree = "<group>";
+		};
 		56A5B38E1E0C597600C6A08E = {
 			isa = PBXGroup;
 			children = (
@@ -82,6 +96,8 @@
 		56A5B3991E0C597700C6A08E /* snoogle */ = {
 			isa = PBXGroup;
 			children = (
+				562C1F0C1E145FD2001BA898 /* extensions */,
+				562C1F061E11C921001BA898 /* CellNodeDetail.swift */,
 				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
 				56A5B39C1E0C597700C6A08E /* FeedViewController.swift */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
@@ -90,6 +106,7 @@
 				56469C6C1E0EDAEE0095AE93 /* Listing.swift */,
 				56469C6E1E0EE2E80095AE93 /* Subreddit.swift */,
 				562C1F021E118E24001BA898 /* Config.swift */,
+				562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */,
 			);
 			path = snoogle;
 			sourceTree = "<group>";
@@ -218,9 +235,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */,
+				562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */,
 				56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */,
 				562C1F031E118E24001BA898 /* Config.swift in Sources */,
+				562C1F0E1E145FE9001BA898 /* Date+TimeAgo.swift in Sources */,
 				56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */,
+				562C1F071E11C921001BA898 /* CellNodeDetail.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
