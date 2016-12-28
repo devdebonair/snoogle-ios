@@ -62,4 +62,8 @@ Carthage/Build
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+<<<<<<< HEAD
 fastlane/test_output
+=======
+fastlane/test_output
+>>>>>>> 45f2c945bf8dfeb739c018c0f7cf68ae40eea2ec
