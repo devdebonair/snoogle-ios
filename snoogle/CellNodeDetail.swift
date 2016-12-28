@@ -41,53 +41,73 @@ class CellNodeDetail: ASCellNode {
         
         textSubtitle.maximumNumberOfLines = 3
         
+        buttonSave.setAttributedTitle(NSAttributedString(string: "Save", attributes: buttonAttributes), for: [])
         buttonUpVote.setAttributedTitle(NSAttributedString(string: "Upvote", attributes: buttonAttributes), for: [])
-        buttonDiscussion.setAttributedTitle(NSAttributedString(string: "Save", attributes: buttonAttributes), for: [])
         buttonDownVote.setAttributedTitle(NSAttributedString(string: "Downvote", attributes: buttonAttributes), for: [])
-        buttonSave.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
+        buttonDiscussion.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
+        
+        separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         
         separator.style.width = ASDimension(unit: .fraction, value: 1.0)
         separator.style.height = ASDimension(unit: .points, value: 1.0)
-        separator.backgroundColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         
-//        let stackLayoutButton = ASStackLayoutSpec(
-//            direction: .horizontal,
-//            spacing: 10.0,
-//            justifyContent: .end,
-//            alignItems: .center,
-//            children: [
-//                buttonSave,
-//                buttonDownVote,
-//                buttonUpVote
-//            ])
-//        
-//        let stackLayoutButtonContainer = ASStackLayoutSpec(
-//            direction: .horizontal,
-//            spacing: 0.0,
-//            justifyContent: .start,
-//            alignItems: .center,
-//            children: [
-//                buttonDiscussion,
-//                stackLayoutButton
-//            ])
+        buttonDiscussion.style.flexGrow = 1.0
         
-        let stackLayout = ASStackLayoutSpec(
+        var contentLayoutElements = [ASLayoutElement]()
+        contentLayoutElements.append(textMeta)
+        contentLayoutElements.append(textTitle)
+        
+        if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
+            contentLayoutElements.append(textSubtitle)
+        }
+        
+        let stackLayoutContent = ASStackLayoutSpec(
             direction: .vertical,
             spacing: 5.0,
             justifyContent: .start,
             alignItems: .start,
+            children: contentLayoutElements)
+        
+        let stackLayoutButton = ASStackLayoutSpec(
+            direction: .horizontal,
+            spacing: 10.0,
+            justifyContent: .end,
+            alignItems: .end,
             children: [
-                textMeta,
-                textTitle,
-                textSubtitle
+                buttonSave,
+                buttonDownVote,
+                buttonUpVote
+            ])
+
+        let stackLayoutButtonContainer = ASStackLayoutSpec(
+            direction: .horizontal,
+            spacing: 0.0,
+            justifyContent: .start,
+            alignItems: .center,
+            children: [
+                buttonDiscussion,
+                stackLayoutButton
             ])
         
         let padding: CGFloat = 20.0
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
+        let insetButtonLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutButtonContainer)
         
-        return ASInsetLayoutSpec(insets: inset, child: stackLayout)
+        let stackContainer = ASStackLayoutSpec(
+            direction: .vertical,
+            spacing: 2.0,
+            justifyContent: .start,
+            alignItems: .start,
+            children: [
+                insetContentLayout,
+                separator,
+                insetButtonLayout
+            ])
+        
+        return stackContainer
     }
 }

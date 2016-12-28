@@ -75,6 +75,32 @@
 			name = extensions;
 			sourceTree = "<group>";
 		};
+		562C1F0F1E14663D001BA898 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				562C1F061E11C921001BA898 /* CellNodeDetail.swift */,
+				562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */,
+			);
+			name = cells;
+			sourceTree = "<group>";
+		};
+		562C1F101E14665D001BA898 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				56469C6C1E0EDAEE0095AE93 /* Listing.swift */,
+				56469C6E1E0EE2E80095AE93 /* Subreddit.swift */,
+			);
+			name = models;
+			sourceTree = "<group>";
+		};
+		562C1F111E146675001BA898 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				56A5B39C1E0C597700C6A08E /* FeedViewController.swift */,
+			);
+			name = controllers;
+			sourceTree = "<group>";
+		};
 		56A5B38E1E0C597600C6A08E = {
 			isa = PBXGroup;
 			children = (
@@ -96,17 +122,15 @@
 		56A5B3991E0C597700C6A08E /* snoogle */ = {
 			isa = PBXGroup;
 			children = (
-				562C1F0C1E145FD2001BA898 /* extensions */,
-				562C1F061E11C921001BA898 /* CellNodeDetail.swift */,
-				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
-				56A5B39C1E0C597700C6A08E /* FeedViewController.swift */,
-				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
-				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
-				56469C6C1E0EDAEE0095AE93 /* Listing.swift */,
-				56469C6E1E0EE2E80095AE93 /* Subreddit.swift */,
+				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
+				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
+				562C1F111E146675001BA898 /* controllers */,
+				562C1F101E14665D001BA898 /* models */,
+				562C1F0F1E14663D001BA898 /* cells */,
+				562C1F0C1E145FD2001BA898 /* extensions */,
+				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
 				562C1F021E118E24001BA898 /* Config.swift */,
-				562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */,
 			);
 			path = snoogle;
 			sourceTree = "<group>";
