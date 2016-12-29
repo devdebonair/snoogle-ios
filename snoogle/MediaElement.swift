@@ -11,8 +11,8 @@ import UIKit
 
 protocol MediaElement {
     
-    var height: CGFloat { get set }
-    var width: CGFloat { get set }
+    var height: Double { get set }
+    var width: Double { get set }
     var url: URL? { get set }
     
 }
