@@ -16,14 +16,14 @@ struct Video: MediaElement, Mappable {
     var url: URL?
     var poster: URL?
     var gif: URL?
-    var description: String = ""
+    var description: String?
     
     init(map: Mapper) throws {
-        width = map.optionalFrom("width") ?? 0.0
-        height = map.optionalFrom("height") ?? 0.0
+        try width = map.from("width")
+        try height = map.from("height")
         url = map.optionalFrom("url")
         poster = map.optionalFrom("poster")
         gif = map.optionalFrom("gif")
-        description = map.optionalFrom("description") ?? ""
+        description = map.optionalFrom("description")
     }
 }

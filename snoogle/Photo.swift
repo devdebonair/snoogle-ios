@@ -18,15 +18,15 @@ struct Photo: MediaElement, Mappable {
     var urlSmall: URL?
     var urlMedium: URL?
     var urlLarge: URL?
-    var description: String = ""
+    var description: String?
     
     init(map: Mapper) throws {
-        width = map.optionalFrom("width") ?? 0.0
-        height = map.optionalFrom("height") ?? 0.0
+        try width = map.from("width")
+        try height = map.from("height")
         url = map.optionalFrom("url")
         urlSmall = map.optionalFrom("sizes.small")
         urlMedium = map.optionalFrom("sizes.medium")
         urlLarge = map.optionalFrom("sizes.large")
-        description = map.optionalFrom("description") ?? ""
+        description = map.optionalFrom("description")
     }
 }

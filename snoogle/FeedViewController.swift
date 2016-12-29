@@ -35,7 +35,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         node.backgroundColor = UIColor(colorLiteralRed: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
         
-        Subreddit.fetchListing(name: "iosprogramming") { (listings: [Listing]) in
+        Subreddit.fetchListing(name: "porninfifteenseconds") { (listings: [Listing]) in
             self.model.append(contentsOf: listings)
             self.node.reloadData()
         }
@@ -75,7 +75,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
             ]
             
-            let cell = CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes)
+            let cell = CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes, media: nodeModel.media)
             
             cell.shadowOffset = CGSize(width: 0, height: 1.0)
             cell.backgroundColor = .white
@@ -102,5 +102,21 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let min = CGSize(width: width, height: 0.0)
         return ASSizeRange(min: min, max: max)
     }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, willDisplayItemWith node: ASCellNode) {
+        let indexPath = node.indexPath
+        if let indexPath = indexPath, let node = node as? CellNodeDetail, let mediaView = node.mediaView as? ASVideoNode {
+            let nodeModel = model[indexPath.section]
+            if let media = nodeModel.media as? Video {
+                DispatchQueue.global(qos: .background).async {
+                    if let url = media.url {
+                        let asset = AVAsset(url: url)
+                        DispatchQueue.main.async {
+                            mediaView.asset = asset
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-

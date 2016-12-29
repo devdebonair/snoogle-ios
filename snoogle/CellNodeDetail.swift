@@ -21,7 +21,11 @@ class CellNodeDetail: ASCellNode {
     let buttonUpVote: ASButtonNode
     let buttonDownVote: ASButtonNode
     
-    init(meta: NSAttributedString?, title: NSAttributedString?, subtitle: NSAttributedString?, buttonAttributes: [String:Any?]) {
+    var mediaView: ASImageNode? = nil
+    
+    let media: MediaElement?
+    
+    init(meta: NSAttributedString?, title: NSAttributedString?, subtitle: NSAttributedString?, buttonAttributes: [String:Any?], media: MediaElement? = nil) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
@@ -30,6 +34,8 @@ class CellNodeDetail: ASCellNode {
         buttonSave = ASButtonNode()
         buttonUpVote = ASButtonNode()
         buttonDownVote = ASButtonNode()
+        
+        self.media = media
         
         super.init()
         
@@ -47,6 +53,29 @@ class CellNodeDetail: ASCellNode {
         buttonDiscussion.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
         
         separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        
+        if let media = media as? Photo {
+            mediaView = ASNetworkImageNode()
+            if let mediaView = mediaView as? ASNetworkImageNode {
+                mediaView.url = media.url
+                mediaView.contentMode = .scaleAspectFill
+            }
+        }
+        
+        if let media = media as? Video {
+            mediaView = ASVideoNode()
+            if let mediaView = mediaView as? ASVideoNode {
+                mediaView.url = media.poster
+                mediaView.gravity = AVLayerVideoGravityResizeAspectFill
+                mediaView.shouldAutoplay = true
+                mediaView.shouldAutorepeat = true
+                mediaView.placeholderEnabled = true
+                mediaView.placeholderFadeDuration = 2.0
+                mediaView.backgroundColor = .black
+                mediaView.muted = true
+                mediaView.isLayerBacked = true
+            }
+        }
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -55,6 +84,8 @@ class CellNodeDetail: ASCellNode {
         separator.style.height = ASDimension(unit: .points, value: 1.0)
         
         var contentLayoutElements = [ASLayoutElement]()
+        
+        
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
         
@@ -96,17 +127,23 @@ class CellNodeDetail: ASCellNode {
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
         let insetButtonLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutButtonContainer)
+
+        var stackContainerElements = [ASLayoutElement]()
+        if let media = media, let mediaView = mediaView {
+            let ratio = CGFloat(media.height/media.width)
+            let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)
+            stackContainerElements.append(ratioSpec)
+        }
+        stackContainerElements.append(insetContentLayout)
+        stackContainerElements.append(separator)
+        stackContainerElements.append(insetButtonLayout)
         
         let stackContainer = ASStackLayoutSpec(
             direction: .vertical,
             spacing: 2.0,
             justifyContent: .start,
             alignItems: .start,
-            children: [
-                insetContentLayout,
-                separator,
-                insetButtonLayout
-            ])
+            children: stackContainerElements)
         
         return stackContainer
     }
