@@ -66,6 +66,9 @@ struct Listing: Mappable {
     let num_reports: Int
     let ups: Int
     
+    var media: MediaElement? = nil
+    var album: [MediaElement]? = nil
+    
     var selftext_condensed: String {
         return selftext.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "#", with: "")
     }
@@ -122,5 +125,44 @@ struct Listing: Mappable {
         visited = map.optionalFrom("visited") ?? false
         num_reports = map.optionalFrom("num_reports") ?? -1
         ups = map.optionalFrom("ups") ?? -1
+        
+        let mediaPayload: NSDictionary? = map.optionalFrom("hamlet_media")
+        let albumPayload: NSArray? = map.optionalFrom("hamlet_album")
+        let type: String? = map.optionalFrom("hamlet_media.type")
+        
+        if let mediaPayload = mediaPayload {
+            if let type = type {
+                if type == "photo" {
+                    media = Photo.from(mediaPayload)
+                }
+                if type == "video" {
+                    media = Video.from(mediaPayload)
+                }
+            }
+        }
+        
+        if let albumPayload = albumPayload {
+            var albumTemp = [MediaElement]()
+            for json in albumPayload {
+                if let json = json as? NSDictionary, let type = json["type"] as? String {
+                    if type == "photo" {
+                        let photo = Photo.from(json)
+                        if let photo = photo {
+                            albumTemp.append(photo)
+                        }
+                    }
+                    if type == "video" {
+                        let video = Video.from(json)
+                        if let video = video {
+                            albumTemp.append(video)
+                        }
+                    }
+                }
+            }
+            if !albumTemp.isEmpty {
+                album = albumTemp
+            }
+        }
+        
     }
 }
