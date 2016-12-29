@@ -55,10 +55,19 @@ class CellNodeDetail: ASCellNode {
         separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
         if let media = media as? Photo {
-            mediaView = ASNetworkImageNode()
-            if let mediaView = mediaView as? ASNetworkImageNode {
-                mediaView.url = media.url
-                mediaView.contentMode = .scaleAspectFill
+            if let small = media.urlSmall, let medium = media.urlMedium, let large = media.urlLarge {
+                mediaView = ASMultiplexImageNode()
+                if let mediaView = mediaView as? ASMultiplexImageNode {
+                    mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
+                    mediaView.downloadsIntermediateImages = true
+                    mediaView.dataSource = self
+                }
+            } else {
+                mediaView = ASNetworkImageNode()
+                if let mediaView = mediaView as? ASNetworkImageNode {
+                    mediaView.url = media.url
+                    mediaView.contentMode = .scaleAspectFill
+                }
             }
         }
         
@@ -84,8 +93,6 @@ class CellNodeDetail: ASCellNode {
         separator.style.height = ASDimension(unit: .points, value: 1.0)
         
         var contentLayoutElements = [ASLayoutElement]()
-        
-        
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
         
@@ -146,5 +153,21 @@ class CellNodeDetail: ASCellNode {
             children: stackContainerElements)
         
         return stackContainer
+    }
+}
+
+extension CellNodeDetail: ASMultiplexImageNodeDataSource {
+    func multiplexImageNode(_ imageNode: ASMultiplexImageNode, urlForImageIdentifier imageIdentifier: ASImageIdentifier) -> URL? {
+        guard let media = media as? Photo, let imageIdentifier = imageIdentifier as? String else { return nil }
+        switch imageIdentifier {
+        case "small":
+            return media.urlSmall
+        case "medium":
+            return media.urlMedium
+        case "large":
+            return media.urlLarge
+        default:
+            return nil
+        }
     }
 }
