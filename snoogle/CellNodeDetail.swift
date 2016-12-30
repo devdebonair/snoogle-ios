@@ -55,7 +55,7 @@ class CellNodeDetail: ASCellNode {
         separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
         if let media = media as? Photo {
-            if let small = media.urlSmall, let medium = media.urlMedium, let large = media.urlLarge {
+            if let _ = media.urlSmall, let _ = media.urlMedium, let _ = media.urlLarge {
                 mediaView = ASMultiplexImageNode()
                 if let mediaView = mediaView as? ASMultiplexImageNode {
                     mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
