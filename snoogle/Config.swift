@@ -8,5 +8,5 @@
 
 import Foundation
 
-let API_URL = "http://192.168.0.16:3000"
+let API_URL = "https://snoogleapp.herokuapp.com"
 let API_LISTING = "\(API_URL)/r"
