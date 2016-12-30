@@ -12,7 +12,11 @@ import AsyncDisplayKit
 class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
     
     var model: [Listing] = []
+    var after: String? = nil
+    var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
+    let subreddit: String = "iosprogramming"
+    let subSort: Listing.SortType = .hot
     
     init() {
         flowLayout = UICollectionViewFlowLayout()
@@ -35,8 +39,10 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         node.backgroundColor = UIColor(colorLiteralRed: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
         
-        Subreddit.fetchListing(name: "porninfifteenseconds") { (listings: [Listing]) in
+        Subreddit.fetchListing(name: subreddit, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
             self.model.append(contentsOf: listings)
+            self.shouldUpdate = !isFinished
+            self.after = after
             self.node.reloadData()
         }
     }
@@ -117,6 +123,23 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                     }
                 }
             }
+        }
+    }
+    
+    func shouldBatchFetch(for collectionNode: ASCollectionNode) -> Bool {
+        return shouldUpdate
+    }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, willBeginBatchFetchWith context: ASBatchContext) {
+        Subreddit.fetchListing(name: subreddit, after: after, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
+            self.after = after
+            self.shouldUpdate = !isFinished
+            
+            let prevModelCount = self.model.count
+            self.model.append(contentsOf: listings)
+            
+            let set: IndexSet = IndexSet(integersIn: prevModelCount..<self.model.count)
+            self.node.insertSections(set)
         }
     }
 }

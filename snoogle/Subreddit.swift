@@ -58,21 +58,23 @@ struct Subreddit {
         kind = map.optionalFrom("kind") ?? ""
     }
     
-    static func fetchListing(name: String, after: String? = nil, sort: Listing.SortType = .hot, completion: @escaping ([Listing])->Void) {
+    static func fetchListing(name: String, after: String? = nil, sort: Listing.SortType = .hot, completion: @escaping ([Listing], Bool, String?)->Void) {
         let url = URL(string: "\(API_LISTING)/\(name)/\(sort.rawValue)")
         if let url = url {
-            let parameters = [
-                "after": after
-            ]
+            var parameters = [String:String]()
+            if let after = after {
+                parameters["after"] = after
+            }
             Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: { (response: DataResponse<Any>) in
-                if let json = response.result.value as? NSDictionary, let data = json["data"] as? NSArray, let listings = Listing.from(data) {
-                    completion(listings)
+                if let json = response.result.value as? NSDictionary, let data = json["data"] as? NSArray, let listings = Listing.from(data), let isFinished = json["isFinished"] as? Bool {
+                    let after = json["after"] as? String
+                    completion(listings, isFinished, after)
                 } else {
-                    completion([])
+                    completion([], false, nil)
                 }
             })
         } else {
-            completion([])
+            completion([], false, nil)
         }
     }
 }
