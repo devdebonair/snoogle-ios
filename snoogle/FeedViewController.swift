@@ -54,7 +54,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let nodeModel = model[indexPath.section]
         return { _ -> ASCellNode in
-            let meta = NSAttributedString(
+            let meta = NSMutableAttributedString(
                 string: "\(nodeModel.author) • \(nodeModel.date_created.timeAgo(numericDates: true))",
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 12),
@@ -64,7 +64,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             let paragraphStyleTitle = NSMutableParagraphStyle()
             paragraphStyleTitle.lineSpacing = 4.0
             
-            let title = NSAttributedString(
+            let title = NSMutableAttributedString(
                 string: nodeModel.title,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 18),
@@ -72,11 +72,15 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             
-            let description = NSAttributedString(
+            let paragraphStyleDescription = NSMutableParagraphStyle()
+            paragraphStyleDescription.lineSpacing = 4.0
+            
+            let description = NSMutableAttributedString(
                 string: nodeModel.selftext_condensed,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                    NSParagraphStyleAttributeName: paragraphStyleDescription
                 ])
             
             let buttonAttributes = [

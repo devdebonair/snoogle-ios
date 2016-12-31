@@ -25,7 +25,7 @@ class CellNodeDetail: ASCellNode {
     
     let media: MediaElement?
     
-    init(meta: NSAttributedString?, title: NSAttributedString?, subtitle: NSAttributedString?, buttonAttributes: [String:Any?], media: MediaElement? = nil) {
+    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, buttonAttributes: [String:Any?], media: MediaElement? = nil) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
@@ -44,6 +44,10 @@ class CellNodeDetail: ASCellNode {
         textMeta.attributedText = meta
         textTitle.attributedText = title
         textSubtitle.attributedText = subtitle
+        
+        let truncationText = subtitle
+        truncationText?.mutableString.setString(" ... more")
+        textSubtitle.truncationAttributedText = truncationText
         
         textSubtitle.maximumNumberOfLines = 5
         
