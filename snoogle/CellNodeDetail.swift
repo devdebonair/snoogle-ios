@@ -113,7 +113,7 @@ class CellNodeDetail: ASCellNode {
         
         let stackLayoutContent = ASStackLayoutSpec(
             direction: .vertical,
-            spacing: 5.0,
+            spacing: 10.0,
             justifyContent: .start,
             alignItems: .start,
             children: contentLayoutElements)
