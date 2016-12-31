@@ -109,13 +109,13 @@ class CellNodeDetail: ASCellNode {
         
         let stackLayoutButton = ASStackLayoutSpec(
             direction: .horizontal,
-            spacing: 10.0,
+            spacing: 30.0,
             justifyContent: .end,
             alignItems: .center,
             children: [
                 buttonSave,
-                buttonUpVote,
-                buttonDownVote
+                buttonDownVote,
+                buttonUpVote
             ])
         
         let stackLayoutButtonContainer = ASStackLayoutSpec(
