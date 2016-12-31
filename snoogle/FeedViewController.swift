@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "all"
+    let subreddit: String = "rocketleague"
     let subSort: Listing.SortType = .hot
     
     init() {
@@ -55,7 +55,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let nodeModel = model[indexPath.section]
         return { _ -> ASCellNode in
             let meta = NSMutableAttributedString(
-                string: "\(nodeModel.author) • \(nodeModel.date_created.timeAgo(numericDates: true))",
+                string: "\(nodeModel.author) • \(nodeModel.date_created.timeAgo(numericDates: true)) • \(nodeModel.domain)",
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 12),
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
@@ -67,7 +67,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             let title = NSMutableAttributedString(
                 string: nodeModel.title,
                 attributes: [
-                    NSFontAttributeName: UIFont.systemFont(ofSize: 18),
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 17),
                     NSForegroundColorAttributeName: UIColor.black,
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
