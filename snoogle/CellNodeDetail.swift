@@ -39,6 +39,11 @@ class CellNodeDetail: ASCellNode {
         
         super.init()
         
+        textMeta.isLayerBacked = true
+        textTitle.isLayerBacked = true
+        textSubtitle.isLayerBacked = true
+        separator.isLayerBacked = true
+        
         automaticallyManagesSubnodes = true
         
         textMeta.attributedText = meta
@@ -65,12 +70,14 @@ class CellNodeDetail: ASCellNode {
                     mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
                     mediaView.downloadsIntermediateImages = true
                     mediaView.dataSource = self
+                    mediaView.isLayerBacked = true
                 }
             } else {
                 mediaView = ASNetworkImageNode()
                 if let mediaView = mediaView as? ASNetworkImageNode {
                     mediaView.url = media.url
                     mediaView.contentMode = .scaleAspectFill
+                    mediaView.isLayerBacked = true
                 }
             }
         }
