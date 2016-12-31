@@ -45,7 +45,7 @@ class CellNodeDetail: ASCellNode {
         textTitle.attributedText = title
         textSubtitle.attributedText = subtitle
         
-        textSubtitle.maximumNumberOfLines = 3
+        textSubtitle.maximumNumberOfLines = 5
         
         buttonSave.setAttributedTitle(NSAttributedString(string: "Save", attributes: buttonAttributes), for: [])
         buttonUpVote.setAttributedTitle(NSAttributedString(string: "Upvote", attributes: buttonAttributes), for: [])
@@ -96,8 +96,6 @@ class CellNodeDetail: ASCellNode {
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
         
-        buttonDiscussion.style.flexBasis = ASDimension(unit: .fraction, value: 0.8)
-        
         if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
             contentLayoutElements.append(textSubtitle)
         }
@@ -116,10 +114,10 @@ class CellNodeDetail: ASCellNode {
             alignItems: .center,
             children: [
                 buttonSave,
-                buttonDownVote,
-                buttonUpVote
+                buttonUpVote,
+                buttonDownVote
             ])
-
+        
         let stackLayoutButtonContainer = ASStackLayoutSpec(
             direction: .horizontal,
             spacing: 0.0,
@@ -129,6 +127,9 @@ class CellNodeDetail: ASCellNode {
                 buttonDiscussion,
                 stackLayoutButton
             ])
+        
+        stackLayoutButton.style.flexGrow = 1.0
+        stackLayoutButtonContainer.style.width = ASDimension(unit: .points, value: constrainedSize.max.width)
         
         let padding: CGFloat = 20.0
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
