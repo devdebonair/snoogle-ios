@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "iosprogramming"
+    let subreddit: String = "earthporn"
     let subSort: Listing.SortType = .hot
     
     init() {
@@ -23,7 +23,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         super.init(node: collectionNode)
         
-        flowLayout.sectionInset = UIEdgeInsets(top: 4, left: 8.0, bottom: 4, right: 8.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 6, left: 10.0, bottom: 6, right: 10.0)
         
         node.delegate = self
         node.dataSource = self
