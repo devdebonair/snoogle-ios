@@ -10,7 +10,6 @@ import UIKit
 import AsyncDisplayKit
 
 class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
-    
     var model: [Listing] = []
     var after: String? = nil
     var shouldUpdate: Bool = false
@@ -62,11 +61,15 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
                 ])
             
+            let paragraphStyleTitle = NSMutableParagraphStyle()
+            paragraphStyleTitle.lineSpacing = 2.0
+            
             let title = NSAttributedString(
                 string: nodeModel.title,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 18),
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0),
+                    NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             
             let description = NSAttributedString(
@@ -77,7 +80,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                 ])
             
             let buttonAttributes = [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightSemibold),
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
             ]
             
@@ -140,6 +143,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             
             let set: IndexSet = IndexSet(integersIn: prevModelCount..<self.model.count)
             self.node.insertSections(set)
+            context.completeBatchFetching(true)
         }
     }
 }
