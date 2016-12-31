@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "earthporn"
+    let subreddit: String = "rocketleague"
     let subSort: Listing.SortType = .hot
     
     init() {
@@ -23,7 +23,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         super.init(node: collectionNode)
         
-        flowLayout.sectionInset = UIEdgeInsets(top: 6, left: 10.0, bottom: 6, right: 10.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         
         node.delegate = self
         node.dataSource = self
@@ -36,7 +36,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        node.backgroundColor = UIColor(colorLiteralRed: 242/255, green: 242/255, blue: 242/255, alpha: 1.0)
+        node.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
         
         Subreddit.fetchListing(name: subreddit, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
             self.model.append(contentsOf: listings)
@@ -80,7 +80,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                 ])
             
             let buttonAttributes = [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightSemibold),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14),
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
             ]
             
