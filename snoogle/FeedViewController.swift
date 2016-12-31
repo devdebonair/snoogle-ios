@@ -23,7 +23,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         super.init(node: collectionNode)
         
-        flowLayout.sectionInset = UIEdgeInsets(top: 7.5, left: 8.0, bottom: 7.5, right: 8.0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 4, left: 8.0, bottom: 4, right: 8.0)
         
         node.delegate = self
         node.dataSource = self
@@ -62,13 +62,13 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                 ])
             
             let paragraphStyleTitle = NSMutableParagraphStyle()
-            paragraphStyleTitle.lineSpacing = 2.0
+            paragraphStyleTitle.lineSpacing = 4.0
             
             let title = NSAttributedString(
                 string: nodeModel.title,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 18),
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor.black,
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             
