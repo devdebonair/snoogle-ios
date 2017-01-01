@@ -59,11 +59,15 @@ class CellNodeDetail: ASCellNode {
         buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
         buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
         buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+        buttonDiscussion.setImage(#imageLiteral(resourceName: "talk"), for: [])
+        
         buttonDiscussion.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
         
-        buttonSave.tintColor = .lightGray
-        buttonUpVote.tintColor = .lightGray
-        buttonDownVote.tintColor = .lightGray
+        let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        
+        buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
+        buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
+        buttonDownVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
         
         buttonSave.contentMode = .scaleAspectFit
         buttonUpVote.contentMode = .scaleAspectFit
