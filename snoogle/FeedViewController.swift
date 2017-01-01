@@ -93,7 +93,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
                 ])
             
             let buttonAttributes = [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium),
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
             ]
             
