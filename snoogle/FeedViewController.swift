@@ -79,9 +79,9 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             let maxCharacterLimit = 250
             if descriptionShortened.characters.count > maxCharacterLimit {
                 descriptionShortened = descriptionShortened[0..<maxCharacterLimit]
-                var arrayOfWords = descriptionShortened.components(separatedBy: .whitespaces)
+                var arrayOfWords = descriptionShortened.components(separatedBy: .whitespacesAndNewlines)
                 let _ = arrayOfWords.popLast()
-                arrayOfWords.append(" ... more")
+                arrayOfWords.append(" ... (more)")
                 descriptionShortened = arrayOfWords.joined(separator: " ")
             }
             let description = NSMutableAttributedString(
