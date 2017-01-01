@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
 		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
 		562C1F071E11C921001BA898 /* CellNodeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F061E11C921001BA898 /* CellNodeDetail.swift */; };
 		562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
 		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		562C1F061E11C921001BA898 /* CellNodeDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeDetail.swift; sourceTree = "<group>"; };
 		562C1F0A1E1441DD001BA898 /* CellNodePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePhoto.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				562C1F0D1E145FE9001BA898 /* Date+TimeAgo.swift */,
+				562586721E1977580006E593 /* String+Integer+Subscript.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */,
 				562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */,
 				562C1F0B1E1441DD001BA898 /* CellNodePhoto.swift in Sources */,
+				562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */,
 				56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */,
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				562C1F031E118E24001BA898 /* Config.swift in Sources */,

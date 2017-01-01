@@ -70,7 +70,10 @@ struct Listing: Mappable {
     var album: [MediaElement]? = nil
     
     var selftext_condensed: String {
-        return selftext.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "#", with: "")
+        let arrayOfWords = selftext.components(separatedBy: .whitespacesAndNewlines)
+        let retval = arrayOfWords.joined(separator: " ")
+        let retvalWithoutBangs = retval.replacingOccurrences(of: "#", with: "")
+        return retvalWithoutBangs
     }
     
     var date_created: Date {

@@ -14,9 +14,9 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "rocketleague"
+    let subreddit: String = "iosprogramming"
     let subSort: Listing.SortType = .hot
-    
+
     init() {
         flowLayout = UICollectionViewFlowLayout()
         let collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
@@ -75,8 +75,17 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             let paragraphStyleDescription = NSMutableParagraphStyle()
             paragraphStyleDescription.lineSpacing = 4.0
             
+            var descriptionShortened = nodeModel.selftext_condensed
+            let maxCharacterLimit = 250
+            if descriptionShortened.characters.count > maxCharacterLimit {
+                descriptionShortened = descriptionShortened[0..<maxCharacterLimit]
+                var arrayOfWords = descriptionShortened.components(separatedBy: .whitespaces)
+                let _ = arrayOfWords.popLast()
+                arrayOfWords.append(" ... more")
+                descriptionShortened = arrayOfWords.joined(separator: " ")
+            }
             let description = NSMutableAttributedString(
-                string: nodeModel.selftext_condensed,
+                string: descriptionShortened,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14),
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
