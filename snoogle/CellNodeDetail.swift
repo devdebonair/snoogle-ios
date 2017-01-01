@@ -55,11 +55,19 @@ class CellNodeDetail: ASCellNode {
         textSubtitle.truncationAttributedText = truncationText
         
         textSubtitle.maximumNumberOfLines = 5
-        
-        buttonSave.setAttributedTitle(NSAttributedString(string: "Save", attributes: buttonAttributes), for: [])
-        buttonUpVote.setAttributedTitle(NSAttributedString(string: "Upvote", attributes: buttonAttributes), for: [])
-        buttonDownVote.setAttributedTitle(NSAttributedString(string: "Downvote", attributes: buttonAttributes), for: [])
+
+        buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
+        buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
+        buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
         buttonDiscussion.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
+        
+        buttonSave.tintColor = .lightGray
+        buttonUpVote.tintColor = .lightGray
+        buttonDownVote.tintColor = .lightGray
+        
+        buttonSave.contentMode = .scaleAspectFit
+        buttonUpVote.contentMode = .scaleAspectFit
+        buttonDownVote.contentMode = .scaleAspectFit
         
         separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
@@ -144,8 +152,9 @@ class CellNodeDetail: ASCellNode {
         
         let padding: CGFloat = 20.0
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
+        let buttonInset = UIEdgeInsets(top: 15, left: padding, bottom: 15, right: padding)
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
-        let insetButtonLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutButtonContainer)
+        let insetButtonLayout = ASInsetLayoutSpec(insets: buttonInset, child: stackLayoutButtonContainer)
 
         var stackContainerElements = [ASLayoutElement]()
         if let media = media, let mediaView = mediaView {
