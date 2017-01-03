@@ -203,6 +203,19 @@ class CellNodeDetail: ASCellNode {
         
         return stackContainer
     }
+    
+    override func didEnterVisibleState() {
+        if let media = media as? Video, let mediaView = mediaView as? ASVideoNode {
+            DispatchQueue.global(qos: .background).async {
+                if let url = media.url {
+                    let asset = AVAsset(url: url)
+                    DispatchQueue.main.async {
+                        mediaView.asset = asset
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension CellNodeDetail: ASMultiplexImageNodeDataSource {

@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "iosprogramming"
+    let subreddit: String = "all"
     let subSort: Listing.SortType = .hot
 
     init() {
@@ -23,7 +23,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         super.init(node: collectionNode)
         
-        flowLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     )
+        flowLayout.sectionInset = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
         
         node.delegate = self
         node.dataSource = self
@@ -124,23 +124,6 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let max = CGSize(width: width, height: CGFloat(FLT_MAX))
         let min = CGSize(width: width, height: 0.0)
         return ASSizeRange(min: min, max: max)
-    }
-    
-    func collectionNode(_ collectionNode: ASCollectionNode, willDisplayItemWith node: ASCellNode) {
-        let indexPath = node.indexPath
-        if let indexPath = indexPath, let node = node as? CellNodeDetail, let mediaView = node.mediaView as? ASVideoNode {
-            let nodeModel = model[indexPath.section]
-            if let media = nodeModel.media as? Video {
-                DispatchQueue.global(qos: .background).async {
-                    if let url = media.url {
-                        let asset = AVAsset(url: url)
-                        DispatchQueue.main.async {
-                            mediaView.asset = asset
-                        }
-                    }
-                }
-            }
-        }
     }
     
     func shouldBatchFetch(for collectionNode: ASCollectionNode) -> Bool {
