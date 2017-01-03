@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "all"
+    let subreddit: String = "iosprogramming"
     let subSort: Listing.SortType = .hot
 
     init() {
@@ -106,13 +106,6 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             ]
             
             let cell = CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes, media: nodeModel.media)
-            
-            cell.shadowOffset = CGSize(width: 0, height: 1.0)
-            cell.backgroundColor = .white
-            cell.clipsToBounds = false
-            cell.shadowOpacity = 0.30
-            cell.shadowRadius = 1.0
-            cell.cornerRadius = 2.0
             
             return cell
         }

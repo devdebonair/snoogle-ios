@@ -110,6 +110,16 @@ class CellNodeDetail: ASCellNode {
         }
     }
     
+    override func didLoad() {
+        self.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.backgroundColor = .white
+        self.clipsToBounds = false
+        self.shadowOpacity = 0.30
+        self.shadowRadius = 1.0
+        self.cornerRadius = 2.0
+        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+    }
+    
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         
         separator.style.width = ASDimension(unit: .fraction, value: 1.0)
