@@ -122,9 +122,6 @@ class CellNodeDetail: ASCellNode {
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         
-        separator.style.width = ASDimension(unit: .fraction, value: 1.0)
-        separator.style.height = ASDimension(unit: .points, value: 1.0)
-        
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
@@ -164,25 +161,42 @@ class CellNodeDetail: ASCellNode {
         stackLayoutButton.style.flexGrow = 1.0
         stackLayoutButtonContainer.style.width = ASDimension(unit: .points, value: constrainedSize.max.width)
         
+        separator.style.width = ASDimension(unit: .fraction, value: 1.0)
+        separator.style.height = ASDimension(unit: .points, value: 1.0)
+        
         let padding: CGFloat = 20.0
+        
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         let buttonInset = UIEdgeInsets(top: 15, left: padding, bottom: 15, right: padding)
+        
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
         let insetButtonLayout = ASInsetLayoutSpec(insets: buttonInset, child: stackLayoutButtonContainer)
 
         var stackContainerElements = [ASLayoutElement]()
+        stackContainerElements.append(insetContentLayout)
+
         if let media = media, let mediaView = mediaView {
             let ratio = CGFloat(media.height/media.width)
             let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)
             stackContainerElements.append(ratioSpec)
+            
+            if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
+                
+                if let contentChildren = stackLayoutContent.children, contentChildren.count > 2 {
+                    let _ = stackLayoutContent.children?.popLast()
+                    let subtitleInset = UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
+                    let subtitleInsetLayout = ASInsetLayoutSpec(insets: subtitleInset, child: textSubtitle)
+                    stackContainerElements.append(subtitleInsetLayout)
+                }
+            }
         }
-        stackContainerElements.append(insetContentLayout)
+        
         stackContainerElements.append(separator)
         stackContainerElements.append(insetButtonLayout)
         
         let stackContainer = ASStackLayoutSpec(
             direction: .vertical,
-            spacing: 2.0,
+            spacing: 0,
             justifyContent: .start,
             alignItems: .start,
             children: stackContainerElements)
