@@ -412,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0412A6CD53A668DF8B77E91 /* Pods-snoogle.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = PG246JM739;
 				INFOPLIST_FILE = snoogle/Info.plist;
@@ -426,6 +427,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A727E4D47AFA852E69E660A2 /* Pods-snoogle.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = PG246JM739;
 				INFOPLIST_FILE = snoogle/Info.plist;
