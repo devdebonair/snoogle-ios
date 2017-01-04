@@ -29,4 +29,14 @@ struct Photo: MediaElement, Mappable {
         urlLarge = map.optionalFrom("sizes.large")
         description = map.optionalFrom("description")
     }
+    
+    init(width: Double, height: Double, url: URL?, urlSmall: URL? = nil, urlMedium: URL? = nil, urlLarge: URL? = nil, description: String? = nil) {
+        self.width = width
+        self.height = height
+        self.url = url
+        self.urlSmall = urlSmall
+        self.urlMedium = urlMedium
+        self.urlLarge = urlLarge
+        self.description = description
+    }
 }
