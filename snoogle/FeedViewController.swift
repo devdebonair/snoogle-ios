@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "all"
+    let subreddit: String = "helgalovekaty"
     let subSort: Listing.SortType = .hot
 
     init() {
@@ -53,17 +53,9 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let nodeModel = model[indexPath.section]
-        let tempSubreddit = self.subreddit
         return { _ -> ASCellNode in
-            var metaString = "\(nodeModel.author) • \(nodeModel.date_created.timeAgo(shortened: true))"
-            if nodeModel.domain.lowercased() != "self.\(nodeModel.subreddit)".lowercased() {
-                metaString = "\(metaString)  • \(nodeModel.domain)"
-            }
-            if nodeModel.subreddit.lowercased() != tempSubreddit.lowercased() {
-                metaString = "\(metaString) • \(nodeModel.subreddit)"
-            }
             let meta = NSMutableAttributedString(
-                string: metaString,
+                string: nodeModel.meta,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 12),
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
@@ -142,5 +134,12 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             self.node.insertSections(set)
             context.completeBatchFetching(true)
         }
+    }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
+        let listing = model[indexPath.section]
+        let content = listing.selftext.components(separatedBy: .newlines)
+        let controller = ArticleViewController(meta: listing.meta, title: listing.title, media: listing.media, content: content)
+        present(controller, animated: true, completion: nil)
     }
 }
