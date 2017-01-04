@@ -69,6 +69,15 @@ struct Listing: Mappable {
     var media: MediaElement? = nil
     var album: [MediaElement]? = nil
     
+    var meta: String {
+        var metaString = "\(author) • \(date_created.timeAgo(shortened: true))"
+        if domain.lowercased() != "self.\(subreddit)".lowercased() {
+            metaString = "\(metaString)  • \(domain)"
+        }
+        metaString = "\(metaString) • \(subreddit)"
+        return metaString
+    }
+    
     var selftext_condensed: String {
         let arrayOfWords = selftext.components(separatedBy: .whitespacesAndNewlines)
         let retval = arrayOfWords.joined(separator: " ")
