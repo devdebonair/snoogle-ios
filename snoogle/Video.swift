@@ -26,4 +26,13 @@ struct Video: MediaElement, Mappable {
         gif = map.optionalFrom("gif")
         description = map.optionalFrom("description")
     }
+    
+    init(width: Double, height: Double, url: URL?, poster: URL?, gif: URL?, description: String?) {
+        self.width = width
+        self.height = height
+        self.url = url
+        self.poster = poster
+        self.gif = gif
+        self.description = description
+    }
 }
