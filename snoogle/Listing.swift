@@ -86,6 +86,19 @@ struct Listing: Mappable {
         return retvalWithoutBangs
     }
     
+    var selftext_truncated: String {
+        var descriptionShortened = selftext_condensed
+        let maxCharacterLimit = 250
+        if descriptionShortened.characters.count > maxCharacterLimit {
+            descriptionShortened = descriptionShortened[0..<maxCharacterLimit]
+            var arrayOfWords = descriptionShortened.components(separatedBy: .whitespacesAndNewlines)
+            let _ = arrayOfWords.popLast()
+            arrayOfWords.append(" ... (more)")
+            descriptionShortened = arrayOfWords.joined(separator: " ")
+        }
+        return descriptionShortened
+    }
+    
     var date_created: Date {
         return Date(timeIntervalSince1970: created)
     }
