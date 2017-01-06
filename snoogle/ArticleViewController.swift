@@ -13,12 +13,16 @@ import AsyncDisplayKit
 class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
     
     let article: Article
+    let listingId: String?
+    
     let flowLayout = UICollectionViewFlowLayout()
     
-    init(article: Article) {
+    init(article: Article, listingId: String? = nil) {
         self.article = article
+        self.listingId = listingId
         
         let collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
+        
         super.init(node: collectionNode)
         
         node.delegate = self
@@ -33,6 +37,12 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
     
     override func viewDidLoad() {
         node.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+        
+        if let listingId = listingId {
+            Listing.getComments(id: listingId) { (comments: [Comment]) in
+                print(comments)
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
