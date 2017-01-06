@@ -8,6 +8,7 @@
 
 import Foundation
 import Mapper
+import Alamofire
 
 struct Listing: Mappable {
     enum SortType: String {
@@ -176,5 +177,21 @@ struct Listing: Mappable {
             }
         }
         
+    }
+    
+    static func getComments(id: String, completion: @escaping ([Comment])->Void) {
+        let url = URL(string: "\(API_COMMENT)/\(id)")
+        if let url = url {
+            Alamofire.request(url).responseJSON(completionHandler: { (response: DataResponse<Any>) in
+                if let json = response.result.value as? NSDictionary, let data = json["data"] as? NSArray, let comments = Comment.from(data) {
+                    completion(comments)
+                } else {
+                    completion([])
+                }
+            })
+            
+        } else {
+            completion([])
+        }
     }
 }
