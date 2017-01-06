@@ -58,8 +58,17 @@ struct Subreddit {
         kind = map.optionalFrom("kind") ?? ""
     }
     
+    static func fetchFrontPage(after: String? = nil, sort: Listing.SortType = .hot, completion: @escaping ([Listing], Bool, String?)->Void) {
+        let url = URL(string: "\(API_URL)/frontpage/\(sort.rawValue)")
+        parseListing(url: url, after: after, sort: sort, completion: completion)
+    }
+    
     static func fetchListing(name: String, after: String? = nil, sort: Listing.SortType = .hot, completion: @escaping ([Listing], Bool, String?)->Void) {
         let url = URL(string: "\(API_LISTING)/\(name)/\(sort.rawValue)")
+        parseListing(url: url, after: after, sort: sort, completion: completion)
+    }
+    
+    private static func parseListing(url: URL?, after: String? = nil, sort: Listing.SortType = .hot, completion: @escaping ([Listing], Bool, String?)->Void) {
         if let url = url {
             var parameters = [String:String]()
             if let after = after {
