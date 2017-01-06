@@ -10,118 +10,71 @@ import Foundation
 import UIKit
 import AsyncDisplayKit
 
-class ArticleViewController: ASViewController<ASTableNode>, ASTableDelegate, ASTableDataSource {
+class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
     
-    let meta: String
-    let articleTitle: String
-    let media: MediaElement?
-    let content: [String]
+    let article: Article
+    let flowLayout = UICollectionViewFlowLayout()
     
-    init(meta: String, title: String, media: MediaElement? = nil, content: [String]) {
-        self.meta = meta
-        self.articleTitle = title
-        self.media = media
-        self.content = content
+    init(article: Article) {
+        self.article = article
         
-        super.init(node: ASTableNode(style: .plain))
+        let collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
+        super.init(node: collectionNode)
         
         node.delegate = self
         node.dataSource = self
+        node.registerSupplementaryNode(ofKind: UICollectionElementKindSectionFooter)
+        
+        flowLayout.footerReferenceSize = CGSize(width: node.bounds.width, height: 55)
+        flowLayout.sectionFootersPinToVisibleBounds = true
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 0
     }
     
     override func viewDidLoad() {
-        node.view.separatorStyle = .none
+        node.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func tableNode(_ tableNode: ASTableNode, nodeBlockForRowAt indexPath: IndexPath) -> ASCellNodeBlock {
-        
-        let meta = self.meta
-        let title = self.articleTitle
-        let media = self.media
-        let content = self.content
-        
-        var index = indexPath.row
-        
-        if index > 1 && media == nil {
-            index = index - 2
-        }
-        
-        if index > 2 && media != nil {
-            index = index - 3
-        }
-        
+    func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
+        let article = self.article
         return { _ -> ASCellNode in
-            
-            let cellNode: ASCellNode
-            
-            if indexPath.row == 0 {
-                
-                let meta = NSMutableAttributedString(
-                    string: meta,
-                    attributes: [
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
-                    ])
-                let inset = UIEdgeInsets(top: 20, left: 20, bottom: 5, right: 20)
-                cellNode = CellNodeText(attributedText: meta, inset: inset)
-                
-            } else if indexPath.row == 1 {
-            
-                let inset = UIEdgeInsets(top: 5, left: 20, bottom: 10, right: 20)
-                
-                let paragraphStyleTitle = NSMutableParagraphStyle()
-                paragraphStyleTitle.lineSpacing = 4.0
-                
-                let title = NSMutableAttributedString(
-                    string: title,
-                    attributes: [
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 20),
-                        NSForegroundColorAttributeName: UIColor.black,
-                        NSParagraphStyleAttributeName: paragraphStyleTitle
-                    ])
-                
-                cellNode = CellNodeText(attributedText: title, inset: inset)
-                
-            } else if let media = media, indexPath.row == 2 {
-                
-                let inset = UIEdgeInsets(top: 20, left: 0, bottom: 10, right: 0)
-                cellNode = CellNodeMedia(media: media, inset: inset)
-                
-            } else {
-                
-                let inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
-                let paragraphStyleDescription = NSMutableParagraphStyle()
-                paragraphStyleDescription.lineSpacing = 6.0
-                
-                let description = NSMutableAttributedString(
-                    string: content[index],
-                    attributes: [
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 16),
-                        NSForegroundColorAttributeName: UIColor.black,
-                        NSParagraphStyleAttributeName: paragraphStyleDescription
-                    ])
-                cellNode = CellNodeText(attributedText: description, inset: inset)
-            }
-            
-            cellNode.selectionStyle = .none
-            
-            return cellNode
+            let cell = article.cellAtRow(indexPath: indexPath)
+            cell.backgroundColor = .white
+            return cell
         }
     }
     
-    func numberOfSections(in tableNode: ASTableNode) -> Int {
+    func numberOfSections(in collectionNode: ASCollectionNode) -> Int {
         return 1
     }
     
-    func tableNode(_ tableNode: ASTableNode, numberOfRowsInSection section: Int) -> Int {
-        if media == nil {
-            return 2 + content.count
-        }
-        
-        return 3 + content.count
+    func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
+        return article.numberOfCells()
     }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
+        let width: CGFloat = node.frame.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right
+        let max = CGSize(width: width, height: CGFloat(FLT_MAX))
+        let min = CGSize(width: width, height: 0.0)
+        return ASSizeRange(min: min, max: max)
+    }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, nodeForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> ASCellNode {
+        switch kind {
+        case UICollectionElementKindSectionHeader:
+            return ASCellNode()
+        case UICollectionElementKindSectionFooter:
+            let cell = CellNodeArticleButtonBar(numberOfComments: 55)
+            cell.backgroundColor = .white
+            return cell
+        default:
+            return ASCellNode()
+        }
+    }
+    
+    
 }

@@ -14,7 +14,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     var after: String? = nil
     var shouldUpdate: Bool = false
     let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String = "helgalovekaty"
+    let subreddit: String = "rocketleague"
     let subSort: Listing.SortType = .hot
 
     init() {
@@ -139,7 +139,9 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
         let listing = model[indexPath.section]
         let content = listing.selftext.components(separatedBy: .newlines)
-        let controller = ArticleViewController(meta: listing.meta, title: listing.title, media: listing.media, content: content)
+        let article = Article(meta: listing.meta, title: listing.title, media: listing.media, content: content)
+        let controller = ArticleViewController(article: article)
         present(controller, animated: true, completion: nil)
     }
+    
 }
