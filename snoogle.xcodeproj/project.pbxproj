@@ -171,7 +171,7 @@
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
 				562C1F111E146675001BA898 /* controllers */,
-				56C4E2BF1E227E0F0080E6E0 /* viewmodels */,
+				56C4E2BF1E227E0F0080E6E0 /* view models */,
 				562C1F101E14665D001BA898 /* models */,
 				562C1F0F1E14663D001BA898 /* cells */,
 				562C1F0C1E145FD2001BA898 /* extensions */,
@@ -181,13 +181,13 @@
 			path = snoogle;
 			sourceTree = "<group>";
 		};
-		56C4E2BF1E227E0F0080E6E0 /* viewmodels */ = {
+		56C4E2BF1E227E0F0080E6E0 /* view models */ = {
 			isa = PBXGroup;
 			children = (
 				56126EBD1E1D9D060063B6ED /* Article.swift */,
 				568CA6751E201B26009F1289 /* Post.swift */,
 			);
-			name = viewmodels;
+			name = "view models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
