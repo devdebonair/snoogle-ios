@@ -17,11 +17,14 @@ struct Post: ViewModelElement {
     let media: MediaElement?
     
     func cellAtRow(indexPath: IndexPath) -> ASCellNode {
+        let paragraphStyleMeta = NSMutableParagraphStyle()
+        paragraphStyleMeta.lineSpacing = 2.0
         let meta = NSMutableAttributedString(
             string: self.meta,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 12),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                NSParagraphStyleAttributeName: paragraphStyleMeta
             ])
         
         let paragraphStyleTitle = NSMutableParagraphStyle()
