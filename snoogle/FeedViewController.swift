@@ -10,17 +10,27 @@ import UIKit
 import AsyncDisplayKit
 
 class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
+    let subreddit: String
+    var after: String? = nil
+    let subSort: Listing.SortType
+    var shouldUpdate: Bool = false
+    
     var model: [Listing] = []
     var posts: [Post] = []
-    var after: String? = nil
-    var shouldUpdate: Bool = false
-    let flowLayout: UICollectionViewFlowLayout
-    let subreddit: String
-    let subSort: Listing.SortType
     
-    init(subreddit: String, sort: Listing.SortType = .hot) {
+    enum SubredditType: Int {
+        case custom = 0
+        case frontpage = 1
+    }
+    
+    let flowLayout: UICollectionViewFlowLayout
+    
+    private let type: SubredditType
+    
+    init(subreddit: String, sort: Listing.SortType = .hot, type: SubredditType = .custom) {
         self.subreddit = subreddit
         self.subSort = sort
+        self.type = type
         
         flowLayout = UICollectionViewFlowLayout()
         
@@ -43,14 +53,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         
         node.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
         
-//        Subreddit.fetchListing(name: subreddit, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
-//            self.model.append(contentsOf: listings)
-//            self.shouldUpdate = !isFinished
-//            self.after = after
-//            self.node.reloadData()
-//        }
-        
-        Subreddit.fetchFrontPage(sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
+        let fetchHandler = { (listings: [Listing], isFinished: Bool, after: String?) in
             self.model.append(contentsOf: listings)
             for listing in listings {
                 let post = Post(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media)
@@ -59,6 +62,13 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             self.shouldUpdate = !isFinished
             self.after = after
             self.node.reloadData()
+        }
+        
+        switch type {
+        case .frontpage:
+            Subreddit.fetchFrontPage(sort: subSort, completion: fetchHandler)
+        case .custom:
+            Subreddit.fetchListing(name: subreddit, sort: subSort, completion: fetchHandler)
         }
     }
 
@@ -95,18 +105,8 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, willBeginBatchFetchWith context: ASBatchContext) {
-//        Subreddit.fetchListing(name: subreddit, after: after, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
-//            self.after = after
-//            self.shouldUpdate = !isFinished
-//            
-//            let prevModelCount = self.model.count
-//            self.model.append(contentsOf: listings)
-//            
-//            let set: IndexSet = IndexSet(integersIn: prevModelCount..<self.model.count)
-//            self.node.insertSections(set)
-//            context.completeBatchFetching(true)
-//        }
-        Subreddit.fetchFrontPage(after: after, sort: subSort) { (listings: [Listing], isFinished: Bool, after: String?) in
+        
+        let batchHandler = { (listings: [Listing], isFinished: Bool, after: String?) in
             self.after = after
             self.shouldUpdate = !isFinished
             
@@ -122,6 +122,13 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             let set: IndexSet = IndexSet(integersIn: prevModelCount..<self.posts.count)
             self.node.insertSections(set)
             context.completeBatchFetching(true)
+        }
+        
+        switch type {
+        case .frontpage:
+            Subreddit.fetchFrontPage(after: after, sort: subSort, completion: batchHandler)
+        case .custom:
+            Subreddit.fetchListing(name: subreddit, after: after, sort: subSort, completion: batchHandler)
         }
     }
     
