@@ -56,7 +56,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let fetchHandler = { (listings: [Listing], isFinished: Bool, after: String?) in
             self.model.append(contentsOf: listings)
             for listing in listings {
-                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media)
+                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media, numberOfComments: listing.num_comments)
                 self.posts.append(post)
             }
             self.shouldUpdate = !isFinished
@@ -115,7 +115,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             self.model.append(contentsOf: listings)
             
             for listing in listings {
-                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media)
+                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media, numberOfComments: listing.num_comments)
                 self.posts.append(post)
             }
             

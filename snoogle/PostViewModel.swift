@@ -15,6 +15,7 @@ struct PostViewModel: ViewModelElement {
     let title: String
     let description: String
     let media: MediaElement?
+    let numberOfComments: Int
     
     func cellAtRow(indexPath: IndexPath) -> ASCellNode {
         let paragraphStyleMeta = NSMutableParagraphStyle()
@@ -49,12 +50,14 @@ struct PostViewModel: ViewModelElement {
                 NSParagraphStyleAttributeName: paragraphStyleDescription
             ])
         
-        let buttonAttributes = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium),
-            NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
-        ]
+        let leftButtonAttribute = NSMutableAttributedString(
+            string: "\(numberOfComments) Comments",
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium),
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+            ])
         
-        return CellNodeDetail(meta: meta, title: title, subtitle: description, buttonAttributes: buttonAttributes, media: media)
+        return CellNodePost(meta: meta, title: title, subtitle: description, leftbuttonAttributes: leftButtonAttribute, media: media)
     }
     
     func numberOfCells() -> Int {

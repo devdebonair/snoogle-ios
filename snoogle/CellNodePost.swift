@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
-class CellNodeDetail: ASCellNode {
+class CellNodePost: ASCellNode {
     let textMeta: ASTextNode
     let textTitle: ASTextNode
     let textSubtitle: ASTextNode
@@ -25,7 +25,7 @@ class CellNodeDetail: ASCellNode {
     
     let media: MediaElement?
     
-    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, buttonAttributes: [String:Any?], media: MediaElement? = nil) {
+    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: MediaElement? = nil) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
@@ -61,7 +61,7 @@ class CellNodeDetail: ASCellNode {
         buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
         buttonDiscussion.setImage(#imageLiteral(resourceName: "talk"), for: [])
         
-        buttonDiscussion.setAttributedTitle(NSAttributedString(string: "View Discussion", attributes: buttonAttributes), for: [])
+        buttonDiscussion.setAttributedTitle(leftbuttonAttributes, for: [])
         
         let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
@@ -218,7 +218,7 @@ class CellNodeDetail: ASCellNode {
     }
 }
 
-extension CellNodeDetail: ASMultiplexImageNodeDataSource {
+extension CellNodePost: ASMultiplexImageNodeDataSource {
     func multiplexImageNode(_ imageNode: ASMultiplexImageNode, urlForImageIdentifier imageIdentifier: ASImageIdentifier) -> URL? {
         guard let media = media as? Photo, let imageIdentifier = imageIdentifier as? String else { return nil }
         switch imageIdentifier {
