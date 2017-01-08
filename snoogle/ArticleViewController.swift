@@ -31,7 +31,7 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
         node.dataSource = self
         node.registerSupplementaryNode(ofKind: UICollectionElementKindSectionFooter)
         
-        flowLayout.footerReferenceSize = CGSize(width: node.bounds.width, height: 55)
+        flowLayout.footerReferenceSize = CGSize(width: node.bounds.width, height: 57)
         flowLayout.sectionFootersPinToVisibleBounds = true
         flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = 0
