@@ -12,14 +12,14 @@ import AsyncDisplayKit
 
 class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
     
-    let article: Article
+    let article: ArticleViewModel
     let listingId: String?
     
     let flowLayout = UICollectionViewFlowLayout()
     
     var comments = [Comment]()
     
-    init(article: Article, listingId: String? = nil) {
+    init(article: ArticleViewModel, listingId: String? = nil) {
         self.article = article
         self.listingId = listingId
         

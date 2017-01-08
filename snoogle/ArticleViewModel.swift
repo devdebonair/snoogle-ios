@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AsyncDisplayKit
 
-struct Article: ViewModelElement {
+struct ArticleViewModel: ViewModelElement {
 
     let meta: String
     let title: String
