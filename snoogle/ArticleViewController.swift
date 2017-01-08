@@ -19,15 +19,17 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
     
     let article: ArticleViewModel
     let listingId: String?
+    let numberOfComments: Int
     
     let flowLayout = UICollectionViewFlowLayout()
     
     var comments = [Comment]()
     var commentViewModels = [CommentViewModel]()
     
-    init(article: ArticleViewModel, listingId: String? = nil) {
+    init(article: ArticleViewModel, listingId: String? = nil, numberOfComments: Int = 0) {
         self.article = article
         self.listingId = listingId
+        self.numberOfComments = numberOfComments
         
         let collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
         
@@ -115,7 +117,7 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
         case UICollectionElementKindSectionHeader:
             return ASCellNode()
         case UICollectionElementKindSectionFooter:
-            let cell = CellNodeArticleButtonBar(numberOfComments: 55)
+            let cell = CellNodeArticleButtonBar(numberOfComments: numberOfComments)
             cell.backgroundColor = .white
             return cell
         default:

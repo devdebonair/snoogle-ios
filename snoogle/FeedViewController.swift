@@ -136,7 +136,7 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let listing = model[indexPath.section]
         let content = listing.selftext.components(separatedBy: .newlines)
         let article = ArticleViewModel(meta: listing.meta, title: listing.title, media: listing.media, content: content)
-        let controller = ArticleViewController(article: article, listingId: listing.id)
+        let controller = ArticleViewController(article: article, listingId: listing.id, numberOfComments: listing.num_comments)
         present(controller, animated: true, completion: nil)
     }
     
