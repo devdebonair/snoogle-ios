@@ -12,12 +12,18 @@ import AsyncDisplayKit
 
 class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDelegate, ASCollectionDataSource {
     
+    private enum SectionType: Int {
+        case article = 0
+        case comments = 1
+    }
+    
     let article: ArticleViewModel
     let listingId: String?
     
     let flowLayout = UICollectionViewFlowLayout()
     
     var comments = [Comment]()
+    var commentViewModels = [CommentViewModel]()
     
     init(article: ArticleViewModel, listingId: String? = nil) {
         self.article = article
@@ -43,11 +49,21 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
         if let listingId = listingId {
             Listing.getComments(id: listingId) { (comments: [Comment]) in
                 self.comments = comments
+                self.commentViewModels = []
+                
                 var paths = [IndexPath]()
                 for index in 0..<comments.count {
-                    let index = IndexPath(item: index, section: 1)
-                    paths.append(index)
+                    let indexPath = IndexPath(item: index, section: 1)
+                    paths.append(indexPath)
+                    
+                    let comment = comments[index]
+                    let viewModel = CommentViewModel(
+                        meta: "\(comment.author) • \(comment.score) points",
+                        body: comment.body,
+                        level: comment.level)
+                    self.commentViewModels.append(viewModel)
                 }
+                
                 self.node.insertItems(at: paths)
             }
         }
@@ -59,51 +75,15 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let article = self.article
-        var comment: Comment? = nil
-        if indexPath.section == 1 {
-            comment = comments[indexPath.row]
+        var commentViewModel: CommentViewModel? = nil
+        
+        if indexPath.section == SectionType.comments.rawValue {
+            commentViewModel = commentViewModels[indexPath.row]
         }
         return { _ -> ASCellNode in
             
-            if let comment = comment {
-                var fontSizeMeta: CGFloat = 12
-                var fontSizeBody: CGFloat = 14
-                
-                if comment.level != 0 {
-                    fontSizeMeta = 10
-                    fontSizeBody = 12
-                }
-                
-                let meta = NSMutableAttributedString(
-                    string: "\(comment.author) • \(comment.score) points",
-                    attributes: [
-                        NSFontAttributeName: UIFont.systemFont(ofSize: fontSizeMeta),
-                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
-                    ])
-                
-                let paragraph = NSMutableParagraphStyle()
-                paragraph.lineSpacing = 4.0
-                
-                let body = NSMutableAttributedString(
-                    string: comment.body,
-                    attributes: [
-                        NSFontAttributeName: UIFont.systemFont(ofSize: fontSizeBody),
-                        NSForegroundColorAttributeName: UIColor.black,
-                        NSParagraphStyleAttributeName: paragraph
-                    ])
-                
-                let leftMargin: CGFloat = 20 + CGFloat(comment.level * 20)
-                var inset = UIEdgeInsets(top: 20, left: leftMargin, bottom: 20, right: 20)
-                
-                if comment.level != 0 {
-                    inset.top = 5
-                    inset.bottom = 5
-                }
-                
-                let cell = CellNodeComment(meta: meta, body: body, inset: inset)
-                cell.backgroundColor = .white
-                cell.selectionStyle = .none
-                return cell
+            if let commentViewModel = commentViewModel {
+                return commentViewModel.cellAtRow(indexPath: indexPath)
             }
             
             let cell = article.cellAtRow(indexPath: indexPath)
@@ -118,7 +98,7 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
     
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         if section == 1 {
-            return comments.count
+            return commentViewModels.count
         }
         return article.numberOfCells()
     }
