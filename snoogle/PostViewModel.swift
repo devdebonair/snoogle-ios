@@ -23,7 +23,7 @@ struct PostViewModel: ViewModelElement {
         let meta = NSMutableAttributedString(
             string: self.meta,
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 12),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 10),
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
                 NSParagraphStyleAttributeName: paragraphStyleMeta
             ])
