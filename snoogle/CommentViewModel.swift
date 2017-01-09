@@ -38,12 +38,7 @@ struct CommentViewModel: ViewModelElement {
             ])
         
         let leftMargin: CGFloat = 20 + CGFloat(level * 20)
-        var inset = UIEdgeInsets(top: 20, left: leftMargin, bottom: 20, right: 20)
-        
-        if level != 0 {
-            inset.top = 5
-            inset.bottom = 5
-        }
+        let inset = UIEdgeInsets(top: 20, left: leftMargin, bottom: 20, right: 20)
         
         let cell = CellNodeComment(meta: metaAttribute, body: bodyAttribute, inset: inset)
         cell.backgroundColor = .white
