@@ -117,7 +117,8 @@ class ArticleViewController: ASViewController<ASCollectionNode>, ASCollectionDel
         case UICollectionElementKindSectionHeader:
             return ASCellNode()
         case UICollectionElementKindSectionFooter:
-            let cell = CellNodeArticleButtonBar(numberOfComments: numberOfComments)
+            let leftButtonText = "\(numberOfComments) Comments"
+            let cell = CellNodeArticleButtonBar(leftButtonText: leftButtonText)
             cell.backgroundColor = .white
             return cell
         default:

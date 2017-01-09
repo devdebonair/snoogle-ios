@@ -26,7 +26,7 @@ class CellNodeArticleButtonBar: ASCellNode {
         NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
     ]
     
-    init(numberOfComments: Int) {
+    init(leftButtonText: String) {
         buttonDiscussion = ASButtonNode()
         buttonSave = ASButtonNode()
         buttonUpVote = ASButtonNode()
@@ -41,7 +41,7 @@ class CellNodeArticleButtonBar: ASCellNode {
         buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
         buttonDiscussion.setImage(#imageLiteral(resourceName: "talk"), for: [])
         
-        buttonDiscussion.setAttributedTitle(NSAttributedString(string: "\(numberOfComments) Comments", attributes: ATTRIBUTES_BUTTON), for: [])
+        buttonDiscussion.setAttributedTitle(NSAttributedString(string: leftButtonText, attributes: ATTRIBUTES_BUTTON), for: [])
         
         buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(COLOR_DISABLED)
         buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(COLOR_DISABLED)
