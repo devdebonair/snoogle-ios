@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */; };
 		56126EB81E1D8B440063B6ED /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56126EB71E1D8B440063B6ED /* ArticleViewController.swift */; };
 		56126EBC1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56126EBB1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift */; };
 		56126EBE1E1D9D060063B6ED /* ArticleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56126EBD1E1D9D060063B6ED /* ArticleViewModel.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSlideViewModel.swift; sourceTree = "<group>"; };
 		56126EB71E1D8B440063B6ED /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
 		56126EBB1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeArticleButtonBar.swift; sourceTree = "<group>"; };
 		56126EBD1E1D9D060063B6ED /* ArticleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewModel.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				56126EBD1E1D9D060063B6ED /* ArticleViewModel.swift */,
 				568CA6751E201B26009F1289 /* PostViewModel.swift */,
 				56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */,
+				560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */,
 				56126EBE1E1D9D060063B6ED /* ArticleViewModel.swift in Sources */,
 				56126EBC1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift in Sources */,
+				560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */,
 				56978ACD1E1F55900060B558 /* Comment.swift in Sources */,
 				562C1F071E11C921001BA898 /* CellNodePost.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,

@@ -49,7 +49,7 @@ class NodeSlide: ASDisplayNode {
 extension NodeSlide: ASCollectionDelegate, ASCollectionDataSource {
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
-        let model = models[indexPath.row]
+        let model = models[indexPath.section]
         return { _ -> ASCellNode in
             return model.cellAtRow(indexPath: indexPath)
         }
