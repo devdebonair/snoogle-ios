@@ -14,9 +14,9 @@ struct PostViewModel: ViewModelElement {
     let meta: String
     let title: String
     let description: String
-    let media: MediaElement?
+    let media: [MediaElement]
     let numberOfComments: Int
-    
+
     func cellAtRow(indexPath: IndexPath) -> ASCellNode {
         let paragraphStyleMeta = NSMutableParagraphStyle()
         paragraphStyleMeta.lineSpacing = 2.0

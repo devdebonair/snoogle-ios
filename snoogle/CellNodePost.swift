@@ -21,11 +21,11 @@ class CellNodePost: ASCellNode {
     let buttonUpVote: ASButtonNode
     let buttonDownVote: ASButtonNode
     
-    var mediaView: ASImageNode? = nil
+    var mediaView: ASDisplayNode? = nil
     
-    let media: MediaElement?
+    let media: [MediaElement]?
     
-    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: MediaElement? = nil) {
+    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: [MediaElement]) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
@@ -75,38 +75,11 @@ class CellNodePost: ASCellNode {
         
         separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
-        if let media = media as? Photo {
-            if let _ = media.urlSmall, let _ = media.urlMedium, let _ = media.urlLarge {
-                mediaView = ASMultiplexImageNode()
-                if let mediaView = mediaView as? ASMultiplexImageNode {
-                    mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
-                    mediaView.downloadsIntermediateImages = true
-                    mediaView.dataSource = self
-                    mediaView.isLayerBacked = true
-                }
-            } else {
-                mediaView = ASNetworkImageNode()
-                if let mediaView = mediaView as? ASNetworkImageNode {
-                    mediaView.url = media.url
-                    mediaView.contentMode = .scaleAspectFill
-                    mediaView.isLayerBacked = true
-                }
-            }
+        if media.count == 1 {
+            mediaView = NodeMedia(media: media[0])
         }
-        
-        if let media = media as? Video {
-            mediaView = ASVideoNode()
-            if let mediaView = mediaView as? ASVideoNode {
-                mediaView.url = media.poster
-                mediaView.gravity = AVLayerVideoGravityResizeAspectFill
-                mediaView.shouldAutoplay = true
-                mediaView.shouldAutorepeat = true
-                mediaView.placeholderEnabled = true
-                mediaView.placeholderFadeDuration = 2.0
-                mediaView.backgroundColor = .black
-                mediaView.muted = true
-                mediaView.isLayerBacked = true
-            }
+        if media.count > 1 {
+            mediaView = NodeMediaAlbum(media: media)
         }
     }
     
@@ -175,10 +148,20 @@ class CellNodePost: ASCellNode {
         var stackContainerElements = [ASLayoutElement]()
         stackContainerElements.append(insetContentLayout)
 
-        if let media = media, let mediaView = mediaView {
-            let ratio = CGFloat(media.height/media.width)
-            let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)
-            stackContainerElements.append(ratioSpec)
+        if let mediaView = mediaView {
+            
+            if let mediaView = mediaView as? NodeMedia {
+                stackContainerElements.append(mediaView)
+            }
+            
+            if let mediaView = mediaView as? NodeMediaAlbum {
+                mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
+                mediaView.style.height = ASDimension(unit: .points, value: 150)
+                mediaView.collectionNode.clipsToBounds = false
+                let inset = UIEdgeInsets(top: 0, left: padding, bottom: padding, right: 0)
+                let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)
+                stackContainerElements.append(insetMediaLayout)
+            }
             
             if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
                 
@@ -202,34 +185,5 @@ class CellNodePost: ASCellNode {
             children: stackContainerElements)
         
         return stackContainer
-    }
-    
-    override func didEnterVisibleState() {
-        if let media = media as? Video, let mediaView = mediaView as? ASVideoNode {
-            DispatchQueue.global(qos: .background).async {
-                if let url = media.url {
-                    let asset = AVAsset(url: url)
-                    DispatchQueue.main.async {
-                        mediaView.asset = asset
-                    }
-                }
-            }
-        }
-    }
-}
-
-extension CellNodePost: ASMultiplexImageNodeDataSource {
-    func multiplexImageNode(_ imageNode: ASMultiplexImageNode, urlForImageIdentifier imageIdentifier: ASImageIdentifier) -> URL? {
-        guard let media = media as? Photo, let imageIdentifier = imageIdentifier as? String else { return nil }
-        switch imageIdentifier {
-        case "small":
-            return media.urlSmall
-        case "medium":
-            return media.urlMedium
-        case "large":
-            return media.urlLarge
-        default:
-            return nil
-        }
     }
 }

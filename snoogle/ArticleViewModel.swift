@@ -14,7 +14,7 @@ struct ArticleViewModel: ViewModelElement {
 
     let meta: String
     let title: String
-    let media: MediaElement?
+    let media: [MediaElement]
     let content: [String]
     
     // button, title, meta, separator
@@ -24,7 +24,7 @@ struct ArticleViewModel: ViewModelElement {
         var retval = [Any]()
         retval.append(meta)
         retval.append(title)
-        if let media = media {
+        if !media.isEmpty {
             retval.append(media)
         }
         for paragraph in content {
@@ -67,7 +67,7 @@ struct ArticleViewModel: ViewModelElement {
             return CellNodeText(attributedText: titleAttributes, inset: inset)
         }
         
-        if let element = element as? MediaElement {
+        if let element = element as? [MediaElement] {
             let inset = UIEdgeInsets(top: 20, left: 0, bottom: 10, right: 0)
             return CellNodeMedia(media: element, inset: inset)
         }

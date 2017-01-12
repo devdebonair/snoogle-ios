@@ -12,11 +12,11 @@ import AsyncDisplayKit
 
 class CellNodeMedia: ASCellNode {
     
-    let media: MediaElement
-    var mediaView = ASImageNode()
+    let media: [MediaElement]
+    var mediaView: ASDisplayNode!
     let inset: UIEdgeInsets
     
-    init(media: MediaElement, inset: UIEdgeInsets = .zero) {
+    init(media: [MediaElement], inset: UIEdgeInsets = .zero) {
         self.media = media
         self.inset = inset
         
@@ -24,75 +24,35 @@ class CellNodeMedia: ASCellNode {
         
         automaticallyManagesSubnodes = true
         
-        if let media = media as? Photo {
-            if let _ = media.urlSmall, let _ = media.urlMedium, let _ = media.urlLarge {
-                mediaView = ASMultiplexImageNode()
-                if let mediaView = mediaView as? ASMultiplexImageNode {
-                    mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
-                    mediaView.downloadsIntermediateImages = true
-                    mediaView.dataSource = self
-                    mediaView.isLayerBacked = true
-                }
-            } else {
-                mediaView = ASNetworkImageNode()
-                if let mediaView = mediaView as? ASNetworkImageNode {
-                    mediaView.url = media.url
-                    mediaView.contentMode = .scaleAspectFill
-                    mediaView.isLayerBacked = true
-                }
-            }
+        if media.isEmpty {
+            assertionFailure("Media must have at least one element. \(media.count) items provided.")
         }
         
-        if let media = media as? Video {
-            mediaView = ASVideoNode()
-            if let mediaView = mediaView as? ASVideoNode {
-                mediaView.url = media.poster
-                mediaView.gravity = AVLayerVideoGravityResizeAspectFill
-                mediaView.shouldAutoplay = true
-                mediaView.shouldAutorepeat = true
-                mediaView.placeholderEnabled = true
-                mediaView.placeholderFadeDuration = 2.0
-                mediaView.backgroundColor = .black
-                mediaView.muted = true
-                mediaView.isLayerBacked = true
-            }
+        if media.count == 1 {
+            mediaView = NodeMedia(media: media[0])
         }
-    }
-    
-    override func didEnterVisibleState() {
-        if let media = media as? Video, let mediaView = mediaView as? ASVideoNode {
-            DispatchQueue.global(qos: .background).async {
-                if let url = media.url {
-                    let asset = AVAsset(url: url)
-                    DispatchQueue.main.async {
-                        mediaView.asset = asset
-                    }
-                }
-            }
+        if media.count > 1 {
+            mediaView = NodeMediaAlbum(media: media)
         }
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let ratio = CGFloat(media.height/media.width)
-        let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)
-        let insetSpec = ASInsetLayoutSpec(insets: inset, child: ratioSpec)
+        var child: ASLayoutElement!
+        
+        if let mediaView = mediaView as? NodeMedia {
+            child = mediaView
+        }
+        
+        if let mediaView = mediaView as? NodeMediaAlbum {
+            mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
+            mediaView.style.height = ASDimension(unit: .points, value: 150)
+            mediaView.collectionNode.clipsToBounds = false
+            let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)
+            child = insetMediaLayout
+        }
+
+        let insetSpec = ASInsetLayoutSpec(insets: inset, child: child)
         return insetSpec
     }
     
-}
-
-extension CellNodeMedia: ASMultiplexImageNodeDataSource {
-    func multiplexImageNode(_ imageNode: ASMultiplexImageNode, urlForImageIdentifier imageIdentifier: ASImageIdentifier) -> URL? {
-        guard let media = media as? Photo, let imageIdentifier = imageIdentifier as? String else { return nil }
-        switch imageIdentifier {
-        case "small":
-            return media.urlSmall
-        case "medium":
-            return media.urlMedium
-        case "large":
-            return media.urlLarge
-        default:
-            return nil
-        }
-    }
 }

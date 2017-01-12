@@ -13,6 +13,7 @@
 		56126EC01E1D9DBD0063B6ED /* ViewModelElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56126EBF1E1D9DBD0063B6ED /* ViewModelElement.swift */; };
 		56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56126EC11E1DAC580063B6ED /* CellNodeSeparator.swift */; };
 		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
+		562BD45A1E26983600F1DC01 /* NodeSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562BD4591E26983600F1DC01 /* NodeSlide.swift */; };
 		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
 		562C1F071E11C921001BA898 /* CellNodePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F061E11C921001BA898 /* CellNodePost.swift */; };
 		562C1F0B1E1441DD001BA898 /* CellNodeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F0A1E1441DD001BA898 /* CellNodeMedia.swift */; };
@@ -20,6 +21,9 @@
 		562C1F131E147E82001BA898 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F121E147E82001BA898 /* Photo.swift */; };
 		562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F151E147EB2001BA898 /* MediaElement.swift */; };
 		562C1F181E148061001BA898 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F171E148061001BA898 /* Video.swift */; };
+		563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */; };
+		563D037F1E24C69C00BD24D4 /* NodeMediaAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D037E1E24C69C00BD24D4 /* NodeMediaAlbum.swift */; };
+		563D03831E257A8B00BD24D4 /* NodeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03821E257A8B00BD24D4 /* NodeMedia.swift */; };
 		56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6C1E0EDAEE0095AE93 /* Listing.swift */; };
 		56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56469C6E1E0EE2E80095AE93 /* Subreddit.swift */; };
 		568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CA6751E201B26009F1289 /* PostViewModel.swift */; };
@@ -41,6 +45,7 @@
 		56126EBF1E1D9DBD0063B6ED /* ViewModelElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelElement.swift; sourceTree = "<group>"; };
 		56126EC11E1DAC580063B6ED /* CellNodeSeparator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeSeparator.swift; sourceTree = "<group>"; };
 		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
+		562BD4591E26983600F1DC01 /* NodeSlide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeSlide.swift; sourceTree = "<group>"; };
 		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		562C1F061E11C921001BA898 /* CellNodePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePost.swift; sourceTree = "<group>"; };
 		562C1F0A1E1441DD001BA898 /* CellNodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMedia.swift; sourceTree = "<group>"; };
@@ -48,6 +53,9 @@
 		562C1F121E147E82001BA898 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		562C1F151E147EB2001BA898 /* MediaElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaElement.swift; sourceTree = "<group>"; };
 		562C1F171E148061001BA898 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeButtonBar.swift; sourceTree = "<group>"; };
+		563D037E1E24C69C00BD24D4 /* NodeMediaAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMediaAlbum.swift; sourceTree = "<group>"; };
+		563D03821E257A8B00BD24D4 /* NodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMedia.swift; sourceTree = "<group>"; };
 		56469C6C1E0EDAEE0095AE93 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
 		56469C6E1E0EE2E80095AE93 /* Subreddit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subreddit.swift; sourceTree = "<group>"; };
 		568CA6751E201B26009F1289 /* PostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
@@ -113,6 +121,7 @@
 				562C1F061E11C921001BA898 /* CellNodePost.swift */,
 				562C1F0A1E1441DD001BA898 /* CellNodeMedia.swift */,
 				56126EC11E1DAC580063B6ED /* CellNodeSeparator.swift */,
+				563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -147,6 +156,16 @@
 			name = protocols;
 			sourceTree = "<group>";
 		};
+		563D037D1E24C66F00BD24D4 /* nodes */ = {
+			isa = PBXGroup;
+			children = (
+				563D037E1E24C69C00BD24D4 /* NodeMediaAlbum.swift */,
+				563D03821E257A8B00BD24D4 /* NodeMedia.swift */,
+				562BD4591E26983600F1DC01 /* NodeSlide.swift */,
+			);
+			name = nodes;
+			sourceTree = "<group>";
+		};
 		56A5B38E1E0C597600C6A08E = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +187,7 @@
 		56A5B3991E0C597700C6A08E /* snoogle */ = {
 			isa = PBXGroup;
 			children = (
+				563D037D1E24C66F00BD24D4 /* nodes */,
 				562C1F141E147E9A001BA898 /* protocols */,
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
@@ -318,11 +338,14 @@
 			files = (
 				56469C6F1E0EE2E80095AE93 /* Subreddit.swift in Sources */,
 				562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */,
+				563D03831E257A8B00BD24D4 /* NodeMedia.swift in Sources */,
 				562C1F0B1E1441DD001BA898 /* CellNodeMedia.swift in Sources */,
 				562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */,
 				56A5B39D1E0C597700C6A08E /* FeedViewController.swift in Sources */,
+				563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
+				563D037F1E24C69C00BD24D4 /* NodeMediaAlbum.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56126EB81E1D8B440063B6ED /* ArticleViewController.swift in Sources */,
 				562C1F031E118E24001BA898 /* Config.swift in Sources */,
@@ -330,6 +353,7 @@
 				56126EC01E1D9DBD0063B6ED /* ViewModelElement.swift in Sources */,
 				568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */,
 				562C1F181E148061001BA898 /* Video.swift in Sources */,
+				562BD45A1E26983600F1DC01 /* NodeSlide.swift in Sources */,
 				56978ACF1E1F7D9E0060B558 /* CellNodeComment.swift in Sources */,
 				56469C6D1E0EDAEE0095AE93 /* Listing.swift in Sources */,
 				56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */,

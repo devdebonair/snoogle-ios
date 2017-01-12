@@ -56,7 +56,14 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
         let fetchHandler = { (listings: [Listing], isFinished: Bool, after: String?) in
             self.model.append(contentsOf: listings)
             for listing in listings {
-                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media, numberOfComments: listing.num_comments)
+                var postMedia = [MediaElement]()
+                if let media = listing.media {
+                    postMedia.append(media)
+                }
+                if let album = listing.album {
+                    postMedia.append(contentsOf: album)
+                }
+                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: postMedia, numberOfComments: listing.num_comments)
                 self.posts.append(post)
             }
             self.shouldUpdate = !isFinished
@@ -115,7 +122,14 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
             self.model.append(contentsOf: listings)
             
             for listing in listings {
-                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: listing.media, numberOfComments: listing.num_comments)
+                var postMedia = [MediaElement]()
+                if let media = listing.media {
+                    postMedia.append(media)
+                }
+                if let album = listing.album {
+                    postMedia.append(contentsOf: album)
+                }
+                let post = PostViewModel(meta: listing.meta, title: listing.title, description: listing.selftext_truncated, media: postMedia, numberOfComments: listing.num_comments)
                 self.posts.append(post)
             }
             
@@ -135,7 +149,17 @@ class FeedViewController: ASViewController<ASCollectionNode>, ASCollectionDelega
     func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
         let listing = model[indexPath.section]
         let content = listing.selftext.components(separatedBy: .newlines)
-        let article = ArticleViewModel(meta: listing.meta, title: listing.title, media: listing.media, content: content)
+        var articleMedia: [MediaElement] = []
+        
+        if let media = listing.media {
+            articleMedia = [media]
+        }
+        
+        if let album = listing.album {
+            articleMedia = album
+        }
+        
+        let article = ArticleViewModel(meta: listing.meta, title: listing.title, media: articleMedia, content: content)
         let controller = ArticleViewController(article: article, listingId: listing.id, numberOfComments: listing.num_comments)
         present(controller, animated: true, completion: nil)
     }
