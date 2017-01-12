@@ -189,18 +189,18 @@
 		56A5B3991E0C597700C6A08E /* snoogle */ = {
 			isa = PBXGroup;
 			children = (
-				563D037D1E24C66F00BD24D4 /* nodes */,
-				562C1F141E147E9A001BA898 /* protocols */,
+				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
+				562C1F021E118E24001BA898 /* Config.swift */,
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
+				563D037D1E24C66F00BD24D4 /* nodes */,
+				562C1F141E147E9A001BA898 /* protocols */,
 				562C1F111E146675001BA898 /* controllers */,
 				56C4E2BF1E227E0F0080E6E0 /* view models */,
 				562C1F101E14665D001BA898 /* models */,
 				562C1F0F1E14663D001BA898 /* cells */,
 				562C1F0C1E145FD2001BA898 /* extensions */,
-				56A5B39A1E0C597700C6A08E /* AppDelegate.swift */,
-				562C1F021E118E24001BA898 /* Config.swift */,
 			);
 			path = snoogle;
 			sourceTree = "<group>";
