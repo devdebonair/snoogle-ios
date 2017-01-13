@@ -18,6 +18,11 @@ struct AlbumSlideViewModel: ViewModelElement {
     }
     
     func cellAtRow(indexPath: IndexPath) -> ASCellNode {
-        return CellNodeMedia(media: media)
+        let cell = CellNodeMedia(media: media)
+        cell.mediaView.borderColor = UIColor.darkGray.cgColor
+        cell.mediaView.cornerRadius = 5.0
+        cell.mediaView.clipsToBounds = true
+        cell.mediaView.borderWidth = 0.5
+        return cell
     }
 }
