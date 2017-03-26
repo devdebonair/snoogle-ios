@@ -8,11 +8,13 @@
 
 import Foundation
 import RealmSwift
+import ObjectMapper
+import ObjectMapper_Realm
 
-class Media: Object {
+class Media: Object, Mappable {
     dynamic var type: String = ""
-    dynamic var height: Int = 0
-    dynamic var width: Int = 0
+    dynamic var height: Double = 0
+    dynamic var width: Double = 0
     dynamic var url: String = ""
     dynamic var info: String = ""
     dynamic var small: String? = nil
@@ -48,5 +50,26 @@ class Media: Object {
     var urlGif: URL? {
         guard let gif = gif else { return nil }
         return URL(string: gif)
+    }
+    
+    var mediaType: MediaType? {
+        return MediaType(rawValue: type)
+    }
+    
+    required convenience init(map: Map) {
+        self.init()
+    }
+    
+    func mapping(map: Map) {
+        type    <- map["type"]
+        height  <- map["height"]
+        width   <- map["width"]
+        url     <- map["url"]
+        info    <- map["description"]
+        small   <- map["sizes"]["small"]
+        medium  <- map["sizes"]["medium"]
+        large   <- map["sizes"]["large"]
+        poster  <- map["poster"]
+        gif     <- map["gif"]
     }
 }

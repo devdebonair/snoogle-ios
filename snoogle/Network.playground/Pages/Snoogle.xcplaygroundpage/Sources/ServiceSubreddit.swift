@@ -57,6 +57,7 @@ class ServiceSubreddit: Service {
                         for subJSON in submissionJSON {
                             let submission = Submission(JSON: subJSON)
                             if let submission = submission {
+                                realm.add(submission, update: true)
                                 listing.submissions.append(submission)
                             }
                         }
@@ -106,10 +107,12 @@ class ServiceSubreddit: Service {
                     for subJSON in submissionJSON {
                         let submission = Submission(JSON: subJSON)
                         if let submission = submission {
+                            realm.add(submission, update: true)
                             listing.submissions.append(submission)
                         }
                     }
                 }
+                
                 if let completion = completion { return completion(true) }
             } catch {
                 if let completion = completion { return completion(false) }

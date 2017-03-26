@@ -74,6 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (weak, nonatomic) id <ASCollectionDataSource> dataSource;
 
+/*
+ * A Boolean value that determines whether the collection node will be flipped.
+ * If the value of this property is YES, the first cell node will be at the bottom of the collection node (as opposed to the top by default). This is useful for chat/messaging apps. The default value is NO.
+ */
+@property (nonatomic, assign) BOOL inverted;
+
 /**
  * A Boolean value that indicates whether users can select items in the collection node.
  * If the value of this property is YES (the default), users can select items. If you want more fine-grained control over the selection of items, you must provide a delegate object and implement the appropriate methods of the UICollectionNodeDelegate protocol.
@@ -171,7 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
  *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
  *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
  */
-- (void)performBatchAnimated:(BOOL)animated updates:(nullable __attribute((noescape)) void (^)())updates completion:(nullable void (^)(BOOL finished))completion;
+- (void)performBatchAnimated:(BOOL)animated updates:(nullable AS_NOESCAPE void (^)())updates completion:(nullable void (^)(BOOL finished))completion;
 
 /**
  *  Perform a batch of updates asynchronously, optionally disabling all animations in the batch. This method must be called from the main thread.
@@ -182,7 +188,7 @@ NS_ASSUME_NONNULL_BEGIN
  *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
  *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
  */
-- (void)performBatchUpdates:(nullable __attribute((noescape)) void (^)())updates completion:(nullable void (^)(BOOL finished))completion;
+- (void)performBatchUpdates:(nullable AS_NOESCAPE void (^)())updates completion:(nullable void (^)(BOOL finished))completion;
 
 /**
  *  Blocks execution of the main thread until all section and item updates are committed to the view. This method must be called from the main thread.
@@ -494,6 +500,16 @@ NS_ASSUME_NONNULL_BEGIN
  * @return A context object to assign to the given section, or @c nil.
  */
 - (nullable id<ASSectionContext>)collectionNode:(ASCollectionNode *)collectionNode contextForSection:(NSInteger)section;
+
+/**
+ * Asks the data source to provide an array of supplementary element kinds that exist in a given section.
+ *
+ * @param collectionNode The sender.
+ * @param section The index of the section to provide supplementary kinds for.
+ *
+ * @return The supplementary element kinds that exist in the given section, if any.
+ */
+- (NSArray<NSString *> *)collectionNode:(ASCollectionNode *)collectionNode supplementaryElementKindsInSection:(NSInteger)section;
 
 /**
  * Similar to -collectionView:cellForItemAtIndexPath:.

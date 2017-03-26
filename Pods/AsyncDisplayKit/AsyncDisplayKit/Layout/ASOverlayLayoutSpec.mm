@@ -10,9 +10,7 @@
 
 #import "ASOverlayLayoutSpec.h"
 #import "ASLayoutSpec+Subclasses.h"
-
 #import "ASAssert.h"
-#import "ASLayoutSpec+Subclasses.h"
 
 static NSUInteger const kUnderlayChildIndex = 0;
 static NSUInteger const kOverlayChildIndex = 1;
@@ -43,6 +41,7 @@ static NSUInteger const kOverlayChildIndex = 1;
 
 - (void)setOverlay:(id<ASLayoutElement>)overlay
 {
+  ASDisplayNodeAssertNotNil(overlay, @"Overlay cannot be nil");
   [super setChild:overlay atIndex:kOverlayChildIndex];
 }
 

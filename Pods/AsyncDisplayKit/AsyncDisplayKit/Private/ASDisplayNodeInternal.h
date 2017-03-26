@@ -20,10 +20,11 @@
 #import "ASLayoutElement.h"
 #import "ASLayoutTransition.h"
 #import "ASEnvironment.h"
-#import "ASObjectDescriptionHelpers.h"
 #import "ASWeakSet.h"
 
 #import "ASDisplayNode+Beta.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol _ASDisplayLayerDelegate;
 @class _ASDisplayLayer;
@@ -35,7 +36,7 @@ BOOL ASDisplayNodeSubclassOverridesSelector(Class subclass, SEL selector);
 BOOL ASDisplayNodeNeedsSpecialPropertiesHandlingForFlags(ASDisplayNodeFlags flags);
 
 /// Get the pending view state for the node, creating one if needed.
-_ASPendingState *ASDisplayNodeGetPendingState(ASDisplayNode *node);
+_ASPendingState * ASDisplayNodeGetPendingState(ASDisplayNode * node);
 
 typedef NS_OPTIONS(NSUInteger, ASDisplayNodeMethodOverrides)
 {
@@ -44,7 +45,9 @@ typedef NS_OPTIONS(NSUInteger, ASDisplayNodeMethodOverrides)
   ASDisplayNodeMethodOverrideTouchesCancelled   = 1 << 1,
   ASDisplayNodeMethodOverrideTouchesEnded       = 1 << 2,
   ASDisplayNodeMethodOverrideTouchesMoved       = 1 << 3,
-  ASDisplayNodeMethodOverrideLayoutSpecThatFits = 1 << 4
+  ASDisplayNodeMethodOverrideLayoutSpecThatFits = 1 << 4,
+  ASDisplayNodeMethodOverrideFetchData          = 1 << 5,
+  ASDisplayNodeMethodOverrideClearFetchedData   = 1 << 6
 };
 
 FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayScheduledNodesNotification;
@@ -55,13 +58,11 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 
 #define TIME_DISPLAYNODE_OPS 0 // If you're using this information frequently, try: (DEBUG || PROFILE)
 
-@interface ASDisplayNode () <ASDescriptionProvider, ASDebugDescriptionProvider>
+@interface ASDisplayNode ()
 {
 @package
   _ASPendingState *_pendingViewState;
 
-  // Protects access to _view, _layer, _pendingViewState, _subnodes, _supernode, and other properties which are accessed from multiple threads.
-  ASDN::RecursiveMutex __instanceLock__;
   UIView *_view;
   CALayer *_layer;
 
@@ -107,13 +108,11 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   
 @protected
   ASDisplayNode * __weak _supernode;
+  NSMutableArray *_subnodes;
   
   ASLayoutElementStyle *_style;
 
   std::atomic_uint _displaySentinel;
-
-  int32_t _transitionID;
-  BOOL _transitionInProgress;
 
   // This is the desired contentsScale, not the scale at which the layer's contents should be displayed
   CGFloat _contentsScaleForDisplay;
@@ -121,7 +120,6 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   ASEnvironmentState _environmentState;
 
   UIEdgeInsets _hitTestSlop;
-  NSMutableArray *_subnodes;
   
 #if ASEVENTLOG_ENABLE
   ASEventLog *_eventLog;
@@ -134,10 +132,15 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   NSTimeInterval _defaultLayoutTransitionDelay;
   UIViewAnimationOptions _defaultLayoutTransitionOptions;
 
+  int32_t _transitionID;
+  BOOL _transitionInProgress;
+  
   int32_t _pendingTransitionID;
   ASLayoutTransition *_pendingLayoutTransition;
   std::shared_ptr<ASDisplayNodeLayout> _calculatedDisplayNodeLayout;
   std::shared_ptr<ASDisplayNodeLayout> _pendingDisplayNodeLayout;
+  ASLayoutSpec *_layoutSpec;
+  BOOL _shouldCacheLayoutSpec;
   
   ASDisplayNodeViewBlock _viewBlock;
   ASDisplayNodeLayerBlock _layerBlock;
@@ -190,14 +193,10 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 + (void)scheduleNodeForRecursiveDisplay:(ASDisplayNode *)node;
 
 /// The _ASDisplayLayer backing the node, if any.
-@property (nonatomic, readonly, strong) _ASDisplayLayer *asyncLayer;
+@property (nullable, nonatomic, readonly, strong) _ASDisplayLayer *asyncLayer;
 
 /// Bitmask to check which methods an object overrides.
 @property (nonatomic, assign, readonly) ASDisplayNodeMethodOverrides methodOverrides;
-
-/// Thread safe way to access the bounds of the node
-@property (nonatomic, assign) CGRect threadSafeBounds;
-
 
 // Swizzle to extend the builtin functionality with custom logic
 - (BOOL)__shouldLoadViewOrLayer;
@@ -220,7 +219,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 /*
  * Internal method to set the supernode
  */
-- (void)__setSupernode:(ASDisplayNode *)supernode;
+- (void)__setSupernode:(nullable ASDisplayNode *)supernode;
 
 /**
  * Internal method to add / replace / insert subnode and remove from supernode without checking if
@@ -246,10 +245,10 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 - (void)displayImmediately;
 
 /// Alternative initialiser for backing with a custom view class.  Supports asynchronous display with _ASDisplayView subclasses.
-- (instancetype)initWithViewClass:(Class)viewClass;
+- (nullable instancetype)initWithViewClass:(Class)viewClass;
 
 /// Alternative initialiser for backing with a custom layer class.  Supports asynchronous display with _ASDisplayLayer subclasses.
-- (instancetype)initWithLayerClass:(Class)layerClass;
+- (nullable instancetype)initWithLayerClass:(Class)layerClass;
 
 @property (nonatomic, assign) CGFloat contentsScaleForDisplay;
 
@@ -275,7 +274,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
  * @param checkViewHierarchy If YES, and no supernode can be found, method will walk up from `self.view` to find a supernode.
  * If YES, this method must be called on the main thread and the node must not be layer-backed.
  */
-- (ASDisplayNode *)_supernodeWithClass:(Class)supernodeClass checkViewHierarchy:(BOOL)checkViewHierarchy;
+- (nullable ASDisplayNode *)_supernodeWithClass:(Class)supernodeClass checkViewHierarchy:(BOOL)checkViewHierarchy;
 
 /**
  *  Convenience method to access this node's trait collection struct. Externally, users should interact
@@ -284,3 +283,5 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 - (ASEnvironmentTraitCollection)environmentTraitCollection;
 
 @end
+
+NS_ASSUME_NONNULL_END

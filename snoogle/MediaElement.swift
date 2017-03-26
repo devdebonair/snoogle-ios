@@ -10,9 +10,7 @@ import Foundation
 import UIKit
 
 protocol MediaElement {
-    
     var height: Double { get set }
     var width: Double { get set }
     var url: URL? { get set }
-    
 }

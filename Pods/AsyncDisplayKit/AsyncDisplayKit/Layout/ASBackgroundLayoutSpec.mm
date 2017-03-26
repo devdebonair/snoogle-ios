@@ -9,7 +9,9 @@
 //
 
 #import "ASBackgroundLayoutSpec.h"
+
 #import "ASLayoutSpec+Subclasses.h"
+
 #import "ASAssert.h"
 
 static NSUInteger const kForegroundChildIndex = 0;
@@ -67,6 +69,7 @@ static NSUInteger const kBackgroundChildIndex = 1;
 
 - (void)setBackground:(id<ASLayoutElement>)background
 {
+  ASDisplayNodeAssertNotNil(background, @"Background cannot be nil");
   [super setChild:background atIndex:kBackgroundChildIndex];
 }
 

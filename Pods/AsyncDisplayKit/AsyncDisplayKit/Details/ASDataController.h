@@ -14,6 +14,9 @@
 #import <AsyncDisplayKit/ASDimension.h>
 #import <AsyncDisplayKit/ASFlowLayoutController.h>
 #import <AsyncDisplayKit/ASEventLog.h>
+#ifdef __cplusplus
+#import <vector>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class ASCellNode;
 @class ASDataController;
+@class _ASHierarchyChangeSet;
 @protocol ASEnvironment;
 
 typedef NSUInteger ASDataControllerAnimationOptions;
@@ -34,7 +38,8 @@ typedef NSUInteger ASDataControllerAnimationOptions;
  */
 typedef ASCellNode * _Nonnull(^ASCellNodeBlock)();
 
-FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
+extern NSString * const ASDataControllerRowNodeKind;
+extern NSString * const ASCollectionInvalidUpdateException;
 
 /**
  Data source for data controller
@@ -75,12 +80,11 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
  */
 @protocol ASDataControllerDelegate <NSObject>
 
-@optional
-
 /**
  Called for batch update.
  */
 - (void)dataControllerBeginUpdates:(ASDataController *)dataController;
+- (void)dataControllerWillDeleteAllData:(ASDataController *)dataController;
 - (void)dataController:(ASDataController *)dataController endUpdatesAnimated:(BOOL)animated completion:(void (^ _Nullable)(BOOL))completion;
 
 /**
@@ -123,6 +127,11 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 @property (nonatomic, weak, readonly) id<ASDataControllerSource> dataSource;
 
 /**
+ An object that will be included in the backtrace of any update validation exceptions that occur.
+ */
+@property (nonatomic, weak) id validationErrorSource;
+
+/**
  Delegate to notify when data is updated.
  */
 @property (nonatomic, weak) id<ASDataControllerDelegate> delegate;
@@ -131,6 +140,16 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
  *
  */
 @property (nonatomic, weak) id<ASDataControllerEnvironmentDelegate> environmentDelegate;
+
+#ifdef __cplusplus
+/**
+ * Returns the most recently gathered item counts from the data source. If the counts
+ * have been invalidated, this synchronously queries the data source and saves the result.
+ *
+ * This must be called on the main thread.
+ */
+- (std::vector<NSInteger>)itemCountsFromDataSource;
+#endif
 
 /**
  * Returns YES if reloadData has been called at least once. Before this point it is
@@ -150,25 +169,7 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
 
 /** @name Data Updating */
 
-- (void)beginUpdates;
-
-- (void)endUpdates;
-
-- (void)endUpdatesAnimated:(BOOL)animated completion:(void (^ _Nullable)(BOOL))completion;
-
-- (void)insertSections:(NSIndexSet *)sections withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)deleteSections:(NSIndexSet *)sections withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)reloadSections:(NSIndexSet *)sections withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
-
-- (void)reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
+- (void)updateWithChangeSet:(_ASHierarchyChangeSet *)changeSet animated:(BOOL)animated;
 
 /**
  * Re-measures all loaded nodes in the backing store.
@@ -177,8 +178,6 @@ FOUNDATION_EXPORT NSString * const ASDataControllerRowNodeKind;
  * (e.g. ASTableView or ASCollectionView after an orientation change).
  */
 - (void)relayoutAllNodes;
-
-- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath withAnimationOptions:(ASDataControllerAnimationOptions)animationOptions;
 
 - (void)reloadDataWithAnimationOptions:(ASDataControllerAnimationOptions)animationOptions completion:(void (^ _Nullable)())completion;
 

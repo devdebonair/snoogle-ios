@@ -12,7 +12,6 @@
 
 #import "ASEqualityHelpers.h"
 #import "ASInternalHelpers.h"
-#import "ASDisplayNodeInternal.h"
 #import "ASDisplayNode+FrameworkPrivate.h"
 #import "ASCollectionView+Undeprecated.h"
 #import "ASTableView+Undeprecated.h"
@@ -121,8 +120,8 @@ static NSMutableSet *__cellClassesForVisibilityNotifications = nil; // See +init
 - (void)_locked_displayNodeDidInvalidateSizeNewSize:(CGSize)newSize
 {
   CGSize oldSize = self.bounds.size;
+  [super _locked_displayNodeDidInvalidateSizeNewSize:newSize];
   if (CGSizeEqualToSize(oldSize, newSize) == NO) {
-    self.frame = {self.frame.origin, newSize};
     [self didRelayoutFromOldSize:oldSize toNewSize:newSize];
   }
 }
@@ -396,13 +395,6 @@ static NSMutableSet *__cellClassesForVisibilityNotifications = nil; // See +init
 #pragma mark -
 #pragma mark ASTextCellNode
 
-@interface ASTextCellNode ()
-
-@property (nonatomic, strong) ASTextNode *textNode;
-
-@end
-
-
 @implementation ASTextCellNode
 
 static const CGFloat kASTextCellNodeDefaultFontSize = 18.0f;
@@ -421,7 +413,7 @@ static const CGFloat kASTextCellNodeDefaultVerticalPadding = 11.0f;
     _textInsets = textInsets;
     _textAttributes = [textAttributes copy];
     _textNode = [[ASTextNode alloc] init];
-    [self addSubnode:_textNode];
+    self.automaticallyManagesSubnodes = YES;
   }
   return self;
 }

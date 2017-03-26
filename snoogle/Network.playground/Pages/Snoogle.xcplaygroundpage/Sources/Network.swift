@@ -194,7 +194,7 @@ class Network {
     
     private func sendRequest(completion: @escaping ((Any?, URLResponse?, Error?)->Void)) {
         urlRequest.url = components.url
-        print(urlRequest.url?.absoluteString)
+
         if !body.isEmpty {
             switch contentType {
             case .form:

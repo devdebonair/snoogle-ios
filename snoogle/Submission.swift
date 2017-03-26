@@ -47,7 +47,7 @@ class Submission: Object, Mappable {
     dynamic var ups: Int = 0
     dynamic var isNSFW: Bool = false
     
-    let media = List<Media>()
+    var media = List<Media>()
     
     dynamic var subreddit: Subreddit? = nil
     dynamic var author: User? = nil
@@ -132,5 +132,13 @@ class Submission: Object, Mappable {
         ups                     <- map["ups"]
         isNSFW                  <- map["over_18"]
         created                 <- (map["created"], DateTransform())
+        
+        media                   <- (map["hamlet_album"], ListTransform<Media>())
+        
+        let singleMediaJSON = map.JSON["hamlet_media"] as? [String:Any]
+        if let singleMediaJSON = singleMediaJSON, let singleMedia = Media(JSON: singleMediaJSON) {
+            media.append(singleMedia)
+        }
+        
     }
 }

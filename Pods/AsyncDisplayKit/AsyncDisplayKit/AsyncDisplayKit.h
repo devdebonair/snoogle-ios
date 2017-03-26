@@ -34,6 +34,13 @@
 #import <AsyncDisplayKit/ASCellNode.h>
 #import <AsyncDisplayKit/ASSectionContext.h>
 
+#import <AsyncDisplayKit/ASSectionController.h>
+#import <AsyncDisplayKit/ASSupplementaryNodeSource.h>
+#if IG_LIST_KIT
+#import <AsyncDisplayKit/IGListAdapter+AsyncDisplayKit.h>
+#import <AsyncDisplayKit/ASIGListKitMethodImplementations.h>
+#endif
+
 #import <AsyncDisplayKit/ASScrollNode.h>
 
 #import <AsyncDisplayKit/ASPagerFlowLayout.h>
@@ -44,10 +51,12 @@
 #import <AsyncDisplayKit/ASTabBarController.h>
 #import <AsyncDisplayKit/ASRangeControllerUpdateRangeProtocol+Beta.h>
 
-#import <AsyncDisplayKit/ASChangeSetDataController.h>
+#import <AsyncDisplayKit/ASDataController.h>
 
 #import <AsyncDisplayKit/ASLayout.h>
 #import <AsyncDisplayKit/ASDimension.h>
+#import <AsyncDisplayKit/ASDimensionInternal.h>
+#import <AsyncDisplayKit/ASDimensionDeprecated.h>
 #import <AsyncDisplayKit/ASEnvironment.h>
 #import <AsyncDisplayKit/ASLayoutElement.h>
 #import <AsyncDisplayKit/ASLayoutSpec.h>
