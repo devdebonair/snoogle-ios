@@ -2,80 +2,75 @@
 //  Comment.swift
 //  snoogle
 //
-//  Created by Vincent Moore on 1/5/17.
+//  Created by Vincent Moore on 3/17/17.
 //  Copyright © 2017 Vincent Moore. All rights reserved.
 //
 
 import Foundation
-import Alamofire
-import Mapper
+import RealmSwift
+import ObjectMapper
+import ObjectMapper_Realm
 
-struct Comment: Mappable {
-    let subreddit_id: String
-    let banned_by: String?
-    let removal_reason: String?
-    let link_id: String
-    let likes: Int
-    let user_reports: [String]
-    let saved: Bool
-    let id: String
-    let gilded: Int
-    let archived: Bool
-    let report_reasons: [String]?
-    let author: String
-    let parent_id: String
-    let score: Int
-    let approved_by: String?
-    let controversiality: Int
-    let body: String
-    let edited: Bool
-    let author_flair_css_class: String
-    let downs: Int
-    let stickied: Bool
-    let subreddit: String
-    let score_hidden: Bool
-    let name: String
-    let created: Double
-    let author_flair_text: String
-    let created_utc: Double
-    let ups: Int
-    let mod_reports: [String]
-    let num_reports: Int?
-    let distinguished: Bool?
-    let level: Int
+class Comment: Object, Mappable {
+    dynamic var subredditId: String = "" // subreddit
+    dynamic var linkId: String = "" // submission
+    dynamic var likes: Bool = false // account specific
+    dynamic var saved: Bool = false // account specific
+    dynamic var id: String = ""
+    dynamic var gilded: Int = 0
+    dynamic var archived: Bool = false
+    dynamic var score: Int = 0
+    dynamic var authorName: String = "" // User
+    dynamic var parentId: String = "" // Comment
+    dynamic var controversiality: Int = 0
+    dynamic var body: String = ""
+    dynamic var edited: Bool = false
+    dynamic var authorFlairCssClass: String? = nil
+    dynamic var downs: Int = 0
+    dynamic var subredditName: String = "" // subreddit
+    dynamic var name: String = ""
+    dynamic var scoreHidden: Bool = false
+    dynamic var stickied: Bool = false
+    dynamic var created: Date = Date()
+    dynamic var authorFlairText: String? = nil
+    dynamic var distinguished: String? = nil
+    dynamic var ups: Int = 0
+    dynamic var level: Int = 0
     
-    init(map: Mapper) throws {
-        subreddit_id = map.optionalFrom("subreddit_id") ?? ""
-        banned_by = map.optionalFrom("banned_by") ?? ""
-        removal_reason = map.optionalFrom("removal_reason") ?? ""
-        link_id = map.optionalFrom("link_id") ?? ""
-        likes = map.optionalFrom("likes") ?? 0
-        user_reports = map.optionalFrom("user_reports") ?? []
-        saved = map.optionalFrom("saved") ?? false
-        id = map.optionalFrom("id") ?? ""
-        gilded = map.optionalFrom("gilded") ?? 0
-        archived = map.optionalFrom("archived") ?? false
-        report_reasons = map.optionalFrom("report_reasons") ?? []
-        author = map.optionalFrom("author") ?? ""
-        parent_id = map.optionalFrom("parent_id") ?? ""
-        score = map.optionalFrom("score") ?? 0
-        approved_by = map.optionalFrom("approved_by") ?? ""
-        controversiality = map.optionalFrom("controversiality") ?? 0
-        body = map.optionalFrom("body") ?? ""
-        edited = map.optionalFrom("edited") ?? false
-        author_flair_css_class = map.optionalFrom("author_flair_css_class") ?? ""
-        downs = map.optionalFrom("downs") ?? 0
-        stickied = map.optionalFrom("stickied") ?? false
-        subreddit = map.optionalFrom("subreddit") ?? ""
-        score_hidden = map.optionalFrom("score_hidden") ?? false
-        name = map.optionalFrom("name") ?? ""
-        created = map.optionalFrom("created") ?? 0.0
-        author_flair_text = map.optionalFrom("author_flair_text") ?? ""
-        created_utc = map.optionalFrom("created_utc") ?? 0.0
-        ups = map.optionalFrom("ups") ?? 0
-        mod_reports = map.optionalFrom("mod_reports") ?? []
-        num_reports = map.optionalFrom("num_reports") ?? 0
-        distinguished = map.optionalFrom("distinguished") ?? false
-        level = map.optionalFrom("level") ?? 0
+    dynamic var author: User? = nil
+    
+    required convenience init(map: Map) {
+        self.init()
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    func mapping(map: Map) {
+        subredditId             <- map["subreddit_id"]
+        linkId                  <- map["link_id"]
+        likes                   <- map["likes"]
+        saved                   <- map["saved"]
+        id                      <- map["id"]
+        gilded                  <- map["gilded"]
+        archived                <- map["archived"]
+        score                   <- map["score"]
+        authorName              <- map["author"]
+        parentId                <- map["parent_id"]
+        controversiality        <- map["controversiality"]
+        body                    <- map["body"]
+        edited                  <- map["edited"]
+        authorFlairCssClass     <- map["author_flair_css_class"]
+        downs                   <- map["downs"]
+        subredditName           <- map["subreddit"]
+        name                    <- map["name"]
+        scoreHidden             <- map["score_hidden"]
+        stickied                <- map["stickied"]
+        created                 <- (map["created"], DateTransform())
+        authorFlairText         <- map["author_flair_text"]
+        distinguished           <- map["distinguished"]
+        ups                     <- map["ups"]
+        level                   <- map["level"]
     }
 }
