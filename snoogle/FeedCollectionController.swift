@@ -19,6 +19,28 @@ class FeedCollectionController: CollectionController {
     var sub: Subreddit? = nil
     var token: NotificationToken? = nil
     
+    lazy var toolbar: UIToolbar = {
+        let size = CGSize(width: self.node.frame.width, height: 44)
+        let frame = CGRect(x: 0, y: self.node.frame.height - size.height, width: size.width, height: size.height)
+        let bar = UIToolbar(frame: frame)
+        bar.backgroundColor = .white
+        bar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+        ]
+        bar.tintColor = .white
+        return bar
+    }()
+    
     init(name: String, sort: ListingSort = .hot) {
         self.name = name
         self.sort = sort
@@ -48,7 +70,12 @@ class FeedCollectionController: CollectionController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        let barNode = ASDisplayNode { () -> UIView in
+            return self.toolbar
+        }
+        node.addSubnode(barNode)
         ServiceSubreddit(name: name).listing(sort: sort) { (success) in
             print(success)
         }

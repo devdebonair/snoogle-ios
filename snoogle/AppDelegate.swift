@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = FeedCollectionController(name: "pokemongo")
+        window?.rootViewController = FeedCollectionController(name: "rocketleague")
         return true
     }
 

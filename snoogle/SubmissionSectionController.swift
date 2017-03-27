@@ -66,7 +66,7 @@ class SubmissionSectionController: SectionController {
                 ])
             
             let leftButtonAttribute = NSMutableAttributedString(
-                string: "\(post.numberOfComments) Comments",
+                string: "\(post.numberOfComments)",
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)

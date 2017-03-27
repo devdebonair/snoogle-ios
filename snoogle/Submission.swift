@@ -61,11 +61,11 @@ class Submission: Object, Mappable {
     }
     
     var meta: String {
-        var metaString = "\(author) • \(created.timeAgo(shortened: true))"
-        if domain.lowercased() != "self.\(subreddit)".lowercased() {
+        var metaString = "\(authorName) • \(created.timeAgo(shortened: true))"
+        if domain.lowercased() != "self.\(subredditName)".lowercased() {
             metaString = "\(metaString)  • \(domain)"
         }
-        metaString = "\(metaString) • \(subreddit)"
+        metaString = "\(metaString) • \(subredditName)"
         return metaString
     }
     

@@ -59,20 +59,18 @@ class CellNodePost: ASCellNode {
         buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
         buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
         buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+        buttonDiscussion.setImage(#imageLiteral(resourceName: "chat"), for: [])
         
         buttonDiscussion.setAttributedTitle(leftbuttonAttributes, for: [])
         
         let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         
-        buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
-        buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
-        buttonDownVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(separatorColor)
+        buttonSave.imageNode.contentMode = .scaleAspectFit
+        buttonUpVote.imageNode.contentMode = .scaleAspectFit
+        buttonDownVote.imageNode.contentMode = .scaleAspectFit
+        buttonDiscussion.imageNode.contentMode = .scaleAspectFit
         
-        buttonSave.contentMode = .scaleAspectFit
-        buttonUpVote.contentMode = .scaleAspectFit
-        buttonDownVote.contentMode = .scaleAspectFit
-        
-        separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        separator.backgroundColor = separatorColor
         
         if media.count == 1 {
             mediaView = NodeMedia(media: media[0])
@@ -97,6 +95,12 @@ class CellNodePost: ASCellNode {
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
+
+        let buttonSize: CGFloat = 18
+        buttonSave.style.height = ASDimension(unit: .points, value: buttonSize)
+        buttonUpVote.style.height = ASDimension(unit: .points, value: buttonSize)
+        buttonDownVote.style.height = ASDimension(unit: .points, value: buttonSize)
+        buttonDiscussion.style.height = ASDimension(unit: .points, value: buttonSize)
         
         if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
             contentLayoutElements.append(textSubtitle)
@@ -139,7 +143,7 @@ class CellNodePost: ASCellNode {
         let padding: CGFloat = 20.0
         
         let inset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        let buttonInset = UIEdgeInsets(top: 10, left: padding, bottom: 10, right: padding)
+        let buttonInset = UIEdgeInsets(top: 14, left: padding, bottom: 14, right: padding)
         
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
         let insetButtonLayout = ASInsetLayoutSpec(insets: buttonInset, child: stackLayoutButtonContainer)
