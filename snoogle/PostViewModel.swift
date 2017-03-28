@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class PostViewModel: NSObject {
+class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let meta: String
     let title: String
     let info: String
@@ -28,5 +28,82 @@ class PostViewModel: NSObject {
     
     override func primaryKey() -> NSObjectProtocol {
         return NSString(string: id)
+    }
+    
+    func numberOfCells() -> Int {
+        return 1
+    }
+    
+    func didUpvote() {
+        print("an upvote should happen here")
+    }
+    
+    func didDownvote() {
+        print("a downvote should happen here")
+    }
+    
+    func didSave() {
+        print("a save should happen here")
+    }
+    
+    func didUnsave() {
+        print("an unsave should happen here")
+    }
+    
+    func didUnvote() {
+        print("an unvote should happen here")
+    }
+    
+    func cell() -> ASCellNode {
+        let paragraphStyleMeta = NSMutableParagraphStyle()
+        paragraphStyleMeta.lineSpacing = 2.0
+        let meta = NSMutableAttributedString(
+            string: self.meta,
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 10),
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                NSParagraphStyleAttributeName: paragraphStyleMeta
+            ])
+        
+        let paragraphStyleTitle = NSMutableParagraphStyle()
+        paragraphStyleTitle.lineSpacing = 4.0
+        
+        let title = NSMutableAttributedString(
+            string: self.title,
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 17),
+                NSForegroundColorAttributeName: UIColor.black,
+                NSParagraphStyleAttributeName: paragraphStyleTitle
+            ])
+        
+        let paragraphStyleDescription = NSMutableParagraphStyle()
+        paragraphStyleDescription.lineSpacing = 4.0
+        
+        let description = NSMutableAttributedString(
+            string: self.info,
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 13),
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                NSParagraphStyleAttributeName: paragraphStyleDescription
+            ])
+        
+        let leftButtonAttribute = NSMutableAttributedString(
+            string: "\(self.numberOfComments)",
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+            ])
+        
+        let post = CellNodePost(
+            meta: meta,
+            title: title,
+            subtitle: description,
+            leftbuttonAttributes:
+            leftButtonAttribute,
+            media: self.media)
+        
+        post.delegate = self
+        
+        return post
     }
 }

@@ -12,5 +12,5 @@ import AsyncDisplayKit
 
 protocol ViewModelElement {
     func numberOfCells() -> Int
-    func cellAtRow(indexPath: IndexPath) -> ASCellNode
+    func cell() -> ASCellNode
 }

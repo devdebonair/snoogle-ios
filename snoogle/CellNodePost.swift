@@ -10,6 +10,16 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
+protocol CellNodePostDelegate {
+    func didUpvote()
+    func didDownvote()
+    func didUnvote()
+    func didSave()
+    func didUnsave()
+//    func didTapComments()
+//    func didTapMedia()
+}
+
 class CellNodePost: ASCellNode {
     let textMeta: ASTextNode
     let textTitle: ASTextNode
@@ -24,6 +34,47 @@ class CellNodePost: ASCellNode {
     var mediaView: ASDisplayNode? = nil
     
     let media: [MediaElement]?
+    
+    var delegate: CellNodePostDelegate? = nil
+    
+    var vote: VoteType = .none {
+        didSet {
+            switch vote {
+            case .up:
+                buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow-filled"), for: [])
+                if let delegate = delegate {
+                    delegate.didUpvote()
+                }
+            case .down:
+                buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow-filled"), for: [])
+                if let delegate = delegate {
+                    delegate.didDownvote()
+                }
+            case .none:
+                buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
+                buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+                if let delegate = delegate {
+                    delegate.didUnvote()
+                }
+            }
+        }
+    }
+    
+    var isSaved: Bool = false {
+        didSet {
+            if isSaved {
+                buttonSave.setImage(#imageLiteral(resourceName: "star-filled"), for: [])
+                if let delegate = delegate {
+                    delegate.didSave()
+                }
+            } else {
+                buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
+                if let delegate = delegate {
+                    delegate.didUnsave()
+                }
+            }
+        }
+    }
     
     init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: [MediaElement]) {
         textMeta = ASTextNode()
@@ -56,9 +107,9 @@ class CellNodePost: ASCellNode {
         
         textSubtitle.maximumNumberOfLines = 5
 
-        buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
-        buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
-        buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+        setVote(.none)
+        setSave(false)
+        
         buttonDiscussion.setImage(#imageLiteral(resourceName: "chat"), for: [])
         
         buttonDiscussion.setAttributedTitle(leftbuttonAttributes, for: [])
@@ -78,6 +129,50 @@ class CellNodePost: ASCellNode {
         if media.count > 1 {
             mediaView = NodeMediaAlbum(media: media)
         }
+        
+        buttonUpVote.addTarget(self, action: #selector(self.upvote), forControlEvents: .touchUpInside)
+        buttonDownVote.addTarget(self, action: #selector(self.downvote), forControlEvents: .touchUpInside)
+        buttonSave.addTarget(self, action: #selector(self.saved), forControlEvents: .touchUpInside)
+    }
+    
+    // only used to start call didSet on initialization
+    // http://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
+    private func setVote(_ vote: VoteType) {
+        self.vote = vote
+    }
+    
+    // only used to start call didSet on initialization
+    // http://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
+    private func setSave(_ isSaved: Bool) {
+        self.isSaved = isSaved
+    }
+    
+    func upvote() {
+        switch vote {
+        case .none:
+            vote = .up
+        case .up:
+            vote = .none
+        case .down:
+            vote = .none
+            vote = .up
+        }
+    }
+    
+    func downvote() {
+        switch vote {
+        case .none:
+            vote = .down
+        case .up:
+            vote = .none
+            vote = .down
+        case .down:
+            vote = .none
+        }
+    }
+    
+    func saved() {
+        isSaved = !isSaved
     }
     
     override func didLoad() {

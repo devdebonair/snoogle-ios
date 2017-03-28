@@ -17,7 +17,7 @@ struct AlbumSlideViewModel: ViewModelElement {
         return 1
     }
     
-    func cellAtRow(indexPath: IndexPath) -> ASCellNode {
+    func cell() -> ASCellNode {
         let cell = CellNodeMedia(media: media)
         cell.mediaView.borderColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0).cgColor
         cell.mediaView.cornerRadius = 5.0

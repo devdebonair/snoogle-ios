@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import AsyncDisplayKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,10 +24,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch let error {
 //            print(error)
 //        }
+        
+        let navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "rocketleague"))
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = FeedCollectionController(name: "rocketleague")
+        window?.rootViewController = navigationController
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        } catch {
+            print("Error with audio sessions")
+        }
+        
+        setStatusBarBackgroundColor(color: .white)
+        
         return true
+    }
+    
+    func setStatusBarBackgroundColor(color: UIColor) {
+        
+        guard let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else { return }
+        
+        statusBar.backgroundColor = color
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
