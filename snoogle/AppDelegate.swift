@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        let navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "rocketleague"))
+        let navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "animegifs"))
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

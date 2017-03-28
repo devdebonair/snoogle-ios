@@ -61,7 +61,7 @@ extension NodeSlide: ASCollectionDelegate, ASCollectionDataSource {
     
     func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
         let height: CGFloat = collectionNode.frame.height - flowLayout.sectionInset.top - flowLayout.sectionInset.bottom
-        let width: CGFloat = CGFloat(FLT_MAX)
+        let width: CGFloat = CGFloat(Float.greatestFiniteMagnitude)
         let max = CGSize(width: width, height: height)
         let min = CGSize(width: 0.0, height: height)
         return ASSizeRange(min: min, max: max)

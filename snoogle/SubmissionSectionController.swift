@@ -25,7 +25,7 @@ class SubmissionSectionController: SectionController {
         }
         
         let width: CGFloat = context.containerSize.width - self.inset.left - self.inset.right
-        let max = CGSize(width: width, height: CGFloat(FLT_MAX))
+        let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
         let min = CGSize(width: width, height: 0.0)
         return ASSizeRange(min: min, max: max)
     }
