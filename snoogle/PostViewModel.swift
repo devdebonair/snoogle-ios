@@ -88,9 +88,9 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
             ])
         
         let leftButtonAttribute = NSMutableAttributedString(
-            string: "\(self.numberOfComments)",
+            string: "\(self.numberOfComments) Comments",
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
+                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular),
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
             ])
         
