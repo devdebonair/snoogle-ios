@@ -149,7 +149,7 @@ class FeedCollectionController: CollectionController {
                     media.append(toInsert)
                 }
             }
-            return PostViewModel(id: submission.id, meta: submission.meta, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments)
+            return PostViewModel(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied)
         })
         self.adapter.performUpdates(animated: true)
     }

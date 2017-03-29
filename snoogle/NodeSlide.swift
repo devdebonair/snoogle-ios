@@ -38,6 +38,9 @@ class NodeSlide: ASDisplayNode {
         super.didLoad()
         collectionNode.view.showsHorizontalScrollIndicator = false
         collectionNode.view.showsVerticalScrollIndicator = false
+        collectionNode.view.isDirectionalLockEnabled = true
+        collectionNode.view.alwaysBounceVertical = false
+        collectionNode.view.alwaysBounceHorizontal = false
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

@@ -37,22 +37,32 @@ class CellNodePost: ASCellNode {
     
     var delegate: CellNodePostDelegate? = nil
     
+    let colorUp = UIColor(colorLiteralRed: 255/255, green: 69/255, blue: 0, alpha: 1.0)
+    let colorDown = UIColor(colorLiteralRed: 135/255, green: 135/255, blue: 1, alpha: 1.0)
+    let colorSave = UIColor(colorLiteralRed: 251/255, green: 195/255, blue: 51/255, alpha: 1.0)
+    
     var vote: VoteType = .none {
         didSet {
             switch vote {
             case .up:
-                buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow-filled"), for: [])
+                let generator = UINotificationFeedbackGenerator()
+                generator.prepare()
+                buttonUpVote.animate(image: #imageLiteral(resourceName: "up-arrow-filled"), color: colorUp)
+                generator.notificationOccurred(.success)
                 if let delegate = delegate {
                     delegate.didUpvote()
                 }
             case .down:
-                buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow-filled"), for: [])
+                buttonDownVote.animate(image: #imageLiteral(resourceName: "down-arrow-filled"), color: colorDown)
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
                 if let delegate = delegate {
                     delegate.didDownvote()
                 }
             case .none:
                 buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
                 buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+                buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
+                buttonDownVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
                 if let delegate = delegate {
                     delegate.didUnvote()
                 }
@@ -63,12 +73,14 @@ class CellNodePost: ASCellNode {
     var isSaved: Bool = false {
         didSet {
             if isSaved {
-                buttonSave.setImage(#imageLiteral(resourceName: "star-filled"), for: [])
+                buttonSave.animate(image: #imageLiteral(resourceName: "star-filled"), color: colorSave)
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
                 if let delegate = delegate {
                     delegate.didSave()
                 }
             } else {
                 buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
+                buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
                 if let delegate = delegate {
                     delegate.didUnsave()
                 }
@@ -191,7 +203,7 @@ class CellNodePost: ASCellNode {
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
 
-        let buttonSize: CGFloat = 18
+        let buttonSize: CGFloat = 16
         buttonSave.style.height = ASDimension(unit: .points, value: buttonSize)
         buttonUpVote.style.height = ASDimension(unit: .points, value: buttonSize)
         buttonDownVote.style.height = ASDimension(unit: .points, value: buttonSize)
@@ -254,7 +266,7 @@ class CellNodePost: ASCellNode {
             
             if let mediaView = mediaView as? NodeMediaAlbum {
                 mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
-                mediaView.style.height = ASDimension(unit: .points, value: 150)
+                mediaView.style.height = ASDimension(unit: .points, value: 200)
                 mediaView.collectionNode.clipsToBounds = false
                 let inset = UIEdgeInsets(top: 0, left: padding, bottom: padding, right: 0)
                 let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)

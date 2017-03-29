@@ -67,6 +67,7 @@
 		56EE8CA01E8A147A0043A9DF /* ServiceUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE8C9F1E8A147A0043A9DF /* ServiceUser.swift */; };
 		56EE8CA21E8A14AA0043A9DF /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE8CA11E8A14AA0043A9DF /* Service.swift */; };
 		56EE8CA41E8A14C80043A9DF /* ServiceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE8CA31E8A14C80043A9DF /* ServiceMe.swift */; };
+		56EE8CA81E8B4CB10043A9DF /* ASButtonNode+Animate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56EE8CA71E8B4CB10043A9DF /* ASButtonNode+Animate.swift */; };
 		C54C438B155E98E4DF5ED4E9 /* Pods_snoogle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,7 @@
 		56EE8C9F1E8A147A0043A9DF /* ServiceUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUser.swift; sourceTree = "<group>"; };
 		56EE8CA11E8A14AA0043A9DF /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		56EE8CA31E8A14C80043A9DF /* ServiceMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceMe.swift; sourceTree = "<group>"; };
+		56EE8CA71E8B4CB10043A9DF /* ASButtonNode+Animate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ASButtonNode+Animate.swift"; sourceTree = "<group>"; };
 		83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_snoogle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A727E4D47AFA852E69E660A2 /* Pods-snoogle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-snoogle.release.xcconfig"; path = "Pods/Target Support Files/Pods-snoogle/Pods-snoogle.release.xcconfig"; sourceTree = "<group>"; };
 		D0412A6CD53A668DF8B77E91 /* Pods-snoogle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-snoogle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-snoogle/Pods-snoogle.debug.xcconfig"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				562586721E1977580006E593 /* String+Integer+Subscript.swift */,
 				56119E8F1E8768C400A19C40 /* NSObject+IGListDiffable.swift */,
 				56119E911E8768EC00A19C40 /* IGListSectionController+IGListSectionType.swift */,
+				56EE8CA71E8B4CB10043A9DF /* ASButtonNode+Animate.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */,
 				56119E8C1E87683D00A19C40 /* CollectionController.swift in Sources */,
 				562C1F071E11C921001BA898 /* CellNodePost.swift in Sources */,
+				56EE8CA81E8B4CB10043A9DF /* ASButtonNode+Animate.swift in Sources */,
 				561C8C691E7C763800D9AEB3 /* Comment.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,

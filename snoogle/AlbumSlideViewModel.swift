@@ -23,6 +23,7 @@ struct AlbumSlideViewModel: ViewModelElement {
         cell.mediaView.cornerRadius = 5.0
         cell.mediaView.clipsToBounds = true
         cell.mediaView.borderWidth = 0.5
+        cell.mediaView.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         return cell
     }
 }

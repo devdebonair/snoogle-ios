@@ -66,9 +66,9 @@ class Media: Object, Mappable {
         width   <- map["width"]
         url     <- map["url"]
         info    <- map["description"]
-        small   <- map["sizes"]["small"]
-        medium  <- map["sizes"]["medium"]
-        large   <- map["sizes"]["large"]
+        small   <- map["sizes.small"]
+        medium  <- map["sizes.medium"]
+        large   <- map["sizes.large"]
         poster  <- map["poster"]
         gif     <- map["gif"]
     }

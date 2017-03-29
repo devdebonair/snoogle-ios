@@ -16,14 +16,16 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let media: [MediaElement]
     let numberOfComments: Int
     let id: String
+    let isSticky: Bool
     
-    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0) {
+    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false) {
         self.id = id
         self.meta = meta
         self.title = title
         self.info = info
         self.media = media
         self.numberOfComments = numberOfComments
+        self.isSticky = isSticky
     }
     
     override func primaryKey() -> NSObjectProtocol {
@@ -55,6 +57,10 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     }
     
     func cell() -> ASCellNode {
+        
+        let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
+        let stickyFont = UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)
+        
         let paragraphStyleMeta = NSMutableParagraphStyle()
         paragraphStyleMeta.lineSpacing = 2.0
         let meta = NSMutableAttributedString(
@@ -71,8 +77,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let title = NSMutableAttributedString(
             string: self.title,
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 17),
-                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: (isSticky ? stickyFont : UIFont.systemFont(ofSize: 17)),
+                NSForegroundColorAttributeName: (isSticky ? stickyColor : UIColor.black),
                 NSParagraphStyleAttributeName: paragraphStyleTitle
             ])
         

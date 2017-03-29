@@ -60,13 +60,16 @@ class Submission: Object, Mappable {
         return URL(string: url)
     }
     
-    var meta: String {
+    var metaIgnoreSub: String {
         var metaString = "\(authorName) • \(created.timeAgo(shortened: true))"
         if domain.lowercased() != "self.\(subredditName)".lowercased() {
             metaString = "\(metaString)  • \(domain)"
         }
-        metaString = "\(metaString) • \(subredditName)"
         return metaString
+    }
+    
+    var meta: String {
+        return "\(metaIgnoreSub) • \(subredditName)"
     }
     
     var selftextCondensed: String {
