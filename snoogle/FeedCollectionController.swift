@@ -91,17 +91,10 @@ class FeedCollectionController: CollectionController {
         }
         navigationController?.view.addSubnode(barNode)
         
-        print("requesting service")
-        
         ServiceSubreddit(name: name).listing(sort: sort) { success in
-            print(success)
-            print("sub == nil: \(self.sub == nil)")
-            print("listing == nil: \(self.listing == nil)")
             if success {
-                if self.sub == nil || self.listing == nil {
-                    DispatchQueue.main.async {
-                        self.loadListing()
-                    }
+                DispatchQueue.main.async {
+                    self.loadListing()
                 }
             }
         }
@@ -149,7 +142,7 @@ class FeedCollectionController: CollectionController {
                     media.append(toInsert)
                 }
             }
-            return PostViewModel(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied)
+            return PostViewModel(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved)
         })
         self.adapter.performUpdates(animated: true)
     }

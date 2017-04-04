@@ -17,8 +17,10 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let numberOfComments: Int
     let id: String
     let isSticky: Bool
+    let vote: VoteType
+    let saved: Bool
     
-    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false) {
+    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false) {
         self.id = id
         self.meta = meta
         self.title = title
@@ -26,6 +28,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         self.media = media
         self.numberOfComments = numberOfComments
         self.isSticky = isSticky
+        self.vote = vote
+        self.saved = saved
     }
     
     override func primaryKey() -> NSObjectProtocol {
@@ -37,67 +41,80 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     }
     
     func didUpvote() {
-        print("an upvote should happen here")
+        ServiceSubmission(id: id).upvote()
     }
     
     func didDownvote() {
-        print("a downvote should happen here")
+        ServiceSubmission(id: id).downvote()
     }
     
     func didSave() {
-        print("a save should happen here")
+        ServiceSubmission(id: id).save()
     }
     
     func didUnsave() {
-        print("an unsave should happen here")
+        ServiceSubmission(id: id).unsave()
     }
     
     func didUnvote() {
-        print("an unvote should happen here")
+        ServiceSubmission(id: id).unvote()
     }
     
-    func cell() -> ASCellNode {
-        
+    func cell(index: Int) -> ASCellNode {
         let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
-        let stickyFont = UIFont.systemFont(ofSize: 17, weight: UIFontWeightHeavy)
+        let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
+        
+        let titleFont = UIFont.systemFont(ofSize: 15)
+        let titleLineSpacing: CGFloat = 4.0
+        
+        let metaFont = UIFont.systemFont(ofSize: 10)
+        let metaColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let metaLineSpacing: CGFloat = 2.0
+        
+        let descriptionFont = UIFont.systemFont(ofSize: 13)
+        let descriptionColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let descriptionLineSpacing: CGFloat = 4.0
+        
+        let commentFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
+        let commentColor = UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
         
         let paragraphStyleMeta = NSMutableParagraphStyle()
-        paragraphStyleMeta.lineSpacing = 2.0
+        paragraphStyleMeta.lineSpacing = metaLineSpacing
         let meta = NSMutableAttributedString(
             string: self.meta,
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 10),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                NSFontAttributeName: metaFont,
+                NSForegroundColorAttributeName: metaColor,
                 NSParagraphStyleAttributeName: paragraphStyleMeta
             ])
         
         let paragraphStyleTitle = NSMutableParagraphStyle()
-        paragraphStyleTitle.lineSpacing = 4.0
+        paragraphStyleTitle.lineSpacing = titleLineSpacing
         
         let title = NSMutableAttributedString(
             string: self.title,
             attributes: [
-                NSFontAttributeName: (isSticky ? stickyFont : UIFont.systemFont(ofSize: 17)),
+                NSFontAttributeName: (isSticky ? stickyFont : titleFont),
                 NSForegroundColorAttributeName: (isSticky ? stickyColor : UIColor.black),
                 NSParagraphStyleAttributeName: paragraphStyleTitle
             ])
         
         let paragraphStyleDescription = NSMutableParagraphStyle()
-        paragraphStyleDescription.lineSpacing = 4.0
+        paragraphStyleDescription.lineSpacing = descriptionLineSpacing
         
         let description = NSMutableAttributedString(
             string: self.info,
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 13),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0),
+                NSFontAttributeName: descriptionFont,
+                NSForegroundColorAttributeName: descriptionColor,
                 NSParagraphStyleAttributeName: paragraphStyleDescription
             ])
         
         let leftButtonAttribute = NSMutableAttributedString(
             string: "\(self.numberOfComments) Comments",
             attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+                NSFontAttributeName: commentFont,
+                NSForegroundColorAttributeName: commentColor
             ])
         
         let post = CellNodePost(
@@ -106,7 +123,9 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
             subtitle: description,
             leftbuttonAttributes:
             leftButtonAttribute,
-            media: self.media)
+            media: self.media,
+            vote: vote,
+            saved: saved)
         
         post.delegate = self
         

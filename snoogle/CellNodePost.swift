@@ -88,7 +88,7 @@ class CellNodePost: ASCellNode {
         }
     }
     
-    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: [MediaElement]) {
+    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, leftbuttonAttributes: NSMutableAttributedString, media: [MediaElement], vote: VoteType, saved: Bool) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
@@ -118,9 +118,33 @@ class CellNodePost: ASCellNode {
         textSubtitle.truncationAttributedText = truncationText
         
         textSubtitle.maximumNumberOfLines = 5
-
-        setVote(.none)
-        setSave(false)
+        
+        self.vote = vote
+        self.isSaved = saved
+        
+        buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow"), for: [])
+        buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow"), for: [])
+        buttonSave.setImage(#imageLiteral(resourceName: "star"), for: [])
+        
+        buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
+        buttonDownVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
+        buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.black)
+        
+        if isSaved {
+            buttonSave.setImage(#imageLiteral(resourceName: "star-filled"), for: [])
+            buttonSave.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(colorSave)
+        }
+        
+        switch vote {
+        case .up:
+            buttonUpVote.setImage(#imageLiteral(resourceName: "up-arrow-filled"), for: [])
+            buttonUpVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(colorUp)
+        case .down:
+            buttonDownVote.setImage(#imageLiteral(resourceName: "down-arrow-filled"), for: [])
+            buttonDownVote.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(colorDown)
+        case .none:
+            break
+        }
         
         buttonDiscussion.setImage(#imageLiteral(resourceName: "chat"), for: [])
         
@@ -145,18 +169,6 @@ class CellNodePost: ASCellNode {
         buttonUpVote.addTarget(self, action: #selector(self.upvote), forControlEvents: .touchUpInside)
         buttonDownVote.addTarget(self, action: #selector(self.downvote), forControlEvents: .touchUpInside)
         buttonSave.addTarget(self, action: #selector(self.saved), forControlEvents: .touchUpInside)
-    }
-    
-    // only used to start call didSet on initialization
-    // http://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
-    private func setVote(_ vote: VoteType) {
-        self.vote = vote
-    }
-    
-    // only used to start call didSet on initialization
-    // http://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
-    private func setSave(_ isSaved: Bool) {
-        self.isSaved = isSaved
     }
     
     func upvote() {

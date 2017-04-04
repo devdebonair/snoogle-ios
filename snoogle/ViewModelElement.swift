@@ -12,5 +12,27 @@ import AsyncDisplayKit
 
 protocol ViewModelElement {
     func numberOfCells() -> Int
-    func cell() -> ASCellNode
+    func cell(index: Int) -> ASCellNode
+    func header() -> ASCellNode?
+    func footer() -> ASCellNode?
+    func headerSize() -> ASSizeRange
+    func footerSize() -> ASSizeRange
+}
+
+extension ViewModelElement {
+    func header() -> ASCellNode? {
+        return nil
+    }
+    
+    func footer() -> ASCellNode? {
+        return nil
+    }
+    
+    func headerSize() -> ASSizeRange {
+        return ASSizeRangeZero
+    }
+    
+    func footerSize() -> ASSizeRange {
+        return ASSizeRangeZero
+    }
 }

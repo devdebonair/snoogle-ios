@@ -62,8 +62,8 @@ class ServiceSubreddit: Service {
                             }
                         }
                         realm.add(listing, update: true)
-                        if let completion = completion { return completion(true) }
                     }
+                    if let completion = completion { return completion(true) }
                 } catch {
                     if let completion = completion { return completion(false) }
                 }

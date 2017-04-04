@@ -54,7 +54,7 @@ extension NodeSlide: ASCollectionDelegate, ASCollectionDataSource {
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let model = models[indexPath.section]
         return { _ -> ASCellNode in
-            return model.cell()
+            return model.cell(index: indexPath.row)
         }
     }
     

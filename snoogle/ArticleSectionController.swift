@@ -1,8 +1,8 @@
 //
-//  SubmissionSectionController.swift
+//  ArticleSectionController.swift
 //  snoogle
 //
-//  Created by Vincent Moore on 3/26/17.
+//  Created by Vincent Moore on 4/1/17.
 //  Copyright © 2017 Vincent Moore. All rights reserved.
 //
 
@@ -10,15 +10,10 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class SubmissionSectionController: SectionController {
+class ArticleSectionController: SectionController {
     
-    var post: PostViewModel {
-        return model as! PostViewModel
-    }
-    
-    override init() {
-        super.init()
-        self.inset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    var article: ArticleViewModel! {
+        return model as! ArticleViewModel
     }
     
     override func sizeRangeForItem(at index: Int) -> ASSizeRange {
@@ -32,25 +27,23 @@ class SubmissionSectionController: SectionController {
     }
     
     override func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
-        let post = self.post
+        let article = self.article!
         return { _ -> ASCellNode in
-            return post.cell(index: index)
+            return article.cell(index: index)
         }
     }
     
     override func numberOfItems() -> Int {
-        return 1
+        return article.numberOfCells()
     }
     
     override func didUpdate(to object: Any) {
-        if let object = object as? PostViewModel {
+        if let object = object as? ArticleViewModel {
             model = object
         }
     }
     
     override func didSelectItem(at index: Int) {
-        let controller = ArticleCollectionController(id: post.id)
-        self.viewController?.navigationController?.present(controller, animated: true, completion: nil)
+        print("selected photo: \(article.primaryKey())")
     }
-    
 }

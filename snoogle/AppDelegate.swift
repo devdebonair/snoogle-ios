@@ -14,7 +14,8 @@ import AsyncDisplayKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var navigationController: ASNavigationController!
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
 //        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
@@ -25,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        let navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "rocketleague"))
+        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "ShingekiNoKyojin"))
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

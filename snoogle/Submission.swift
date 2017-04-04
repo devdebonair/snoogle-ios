@@ -46,6 +46,8 @@ class Submission: Object, Mappable {
     dynamic var visited: Bool = false
     dynamic var ups: Int = 0
     dynamic var isNSFW: Bool = false
+    dynamic var saved: Bool = false
+    var likes = RealmOptional<Bool>()
     
     var media = List<Media>()
     
@@ -65,6 +67,7 @@ class Submission: Object, Mappable {
         if domain.lowercased() != "self.\(subredditName)".lowercased() {
             metaString = "\(metaString)  • \(domain)"
         }
+        metaString += (score != 1) ? " • \(score) points" : " • \(score) point"
         return metaString
     }
     
@@ -90,6 +93,15 @@ class Submission: Object, Mappable {
             descriptionShortened = arrayOfWords.joined(separator: " ")
         }
         return descriptionShortened
+    }
+    
+    var selftextComponents: [String] {
+        return selftext.components(separatedBy: .newlines)
+    }
+    
+    var vote: VoteType {
+        guard let guardedLikes = likes.value else { return .none }
+        return guardedLikes ? .up : .down
     }
     
     required convenience init(map: Map) {
@@ -134,7 +146,15 @@ class Submission: Object, Mappable {
         numComments             <- map["num_comments"]
         ups                     <- map["ups"]
         isNSFW                  <- map["over_18"]
+        saved                   <- map["saved"]
         created                 <- (map["created"], DateTransform())
+        
+        if let likesData = map.JSON["likes"] as? Bool {
+            likes.value = likesData
+        } else {
+            likes.value = nil
+        }
+        
         
         media                   <- (map["hamlet_album"], ListTransform<Media>())
         
