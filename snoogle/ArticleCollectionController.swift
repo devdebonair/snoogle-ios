@@ -62,21 +62,7 @@ class ArticleCollectionController: CollectionController {
     // create map of view models and update ui
     func refresh() {
         guard let guardedSubmission = submission else { return }
-        
-        var media = [MediaElement]()
-        for item in guardedSubmission.media {
-            guard let guardedType = item.mediaType else { continue }
-            switch guardedType {
-            case .photo:
-                let toInsert = Photo(width: item.width, height: item.height, url: item.urlOrigin, urlSmall: item.urlSmall, urlMedium: item.urlMedium, urlLarge: item.urlLarge, info: item.info)
-                media.append(toInsert)
-            case .video:
-                let toInsert = Video(width: item.width, height: item.height, url: item.urlOrigin, poster: item.urlPoster, gif: item.urlGif, info: item.info)
-                media.append(toInsert)
-            }
-        }
-        let model = ArticleViewModel(author: guardedSubmission.authorName, origin: "r/ \(guardedSubmission.subredditName)", created: guardedSubmission.created, title: guardedSubmission.title, media: media, content: guardedSubmission.selftextComponents)
-        models = [model]
+        models = [ArticleViewModel(submission: guardedSubmission)]
         self.adapter.performUpdates(animated: true)
     }
     

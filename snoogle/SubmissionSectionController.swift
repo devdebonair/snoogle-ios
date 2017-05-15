@@ -12,13 +12,15 @@ import AsyncDisplayKit
 
 class SubmissionSectionController: SectionController {
     
+    let INSET: CGFloat = 5
+    
     var post: PostViewModel {
         return model as! PostViewModel
     }
     
     override init() {
         super.init()
-        self.inset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        self.inset = UIEdgeInsets(top: INSET, left: 0, bottom: INSET, right: 0)
     }
     
     override func sizeRangeForItem(at index: Int) -> ASSizeRange {

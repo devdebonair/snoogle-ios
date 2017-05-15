@@ -17,8 +17,11 @@ class FeedCollectionController: CollectionController {
     let sort: ListingSort
     var listing: ListingSubreddit? = nil
     
+    let TOOLBAR_HEIGHT: CGFloat = 42
+    
     var sub: Subreddit? = nil {
         didSet {
+            // Set the name of the Subreddit on the navigation bar
             guard let guardedSub = sub else { return }
             let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
             let attributeString = NSMutableAttributedString(string: "r/ \(guardedSub.displayName)", attributes: [
@@ -39,7 +42,7 @@ class FeedCollectionController: CollectionController {
     var token: NotificationToken? = nil
     
     lazy var toolbar: UIToolbar = {
-        let size = CGSize(width: self.node.frame.width, height: 50)
+        let size = CGSize(width: self.node.frame.width, height: self.TOOLBAR_HEIGHT)
         let frame = CGRect(x: 0, y: self.node.frame.height - size.height, width: size.width, height: size.height)
         let bar = UIToolbar(frame: frame)
         bar.backgroundColor = .white
@@ -75,20 +78,21 @@ class FeedCollectionController: CollectionController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let barNode = ASDisplayNode { () -> UIView in
+            return self.toolbar
+        }
+        
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         collectionNode.frame.size.height = collectionNode.frame.height - toolbar.frame.height
         
         navigationController?.hidesBarsOnSwipe = true
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.backgroundColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: nil, action: nil)
         
-        let barNode = ASDisplayNode { () -> UIView in
-            return self.toolbar
-        }
         navigationController?.view.addSubnode(barNode)
         
         ServiceSubreddit(name: name).listing(sort: sort) { success in
@@ -130,19 +134,7 @@ class FeedCollectionController: CollectionController {
     func refresh() {
         guard let guardedListing = listing else { return }
         models = guardedListing.submissions.map({ (submission: Submission) -> PostViewModel in
-            var media = [MediaElement]()
-            for item in submission.media {
-                guard let guardedType = item.mediaType else { continue }
-                switch guardedType {
-                case .photo:
-                    let toInsert = Photo(width: item.width, height: item.height, url: item.urlOrigin, urlSmall: item.urlSmall, urlMedium: item.urlMedium, urlLarge: item.urlLarge, info: item.info)
-                    media.append(toInsert)
-                case .video:
-                    let toInsert = Video(width: item.width, height: item.height, url: item.urlOrigin, poster: item.urlPoster, gif: item.urlGif, info: item.info)
-                    media.append(toInsert)
-                }
-            }
-            return PostViewModel(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved)
+            return PostViewModel(submission: submission)
         })
         self.adapter.performUpdates(animated: true)
     }
