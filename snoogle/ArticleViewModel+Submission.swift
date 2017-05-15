@@ -22,6 +22,6 @@ extension ArticleViewModel {
                 media.append(toInsert)
             }
         }
-        self.init(author: submission.authorName, origin: "r/ \(submission.subredditName)", created: submission.created, title: submission.title, media: media, content: submission.selftextComponents, numberOfComments: submission.numComments)
+        self.init(author: submission.authorName, origin: "r/ \(submission.subredditName)", created: submission.created, title: submission.title, media: media, content: submission.selftextComponents, vote: submission.vote, saved: submission.saved, numberOfComments: submission.numComments)
     }
 }

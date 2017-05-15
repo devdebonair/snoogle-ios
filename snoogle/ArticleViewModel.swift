@@ -25,7 +25,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
         return "\(author)\nposted on \(origin)\n\(created.timeAgo(shortened: false))"
     }
     
-    init(author: String = "", origin: String = "", created: Date, title: String = "", media: [MediaElement] = [], content: [String] = [], numberOfComments: Int = 0) {
+    init(author: String = "", origin: String = "", created: Date, title: String = "", media: [MediaElement] = [], content: [String] = [], vote: VoteType, saved: Bool, numberOfComments: Int = 0) {
         self.author = author
         self.origin = origin
         self.created = created
@@ -125,7 +125,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
     }
     
     func footer() -> ASCellNode? {
-        let cell = CellNodeArticleButtonBar(leftButtonText: "\(numberOfComments) Comments")
+        let cell = CellNodeArticleButtonBar()
         cell.backgroundColor = .white
         return cell
     }
