@@ -14,11 +14,11 @@ class ArticleViewModel: NSObject, ViewModelElement {
     let author: String
     let origin: String
     let created: Date
-    
     let title: String
     let media: [MediaElement]
     let content: [String]
-    
+    let vote: VoteType
+    let saved: Bool
     let numberOfComments: Int
     
     var meta: String {
@@ -32,6 +32,8 @@ class ArticleViewModel: NSObject, ViewModelElement {
         self.title = title
         self.media = media
         self.content = content
+        self.vote = vote
+        self.saved = saved
         self.numberOfComments = numberOfComments
     }
     
@@ -125,7 +127,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
     }
     
     func footer() -> ASCellNode? {
-        let cell = CellNodeArticleButtonBar()
+        let cell = CellNodeArticleButtonBar(vote: vote, saved: saved, numberOfComments: numberOfComments)
         cell.backgroundColor = .white
         return cell
     }
