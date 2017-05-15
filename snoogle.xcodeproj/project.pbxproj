@@ -54,6 +54,7 @@
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
+		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
 		56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E7CEC61E1CAEAB001B48EE /* CellNodeText.swift */; };
 		56E9B4631E7E599F00578389 /* MultiredditEdits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9B4571E7E599F00578389 /* MultiredditEdits.swift */; };
 		56E9B4641E7E599F00578389 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9B4581E7E599F00578389 /* Network.swift */; };
@@ -122,6 +123,7 @@
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
+		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
 		56E7CEC61E1CAEAB001B48EE /* CellNodeText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeText.swift; sourceTree = "<group>"; };
 		56E9B4571E7E599F00578389 /* MultiredditEdits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiredditEdits.swift; path = Network.playground/Pages/Snoogle.xcplaygroundpage/Sources/MultiredditEdits.swift; sourceTree = "<group>"; };
 		56E9B4581E7E599F00578389 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = Network.playground/Pages/Snoogle.xcplaygroundpage/Sources/Network.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				56126EC11E1DAC580063B6ED /* CellNodeSeparator.swift */,
 				563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */,
 				567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */,
+				56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				56EE8C9A1E8A13F90043A9DF /* ServiceSubreddit.swift in Sources */,
 				56EE8CA41E8A14C80043A9DF /* ServiceMe.swift in Sources */,
 				56119E8E1E87685E00A19C40 /* SectionController.swift in Sources */,
+				56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */,
 				567B02771E29081D00C32C09 /* SortSelectViewModel.swift in Sources */,
 				561C8C651E7C75BE00D9AEB3 /* Account.swift in Sources */,
 				56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */,

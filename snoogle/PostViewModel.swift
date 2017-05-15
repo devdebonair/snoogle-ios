@@ -75,9 +75,6 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let descriptionColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let descriptionLineSpacing: CGFloat = 4.0
         
-        let commentFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
-        let commentColor = UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
-        
         let paragraphStyleMeta = NSMutableParagraphStyle()
         paragraphStyleMeta.lineSpacing = metaLineSpacing
         let meta = NSMutableAttributedString(
@@ -110,22 +107,14 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                 NSParagraphStyleAttributeName: paragraphStyleDescription
             ])
         
-        let leftButtonAttribute = NSMutableAttributedString(
-            string: "\(self.numberOfComments) Comments",
-            attributes: [
-                NSFontAttributeName: commentFont,
-                NSForegroundColorAttributeName: commentColor
-            ])
-        
         let post = CellNodePost(
             meta: meta,
             title: title,
             subtitle: description,
-            leftbuttonAttributes:
-            leftButtonAttribute,
             media: self.media,
             vote: vote,
-            saved: saved)
+            saved: saved,
+            numberOfComments: numberOfComments)
         
         post.delegate = self
         
