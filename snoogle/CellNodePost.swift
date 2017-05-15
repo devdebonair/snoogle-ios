@@ -159,8 +159,8 @@ class CellNodePost: ASCellNode {
         
         separator.backgroundColor = separatorColor
         
-        if media.count == 1 {
-            mediaView = NodeMedia(media: media[0])
+        if media.count == 1, let mediaItem = media.first {
+            mediaView = NodeMedia(media: mediaItem)
         }
         if media.count > 1 {
             mediaView = NodeMediaAlbum(media: media)
@@ -278,7 +278,7 @@ class CellNodePost: ASCellNode {
             
             if let mediaView = mediaView as? NodeMediaAlbum {
                 mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
-                mediaView.style.height = ASDimension(unit: .points, value: 200)
+                mediaView.style.height = ASDimension(unit: .points, value: 300)
                 mediaView.collectionNode.clipsToBounds = false
                 let inset = UIEdgeInsets(top: 0, left: padding, bottom: padding, right: 0)
                 let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)

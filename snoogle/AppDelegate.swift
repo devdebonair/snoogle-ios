@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "re_zero"))
+        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "ecchi"))
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
