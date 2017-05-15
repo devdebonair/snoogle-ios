@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController: ASNavigationController!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
+//        print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
 //        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
 //        do {
 //            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "ShingekiNoKyojin"))
+        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "re_zero"))
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

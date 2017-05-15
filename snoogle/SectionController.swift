@@ -39,20 +39,23 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
         }
     }
     
-    func nodeForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNode {
+    func nodeBlockForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNodeBlock {
         let header = model.header()
         let footer = model.footer()
-        
-        switch elementKind {
-        case UICollectionElementKindSectionHeader:
-            if let header = header { return header }
-        case UICollectionElementKindSectionFooter:
-            if let footer = footer { return footer }
-        default:
+        return { _ -> ASCellNode in
+            
+            switch elementKind {
+            case UICollectionElementKindSectionHeader:
+                if let header = header { return header }
+            case UICollectionElementKindSectionFooter:
+                if let footer = footer { return footer }
+            default:
+                return ASCellNode()
+            }
+            
             return ASCellNode()
+
         }
-        
-        return ASCellNode()
     }
     
     func sizeRangeForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASSizeRange {

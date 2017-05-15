@@ -1,14 +1,4 @@
 PODS:
-  - AsyncDisplayKit (2.1):
-    - AsyncDisplayKit/PINRemoteImage (= 2.1)
-  - AsyncDisplayKit/Core (2.1)
-  - AsyncDisplayKit/IGListKit (2.1):
-    - AsyncDisplayKit/Core
-    - IGListKit (= 2.1.0)
-  - AsyncDisplayKit/PINRemoteImage (2.1):
-    - AsyncDisplayKit/Core
-    - PINRemoteImage/iOS (= 3.0.0-beta.7)
-    - PINRemoteImage/PINCache
   - IGListKit (2.1.0):
     - IGListKit/Default (= 2.1.0)
   - IGListKit/Default (2.1.0):
@@ -18,40 +8,54 @@ PODS:
   - ObjectMapper+Realm (0.2):
     - ObjectMapper
     - RealmSwift
-  - PINCache (3.0.1-beta.2):
-    - PINCache/Arc-exception-safe (= 3.0.1-beta.2)
-    - PINCache/Core (= 3.0.1-beta.2)
-  - PINCache/Arc-exception-safe (3.0.1-beta.2):
+  - PINCache (3.0.1-beta.4):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.4)
+    - PINCache/Core (= 3.0.1-beta.4)
+  - PINCache/Arc-exception-safe (3.0.1-beta.4):
     - PINCache/Core
-  - PINCache/Core (3.0.1-beta.2)
-  - PINRemoteImage/Core (3.0.0-beta.7)
-  - PINRemoteImage/iOS (3.0.0-beta.7):
+  - PINCache/Core (3.0.1-beta.4):
+    - PINOperation (= 1.0.3)
+  - PINOperation (1.0.3)
+  - PINRemoteImage/Core (3.0.0-beta.9):
+    - PINOperation
+  - PINRemoteImage/iOS (3.0.0-beta.9):
     - PINRemoteImage/Core
-  - PINRemoteImage/PINCache (3.0.0-beta.7):
-    - PINCache (= 3.0.1-beta.2)
+  - PINRemoteImage/PINCache (3.0.0-beta.9):
+    - PINCache (= 3.0.1-beta.4)
     - PINRemoteImage/Core
   - Realm (2.4.2):
     - Realm/Headers (= 2.4.2)
   - Realm/Headers (2.4.2)
   - RealmSwift (2.4.2):
     - Realm (= 2.4.2)
+  - Texture (2.3.2):
+    - Texture/PINRemoteImage (= 2.3.2)
+  - Texture/Core (2.3.2)
+  - Texture/IGListKit (2.3.2):
+    - IGListKit (= 2.1.0)
+    - Texture/Core
+  - Texture/PINRemoteImage (2.3.2):
+    - PINRemoteImage/iOS (= 3.0.0-beta.9)
+    - PINRemoteImage/PINCache
+    - Texture/Core
 
 DEPENDENCIES:
-  - AsyncDisplayKit (= 2.1)
-  - AsyncDisplayKit/IGListKit (= 2.1.0)
   - ObjectMapper+Realm
   - RealmSwift
+  - Texture
+  - Texture/IGListKit
 
 SPEC CHECKSUMS:
-  AsyncDisplayKit: 28de788f9d6ec573be7662f0fe8931e656357e93
   IGListKit: b826c68ef7a4ae1626c09d4d3e1ea7a169e6c36e
   ObjectMapper: 9e385c2295bcc4e16eabbcfc85db801442bba545
   ObjectMapper+Realm: 8b45dbfa1be145e311a6f93a306c183d630b40a9
-  PINCache: 6d273a6e0754bd26e3f12a38a90dde73cc6a42b2
-  PINRemoteImage: ff63baf185088530db6cfa41cb665e2b5126b5c3
+  PINCache: a89c8f609232afac77128557bd12c861844423d7
+  PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
+  PINRemoteImage: e4e02e15a6f96cedbcef2abf1c9c1228dc9897d7
   Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
   RealmSwift: 9556c0fe0f0cfecacfb755ae9e68ff379fc6bead
+  Texture: 18664254419f35de27af76399b3b265cbad5740a
 
-PODFILE CHECKSUM: 854d65e684d0969c103051fe4c6afc532b963e8d
+PODFILE CHECKSUM: df41b65b2ed9b7cbd7738068fafc546c17f2484c
 
 COCOAPODS: 1.1.1

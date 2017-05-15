@@ -53,7 +53,6 @@ class NodeMedia: ASDisplayNode {
                 mediaView.placeholderFadeDuration = 2.0
                 mediaView.backgroundColor = .black
                 mediaView.muted = true
-                mediaView.isLayerBacked = true
             }
         }
     }

@@ -49,8 +49,10 @@ class SubmissionSectionController: SectionController {
     }
     
     override func didSelectItem(at index: Int) {
-        let controller = ArticleCollectionController(id: post.id)
-        self.viewController?.navigationController?.present(controller, animated: true, completion: nil)
+        if let viewController = self.viewController {
+            let controller = ArticleCollectionController(id: post.id)
+            viewController.navigationController?.present(controller, animated: true, completion: nil)
+        }
     }
     
 }

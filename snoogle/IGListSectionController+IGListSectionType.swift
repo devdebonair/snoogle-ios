@@ -20,25 +20,19 @@ extension IGListSectionController: IGListSectionType, IGListSupplementaryViewSou
     }
     
     public func cellForItem(at index: Int) -> UICollectionViewCell {
-        guard let context = collectionContext else {
-            return _ASCollectionViewCell()
-        }
-        return context.dequeueReusableCell(of: _ASCollectionViewCell.self, for: self, at: index)
+        return ASIGListSectionControllerMethods.cellForItem(at: index, sectionController: self)
     }
     
     public func sizeForItem(at index: Int) -> CGSize {
-        return .zero
+        return ASIGListSectionControllerMethods.sizeForItem(at: index)
     }
     
     public func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
-        return .zero
+        return ASIGListSupplementaryViewSourceMethods.sizeForSupplementaryView(ofKind: elementKind, at: index)
     }
     
     public func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
-        guard let context = collectionContext  else {
-            return UICollectionReusableView()
-        }
-        return context.dequeueReusableSupplementaryView(ofKind: elementKind, for: self, class: UICollectionReusableView.self, at: index)
+        return ASIGListSupplementaryViewSourceMethods.viewForSupplementaryElement(ofKind: elementKind, at: index, sectionController: self)
     }
     
     public func supportedElementKinds() -> [String] {
