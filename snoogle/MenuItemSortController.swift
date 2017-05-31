@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import IGListKit
 
 class MenuItemSortController: MenuItemCollectionController {
     
-    override init() {
+    init(model: IGListDiffable) {
         super.init()
-        self.models = [SubmissionSortViewModel()]
+        self.models = [model]
     }
     
     required init?(coder aDecoder: NSCoder) {

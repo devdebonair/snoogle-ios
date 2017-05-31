@@ -47,6 +47,8 @@
 		5651C0671EDC91DC001F3FE9 /* SubmissionSortSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C0661EDC91DC001F3FE9 /* SubmissionSortSectionController.swift */; };
 		5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C0681EDC92BC001F3FE9 /* SubmissionSortViewModel.swift */; };
 		5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C06A1EDEFB44001F3FE9 /* MenuItemSortController.swift */; };
+		5651C06D1EDF35C0001F3FE9 /* MenuComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C06C1EDF35C0001F3FE9 /* MenuComposeViewModel.swift */; };
+		5651C06F1EDF36F7001F3FE9 /* MenuComposeSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C06E1EDF36F7001F3FE9 /* MenuComposeSectionController.swift */; };
 		565AAFE11EDC05350024CB65 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE01EDC05350024CB65 /* Transition.swift */; };
 		565AAFE31EDC05570024CB65 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE21EDC05570024CB65 /* Header.swift */; };
 		565AAFE51EDC05710024CB65 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE41EDC05710024CB65 /* CardTransition.swift */; };
@@ -127,6 +129,8 @@
 		5651C0661EDC91DC001F3FE9 /* SubmissionSortSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionSortSectionController.swift; sourceTree = "<group>"; };
 		5651C0681EDC92BC001F3FE9 /* SubmissionSortViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionSortViewModel.swift; sourceTree = "<group>"; };
 		5651C06A1EDEFB44001F3FE9 /* MenuItemSortController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemSortController.swift; sourceTree = "<group>"; };
+		5651C06C1EDF35C0001F3FE9 /* MenuComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuComposeViewModel.swift; sourceTree = "<group>"; };
+		5651C06E1EDF36F7001F3FE9 /* MenuComposeSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuComposeSectionController.swift; sourceTree = "<group>"; };
 		565AAFE01EDC05350024CB65 /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
 		565AAFE21EDC05570024CB65 /* Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		565AAFE41EDC05710024CB65 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTransition.swift; sourceTree = "<group>"; };
@@ -207,6 +211,7 @@
 				56EE8CAB1E9077470043A9DF /* ArticleSectionController.swift */,
 				56E62B0C1ECB504400ACFC51 /* CommentSectionController.swift */,
 				5651C0661EDC91DC001F3FE9 /* SubmissionSortSectionController.swift */,
+				5651C06E1EDF36F7001F3FE9 /* MenuComposeSectionController.swift */,
 			);
 			name = "section controllers";
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */,
 				567B02761E29081D00C32C09 /* SortSelectViewModel.swift */,
 				5651C0681EDC92BC001F3FE9 /* SubmissionSortViewModel.swift */,
+				5651C06C1EDF35C0001F3FE9 /* MenuComposeViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -557,6 +563,7 @@
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				563D037F1E24C69C00BD24D4 /* NodeMediaAlbum.swift in Sources */,
+				5651C06F1EDF36F7001F3FE9 /* MenuComposeSectionController.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56EE8C941E8A135E0043A9DF /* ServiceFrontpage.swift in Sources */,
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
@@ -587,6 +594,7 @@
 				56978ACF1E1F7D9E0060B558 /* CellNodeComment.swift in Sources */,
 				565AAFE71EDC08780024CB65 /* CellNodeMenuItem.swift in Sources */,
 				56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */,
+				5651C06D1EDF35C0001F3FE9 /* MenuComposeViewModel.swift in Sources */,
 				56126EBE1E1D9D060063B6ED /* ArticleViewModel.swift in Sources */,
 				56126EBC1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift in Sources */,
 				561C8C6D1E7C778300D9AEB3 /* Multireddit.swift in Sources */,

@@ -133,7 +133,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: self, action: #selector(didTapCompose)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -200,11 +200,20 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSort() {
-        let controller = MenuItemSortController()
+        let controller = MenuItemSortController(model: SubmissionSortViewModel())
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         transition.cardHeight = 0.52
+        present(controller, animated: true)
+    }
+    
+    func didTapCompose() {
+        let controller = MenuItemSortController(model: MenuComposeViewModel())
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.transitioningDelegate = transition
+        controller.collectionNode.view.bounces = false
+        transition.cardHeight = 0.43
         present(controller, animated: true)
     }
     

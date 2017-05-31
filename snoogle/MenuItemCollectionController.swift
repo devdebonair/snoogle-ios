@@ -28,7 +28,11 @@ class MenuItemCollectionController: CollectionController {
     }
     
     override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return SubmissionSortSectionController()
+        if let _ = object as? SubmissionSortViewModel {
+            return SubmissionSortSectionController()
+        } else {
+            return MenuComposeSectionController()
+        }
     }
     
     override func shouldFetch() -> Bool {
