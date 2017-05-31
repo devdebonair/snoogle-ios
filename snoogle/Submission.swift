@@ -50,6 +50,7 @@ class Submission: Object, Mappable {
     var likes = RealmOptional<Bool>()
     
     var media = List<Media>()
+    var comments = List<Comment>()
     
     dynamic var subreddit: Subreddit? = nil
     dynamic var author: User? = nil
@@ -155,8 +156,8 @@ class Submission: Object, Mappable {
             likes.value = nil
         }
         
-        
         media                   <- (map["hamlet_album"], ListTransform<Media>())
+        comments                <- (map["comments"], ListTransform<Comment>())
         
         let singleMediaJSON = map.JSON["hamlet_media"] as? [String:Any]
         if let singleMediaJSON = singleMediaJSON, let singleMedia = Media(JSON: singleMediaJSON) {

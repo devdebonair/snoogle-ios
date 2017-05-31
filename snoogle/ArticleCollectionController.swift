@@ -41,15 +41,23 @@ class ArticleCollectionController: CollectionController {
         } catch let error {
             print(error)
         }
-        
         // get submission from realm
-        submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+        submission = Query<Submission>().key("id").eqlStr(id).exec(realm: realm).first
         
         // add notification for when the listing changes
         guard let guardedSubmission = submission else { return }
         token = guardedSubmission.addNotificationBlock({ (object: ObjectChange) in
             self.refresh()
         })
+        
+        // Fetch submission from service
+        // TODO: fetch submission in article on background thread
+//        print("comments coming up")
+//        ServiceSubmission(id: guardedSubmission.id).getComments { (success: Bool) in
+//            DispatchQueue.main.async {
+//                print(guardedSubmission.comments.count)
+//            }
+//        }
         
         self.refresh()
     }
@@ -59,15 +67,23 @@ class ArticleCollectionController: CollectionController {
         self.collectionNode.backgroundColor = .white
     }
     
+    func dismissController() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     // create map of view models and update ui
     func refresh() {
         guard let guardedSubmission = submission else { return }
+//        models = [ArticleViewModel(submission: guardedSubmission), CommentViewModel(comments: guardedSubmission.comments)]
         models = [ArticleViewModel(submission: guardedSubmission)]
         self.adapter.performUpdates(animated: true)
     }
     
     override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return ArticleSectionController()
+        if let _ = object as? ArticleViewModel {
+            return ArticleSectionController()
+        }
+        return CommentSectionController()
     }
     
     override func shouldFetch() -> Bool {

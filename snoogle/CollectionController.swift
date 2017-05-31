@@ -30,10 +30,11 @@ class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegat
     }
     
     override func viewDidLoad() {
-        collectionNode.frame = node.frame
+        super.viewDidLoad()
+        node.frame.size.height = node.frame.height - UIApplication.shared.statusBarFrame.height - (navigationController?.navigationBar.frame.height ?? 0)
+        collectionNode.frame = node.bounds
         collectionNode.backgroundColor = .clear
         node.addSubnode(collectionNode)
-        super.viewDidLoad()
         self.adapter.performUpdates(animated: true, completion: nil)
     }
     

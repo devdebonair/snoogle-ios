@@ -11,54 +11,37 @@ import IGListKit
 import RealmSwift
 import AsyncDisplayKit
 
-class FeedCollectionController: CollectionController {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
     
     let name: String
     let sort: ListingSort
     var listing: ListingSubreddit? = nil
+    var transition: CardTransition!
+    let TOOLBAR_HEIGHT: CGFloat = 49
+    var token: NotificationToken? = nil
     
-    let TOOLBAR_HEIGHT: CGFloat = 42
+    var leftBarItem: UIView = UIView() {
+        didSet {
+           self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
+        }
+    }
     
     var sub: Subreddit? = nil {
         didSet {
             // Set the name of the Subreddit on the navigation bar
             guard let guardedSub = sub else { return }
-            let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
-            let attributeString = NSMutableAttributedString(string: "r/ \(guardedSub.displayName)", attributes: [
-                NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14)
-                ])
-            let range = (attributeString.string as NSString).range(of: "r/")
-            attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
-            
-            let textNode = ASTextNode()
-            textNode.attributedText = attributeString
-            let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
-            textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-            
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
+            self.setLeftBarButton(subredditName: guardedSub.displayName)
         }
     }
-    
-    var token: NotificationToken? = nil
+    var barItems = [UIBarButtonItem]()
     
     lazy var toolbar: UIToolbar = {
         let size = CGSize(width: self.node.frame.width, height: self.TOOLBAR_HEIGHT)
-        let frame = CGRect(x: 0, y: self.node.frame.height - size.height, width: size.width, height: size.height)
+        let originY:CGFloat = self.collectionNode.frame.height
+        let frame = CGRect(x: 0, y: originY, width: size.width, height: size.height)
         let bar = UIToolbar(frame: frame)
         bar.backgroundColor = .white
-        bar.items = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-        ]
+        bar.items = self.barItems
         bar.tintColor = .white
         bar.isTranslucent = false
         return bar
@@ -70,30 +53,90 @@ class FeedCollectionController: CollectionController {
         
         super.init()
 
+        self.barItems = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: self, action: #selector(didTapSort)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+        ]
+        
         DispatchQueue.main.async {
             self.loadListing()
         }
+        
+        definesPresentationContext = true
+        
+        transition = CardTransition(duration: 0.2)
+        transition.automaticallyManageGesture = true
+        navigationController?.delegate = transition
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let sub = sub {
+            print(sub.displayName)
+            setLeftBarButton(subredditName: sub.displayName)
+        }
+        self.navigationController?.isToolbarHidden = false
+    }
+    
+    func setLeftBarButton(subredditName: String) {
+        let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
+        let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBlack)
+            ])
+        let range = (attributeString.string as NSString).range(of: "r/")
+        attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
+        
+        let textNode = ASTextNode()
+        textNode.attributedText = attributeString
+        let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
+        textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        
+        leftBarItem = textNode.view
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isToolbarHidden = true
     }
     
     override func viewDidLoad() {
+        node.frame.size.height = node.frame.height - TOOLBAR_HEIGHT
         super.viewDidLoad()
-        
-        let barNode = ASDisplayNode { () -> UIView in
-            return self.toolbar
-        }
-        
-        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        
-        collectionNode.frame.size.height = collectionNode.frame.height - toolbar.frame.height
-        
-        navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.backgroundColor = .white
         
+//        let barNode = ASDisplayNode { () -> UIView in
+//            return self.toolbar
+//        }
+
+        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: nil, action: nil)
         
-        navigationController?.view.addSubnode(barNode)
+//        node.addSubnode(barNode)
+        
+        setToolbarItems([
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: self, action: #selector(didTapSort)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            ], animated: false)
         
         ServiceSubreddit(name: name).listing(sort: sort) { success in
             if success {
@@ -147,6 +190,17 @@ class FeedCollectionController: CollectionController {
         ServiceSubreddit(name: name).moreListings(sort: sort) { (success: Bool) in
             context.completeBatchFetching(success)
         }
+    }
+    
+    func didTapSort() {
+        
+        let controller = MenuItemCollectionController()
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.transitioningDelegate = transition
+        controller.collectionNode.view.bounces = false
+        transition.cardHeight = 0.52
+        
+        present(controller, animated: true)
     }
     
     required init?(coder aDecoder: NSCoder) {

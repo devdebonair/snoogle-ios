@@ -24,12 +24,19 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     }
     
     func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
+        let model = self.model
         return { _ -> ASCellNode in
+            if let model = model {
+                return model.cell(index: index)
+            }
             return ASCellNode()
         }
     }
     
     override func numberOfItems() -> Int {
+        if let model = model {
+            return model.numberOfCells()
+        }
         return 0
     }
     
@@ -69,7 +76,12 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
         }
     }
     
-    override func didUpdate(to object: Any) {}
+    override func didUpdate(to object: Any) {
+        if let object = object as? ViewModelElement {
+            model = object
+        }
+    }
+    
     override func didSelectItem(at index: Int) {}
     
     override func supportedElementKinds() -> [String] {

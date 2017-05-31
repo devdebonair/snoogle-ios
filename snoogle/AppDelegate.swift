@@ -25,8 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch let error {
 //            print(error)
 //        }
-        
-        navigationController = ASNavigationController(rootViewController: FeedCollectionController(name: "shingekinokyojin"))
+
+        let rootController = FeedCollectionController(name: "yandere_simulator")
+        navigationController = ASNavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

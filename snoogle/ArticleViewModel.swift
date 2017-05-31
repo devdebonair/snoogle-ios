@@ -69,7 +69,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
                     NSParagraphStyleAttributeName: paragraphStyleMeta,
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
                 ])
-            let inset = UIEdgeInsets(top: 40, left: 20, bottom: 10, right: 20)
+            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
             
             let range = (meta as NSString).range(of: author)
             metaAttributes.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: range)
@@ -79,6 +79,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
         }
         
         // Title
+        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
         if let element = element as? String, row == 1 {
             let inset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
             
@@ -88,7 +89,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
             let titleAttributes = NSMutableAttributedString(
                 string: element,
                 attributes: [
-                    NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightBlack),
+                    NSFontAttributeName: titleFont,
                     NSForegroundColorAttributeName: UIColor.black,
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
@@ -104,14 +105,16 @@ class ArticleViewModel: NSObject, ViewModelElement {
         
         
         // Content
+        let contentFont = UIFont.systemFont(ofSize: 16, weight: UIFontWeightRegular)
         if let element = element as? String {
-            let inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
+            var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
+            if index == numberOfCells() - 1 { inset.bottom = 30 }
             let paragraphStyleDescription = NSMutableParagraphStyle()
-            paragraphStyleDescription.lineSpacing = 6.0
+            paragraphStyleDescription.lineSpacing = 8.0
             let description = NSMutableAttributedString(
                 string: element,
                 attributes: [
-                    NSFontAttributeName: UIFont.systemFont(ofSize: 15),
+                    NSFontAttributeName: contentFont,
                     NSForegroundColorAttributeName: UIColor.black,
                     NSParagraphStyleAttributeName: paragraphStyleDescription
                 ])

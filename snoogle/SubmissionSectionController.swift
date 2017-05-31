@@ -12,7 +12,7 @@ import AsyncDisplayKit
 
 class SubmissionSectionController: SectionController {
     
-    let INSET: CGFloat = 5
+    let INSET: CGFloat = 4
     
     var post: PostViewModel {
         return model as! PostViewModel
@@ -53,7 +53,14 @@ class SubmissionSectionController: SectionController {
     override func didSelectItem(at index: Int) {
         if let viewController = self.viewController {
             let controller = ArticleCollectionController(id: post.id)
-            viewController.navigationController?.present(controller, animated: true, completion: nil)
+            viewController.navigationController?.delegate = nil
+            viewController.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func popController() {
+        if let viewController = self.viewController {
+            viewController.navigationController?.popViewController(animated: true)
         }
     }
     

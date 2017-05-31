@@ -39,6 +39,11 @@ class Comment: Object, Mappable {
     
     dynamic var author: User? = nil
     
+    var meta: String {
+        let pointPluralization = (score == 1 || score == -1) ? "point" : "points"
+        return "\(name) • \(created.timeAgo()) • \(score) \(pointPluralization)"
+    }
+    
     required convenience init(map: Map) {
         self.init()
     }

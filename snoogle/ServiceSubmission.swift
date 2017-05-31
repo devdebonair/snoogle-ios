@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import ObjectMapper_Realm
 
 class ServiceSubmission: Service {
     
@@ -35,9 +36,32 @@ class ServiceSubmission: Service {
     }
     
     func getComments(completion: ((Bool)->Void)? = nil) {
-        requestGetComments { (json: [String : Any]?) in
-            if let _ = json {
-                if let completion = completion { return completion(true) }
+        requestGetComments { (json: [[String : Any]]?) in
+            if let json = json {
+                do {
+                    let realm = try Realm()
+                    let submission = realm.object(ofType: Submission.self, forPrimaryKey: self.id)
+                    guard let guardedSubmission = submission else {
+                        //TODO: Get submission
+                        print("we were not able to get the stuff")
+                        if let completion = completion { return completion(false) }
+                        return
+                    }
+                    let comments = List<Comment>()
+                    for dictionary in json {
+                        if let comment = Comment(JSON: dictionary) {
+                            comments.append(comment)
+                        }
+                    }
+                    print(comments.count)
+                    try realm.write {
+                        guardedSubmission.comments.removeAll()
+                        guardedSubmission.comments.append(contentsOf: comments)
+                    }
+                    if let completion = completion { return completion(true) }
+                } catch {
+                    if let completion = completion { return completion(false) }
+                }
             } else {
                 if let completion = completion { return completion(false) }
             }
@@ -166,14 +190,14 @@ extension ServiceSubmission {
             .sendHTTP()
     }
     
-    func requestGetComments(completion: @escaping ([String:Any]?)->Void) {
+    func requestGetComments(completion: @escaping ([[String:Any]]?)->Void) {
         let url = URL(string: "submissions/\(id)/comments", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
             .success() { (data, response) in
-                return completion(data as? [String:Any])
+                return completion(data as? [[String:Any]])
             }
             .failure() { _ in
                 return completion(nil)
