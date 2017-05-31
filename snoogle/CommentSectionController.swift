@@ -12,17 +12,6 @@ import AsyncDisplayKit
 
 class CommentSectionController: SectionController {
     
-    var comment: CommentViewModel! {
-        return model as! CommentViewModel
-    }
+    var comment: CommentViewModel! { return model as! CommentViewModel }
     
-    override func sizeRangeForItem(at index: Int) -> ASSizeRange {
-        guard let context = collectionContext else {
-            return ASSizeRangeUnconstrained
-        }
-        let width: CGFloat = context.containerSize.width - self.inset.left - self.inset.right
-        let max = CGSize(width: width, height: context.containerSize.height)
-        let min = CGSize(width: width, height: 0.0)
-        return ASSizeRange(min: min, max: max)
-    }
 }

@@ -193,13 +193,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSort() {
-        
-        let controller = MenuItemCollectionController()
+        let controller = MenuItemSortController()
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         transition.cardHeight = 0.52
-        
         present(controller, animated: true)
     }
     

@@ -13,7 +13,6 @@ class MenuItemCollectionController: CollectionController {
     
     override init() {
         super.init()
-        self.models = [SubmissionSortViewModel()]
         self.node.backgroundColor = .white
         flowLayout.sectionHeadersPinToVisibleBounds = true
         collectionNode.backgroundColor = .white

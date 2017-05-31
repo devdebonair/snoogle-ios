@@ -20,7 +20,13 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     }
     
     func sizeRangeForItem(at index: Int) -> ASSizeRange {
-        return ASSizeRangeZero
+        guard let context = collectionContext else {
+            return ASSizeRangeUnconstrained
+        }
+        let width: CGFloat = context.containerSize.width - self.inset.left - self.inset.right
+        let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
+        let min = CGSize(width: width, height: 0.0)
+        return ASSizeRange(min: min, max: max)
     }
     
     func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
