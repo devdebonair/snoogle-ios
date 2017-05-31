@@ -20,9 +20,7 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     }
     
     func sizeRangeForItem(at index: Int) -> ASSizeRange {
-        guard let context = collectionContext else {
-            return ASSizeRangeUnconstrained
-        }
+        guard let context = collectionContext else { return ASSizeRangeUnconstrained }
         let width: CGFloat = context.containerSize.width - self.inset.left - self.inset.right
         let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
         let min = CGSize(width: width, height: 0.0)
@@ -32,24 +30,19 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
         let model = self.model
         return { _ -> ASCellNode in
-            if let model = model {
-                return model.cell(index: index)
-            }
-            return ASCellNode()
+            guard let model = model else { return ASCellNode() }
+            return model.cell(index: index)
         }
     }
     
     override func numberOfItems() -> Int {
-        if let model = model {
-            return model.numberOfCells()
-        }
-        return 0
+        guard let model = model else { return 0 }
+        return model.numberOfCells()
     }
     
     func beginBatchFetch(with context: ASBatchContext) {
-        if let controller = viewController as? CollectionController, controller.shouldFetch() {
-            controller.fetch(context: context)
-        }
+        guard let controller = viewController as? CollectionController, controller.shouldFetch() else { return }
+        controller.fetch(context: context)
     }
     
     func nodeBlockForSupplementaryElement(ofKind elementKind: String, at index: Int) -> ASCellNodeBlock {
@@ -80,9 +73,8 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     }
     
     override func didUpdate(to object: Any) {
-        if let object = object as? ViewModelElement {
-            model = object
-        }
+        guard let object = object as? ViewModelElement else { return }
+        self.model = object
     }
     
     override func didSelectItem(at index: Int) {}
