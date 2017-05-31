@@ -47,7 +47,8 @@ class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegat
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return SectionController()
+        // TODO: Figure out how to make a blank section controller instead of explicit declaration
+        return SectionController<PostViewModel>()
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {

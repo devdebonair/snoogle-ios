@@ -10,10 +10,8 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class SubmissionSortSectionController: SectionController {
-    
-    var sortSelection: SubmissionSortViewModel { return model as! SubmissionSortViewModel }
-    
+class SubmissionSortSectionController: SectionController<SubmissionSortViewModel> {
+        
     override func didSelectItem(at index: Int) {
         print("selected an item")
     }

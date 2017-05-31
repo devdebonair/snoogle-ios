@@ -10,8 +10,6 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class CommentSectionController: SectionController {
-    
-    var comment: CommentViewModel! { return model as! CommentViewModel }
-    
+class CommentSectionController: SectionController<CommentViewModel> {
+        
 }

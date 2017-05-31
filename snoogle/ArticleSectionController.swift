@@ -10,11 +10,9 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class ArticleSectionController: SectionController {
-    
-    var article: ArticleViewModel! { return model as! ArticleViewModel }
+class ArticleSectionController: SectionController<ArticleViewModel> {
     
     override func didSelectItem(at index: Int) {
-        print("selected photo: \(article.primaryKey())")
+        print("selected photo: \(model.primaryKey())")
     }
 }

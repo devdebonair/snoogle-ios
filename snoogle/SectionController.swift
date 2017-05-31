@@ -10,9 +10,9 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class SectionController: IGListSectionController, ASSectionController, ASSupplementaryNodeSource {
+class SectionController<T: ViewModelElement>: IGListSectionController, ASSectionController, ASSupplementaryNodeSource {
     
-    var model: ViewModelElement!
+    var model: T!
     
     override init() {
         super.init()
@@ -73,7 +73,7 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
     }
     
     override func didUpdate(to object: Any) {
-        guard let object = object as? ViewModelElement else { return }
+        guard let object = object as? T else { return }
         self.model = object
     }
     

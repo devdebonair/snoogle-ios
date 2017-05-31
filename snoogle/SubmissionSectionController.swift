@@ -10,9 +10,7 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class SubmissionSectionController: SectionController {
-    
-    var post: PostViewModel { return model as! PostViewModel }
+class SubmissionSectionController: SectionController<PostViewModel> {
     
     override init() {
         super.init()
@@ -21,7 +19,7 @@ class SubmissionSectionController: SectionController {
     
     override func didSelectItem(at index: Int) {
         if let viewController = self.viewController {
-            let controller = ArticleCollectionController(id: post.id)
+            let controller = ArticleCollectionController(id: model.id)
             viewController.navigationController?.delegate = nil
             viewController.navigationController?.pushViewController(controller, animated: true)
         }
