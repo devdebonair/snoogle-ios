@@ -86,8 +86,4 @@ class ArticleCollectionController: CollectionController {
         return CommentSectionController()
     }
     
-    override func shouldFetch() -> Bool {
-        return false
-    }
-    
 }

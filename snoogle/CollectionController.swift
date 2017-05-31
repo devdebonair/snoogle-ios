@@ -55,7 +55,7 @@ class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegat
     }
     
     func shouldFetch() -> Bool {
-        return true
+        return false
     }
     
     func shouldBatchFetch(for collectionNode: ASCollectionNode) -> Bool {

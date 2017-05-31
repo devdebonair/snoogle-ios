@@ -182,6 +182,10 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.adapter.performUpdates(animated: true)
     }
     
+    override func shouldFetch() -> Bool {
+        return true
+    }
+    
     override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
         return SubmissionSectionController()
     }
