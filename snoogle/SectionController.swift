@@ -56,7 +56,6 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
         let header = model.header()
         let footer = model.footer()
         return { _ -> ASCellNode in
-            
             switch elementKind {
             case UICollectionElementKindSectionHeader:
                 if let header = header { return header }
@@ -65,9 +64,7 @@ class SectionController: IGListSectionController, ASSectionController, ASSupplem
             default:
                 return ASCellNode()
             }
-            
             return ASCellNode()
-
         }
     }
     
