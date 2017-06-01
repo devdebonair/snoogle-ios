@@ -78,7 +78,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     override func viewDidAppear(_ animated: Bool) {
         if let sub = sub {
-            print(sub.displayName)
             setLeftBarButton(subredditName: sub.displayName)
         }
     }
