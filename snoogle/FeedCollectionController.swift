@@ -33,39 +33,12 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             self.setLeftBarButton(subredditName: guardedSub.displayName)
         }
     }
-    var barItems = [UIBarButtonItem]()
-    
-    lazy var toolbar: UIToolbar = {
-        let size = CGSize(width: self.node.frame.width, height: self.TOOLBAR_HEIGHT)
-        let originY:CGFloat = self.collectionNode.frame.height
-        let frame = CGRect(x: 0, y: originY, width: size.width, height: size.height)
-        let bar = UIToolbar(frame: frame)
-        bar.backgroundColor = .white
-        bar.items = self.barItems
-        bar.tintColor = .white
-        bar.isTranslucent = false
-        return bar
-    }()
-    
+
     init(name: String, sort: ListingSort = .hot) {
         self.name = name
         self.sort = sort
         
         super.init()
-
-        self.barItems = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: self, action: #selector(didTapSort)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-        ]
         
         DispatchQueue.main.async {
             self.loadListing()
@@ -116,16 +89,13 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.toolbar.backgroundColor = .white
+        navigationController?.toolbar.barTintColor = .white
+        navigationController?.toolbar.isTranslucent = false
         
-//        let barNode = ASDisplayNode { () -> UIView in
-//            return self.toolbar
-//        }
-
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: nil, action: nil)
-        
-//        node.addSubnode(barNode)
         
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -200,7 +170,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSort() {
-        let controller = MenuItemSortController(model: SubmissionSortViewModel())
+        let controller = MenuItemSortController()
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -209,7 +179,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapCompose() {
-        let controller = MenuItemSortController(model: MenuComposeViewModel())
+        let controller = MenuItemComposeController()
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false

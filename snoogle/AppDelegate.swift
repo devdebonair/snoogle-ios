@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
 
-        let rootController = FeedCollectionController(name: "yandere_simulator")
+        let rootController = FeedCollectionController(name: "rocketleague")
         navigationController = ASNavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)

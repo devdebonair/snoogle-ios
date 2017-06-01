@@ -28,16 +28,9 @@ class MenuItemCollectionController: CollectionController {
     }
     
     override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        if let _ = object as? SubmissionSortViewModel {
-            return SubmissionSortSectionController()
-        } else {
-            return MenuComposeSectionController()
-        }
+        return SubmissionSortSectionController()
     }
-    
-    override func shouldFetch() -> Bool {
-        return false
-    }
+
 }
 
 extension MenuItemCollectionController: UIGestureRecognizerDelegate {

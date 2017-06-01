@@ -1,5 +1,5 @@
 //
-//  MenuItemSortController.swift
+//  MenuItemComposeController.swift
 //  snoogle
 //
 //  Created by Vincent Moore on 5/31/17.
@@ -8,11 +8,12 @@
 
 import Foundation
 import IGListKit
+import AsyncDisplayKit
 
-class MenuItemSortController: MenuItemCollectionController {
+class MenuItemComposeController: MenuItemCollectionController {
     override init() {
         super.init()
-        self.models = [SubmissionSortViewModel()]
+        self.models = [MenuComposeViewModel()]
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,6 +21,6 @@ class MenuItemSortController: MenuItemCollectionController {
     }
     
     override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return SubmissionSortSectionController()
+        return MenuComposeSectionController()
     }
 }
