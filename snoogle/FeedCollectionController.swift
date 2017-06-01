@@ -101,7 +101,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: self, action: #selector(didTapSort)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: self, action: #selector(didTapMedia)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: self, action: #selector(didTapCompose)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -193,6 +193,15 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         transition.cardHeight = 0.52
+        present(controller, animated: true)
+    }
+    
+    func didTapMedia() {
+        let controller = MenuUserProfileController()
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.transitioningDelegate = transition
+        controller.collectionNode.view.bounces = false
+        transition.cardHeight = 0.59
         present(controller, animated: true)
     }
     
