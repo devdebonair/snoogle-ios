@@ -79,7 +79,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
         }
         
         // Title
-        let titleFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightBold)
+        let titleFont: UIFont = UIFont(name: "Georgia-Bold", size: 20)!
         if let element = element as? String, row == 1 {
             let inset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
             
@@ -105,7 +105,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
         
         
         // Content
-        let contentFont = UIFont.systemFont(ofSize: 16, weight: UIFontWeightRegular)
+        let contentFont = UIFont(name: "Georgia", size: 16)!
         if let element = element as? String {
             var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             if index == numberOfCells() - 1 { inset.bottom = 30 }
