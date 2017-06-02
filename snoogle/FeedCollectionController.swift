@@ -104,7 +104,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: self, action: #selector(didTapCompose)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: self, action: #selector(didTapSearch)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: self, action: #selector(didTapSettings)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -201,6 +201,15 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         transition.cardHeight = 0.59
+        present(controller, animated: true)
+    }
+    
+    func didTapSearch() {
+        let controller = MenuSubredditListCollectionController()
+        controller.modalPresentationStyle = .overCurrentContext
+        controller.transitioningDelegate = transition
+        controller.collectionNode.view.bounces = false
+        transition.cardHeight = 0.75
         present(controller, animated: true)
     }
     
