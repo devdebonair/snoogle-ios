@@ -1,11 +1,18 @@
 //
 //  ASCollectionView.mm
-//  AsyncDisplayKit
+//  Texture
 //
 //  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
+//  LICENSE file in the /ASDK-Licenses directory of this source tree. An additional
+//  grant of patent rights can be found in the PATENTS file in the same directory.
+//
+//  Modifications to this file made after 4/13/2017 are: Copyright (c) 2017-present,
+//  Pinterest, Inc.  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 
 #import <AsyncDisplayKit/ASAssert.h>
@@ -15,6 +22,7 @@
 #import <AsyncDisplayKit/ASCollectionElement.h>
 #import <AsyncDisplayKit/ASCollectionInternal.h>
 #import <AsyncDisplayKit/ASCollectionLayout.h>
+#import <AsyncDisplayKit/ASCollectionNode+Beta.h>
 #import <AsyncDisplayKit/ASCollectionViewLayoutController.h>
 #import <AsyncDisplayKit/ASCollectionViewLayoutFacilitatorProtocol.h>
 #import <AsyncDisplayKit/ASCollectionViewFlowLayoutInspector.h>
@@ -73,7 +81,7 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 #pragma mark -
 #pragma mark ASCollectionView.
 
-@interface ASCollectionView () <ASRangeControllerDataSource, ASRangeControllerDelegate, ASDataControllerSource, ASCellNodeInteractionDelegate, ASDelegateProxyInterceptor, ASBatchFetchingScrollView, ASDataControllerEnvironmentDelegate, ASCALayerExtendedDelegate, UICollectionViewDelegateFlowLayout> {
+@interface ASCollectionView () <ASRangeControllerDataSource, ASRangeControllerDelegate, ASDataControllerSource, ASCellNodeInteractionDelegate, ASDelegateProxyInterceptor, ASBatchFetchingScrollView, ASCALayerExtendedDelegate, UICollectionViewDelegateFlowLayout> {
   ASCollectionViewProxy *_proxyDataSource;
   ASCollectionViewProxy *_proxyDelegate;
   
@@ -85,6 +93,8 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   NSMutableSet *_cellsForVisibilityUpdates;
   NSMutableSet *_cellsForLayoutUpdates;
   id<ASCollectionViewLayoutFacilitatorProtocol> _layoutFacilitator;
+  CGFloat _leadingScreensForBatching;
+  BOOL _inverted;
   
   NSUInteger _superBatchUpdateCount;
   BOOL _isDeallocating;
@@ -243,20 +253,20 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
 {
-  return [self _initWithFrame:frame collectionViewLayout:layout layoutFacilitator:nil eventLog:nil];
+  return [self _initWithFrame:frame collectionViewLayout:layout layoutFacilitator:nil owningNode:nil eventLog:nil];
 }
 
-- (instancetype)_initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout layoutFacilitator:(id<ASCollectionViewLayoutFacilitatorProtocol>)layoutFacilitator eventLog:(ASEventLog *)eventLog
+- (instancetype)_initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout layoutFacilitator:(id<ASCollectionViewLayoutFacilitatorProtocol>)layoutFacilitator owningNode:(ASCollectionNode *)owningNode eventLog:(ASEventLog *)eventLog
 {
   if (!(self = [super initWithFrame:frame collectionViewLayout:layout]))
     return nil;
 
-  // Disable UICollectionView prefetching.
+  // Disable UICollectionView prefetching. Use super, because self disables this method.
   // Experiments done by Instagram show that this option being YES (default)
   // when unused causes a significant hit to scroll performance.
   // https://github.com/Instagram/IGListKit/issues/318
   if (AS_AT_LEAST_IOS10) {
-    self.prefetchingEnabled = NO;
+    super.prefetchingEnabled = NO;
   }
 
   _layoutController = [[ASCollectionViewLayoutController alloc] initWithCollectionView:self];
@@ -266,9 +276,8 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   _rangeController.delegate = self;
   _rangeController.layoutController = _layoutController;
   
-  _dataController = [[ASDataController alloc] initWithDataSource:self eventLog:eventLog];
+  _dataController = [[ASDataController alloc] initWithDataSource:self node:owningNode eventLog:eventLog];
   _dataController.delegate = _rangeController;
-  _dataController.environmentDelegate = self;
   
   _batchContext = [[ASBatchContext alloc] init];
   
@@ -707,7 +716,7 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   if (indexPath.item == NSNotFound) {
     return indexPath;
   } else {
-    return [_dataController.visibleMap convertIndexPath:indexPath fromMap:_dataController.pendingMap];
+    return [_dataController.pendingMap convertIndexPath:indexPath fromMap:_dataController.visibleMap];
   }
 }
 
@@ -1339,7 +1348,7 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 
   if (targetContentOffset != NULL) {
     ASDisplayNodeAssert(_batchContext != nil, @"Batch context should exist");
-    [self _beginBatchFetchingIfNeededWithContentOffset:*targetContentOffset];
+    [self _beginBatchFetchingIfNeededWithContentOffset:*targetContentOffset velocity:velocity];
   }
   
   if (_asyncDelegateFlags.scrollViewWillEndDragging) {
@@ -1381,6 +1390,26 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 }
 
 #pragma mark - Scroll Direction.
+
+- (BOOL)inverted
+{
+  return _inverted;
+}
+
+- (void)setInverted:(BOOL)inverted
+{
+  _inverted = inverted;
+}
+
+- (void)setLeadingScreensForBatching:(CGFloat)leadingScreensForBatching
+{
+  _leadingScreensForBatching = leadingScreensForBatching;
+}
+
+- (CGFloat)leadingScreensForBatching
+{
+  return _leadingScreensForBatching;
+}
 
 - (ASScrollDirection)scrollDirection
 {
@@ -1493,6 +1522,10 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   }
 }
 
+- (id<ASBatchFetchingDelegate>)batchFetchingDelegate{
+  return self.collectionNode.batchFetchingDelegate;
+}
+
 - (void)_scheduleCheckForBatchFetchingForNumberOfChanges:(NSUInteger)changes
 {
   // Prevent fetching will continually trigger in a loop after reaching end of content and no new content was provided
@@ -1514,12 +1547,12 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
     return;
   }
   
-  [self _beginBatchFetchingIfNeededWithContentOffset:self.contentOffset];
+  [self _beginBatchFetchingIfNeededWithContentOffset:self.contentOffset velocity:CGPointZero];
 }
 
-- (void)_beginBatchFetchingIfNeededWithContentOffset:(CGPoint)contentOffset
+- (void)_beginBatchFetchingIfNeededWithContentOffset:(CGPoint)contentOffset velocity:(CGPoint)velocity
 {
-  if (ASDisplayShouldFetchBatchForScrollView(self, self.scrollDirection, self.scrollableDirections, contentOffset)) {
+  if (ASDisplayShouldFetchBatchForScrollView(self, self.scrollDirection, self.scrollableDirections, contentOffset, velocity)) {
     [self _beginBatchFetching];
   }
 }
@@ -1636,15 +1669,13 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 - (BOOL)dataController:(ASDataController *)dataController presentedSizeForElement:(ASCollectionElement *)element matchesSize:(CGSize)size
 {
   NSIndexPath *indexPath = [self indexPathForNode:element.node];
+  if (indexPath == nil) {
+    ASDisplayNodeFailAssert(@"Data controller should not ask for presented size for element that is not presented.");
+    return YES;
+  }
   UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:indexPath];
-  CGRect rect = attributes.frame;
-  return CGSizeEqualToSizeWithIn(rect.size, size, FLT_EPSILON);
+  return CGSizeEqualToSizeWithIn(attributes.size, size, FLT_EPSILON);
   
-}
-
-- (id<ASTraitEnvironment>)dataControllerEnvironment
-{
-  return self.collectionNode;
 }
 
 #pragma mark - ASDataControllerSource optional methods
@@ -1945,16 +1976,6 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   [self setNeedsLayout];
 }
 
-- (void)nodeDidRelayout:(ASCellNode *)node sizeChanged:(BOOL)sizeChanged
-{
-  ASDisplayNodeAssertMainThread();
-  
-  if (!sizeChanged) {
-    return;
-  }
-  [self nodesDidRelayout:@[node]];
-}
-
 - (void)nodesDidRelayout:(NSArray<ASCellNode *> *)nodes
 {
   ASDisplayNodeAssertMainThread();
@@ -2090,6 +2111,16 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
 }
 
 #pragma mark - UICollectionView dead-end intercepts
+
+- (void)setPrefetchDataSource:(id<UICollectionViewDataSourcePrefetching>)prefetchDataSource
+{
+  return;
+}
+
+- (void)setPrefetchingEnabled:(BOOL)prefetchingEnabled
+{
+  return;
+}
 
 #if ASDISPLAYNODE_ASSERTIONS_ENABLED // Remove implementations entirely for efficiency if not asserting.
 

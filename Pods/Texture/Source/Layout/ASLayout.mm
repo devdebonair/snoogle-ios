@@ -1,11 +1,18 @@
 //
 //  ASLayout.mm
-//  AsyncDisplayKit
+//  Texture
 //
 //  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
+//  LICENSE file in the /ASDK-Licenses directory of this source tree. An additional
+//  grant of patent rights can be found in the PATENTS file in the same directory.
+//
+//  Modifications to this file made after 4/13/2017 are: Copyright (c) 2017-present,
+//  Pinterest, Inc.  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 
 #import <AsyncDisplayKit/ASLayout.h>
@@ -20,9 +27,9 @@
 #import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
 #import <AsyncDisplayKit/ASRectTable.h>
 
-CGPoint const CGPointNull = {NAN, NAN};
+CGPoint const ASPointNull = {NAN, NAN};
 
-extern BOOL CGPointIsNull(CGPoint point)
+extern BOOL ASPointIsNull(CGPoint point)
 {
   return isnan(point.x) && isnan(point.y);
 }
@@ -80,7 +87,7 @@ static inline NSString * descriptionIndents(NSUInteger indents)
   if (self) {
 #if DEBUG
     for (ASLayout *sublayout in sublayouts) {
-      ASDisplayNodeAssert(CGPointIsNull(sublayout.position) == NO, @"Invalid position is not allowed in sublayout.");
+      ASDisplayNodeAssert(ASPointIsNull(sublayout.position) == NO, @"Invalid position is not allowed in sublayout.");
     }
 #endif
     
@@ -97,7 +104,7 @@ static inline NSString * descriptionIndents(NSUInteger indents)
     }
     _size = size;
     
-    if (CGPointIsNull(position) == NO) {
+    if (ASPointIsNull(position) == NO) {
       _position = CGPointMake(ASCeilPixelValue(position.x), ASCeilPixelValue(position.y));
     } else {
       _position = position;
@@ -142,7 +149,7 @@ static inline NSString * descriptionIndents(NSUInteger indents)
 {
   return [self layoutWithLayoutElement:layoutElement
                                   size:size
-                              position:CGPointNull
+                              position:ASPointNull
                             sublayouts:sublayouts];
 }
 
@@ -150,7 +157,7 @@ static inline NSString * descriptionIndents(NSUInteger indents)
 {
   return [self layoutWithLayoutElement:layoutElement
                                   size:size
-                              position:CGPointNull
+                              position:ASPointNull
                             sublayouts:nil];
 }
 

@@ -1,11 +1,18 @@
 //
 //  ASDisplayNodeInternal.h
-//  AsyncDisplayKit
+//  Texture
 //
 //  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
+//  LICENSE file in the /ASDK-Licenses directory of this source tree. An additional
+//  grant of patent rights can be found in the PATENTS file in the same directory.
+//
+//  Modifications to this file made after 4/13/2017 are: Copyright (c) 2017-present,
+//  Pinterest, Inc.  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 
 //
@@ -31,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 struct ASDisplayNodeFlags;
 
 BOOL ASDisplayNodeSubclassOverridesSelector(Class subclass, SEL selector);
-BOOL ASDisplayNodeNeedsSpecialPropertiesHandlingForFlags(ASDisplayNodeFlags flags);
+BOOL ASDisplayNodeNeedsSpecialPropertiesHandling(BOOL isSynchronous, BOOL isLayerBacked);
 
 /// Get the pending view state for the node, creating one if needed.
 _ASPendingState * ASDisplayNodeGetPendingState(ASDisplayNode * node);
@@ -48,6 +55,16 @@ typedef NS_OPTIONS(NSUInteger, ASDisplayNodeMethodOverrides)
   ASDisplayNodeMethodOverrideClearFetchedData   = 1 << 6
 };
 
+typedef NS_OPTIONS(uint_least32_t, ASDisplayNodeAtomicFlags)
+{
+  Synchronous = 1 << 0,
+};
+
+#define checkFlag(flag) ((_atomicFlags.load() & flag) != 0)
+// Returns the old value of the flag as a BOOL.
+#define setFlag(flag, x) (((x ? _atomicFlags.fetch_or(flag) \
+                              : _atomicFlags.fetch_and(~flag)) & flag) != 0)
+
 FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayScheduledNodesNotification;
 FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBeforeTimestamp;
 
@@ -56,7 +73,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 
 #define TIME_DISPLAYNODE_OPS 0 // If you're using this information frequently, try: (DEBUG || PROFILE)
 
-@interface ASDisplayNode ()
+@interface ASDisplayNode () <_ASTransitionContextCompletionDelegate>
 {
 @package
   _ASPendingState *_pendingViewState;
@@ -64,17 +81,17 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   UIView *_view;
   CALayer *_layer;
 
+  std::atomic<ASDisplayNodeAtomicFlags> _atomicFlags;
+
   struct ASDisplayNodeFlags {
     // public properties
-    unsigned synchronous:1;
     unsigned viewEverHadAGestureRecognizerAttached:1;
     unsigned layerBacked:1;
     unsigned displaysAsynchronously:1;
-    unsigned shouldRasterizeDescendants:1;
+    unsigned rasterizesSubtree:1;
     unsigned shouldBypassEnsureDisplay:1;
     unsigned displaySuspended:1;
     unsigned shouldAnimateSizeChanges:1;
-    unsigned hasCustomDrawingPriority:1;
     
     // Wrapped view handling
     
@@ -90,10 +107,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
     // methods at all instead it throws away the contents of the layer and nothing will show up.
     unsigned canCallSetNeedsDisplayOfLayer:1;
 
-    // whether custom drawing is enabled
-    unsigned implementsInstanceDrawRect:1;
     unsigned implementsDrawRect:1;
-    unsigned implementsInstanceImageDisplay:1;
     unsigned implementsImageDisplay:1;
     unsigned implementsDrawParameters:1;
 
@@ -109,6 +123,9 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   ASDisplayNode * __weak _supernode;
   NSMutableArray<ASDisplayNode *> *_subnodes;
 
+  // Set this to nil whenever you modify _subnodes
+  NSArray<ASDisplayNode *> *_cachedSubnodes;
+
   ASLayoutElementStyle *_style;
   ASPrimitiveTraitCollection _primitiveTraitCollection;
 
@@ -116,6 +133,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 
   // This is the desired contentsScale, not the scale at which the layer's contents should be displayed
   CGFloat _contentsScaleForDisplay;
+  ASDisplayNodeMethodOverrides _methodOverrides;
 
   UIEdgeInsets _hitTestSlop;
   
@@ -129,11 +147,12 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   NSTimeInterval _defaultLayoutTransitionDuration;
   NSTimeInterval _defaultLayoutTransitionDelay;
   UIViewAnimationOptions _defaultLayoutTransitionOptions;
-
-  int32_t _transitionID;
-  BOOL _transitionInProgress;
   
-  int32_t _pendingTransitionID;
+  ASLayoutSpecBlock _layoutSpecBlock;
+
+  std::atomic<int32_t> _transitionID;
+  
+  std::atomic<int32_t> _pendingTransitionID;
   ASLayoutTransition *_pendingLayoutTransition;
   std::shared_ptr<ASDisplayNodeLayout> _calculatedDisplayNodeLayout;
   std::shared_ptr<ASDisplayNodeLayout> _pendingDisplayNodeLayout;
@@ -145,6 +164,7 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   Class _layerClass; // nil -> _ASDisplayLayer
   
   UIImage *_placeholderImage;
+  BOOL _placeholderEnabled;
   CALayer *_placeholderLayer;
 
   // keeps track of nodes/subnodes that have not finished display, used with placeholders
@@ -183,6 +203,8 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
   NSMutableArray<ASDisplayNode *> *_yogaChildren;
   ASLayout *_yogaCalculatedLayout;
 #endif
+  
+  NSString *_debugName;
 
 #if TIME_DISPLAYNODE_OPS
 @public
@@ -212,7 +234,9 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 - (void)__setNeedsDisplay;
 
 /**
- * Called from [CALayer layoutSublayers:]. Executes the layout pass for the node
+ * Called whenever the node needs to layout its subnodes and, if it's already loaded, its subviews. Executes the layout pass for the node
+ *
+ * This method is thread-safe but asserts thread affinity.
  */
 - (void)__layout;
 
@@ -273,17 +297,13 @@ FOUNDATION_EXPORT NSString * const ASRenderingEngineDidDisplayNodesScheduledBefo
 - (nullable ASDisplayNode *)_supernodeWithClass:(Class)supernodeClass checkViewHierarchy:(BOOL)checkViewHierarchy;
 
 /**
- *  Convenience method to access this node's trait collection struct. Externally, users should interact
- *  with the trait collection via ASTraitCollection
+ * Whether this node rasterizes its descendants. See -enableSubtreeRasterization.
  */
-- (ASPrimitiveTraitCollection)primitiveTraitCollection;
+@property (atomic, readonly) BOOL rasterizesSubtree;
 
 /**
- * This is a non-deprecated internal declaration of the property. Public declaration
- * is in ASDisplayNode+Beta.h
+ * Called if a gesture recognizer was attached to an _ASDisplayView
  */
-@property (nonatomic, assign) BOOL shouldRasterizeDescendants;
-
 - (void)nodeViewDidAddGestureRecognizer;
 
 @end

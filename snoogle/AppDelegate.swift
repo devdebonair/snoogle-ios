@@ -17,16 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController: ASNavigationController!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
-//        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-//        do {
-//            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-//            print("file deleted")
-//        } catch let error {
-//            print(error)
-//        }
-
-        let rootController = FeedCollectionController(name: "gamedev")
+        print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
+        do {
+            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+            print("file deleted")
+        } catch let error {
+            print(error)
+        }
+        
+        let rootController = FeedCollectionController(name: "incest")
         navigationController = ASNavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)

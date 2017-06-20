@@ -22,7 +22,7 @@ class CellNodeText: ASCellNode {
         
         textNode.attributedText = attributedText
         textNode.maximumNumberOfLines = 0
-        textNode.isLayerBacked = true
+//        textNode.isLayerBacked = true
         
         automaticallyManagesSubnodes = true
     }

@@ -47,10 +47,12 @@ class Submission: Object, Mappable {
     dynamic var ups: Int = 0
     dynamic var isNSFW: Bool = false
     dynamic var saved: Bool = false
+    
     var likes = RealmOptional<Bool>()
     
     var media = List<Media>()
     var comments = List<Comment>()
+    var articleComponents = List<ArticleComponent>()
     
     dynamic var subreddit: Subreddit? = nil
     dynamic var author: User? = nil
@@ -105,7 +107,7 @@ class Submission: Object, Mappable {
         return guardedLikes ? .up : .down
     }
     
-    required convenience init(map: Map) {
+    required convenience init?(map: Map) {
         self.init()
     }
     
@@ -156,13 +158,8 @@ class Submission: Object, Mappable {
             likes.value = nil
         }
         
-        media                   <- (map["hamlet_album"], ListTransform<Media>())
+        media                   <- (map["hamlet_media"], ListTransform<Media>())
         comments                <- (map["comments"], ListTransform<Comment>())
-        
-        let singleMediaJSON = map.JSON["hamlet_media"] as? [String:Any]
-        if let singleMediaJSON = singleMediaJSON, let singleMedia = Media(JSON: singleMediaJSON) {
-            media.append(singleMedia)
-        }
-        
+        articleComponents       <- (map["selftext_parsed"], ListTransform<ArticleComponent>())
     }
 }

@@ -20,6 +20,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
     let vote: VoteType
     let saved: Bool
     let numberOfComments: Int
+    var newContent = [NSMutableAttributedString]()
     
     var meta: String {
         return "\(author)\nposted on \(origin)\n\(created.timeAgo(shortened: false))"
@@ -47,14 +48,13 @@ class ArticleViewModel: NSObject, ViewModelElement {
         if !media.isEmpty {
             retval.append(media)
         }
-        for paragraph in content {
+        for paragraph in newContent {
             retval.append(paragraph)
         }
         return retval
     }
     
     func cell(index: Int) -> ASCellNode {
-        
         let row = index
         let element = elements[row]
         
@@ -103,23 +103,12 @@ class ArticleViewModel: NSObject, ViewModelElement {
             return CellNodeMedia(media: element, inset: inset)
         }
         
-        
         // Content
-        let contentFont = UIFont(name: "Georgia", size: 16)!
-        if let element = element as? String {
+//        let contentFont = UIFont(name: "Georgia", size: 16)!
+        if let element = element as? NSMutableAttributedString {
             var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             if index == numberOfCells() - 1 { inset.bottom = 30 }
-            let paragraphStyleDescription = NSMutableParagraphStyle()
-            paragraphStyleDescription.lineSpacing = 8.0
-            let description = NSMutableAttributedString(
-                string: element,
-                attributes: [
-                    NSFontAttributeName: contentFont,
-                    NSForegroundColorAttributeName: UIColor.black,
-                    NSParagraphStyleAttributeName: paragraphStyleDescription
-                ])
-            
-            return CellNodeText(attributedText: description, inset: inset)
+            return CellNodeText(attributedText: element, inset: inset)
         }
         
         return ASCellNode()

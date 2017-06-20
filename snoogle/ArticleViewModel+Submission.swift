@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension ArticleViewModel {
     convenience init(submission: Submission) {
@@ -23,5 +24,17 @@ extension ArticleViewModel {
             }
         }
         self.init(author: submission.authorName, origin: "r/ \(submission.subredditName)", created: submission.created, title: submission.title, media: media, content: submission.selftextComponents, vote: submission.vote, saved: submission.saved, numberOfComments: submission.numComments)
+        
+        for item in submission.articleComponents {
+            let paragraphStyleDescription = NSMutableParagraphStyle()
+            paragraphStyleDescription.lineSpacing = 8.0
+            let attributesToAdd: [String:Any] = [
+                NSParagraphStyleAttributeName: paragraphStyleDescription
+            ]
+            let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: UIFont(name: "Georgia", size: 15)!)
+            if let block = block {
+                self.newContent.append(block)
+            }
+        }
     }
 }

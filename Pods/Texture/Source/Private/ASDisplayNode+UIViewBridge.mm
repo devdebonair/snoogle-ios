@@ -1,11 +1,18 @@
 //
 //  ASDisplayNode+UIViewBridge.mm
-//  AsyncDisplayKit
+//  Texture
 //
 //  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
+//  LICENSE file in the /ASDK-Licenses directory of this source tree. An additional
+//  grant of patent rights can be found in the PATENTS file in the same directory.
+//
+//  Modifications to this file made after 4/13/2017 are: Copyright (c) 2017-present,
+//  Pinterest, Inc.  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 
 #import <AsyncDisplayKit/_ASCoreAnimationExtras.h>
@@ -234,7 +241,7 @@ if (shouldApply) { _layer.layerProperty = (layerValueExpr); } else { ASDisplayNo
 
   // For classes like ASTableNode, ASCollectionNode, ASScrollNode and similar - make sure UIView gets setFrame:
   struct ASDisplayNodeFlags flags = _flags;
-  BOOL specialPropertiesHandling = ASDisplayNodeNeedsSpecialPropertiesHandlingForFlags(flags);
+  BOOL specialPropertiesHandling = ASDisplayNodeNeedsSpecialPropertiesHandling(checkFlag(Synchronous), flags.layerBacked);
 
   BOOL nodeLoaded = __loaded(self);
   BOOL isMainThread = ASDisplayNodeThreadIsMain();
@@ -312,12 +319,12 @@ if (shouldApply) { _layer.layerProperty = (layerValueExpr); } else { ASDisplayNo
     ASPerformBlockOnMainThread(^{
       // The below operation must be performed on the main thread to ensure against an extremely rare deadlock, where a parent node
       // begins materializing the view / layer hierarchy (locking itself or a descendant) while this node walks up
-      // the tree and requires locking that node to access .shouldRasterizeDescendants.
+      // the tree and requires locking that node to access .rasterizesSubtree.
       // For this reason, this method should be avoided when possible.  Use _hierarchyState & ASHierarchyStateRasterized.
       ASDisplayNodeAssertMainThread();
       ASDisplayNode *rasterizedContainerNode = self.supernode;
       while (rasterizedContainerNode) {
-        if (rasterizedContainerNode.shouldRasterizeDescendants) {
+        if (rasterizedContainerNode.rasterizesSubtree) {
           break;
         }
         rasterizedContainerNode = rasterizedContainerNode.supernode;
@@ -628,7 +635,7 @@ if (shouldApply) { _layer.layerProperty = (layerValueExpr); } else { ASDisplayNo
   if (shouldApply) {
     CGColorRef oldBackgroundCGColor = _layer.backgroundColor;
     
-    BOOL specialPropertiesHandling = ASDisplayNodeNeedsSpecialPropertiesHandlingForFlags(_flags);
+    BOOL specialPropertiesHandling = ASDisplayNodeNeedsSpecialPropertiesHandling(checkFlag(Synchronous), _flags.layerBacked);
     if (specialPropertiesHandling) {
         _view.backgroundColor = newBackgroundColor;
     } else {
@@ -771,6 +778,26 @@ if (shouldApply) { _layer.layerProperty = (layerValueExpr); } else { ASDisplayNo
 {
   _bridge_prologue_write;
   _setToLayer(edgeAntialiasingMask, edgeAntialiasingMask);
+}
+
+- (UISemanticContentAttribute)semanticContentAttribute
+{
+  _bridge_prologue_read;
+  if (AS_AT_LEAST_IOS9) {
+    return _getFromViewOnly(semanticContentAttribute);
+  }
+  return UISemanticContentAttributeUnspecified;
+}
+
+- (void)setSemanticContentAttribute:(UISemanticContentAttribute)semanticContentAttribute
+{
+  _bridge_prologue_write;
+  if (AS_AT_LEAST_IOS9) {
+    _setToViewOnly(semanticContentAttribute, semanticContentAttribute);
+#if YOGA
+    [self semanticContentAttributeDidChange:semanticContentAttribute];
+#endif
+  }
 }
 
 @end

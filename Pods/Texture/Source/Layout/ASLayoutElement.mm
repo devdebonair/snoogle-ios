@@ -1,13 +1,18 @@
 //
 //  ASLayoutElement.mm
-//  AsyncDisplayKit
-//
-//  Created by Huy Nguyen on 3/27/16.
+//  Texture
 //
 //  Copyright (c) 2014-present, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
-//  LICENSE file in the root directory of this source tree. An additional grant
-//  of patent rights can be found in the PATENTS file in the same directory.
+//  LICENSE file in the /ASDK-Licenses directory of this source tree. An additional
+//  grant of patent rights can be found in the PATENTS file in the same directory.
+//
+//  Modifications to this file made after 4/13/2017 are: Copyright (c) 2017-present,
+//  Pinterest, Inc.  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 
 #import "ASDisplayNode+FrameworkPrivate.h"
@@ -17,23 +22,11 @@
 #import <AsyncDisplayKit/ASThread.h>
 #import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
 
-#import <map>
 #import <atomic>
 
 #if YOGA
   #import YOGA_HEADER_PATH
 #endif
-
-extern void ASLayoutElementPerformBlockOnEveryElement(id<ASLayoutElement> element, void(^block)(id<ASLayoutElement> element))
-{
-  if (element) {
-    block(element);
-  }
-
-  for (id<ASLayoutElement> subelement in element.sublayoutElements) {
-    ASLayoutElementPerformBlockOnEveryElement(subelement, block);
-  }
-}
 
 #pragma mark - ASLayoutElementContext
 
@@ -68,39 +61,39 @@ ASLayoutElementContext ASLayoutElementContextMake(int32_t transitionID)
   return _ASLayoutElementContextMake(transitionID);
 }
 
-// Note: This is a non-recursive static lock. If it needs to be recursive, use ASDISPLAYNODE_MUTEX_RECURSIVE_INITIALIZER
-static ASDN::StaticMutex _layoutElementContextLock = ASDISPLAYNODE_MUTEX_INITIALIZER;
-static std::map<mach_port_t, ASLayoutElementContext> layoutElementContextMap;
+pthread_key_t ASLayoutElementContextKey;
 
-static inline mach_port_t ASLayoutElementGetCurrentContextKey()
+// pthread_key_create must be called before the key can be used. This function does that.
+void ASLayoutElementContextEnsureKey()
 {
-  return pthread_mach_thread_np(pthread_self());
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    pthread_key_create(&ASLayoutElementContextKey, free);
+  });
 }
 
 void ASLayoutElementSetCurrentContext(struct ASLayoutElementContext context)
 {
-  const mach_port_t key = ASLayoutElementGetCurrentContextKey();
-  ASDN::StaticMutexLocker l(_layoutElementContextLock);
-  layoutElementContextMap[key] = context;
+  ASLayoutElementContextEnsureKey();
+  ASDisplayNodeCAssert(pthread_getspecific(ASLayoutElementContextKey) == NULL, @"Nested ASLayoutElementContexts aren't supported.");
+  pthread_setspecific(ASLayoutElementContextKey, new ASLayoutElementContext(context));
 }
 
 struct ASLayoutElementContext ASLayoutElementGetCurrentContext()
 {
-  const mach_port_t key = ASLayoutElementGetCurrentContextKey();
-  ASDN::StaticMutexLocker l(_layoutElementContextLock);
-  const auto it = layoutElementContextMap.find(key);
-  if (it != layoutElementContextMap.end()) {
-    // Found an interator with above key. "it->first" is the key itself, "it->second" is the context value.
-    return it->second;
-  }
-  return ASLayoutElementContextNull;
+  ASLayoutElementContextEnsureKey();
+  auto heapCtx = (ASLayoutElementContext *)pthread_getspecific(ASLayoutElementContextKey);
+  return (heapCtx ? *heapCtx : ASLayoutElementContextNull);
 }
 
 void ASLayoutElementClearCurrentContext()
 {
-  const mach_port_t key = ASLayoutElementGetCurrentContextKey();
-  ASDN::StaticMutexLocker l(_layoutElementContextLock);
-  layoutElementContextMap.erase(key);
+  ASLayoutElementContextEnsureKey();
+  auto heapCtx = (ASLayoutElementContext *)pthread_getspecific(ASLayoutElementContextKey);
+  if (heapCtx != NULL) {
+    delete heapCtx;
+  }
+  pthread_setspecific(ASLayoutElementContextKey, NULL);
 }
 
 #pragma mark - ASLayoutElementStyle
@@ -145,7 +138,8 @@ do {\
   std::atomic<CGPoint> _layoutPosition;
 
 #if YOGA
-  std::atomic<ASStackLayoutDirection> _direction;
+  std::atomic<ASStackLayoutDirection> _flexDirection;
+  std::atomic<YGDirection> _direction;
   std::atomic<CGFloat> _spacing;
   std::atomic<ASStackLayoutJustifyContent> _justifyContent;
   std::atomic<ASStackLayoutAlignItems> _alignItems;
@@ -595,7 +589,8 @@ do {\
 
 #if YOGA
 
-- (ASStackLayoutDirection)direction           { return _direction.load(); }
+- (ASStackLayoutDirection)flexDirection       { return _flexDirection.load(); }
+- (YGDirection)direction                      { return _direction.load(); }
 - (CGFloat)spacing                            { return _spacing.load(); }
 - (ASStackLayoutJustifyContent)justifyContent { return _justifyContent.load(); }
 - (ASStackLayoutAlignItems)alignItems         { return _alignItems.load(); }
@@ -607,7 +602,8 @@ do {\
 - (CGFloat)aspectRatio                        { return _aspectRatio.load(); }
 - (YGWrap)flexWrap                            { return _flexWrap.load(); }
 
-- (void)setDirection:(ASStackLayoutDirection)direction         { _direction.store(direction); }
+- (void)setFlexDirection:(ASStackLayoutDirection)flexDirection { _flexDirection.store(flexDirection); }
+- (void)setDirection:(YGDirection)direction                    { _direction.store(direction); }
 - (void)setSpacing:(CGFloat)spacing                            { _spacing.store(spacing); }
 - (void)setJustifyContent:(ASStackLayoutJustifyContent)justify { _justifyContent.store(justify); }
 - (void)setAlignItems:(ASStackLayoutAlignItems)alignItems      { _alignItems.store(alignItems); }

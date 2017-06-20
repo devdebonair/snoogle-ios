@@ -30,6 +30,7 @@
 		561C8C6F1E7C77AD00D9AEB3 /* PrivateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C8C6E1E7C77AD00D9AEB3 /* PrivateMessage.swift */; };
 		561C8C711E7C78D500D9AEB3 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C8C701E7C78D500D9AEB3 /* Media.swift */; };
 		561C8C731E7C876100D9AEB3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561C8C721E7C876100D9AEB3 /* User.swift */; };
+		561CAE431EF4E58900FE1CE6 /* ArticleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */; };
 		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
 		562BD45A1E26983600F1DC01 /* NodeSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562BD4591E26983600F1DC01 /* NodeSlide.swift */; };
 		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
@@ -42,6 +43,9 @@
 		563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */; };
 		563D037F1E24C69C00BD24D4 /* NodeMediaAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D037E1E24C69C00BD24D4 /* NodeMediaAlbum.swift */; };
 		563D03831E257A8B00BD24D4 /* NodeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03821E257A8B00BD24D4 /* NodeMedia.swift */; };
+		56486D201EF57BCA00E68B53 /* ArticleMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */; };
+		56486D221EF5953000E68B53 /* ArticleContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56486D211EF5953000E68B53 /* ArticleContent.swift */; };
+		56486D241EF597F400E68B53 /* MarkdownBlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56486D231EF597F400E68B53 /* MarkdownBlockType.swift */; };
 		565113141E89E1DA00DC9D69 /* VoteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565113131E89E1DA00DC9D69 /* VoteType.swift */; };
 		5651C0651EDC7A28001F3FE9 /* MenuItemCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C0641EDC7A28001F3FE9 /* MenuItemCollectionController.swift */; };
 		5651C0671EDC91DC001F3FE9 /* SubmissionSortSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651C0661EDC91DC001F3FE9 /* SubmissionSortSectionController.swift */; };
@@ -70,11 +74,25 @@
 		565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEC1EDC0E870024CB65 /* TextCell.swift */; };
 		567B02771E29081D00C32C09 /* SortSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02761E29081D00C32C09 /* SortSelectViewModel.swift */; };
 		567B02791E290D9900C32C09 /* CellNodeSortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */; };
+		567DA6131EF964B40089FCFD /* MarkdownHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567DA6121EF964B40089FCFD /* MarkdownHeader.swift */; };
 		568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568CA6751E201B26009F1289 /* PostViewModel.swift */; };
+		56938F641EF808810026565F /* MarkdownInlineElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56938F631EF808810026565F /* MarkdownInlineElement.swift */; };
+		56938F661EF8098A0026565F /* MarkdownStrong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56938F651EF8098A0026565F /* MarkdownStrong.swift */; };
+		56938F681EF80DDA0026565F /* MarkdownDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56938F671EF80DDA0026565F /* MarkdownDelete.swift */; };
 		56978ACF1E1F7D9E0060B558 /* CellNodeComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56978ACE1E1F7D9E0060B558 /* CellNodeComment.swift */; };
 		56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A5B39A1E0C597700C6A08E /* AppDelegate.swift */; };
 		56A5B3A21E0C597700C6A08E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A5B3A11E0C597700C6A08E /* Assets.xcassets */; };
 		56A5B3A51E0C597700C6A08E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */; };
+		56ABC6191EF8136300DC3B46 /* MarkdownEmphasis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6181EF8136300DC3B46 /* MarkdownEmphasis.swift */; };
+		56ABC61B1EF8139E00DC3B46 /* MarkdownInlineCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC61A1EF8139E00DC3B46 /* MarkdownInlineCode.swift */; };
+		56ABC61D1EF813F700DC3B46 /* MarkdownLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC61C1EF813F700DC3B46 /* MarkdownLink.swift */; };
+		56ABC61F1EF8159300DC3B46 /* MarkdownBlockElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC61E1EF8159300DC3B46 /* MarkdownBlockElement.swift */; };
+		56ABC6211EF820F500DC3B46 /* MarkdownBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6201EF820F500DC3B46 /* MarkdownBuilder.swift */; };
+		56ABC6231EF8210D00DC3B46 /* MarkdownParagraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6221EF8210D00DC3B46 /* MarkdownParagraph.swift */; };
+		56ABC6251EF8219900DC3B46 /* MarkdownStyleElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6241EF8219900DC3B46 /* MarkdownStyleElement.swift */; };
+		56ABC6271EF82F7000DC3B46 /* MarkdownBlockQuote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6261EF82F7000DC3B46 /* MarkdownBlockQuote.swift */; };
+		56ABC6291EF8374100DC3B46 /* MarkdownCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC6281EF8374100DC3B46 /* MarkdownCode.swift */; };
+		56ABC62B1EF844C300DC3B46 /* MarkdownInlineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56ABC62A1EF844C300DC3B46 /* MarkdownInlineType.swift */; };
 		56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */; };
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
@@ -125,6 +143,7 @@
 		561C8C6E1E7C77AD00D9AEB3 /* PrivateMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateMessage.swift; sourceTree = "<group>"; };
 		561C8C701E7C78D500D9AEB3 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		561C8C721E7C876100D9AEB3 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponent.swift; sourceTree = "<group>"; };
 		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
 		562BD4591E26983600F1DC01 /* NodeSlide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeSlide.swift; sourceTree = "<group>"; };
 		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -137,6 +156,9 @@
 		563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeButtonBar.swift; sourceTree = "<group>"; };
 		563D037E1E24C69C00BD24D4 /* NodeMediaAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMediaAlbum.swift; sourceTree = "<group>"; };
 		563D03821E257A8B00BD24D4 /* NodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMedia.swift; sourceTree = "<group>"; };
+		56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMeta.swift; sourceTree = "<group>"; };
+		56486D211EF5953000E68B53 /* ArticleContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleContent.swift; sourceTree = "<group>"; };
+		56486D231EF597F400E68B53 /* MarkdownBlockType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockType.swift; sourceTree = "<group>"; };
 		565113131E89E1DA00DC9D69 /* VoteType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteType.swift; sourceTree = "<group>"; };
 		5651C0641EDC7A28001F3FE9 /* MenuItemCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemCollectionController.swift; sourceTree = "<group>"; };
 		5651C0661EDC91DC001F3FE9 /* SubmissionSortSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmissionSortSectionController.swift; sourceTree = "<group>"; };
@@ -165,13 +187,27 @@
 		565AAFEC1EDC0E870024CB65 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		567B02761E29081D00C32C09 /* SortSelectViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortSelectViewModel.swift; sourceTree = "<group>"; };
 		567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeSortSelection.swift; sourceTree = "<group>"; };
+		567DA6121EF964B40089FCFD /* MarkdownHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHeader.swift; sourceTree = "<group>"; };
 		568CA6751E201B26009F1289 /* PostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		56938F631EF808810026565F /* MarkdownInlineElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownInlineElement.swift; sourceTree = "<group>"; };
+		56938F651EF8098A0026565F /* MarkdownStrong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownStrong.swift; sourceTree = "<group>"; };
+		56938F671EF80DDA0026565F /* MarkdownDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDelete.swift; sourceTree = "<group>"; };
 		56978ACE1E1F7D9E0060B558 /* CellNodeComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CellNodeComment.swift; path = ../CellNodeComment.swift; sourceTree = "<group>"; };
 		56A5B3971E0C597700C6A08E /* snoogle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snoogle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A5B39A1E0C597700C6A08E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56A5B3A11E0C597700C6A08E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56A5B3A41E0C597700C6A08E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A5B3A61E0C597700C6A08E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56ABC6181EF8136300DC3B46 /* MarkdownEmphasis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownEmphasis.swift; sourceTree = "<group>"; };
+		56ABC61A1EF8139E00DC3B46 /* MarkdownInlineCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownInlineCode.swift; sourceTree = "<group>"; };
+		56ABC61C1EF813F700DC3B46 /* MarkdownLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownLink.swift; sourceTree = "<group>"; };
+		56ABC61E1EF8159300DC3B46 /* MarkdownBlockElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockElement.swift; sourceTree = "<group>"; };
+		56ABC6201EF820F500DC3B46 /* MarkdownBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBuilder.swift; sourceTree = "<group>"; };
+		56ABC6221EF8210D00DC3B46 /* MarkdownParagraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownParagraph.swift; sourceTree = "<group>"; };
+		56ABC6241EF8219900DC3B46 /* MarkdownStyleElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownStyleElement.swift; sourceTree = "<group>"; };
+		56ABC6261EF82F7000DC3B46 /* MarkdownBlockQuote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownBlockQuote.swift; sourceTree = "<group>"; };
+		56ABC6281EF8374100DC3B46 /* MarkdownCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownCode.swift; sourceTree = "<group>"; };
+		56ABC62A1EF844C300DC3B46 /* MarkdownInlineType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownInlineType.swift; sourceTree = "<group>"; };
 		56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
@@ -252,6 +288,8 @@
 				56119E861E8556B600A19C40 /* StringTransform.swift */,
 				56119E9B1E8796CC00A19C40 /* ListingSort.swift */,
 				565113131E89E1DA00DC9D69 /* VoteType.swift */,
+				56486D231EF597F400E68B53 /* MarkdownBlockType.swift */,
+				56ABC62A1EF844C300DC3B46 /* MarkdownInlineType.swift */,
 			);
 			name = enums;
 			sourceTree = "<group>";
@@ -259,9 +297,11 @@
 		56119E9D1E87970100A19C40 /* structs */ = {
 			isa = PBXGroup;
 			children = (
+				56938F621EF6FB670026565F /* markdown */,
 				56E9B4571E7E599F00578389 /* MultiredditEdits.swift */,
 				56E62B081ECB307100ACFC51 /* StructComment.swift */,
 				5651C0881EE1218A001F3FE9 /* StructSubredditListItem.swift */,
+				56486D211EF5953000E68B53 /* ArticleContent.swift */,
 			);
 			name = structs;
 			sourceTree = "<group>";
@@ -279,6 +319,8 @@
 				561C8C6E1E7C77AD00D9AEB3 /* PrivateMessage.swift */,
 				561C8C701E7C78D500D9AEB3 /* Media.swift */,
 				56DDBCA01E81852900923CF5 /* Query.swift */,
+				561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */,
+				56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */,
 			);
 			name = realm;
 			sourceTree = "<group>";
@@ -373,6 +415,50 @@
 			name = transition;
 			sourceTree = "<group>";
 		};
+		567DA6141EF964FC0089FCFD /* blocks */ = {
+			isa = PBXGroup;
+			children = (
+				56ABC6221EF8210D00DC3B46 /* MarkdownParagraph.swift */,
+				56ABC6261EF82F7000DC3B46 /* MarkdownBlockQuote.swift */,
+				56ABC6281EF8374100DC3B46 /* MarkdownCode.swift */,
+				567DA6121EF964B40089FCFD /* MarkdownHeader.swift */,
+			);
+			name = blocks;
+			sourceTree = "<group>";
+		};
+		567DA6151EF965030089FCFD /* inline */ = {
+			isa = PBXGroup;
+			children = (
+				56938F651EF8098A0026565F /* MarkdownStrong.swift */,
+				56938F671EF80DDA0026565F /* MarkdownDelete.swift */,
+				56ABC6181EF8136300DC3B46 /* MarkdownEmphasis.swift */,
+				56ABC61A1EF8139E00DC3B46 /* MarkdownInlineCode.swift */,
+				56ABC61C1EF813F700DC3B46 /* MarkdownLink.swift */,
+			);
+			name = inline;
+			sourceTree = "<group>";
+		};
+		567DA6161EF9650A0089FCFD /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				56ABC6241EF8219900DC3B46 /* MarkdownStyleElement.swift */,
+				56938F631EF808810026565F /* MarkdownInlineElement.swift */,
+				56ABC61E1EF8159300DC3B46 /* MarkdownBlockElement.swift */,
+			);
+			name = protocols;
+			sourceTree = "<group>";
+		};
+		56938F621EF6FB670026565F /* markdown */ = {
+			isa = PBXGroup;
+			children = (
+				567DA6161EF9650A0089FCFD /* protocols */,
+				567DA6151EF965030089FCFD /* inline */,
+				567DA6141EF964FC0089FCFD /* blocks */,
+				56ABC6201EF820F500DC3B46 /* MarkdownBuilder.swift */,
+			);
+			name = markdown;
+			sourceTree = "<group>";
+		};
 		56A5B38E1E0C597600C6A08E = {
 			isa = PBXGroup;
 			children = (
@@ -399,19 +485,19 @@
 				56A5B3A61E0C597700C6A08E /* Info.plist */,
 				56A5B3A31E0C597700C6A08E /* LaunchScreen.storyboard */,
 				56E9B4581E7E599F00578389 /* Network.swift */,
-				56119E9D1E87970100A19C40 /* structs */,
+				562C1F0F1E14663D001BA898 /* cells */,
+				562C1F111E146675001BA898 /* controllers */,
 				56119E9A1E87966500A19C40 /* enums */,
-				56EE8C921E8A13320043A9DF /* services */,
-				561C8C611E7C46F800D9AEB3 /* realm */,
+				562C1F0C1E145FD2001BA898 /* extensions */,
+				562C1F101E14665D001BA898 /* models */,
 				563D037D1E24C66F00BD24D4 /* nodes */,
 				562C1F141E147E9A001BA898 /* protocols */,
-				562C1F111E146675001BA898 /* controllers */,
+				561C8C611E7C46F800D9AEB3 /* realm */,
 				56119E951E877DC100A19C40 /* section controllers */,
-				56C4E2BF1E227E0F0080E6E0 /* view models */,
-				562C1F101E14665D001BA898 /* models */,
+				56EE8C921E8A13320043A9DF /* services */,
+				56119E9D1E87970100A19C40 /* structs */,
 				565AAFDF1EDC050A0024CB65 /* transition */,
-				562C1F0F1E14663D001BA898 /* cells */,
-				562C1F0C1E145FD2001BA898 /* extensions */,
+				56C4E2BF1E227E0F0080E6E0 /* view models */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
 			);
 			path = snoogle;
@@ -480,7 +566,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Vincent Moore";
 				TargetAttributes = {
 					56A5B3961E0C597600C6A08E = {
@@ -581,6 +667,7 @@
 				56E62B0D1ECB504400ACFC51 /* CommentSectionController.swift in Sources */,
 				56EE8C9A1E8A13F90043A9DF /* ServiceSubreddit.swift in Sources */,
 				56EE8CA41E8A14C80043A9DF /* ServiceMe.swift in Sources */,
+				56486D201EF57BCA00E68B53 /* ArticleMeta.swift in Sources */,
 				56119E8E1E87685E00A19C40 /* SectionController.swift in Sources */,
 				56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */,
 				567B02771E29081D00C32C09 /* SortSelectViewModel.swift in Sources */,
@@ -593,22 +680,31 @@
 				565AAFE31EDC05570024CB65 /* Header.swift in Sources */,
 				5651C0751EDFAA88001F3FE9 /* MenuSubredditSettingsSectionController.swift in Sources */,
 				561C8C6B1E7C76D700D9AEB3 /* ListingSubreddit.swift in Sources */,
+				56ABC61D1EF813F700DC3B46 /* MarkdownLink.swift in Sources */,
 				565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */,
+				56ABC6271EF82F7000DC3B46 /* MarkdownBlockQuote.swift in Sources */,
 				56EE8CA01E8A147A0043A9DF /* ServiceUser.swift in Sources */,
 				56119E941E8774FF00A19C40 /* FeedCollectionController.swift in Sources */,
+				56ABC61F1EF8159300DC3B46 /* MarkdownBlockElement.swift in Sources */,
 				562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */,
+				567DA6131EF964B40089FCFD /* MarkdownHeader.swift in Sources */,
+				561CAE431EF4E58900FE1CE6 /* ArticleComponent.swift in Sources */,
 				56E9B4631E7E599F00578389 /* MultiredditEdits.swift in Sources */,
 				56119E871E8556B600A19C40 /* StringTransform.swift in Sources */,
 				563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
+				56ABC6231EF8210D00DC3B46 /* MarkdownParagraph.swift in Sources */,
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				563D037F1E24C69C00BD24D4 /* NodeMediaAlbum.swift in Sources */,
 				5651C07D1EDFC7FA001F3FE9 /* MenuUserProfileSectionController.swift in Sources */,
 				5651C06F1EDF36F7001F3FE9 /* MenuComposeSectionController.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56EE8C941E8A135E0043A9DF /* ServiceFrontpage.swift in Sources */,
+				56938F681EF80DDA0026565F /* MarkdownDelete.swift in Sources */,
+				56938F641EF808810026565F /* MarkdownInlineElement.swift in Sources */,
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
+				56ABC6291EF8374100DC3B46 /* MarkdownCode.swift in Sources */,
 				565113141E89E1DA00DC9D69 /* VoteType.swift in Sources */,
 				5651C0771EDFAAD3001F3FE9 /* MenuItemSubredditSettingsController.swift in Sources */,
 				56EE8CA21E8A14AA0043A9DF /* Service.swift in Sources */,
@@ -620,11 +716,14 @@
 				562C1F0E1E145FE9001BA898 /* Date+TimeAgo.swift in Sources */,
 				56119E9C1E8796CC00A19C40 /* ListingSort.swift in Sources */,
 				5651C07B1EDFC555001F3FE9 /* MenuUserProfileViewModel.swift in Sources */,
+				56ABC6191EF8136300DC3B46 /* MarkdownEmphasis.swift in Sources */,
+				56ABC61B1EF8139E00DC3B46 /* MarkdownInlineCode.swift in Sources */,
 				561C8C731E7C876100D9AEB3 /* User.swift in Sources */,
 				56119E991E87965E00A19C40 /* MediaType.swift in Sources */,
 				561C8C671E7C761E00D9AEB3 /* Subreddit.swift in Sources */,
 				561C8C631E7C4D1700D9AEB3 /* Submission.swift in Sources */,
 				565AAFE51EDC05710024CB65 /* CardTransition.swift in Sources */,
+				56ABC6251EF8219900DC3B46 /* MarkdownStyleElement.swift in Sources */,
 				561C8C6F1E7C77AD00D9AEB3 /* PrivateMessage.swift in Sources */,
 				5651C0871EE11F79001F3FE9 /* MenuSubredditListCollectionController.swift in Sources */,
 				567B02791E290D9900C32C09 /* CellNodeSortSelection.swift in Sources */,
@@ -632,7 +731,9 @@
 				568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */,
 				5651C0651EDC7A28001F3FE9 /* MenuItemCollectionController.swift in Sources */,
 				565AAFE11EDC05350024CB65 /* Transition.swift in Sources */,
+				56ABC62B1EF844C300DC3B46 /* MarkdownInlineType.swift in Sources */,
 				5651C0851EE11F37001F3FE9 /* MenuSubredditListSectionController.swift in Sources */,
+				56486D221EF5953000E68B53 /* ArticleContent.swift in Sources */,
 				56119E901E8768C400A19C40 /* NSObject+IGListDiffable.swift in Sources */,
 				562C1F181E148061001BA898 /* Video.swift in Sources */,
 				562BD45A1E26983600F1DC01 /* NodeSlide.swift in Sources */,
@@ -656,9 +757,12 @@
 				5651C07F1EDFC853001F3FE9 /* MenuUserProfileController.swift in Sources */,
 				562C1F071E11C921001BA898 /* CellNodePost.swift in Sources */,
 				56EE8CA81E8B4CB10043A9DF /* ASButtonNode+Animate.swift in Sources */,
+				56486D241EF597F400E68B53 /* MarkdownBlockType.swift in Sources */,
 				561C8C691E7C763800D9AEB3 /* Comment.swift in Sources */,
 				5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,
+				56938F661EF8098A0026565F /* MarkdownStrong.swift in Sources */,
+				56ABC6211EF820F500DC3B46 /* MarkdownBuilder.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 				56EE8C961E8A13930043A9DF /* ServiceMultireddit.swift in Sources */,
 				56119E971E877E4000A19C40 /* SubmissionSectionController.swift in Sources */,
@@ -688,7 +792,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -696,7 +802,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -738,7 +848,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -746,7 +858,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

@@ -51,21 +51,18 @@ class TextNodeViewController: ASViewController<ASCollectionNode> {
     
     func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
         let width: CGFloat = node.frame.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right
-        let max = CGSize(width: width, height: CGFloat(FLT_MAX))
+        let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
         let min = CGSize(width: width, height: 0.0)
         return ASSizeRange(min: min, max: max)
     }
     
     override func viewDidLoad() {
         node.frame.size.height = 500
-        print(node.frame.size.height)
         super.viewDidLoad()
         node.backgroundColor = .white
         node.view.bounces = false
-        print(node.frame.size)
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
-        print(navigationController)
     }
 
     override func didReceiveMemoryWarning() {
