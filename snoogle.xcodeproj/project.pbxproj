@@ -286,8 +286,6 @@
 				56119E861E8556B600A19C40 /* StringTransform.swift */,
 				56119E9B1E8796CC00A19C40 /* ListingSort.swift */,
 				565113131E89E1DA00DC9D69 /* VoteType.swift */,
-				56486D231EF597F400E68B53 /* MarkdownBlockType.swift */,
-				56ABC62A1EF844C300DC3B46 /* MarkdownInlineType.swift */,
 			);
 			name = enums;
 			sourceTree = "<group>";
@@ -295,7 +293,6 @@
 		56119E9D1E87970100A19C40 /* structs */ = {
 			isa = PBXGroup;
 			children = (
-				56938F621EF6FB670026565F /* markdown */,
 				56E9B4571E7E599F00578389 /* MultiredditEdits.swift */,
 				56E62B081ECB307100ACFC51 /* StructComment.swift */,
 				5651C0881EE1218A001F3FE9 /* StructSubredditListItem.swift */,
@@ -412,6 +409,23 @@
 			name = transition;
 			sourceTree = "<group>";
 		};
+		566E6FB91EFAB48C0014E077 /* libraries */ = {
+			isa = PBXGroup;
+			children = (
+				56938F621EF6FB670026565F /* markdown */,
+			);
+			path = libraries;
+			sourceTree = "<group>";
+		};
+		566E6FBA1EFAB4DF0014E077 /* enums */ = {
+			isa = PBXGroup;
+			children = (
+				56ABC62A1EF844C300DC3B46 /* MarkdownInlineType.swift */,
+				56486D231EF597F400E68B53 /* MarkdownBlockType.swift */,
+			);
+			path = enums;
+			sourceTree = "<group>";
+		};
 		567DA6141EF964FC0089FCFD /* blocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,12 +462,14 @@
 		56938F621EF6FB670026565F /* markdown */ = {
 			isa = PBXGroup;
 			children = (
+				566E6FBA1EFAB4DF0014E077 /* enums */,
 				567DA6161EF9650A0089FCFD /* protocols */,
 				567DA6151EF965030089FCFD /* inline */,
 				567DA6141EF964FC0089FCFD /* blocks */,
 				56ABC6201EF820F500DC3B46 /* MarkdownBuilder.swift */,
 			);
 			name = markdown;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		56A5B38E1E0C597600C6A08E = {
@@ -486,6 +502,7 @@
 				562C1F111E146675001BA898 /* controllers */,
 				56119E9A1E87966500A19C40 /* enums */,
 				562C1F0C1E145FD2001BA898 /* extensions */,
+				566E6FB91EFAB48C0014E077 /* libraries */,
 				562C1F101E14665D001BA898 /* models */,
 				563D037D1E24C66F00BD24D4 /* nodes */,
 				562C1F141E147E9A001BA898 /* protocols */,

@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error)
         }
         
-        let rootController = FeedCollectionController(name: "rocketleague")
+        let rootController = FeedCollectionController(name: "incest")
         navigationController = ASNavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
