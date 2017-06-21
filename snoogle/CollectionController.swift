@@ -10,7 +10,7 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegate, IGListAdapterDataSource {
+class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDelegate, IGListAdapterDataSource {
     var models = [IGListDiffable]()
     
     lazy var adapter: IGListAdapter = {
@@ -24,15 +24,13 @@ class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegat
     
     init() {
         collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
-        super.init(node: ASDisplayNode())
+        super.init(node: collectionNode)
         collectionNode.delegate = self
         self.adapter.setASDKCollectionNode(collectionNode)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.frame.size.height = node.frame.height - UIApplication.shared.statusBarFrame.height - (navigationController?.navigationBar.frame.height ?? 0)
-        collectionNode.frame = node.bounds
         collectionNode.backgroundColor = .clear
         node.addSubnode(collectionNode)
         self.adapter.performUpdates(animated: true, completion: nil)
