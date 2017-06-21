@@ -32,7 +32,6 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionNode.backgroundColor = .clear
-        node.addSubnode(collectionNode)
         self.adapter.performUpdates(animated: true, completion: nil)
     }
     

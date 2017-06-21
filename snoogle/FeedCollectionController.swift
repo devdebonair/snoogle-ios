@@ -55,6 +55,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         super.viewWillAppear(animated)
         self.navigationController?.isToolbarHidden = false
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isToolbarHidden = true
+    }
     
     func setLeftBarButton(subredditName: String) {
         let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
@@ -72,10 +77,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         leftBarItem = textNode.view
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.isToolbarHidden = true
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         if let sub = sub {
             setLeftBarButton(subredditName: sub.displayName)
@@ -83,7 +84,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     override func viewDidLoad() {
-        node.frame.size.height = node.frame.height - TOOLBAR_HEIGHT
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
