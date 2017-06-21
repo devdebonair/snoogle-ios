@@ -85,5 +85,4 @@ class ArticleCollectionController: CollectionController {
         }
         return CommentSectionController()
     }
-    
 }

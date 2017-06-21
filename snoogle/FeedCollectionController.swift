@@ -141,7 +141,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         token = guardedListing.addNotificationBlock({ (object: ObjectChange) in
             self.refresh()
         })
-        
+
         self.refresh()
     }
     
