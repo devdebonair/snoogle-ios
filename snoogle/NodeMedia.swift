@@ -24,21 +24,29 @@ class NodeMedia: ASDisplayNode {
         automaticallyManagesSubnodes = true
         
         if let media = media as? Photo {
-            if let _ = media.urlSmall, let _ = media.urlMedium, let _ = media.urlLarge {
-                mediaView = ASMultiplexImageNode()
-                if let mediaView = mediaView as? ASMultiplexImageNode {
-                    mediaView.imageIdentifiers = ["large" as NSCopying & NSObjectProtocol, "medium" as NSCopying & NSObjectProtocol, "small" as NSCopying & NSObjectProtocol]
-                    mediaView.downloadsIntermediateImages = true
-                    mediaView.dataSource = self
-                    mediaView.isLayerBacked = true
-                }
-            } else {
-                mediaView = ASNetworkImageNode()
-                if let mediaView = mediaView as? ASNetworkImageNode {
-                    mediaView.url = media.url
-                    mediaView.contentMode = .scaleAspectFill
-                    mediaView.isLayerBacked = true
-                }
+            // Specify order of sizes
+            let urlKeys: [PhotoSizeType] = [.huge, .large, .medium, .small]
+            var idenitifers = [NSCopying & NSObjectProtocol]()
+            let urls: [PhotoSizeType:URL?] = [
+                .huge: media.urlHuge,
+                .large: media.urlLarge,
+                .medium: media.urlMedium,
+                .small: media.urlSmall
+            ]
+            
+            for key in urlKeys {
+                guard let urlValue = urls[key], let _ = urlValue else { continue }
+                // TODO: Multiplex identifier casting may be unnecessary
+                let castedKey = key.rawValue as NSCopying & NSObjectProtocol
+                idenitifers.append(castedKey)
+            }
+            
+            mediaView = ASMultiplexImageNode()
+            if let mediaView = mediaView as? ASMultiplexImageNode {
+                mediaView.imageIdentifiers = idenitifers
+                mediaView.downloadsIntermediateImages = true
+                mediaView.dataSource = self
+                mediaView.isLayerBacked = true
             }
         }
         
@@ -76,7 +84,6 @@ class NodeMedia: ASDisplayNode {
         let insetSpec = ASInsetLayoutSpec(insets: inset, child: ratioSpec)
         return insetSpec
     }
-    
 }
 
 extension NodeMedia: ASMultiplexImageNodeDataSource {
@@ -89,6 +96,8 @@ extension NodeMedia: ASMultiplexImageNodeDataSource {
             return media.urlMedium
         case "large":
             return media.urlLarge
+        case "huge":
+            return media.urlHuge
         default:
             return nil
         }

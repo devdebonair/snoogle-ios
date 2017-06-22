@@ -60,11 +60,9 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         let truncationText = subtitle
         truncationText?.mutableString.setString(" ... more")
         textSubtitle.truncationAttributedText = truncationText
-        
         textSubtitle.maximumNumberOfLines = 5
         
         let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
-        
         separator.backgroundColor = separatorColor
         
         if media.count == 1, let mediaItem = media.first {
