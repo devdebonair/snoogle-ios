@@ -53,7 +53,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isToolbarHidden = false
         if let sub = sub {
             setLeftBarButton(subredditName: sub.displayName)
         }
@@ -61,24 +60,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.isToolbarHidden = true
         StatusBar.set(color: .clear)
-    }
-    
-    func setLeftBarButton(subredditName: String) {
-        let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
-        let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBlack)
-            ])
-        let range = (attributeString.string as NSString).range(of: "r/")
-        attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
-        
-        let textNode = ASTextNode()
-        textNode.attributedText = attributeString
-        let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
-        textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        
-        leftBarItem = textNode.view
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -94,6 +76,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.toolbar.backgroundColor = .white
         navigationController?.toolbar.barTintColor = .white
         navigationController?.toolbar.isTranslucent = false
+        navigationController?.isToolbarHidden = false
         
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
@@ -120,6 +103,22 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
                 }
             }
         }
+    }
+    
+    func setLeftBarButton(subredditName: String) {
+        let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
+        let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBlack)
+            ])
+        let range = (attributeString.string as NSString).range(of: "r/")
+        attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
+        
+        let textNode = ASTextNode()
+        textNode.attributedText = attributeString
+        let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
+        textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        
+        leftBarItem = textNode.view
     }
     
     // reset the listing
