@@ -68,4 +68,3 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
         super.didReceiveMemoryWarning()
     }
 }
-
