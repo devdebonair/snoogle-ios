@@ -90,7 +90,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
                 string: element,
                 attributes: [
                     NSFontAttributeName: titleFont,
-                    NSForegroundColorAttributeName: UIColor.black,
+                    NSForegroundColorAttributeName: UIColor.darkText,
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             
@@ -104,7 +104,6 @@ class ArticleViewModel: NSObject, ViewModelElement {
         }
         
         // Content
-//        let contentFont = UIFont(name: "Georgia", size: 16)!
         if let element = element as? NSMutableAttributedString {
             var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             if index == numberOfCells() - 1 { inset.bottom = 30 }
