@@ -18,14 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 //        print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
-        do {
-            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-            print("file deleted")
-        } catch let error {
-            print(error)
-        }
+//        do {
+//            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+//            print("file deleted")
+//        } catch let error {
+//            print(error)
+//        }
         
-        let rootController = FeedCollectionController(name: "rocketleague")
+        let rootController = FeedCollectionController(name: "re_zero")
         navigationController = ASNavigationController(rootViewController: rootController)
         navigationController.hidesBarsOnSwipe = true
         
@@ -39,16 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Error with audio sessions")
         }
         
-        setStatusBarBackgroundColor(color: .white)
-        
         return true
-    }
-    
-    func setStatusBarBackgroundColor(color: UIColor) {
-        
-        guard let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else { return }
-        
-//        statusBar.backgroundColor = color
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

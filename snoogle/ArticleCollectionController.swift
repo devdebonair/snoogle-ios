@@ -62,6 +62,16 @@ class ArticleCollectionController: CollectionController {
         self.refresh()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        StatusBar.set(color: .white)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        StatusBar.set(color: .clear)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionNode.backgroundColor = .white

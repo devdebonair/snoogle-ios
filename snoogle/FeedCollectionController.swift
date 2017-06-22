@@ -54,11 +54,15 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isToolbarHidden = false
+        if let sub = sub {
+            setLeftBarButton(subredditName: sub.displayName)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isToolbarHidden = true
+        StatusBar.set(color: .clear)
     }
     
     func setLeftBarButton(subredditName: String) {
@@ -78,9 +82,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let sub = sub {
-            setLeftBarButton(subredditName: sub.displayName)
-        }
+        super.viewDidAppear(animated)
+        StatusBar.set(color: .white)
     }
     
     override func viewDidLoad() {
