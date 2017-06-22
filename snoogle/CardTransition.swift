@@ -22,8 +22,8 @@ class CardTransition: Transition {
     var cardCornerRadius: CGFloat = 10.0
     var cardHeight: CGFloat = 0.8
     
-    override init(duration: TimeInterval) {
-        super.init(duration: duration)
+    override init(duration: TimeInterval = 0.0, delay: TimeInterval = 0.0) {
+        super.init(duration: duration, delay: delay)
         overlayNode.alpha = 0.0
         overlayNode.backgroundColor = .black
         overlayNode.frame = UIScreen.main.bounds
@@ -75,7 +75,7 @@ class CardTransition: Transition {
         card.frame.origin.y = container.frame.height
         cancelCell.frame.origin.y = toController.node.frame.origin.y + toController.node.frame.height
         
-        UIView.animate(withDuration: self.animationDuration, delay: 0.0, options: [.curveEaseInOut], animations: {
+        UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
             self.snapshot.center.x = container.center.x
             
             self.card.frame.origin.y = container.frame.height - self.card.frame.height
@@ -90,7 +90,7 @@ class CardTransition: Transition {
     
     override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
         let overlayAlpha: CGFloat = 0.0
-        UIView.animate(withDuration: self.animationDuration, delay: 0.0, options: [.curveEaseInOut], animations: {
+        UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
             self.snapshot.frame.size = container.frame.size
             self.snapshot.frame.origin = .zero
             

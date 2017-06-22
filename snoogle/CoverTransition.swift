@@ -17,8 +17,8 @@ class CoverTransition: Transition {
     
     var automaticallyManageGesture: Bool = false
     
-    override init(duration: TimeInterval) {
-        super.init(duration: duration)
+    override init(duration: TimeInterval = 0.0, delay: TimeInterval = 0.0) {
+        super.init(duration: duration, delay: delay)
     }
     
     override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
@@ -42,10 +42,12 @@ class CoverTransition: Transition {
         fromController.view.isHidden = true
         toController.view.frame.origin.x = container.frame.width
         
-        UIView.animate(withDuration: self.animationDuration, delay: 0.0, options: [.curveEaseInOut], animations: {
-            self.snapshot.center.x = container.center.x
-            self.snapshot.alpha = 0.2
-            self.snapshot.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
+        UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
+            let screenPercentage: CGFloat =  0.01
+            self.snapshot.center.x = container.center.x + (container.frame.width * screenPercentage)
+            self.snapshot.alpha = 0.0
+            let scale: CGFloat = 0.95
+            self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
             toController.view.frame.origin.x = 0
         }) { (success: Bool) in
             completion(success)
@@ -53,9 +55,15 @@ class CoverTransition: Transition {
     }
     
     override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
-        UIView.animate(withDuration: self.animationDuration, delay: 0.0, options: [.curveEaseInOut], animations: {
+        fromController.view.clipsToBounds = false
+        fromController.view.layer.shadowOffset = CGSize(width: -8.0, height: 0.0)
+        fromController.view.layer.shadowOpacity = 0.20
+        fromController.view.layer.shadowRadius = 1.0
+        fromController.view.layer.shadowPath = UIBezierPath(rect: fromController.view.bounds).cgPath
+        UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveLinear], animations: {
             self.snapshot.transform = .identity
             self.snapshot.alpha = 1.0
+            self.snapshot.center.x = container.center.x
             fromController.view.frame.origin.x = container.frame.width
         }) { (success: Bool) in
             self.snapshot.removeFromSuperview()

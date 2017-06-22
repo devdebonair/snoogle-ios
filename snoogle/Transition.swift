@@ -18,14 +18,16 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
     }
     
     let animationDuration: TimeInterval
+    let animationDelay: TimeInterval
     var type: TransitionType = .present
     var isAnimating = false
     
     var toViewController: UIViewController? = nil
     var fromViewController: UIViewController? = nil
     
-    init(duration: TimeInterval) {
+    init(duration: TimeInterval = 0.0, delay: TimeInterval = 0.0) {
         self.animationDuration = duration
+        self.animationDelay = delay
         super.init()
     }
     

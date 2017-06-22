@@ -17,7 +17,7 @@ class SubmissionSectionController: SectionController<PostViewModel> {
     override init() {
         super.init()
         self.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-        transition = CoverTransition(duration: 0.3)
+        transition = CoverTransition(duration: 0.4, delay: 0.1)
     }
     
     override func didSelectItem(at index: Int) {
