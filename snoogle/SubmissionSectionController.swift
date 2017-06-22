@@ -12,16 +12,26 @@ import AsyncDisplayKit
 
 class SubmissionSectionController: SectionController<PostViewModel> {
     
+    var transition: Transition!
+    
     override init() {
         super.init()
         self.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        transition = CoverTransition(duration: 0.3)
     }
     
     override func didSelectItem(at index: Int) {
         if let viewController = self.viewController {
-            let controller = ArticleCollectionController(id: model.id)
-            viewController.navigationController?.delegate = nil
-            viewController.navigationController?.pushViewController(controller, animated: true)
+            if let transition = transition as? CoverTransition {
+                transition.automaticallyManageGesture = true
+            }
+            let articleController = ArticleCollectionController(id: model.id)
+            let controller = ASNavigationController(rootViewController: articleController)
+            controller.isToolbarHidden = true
+            controller.isNavigationBarHidden = true
+            controller.transitioningDelegate = transition
+            controller.delegate = transition
+            viewController.navigationController?.present(controller, animated: true, completion: nil)
         }
     }
     
@@ -30,5 +40,4 @@ class SubmissionSectionController: SectionController<PostViewModel> {
             viewController.navigationController?.popViewController(animated: true)
         }
     }
-    
 }

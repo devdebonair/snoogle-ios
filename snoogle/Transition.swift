@@ -21,8 +21,8 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
     var type: TransitionType = .present
     var isAnimating = false
     
-    var toViewController: ASViewController? = nil
-    var fromViewController: ASViewController? = nil
+    var toViewController: UIViewController? = nil
+    var fromViewController: UIViewController? = nil
     
     init(duration: TimeInterval) {
         self.animationDuration = duration
@@ -45,7 +45,7 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let container = transitionContext.containerView
-        guard  let toController = transitionContext.viewController(forKey: .to) as? ASViewController, let fromController = transitionContext.viewController(forKey: .from) as? ASViewController else {
+        guard  let toController = transitionContext.viewController(forKey: .to), let fromController = transitionContext.viewController(forKey: .from) else {
             return
         }
         
@@ -82,11 +82,11 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
         }
     }
     
-    func present(toController: ASViewController<ASDisplayNode>, fromController: ASViewController<ASDisplayNode>, container: UIView, completion: @escaping (Bool)->Void) {
+    func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
         completion(true)
     }
     
-    func dismiss(toController: ASViewController<ASDisplayNode>, fromController: ASViewController<ASDisplayNode>, container: UIView, completion: @escaping (Bool)->Void) {
+    func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
         completion(true)
     }
     

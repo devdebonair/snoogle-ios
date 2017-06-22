@@ -86,3 +86,14 @@ class ArticleCollectionController: CollectionController {
         return CommentSectionController()
     }
 }
+
+extension ArticleCollectionController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return collectionNode.view.contentOffset.y == 0 ? true : false
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+

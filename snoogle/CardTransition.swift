@@ -29,7 +29,8 @@ class CardTransition: Transition {
         overlayNode.frame = UIScreen.main.bounds
     }
 
-    override func present(toController: ASViewController<ASDisplayNode>, fromController: ASViewController<ASDisplayNode>, container: UIView, completion: @escaping (Bool) -> Void) {
+    override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
+        guard let toController = toController as? ASViewController<ASDisplayNode>, let fromController = fromController as? ASViewController<ASDisplayNode> else { return completion(false) }
         
         if automaticallyManageGesture {
             let pan = UIPanGestureRecognizer(target: self, action: #selector(interactionPanHandler(pan:)))
@@ -87,7 +88,7 @@ class CardTransition: Transition {
         }
     }
     
-    override func dismiss(toController: ASViewController<ASDisplayNode>, fromController: ASViewController<ASDisplayNode>, container: UIView, completion: @escaping (Bool)->Void) {
+    override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
         let overlayAlpha: CGFloat = 0.0
         UIView.animate(withDuration: self.animationDuration, delay: 0.0, options: [.curveEaseInOut], animations: {
             self.snapshot.frame.size = container.frame.size
@@ -118,7 +119,7 @@ class CardTransition: Transition {
     override func animationEnded(_ transitionCompleted: Bool) {
         super.animationEnded(transitionCompleted)
         if let toViewController = toViewController, transitionCompleted, type == .dismiss {
-            toViewController.node.isHidden = false
+            toViewController.view.isHidden = false
         }
     }
     
@@ -154,6 +155,5 @@ class CardTransition: Transition {
         default:
             return
         }
-    }
-    
+    }    
 }

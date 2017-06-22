@@ -71,6 +71,7 @@
 		565AAFE71EDC08780024CB65 /* CellNodeMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */; };
 		565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */; };
 		565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEC1EDC0E870024CB65 /* TextCell.swift */; };
+		566E6FBC1EFAB5610014E077 /* CoverTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566E6FBB1EFAB5610014E077 /* CoverTransition.swift */; };
 		567B02771E29081D00C32C09 /* SortSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02761E29081D00C32C09 /* SortSelectViewModel.swift */; };
 		567B02791E290D9900C32C09 /* CellNodeSortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */; };
 		567DA6131EF964B40089FCFD /* MarkdownHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567DA6121EF964B40089FCFD /* MarkdownHeader.swift */; };
@@ -183,6 +184,7 @@
 		565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMenuItem.swift; sourceTree = "<group>"; };
 		565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNodeViewController.swift; sourceTree = "<group>"; };
 		565AAFEC1EDC0E870024CB65 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		566E6FBB1EFAB5610014E077 /* CoverTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverTransition.swift; sourceTree = "<group>"; };
 		567B02761E29081D00C32C09 /* SortSelectViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortSelectViewModel.swift; sourceTree = "<group>"; };
 		567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeSortSelection.swift; sourceTree = "<group>"; };
 		567DA6121EF964B40089FCFD /* MarkdownHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHeader.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 			children = (
 				565AAFE01EDC05350024CB65 /* Transition.swift */,
 				565AAFE41EDC05710024CB65 /* CardTransition.swift */,
+				566E6FBB1EFAB5610014E077 /* CoverTransition.swift */,
 			);
 			name = transition;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				56119E991E87965E00A19C40 /* MediaType.swift in Sources */,
 				561C8C671E7C761E00D9AEB3 /* Subreddit.swift in Sources */,
 				561C8C631E7C4D1700D9AEB3 /* Submission.swift in Sources */,
+				566E6FBC1EFAB5610014E077 /* CoverTransition.swift in Sources */,
 				565AAFE51EDC05710024CB65 /* CardTransition.swift in Sources */,
 				56ABC6251EF8219900DC3B46 /* MarkdownStyleElement.swift in Sources */,
 				561C8C6F1E7C77AD00D9AEB3 /* PrivateMessage.swift in Sources */,
