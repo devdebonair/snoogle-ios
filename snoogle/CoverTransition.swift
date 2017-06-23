@@ -84,7 +84,7 @@ class CoverTransition: Transition {
     
     func interactionPanHandler(pan: UIPanGestureRecognizer) {
         let translation = pan.translation(in: pan.view!.superview!)
-        var progress = (translation.x / (pan.view!.frame.width * 0.6))
+        var progress = (translation.x / (pan.view!.frame.width * 0.9))
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
         
         switch pan.state {
