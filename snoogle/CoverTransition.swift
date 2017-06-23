@@ -45,8 +45,8 @@ class CoverTransition: Transition {
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
             let screenPercentage: CGFloat =  0.01
             self.snapshot.center.x = container.center.x + (container.frame.width * screenPercentage)
-            self.snapshot.alpha = 0.0
-            let scale: CGFloat = 0.95
+            self.snapshot.alpha = 0.50
+            let scale: CGFloat = 0.93
             self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
             toController.view.frame.origin.x = 0
         }) { (success: Bool) in
