@@ -32,7 +32,7 @@ extension ArticleViewModel {
                 NSParagraphStyleAttributeName: paragraphStyleDescription,
                 NSForegroundColorAttributeName: UIColor.darkText
             ]
-            let font = UIFont(name: "Merriweather-Light", size: 16)!
+            let font = UIFont(name: "Merriweather-Light", size: 15)!
             let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: font)
             if let block = block {
                 self.newContent.append(block)
