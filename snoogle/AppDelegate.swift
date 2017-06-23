@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        let rootController = FeedCollectionController(name: "startups")
+        let rootController = FeedCollectionController(name: "anime")
         navigationController = ASNavigationController(rootViewController: rootController)
         navigationController.hidesBarsOnSwipe = true
         

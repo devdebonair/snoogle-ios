@@ -16,7 +16,13 @@ struct MarkdownLink: MarkdownInlineElement {
     var font: UIFont
     
     func getAttributes() -> [String : Any] {
+        // TODO: Support custom colors for links
         guard let url = url else { return [:] }
-        return [NSLinkAttributeName: url]
+        let color = UIColor(red: 0.0, green: 158/255, blue: 229/255, alpha: 1.0)
+        return [
+            NSLinkAttributeName: url,
+            NSUnderlineColorAttributeName: color,
+            NSForegroundColorAttributeName: color
+        ]
     }
 }

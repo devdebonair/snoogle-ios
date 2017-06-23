@@ -79,7 +79,7 @@ class ArticleViewModel: NSObject, ViewModelElement {
         }
         
         // Title
-        let titleFont: UIFont = UIFont(name: "Georgia-Bold", size: 20)!
+        let titleFont: UIFont = UIFont(name: "Merriweather-Bold", size: 20)!
         if let element = element as? String, row == 1 {
             let inset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
             
