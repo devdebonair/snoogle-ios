@@ -11,7 +11,6 @@ import IGListKit
 import AsyncDisplayKit
 
 class SubmissionSectionController: SectionController<PostViewModel> {
-    
     var transition: Transition!
     
     override init() {
@@ -32,12 +31,6 @@ class SubmissionSectionController: SectionController<PostViewModel> {
             controller.transitioningDelegate = transition
             controller.delegate = transition
             viewController.navigationController?.present(controller, animated: true, completion: nil)
-        }
-    }
-    
-    func popController() {
-        if let viewController = self.viewController {
-            viewController.navigationController?.popViewController(animated: true)
         }
     }
 }

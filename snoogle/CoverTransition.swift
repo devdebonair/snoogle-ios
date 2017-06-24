@@ -66,7 +66,6 @@ class CoverTransition: Transition {
             self.snapshot.center.x = container.center.x
             fromController.view.frame.origin.x = container.frame.width
         }) { (success: Bool) in
-            self.snapshot.removeFromSuperview()
             completion(success)
         }
     }

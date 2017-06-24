@@ -14,13 +14,9 @@ class CardTransition: Transition {
     
     private let overlayNode = ASDisplayNode()
     private var snapshot: UIView!
-    private var cancelCell: Header!
-    private var card: ASDisplayNode!
     
     var automaticallyManageGesture: Bool = false
-    var overlayAlpha: CGFloat = 0.9
-    var cardCornerRadius: CGFloat = 10.0
-    var cardHeight: CGFloat = 0.8
+    var overlayAlpha: CGFloat = 0.2
     
     override init(duration: TimeInterval = 0.0, delay: TimeInterval = 0.0) {
         super.init(duration: duration, delay: delay)
@@ -30,90 +26,57 @@ class CardTransition: Transition {
     }
 
     override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
-        guard let toController = toController as? ASViewController<ASDisplayNode>, let fromController = fromController as? ASViewController<ASDisplayNode> else { return completion(false) }
-        
         if automaticallyManageGesture {
             let pan = UIPanGestureRecognizer(target: self, action: #selector(interactionPanHandler(pan:)))
-            toController.node.view.addGestureRecognizer(pan)
+            toController.view.addGestureRecognizer(pan)
             if let toController = toController as? UIGestureRecognizerDelegate {
                 pan.delegate = toController
-                
             }
         }
+        
         if let navigation = fromController.navigationController {
             snapshot = navigation.view.snapshotView(afterScreenUpdates: true)
         } else {
-            snapshot = fromController.node.view.snapshotView(afterScreenUpdates: false)
+            snapshot = fromController.view.snapshotView(afterScreenUpdates: false)
         }
-        snapshot.layer.cornerRadius = cardCornerRadius
-        snapshot.clipsToBounds = true
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.closeCard(gesture:)))
-        cancelCell = Header(text: "Cancel")
-        cancelCell.backgroundColor = toController.node.backgroundColor
-        cancelCell.view.addGestureRecognizer(tapGesture)
-        
-        card = ASDisplayNode()
-        card.clipsToBounds = true
-        card.layer.cornerRadius = cardCornerRadius
-        
-        fromController.node.isHidden = true
-        fromController.navigationController?.setToolbarHidden(true, animated: false)
-        fromController.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        card.addSubnode(toController.node)
-        card.addSubnode(cancelCell)
+        fromController.view.isHidden = true
         
         container.addSubview(snapshot)
         container.addSubnode(overlayNode)
-        container.addSubnode(card)
+        container.addSubview(toController.view)
         
-        card.frame.size = CGSize(width: container.frame.width, height: container.frame.height * cardHeight)
-        cancelCell.frame.size = CGSize(width: card.frame.width, height: 62)
-        toController.node.frame.size = CGSize(width: card.frame.width, height: card.frame.height - cancelCell.frame.height)
+        toController.view.clipsToBounds = false
+        toController.view.layer.shadowOffset = CGSize(width: 0.0, height: -1.0)
+        toController.view.layer.shadowOpacity = 0.20
+        toController.view.layer.shadowRadius = 1.0
+        toController.view.layer.shadowPath = UIBezierPath(rect: fromController.view.bounds).cgPath
         
-        card.frame.origin.y = container.frame.height
-        cancelCell.frame.origin.y = toController.node.frame.origin.y + toController.node.frame.height
+        toController.view.frame.size = CGSize(width: container.frame.width, height: container.frame.height * 0.5)
+        toController.view.frame.origin.y = container.frame.height
         
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
-            self.snapshot.center.x = container.center.x
-            
-            self.card.frame.origin.y = container.frame.height - self.card.frame.height
-//            self.snapshot.frame.origin.y = self.card.frame.origin.y - 120
-            
+            toController.view.frame.origin.y = container.frame.height - toController.view.frame.height
             self.overlayNode.alpha = self.overlayAlpha
-            
+            let scale: CGFloat = 0.95
+            self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
         }) { (success: Bool) in
             completion(success)
         }
     }
     
     override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
-        let overlayAlpha: CGFloat = 0.0
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
-            self.snapshot.frame.size = container.frame.size
-            self.snapshot.frame.origin = .zero
-            
-            self.card.frame.origin.y = UIScreen.main.bounds.height
-            
-            self.overlayNode.alpha = overlayAlpha
-            
+            fromController.view.frame.origin.y = container.frame.height
+            self.snapshot.transform = .identity
+            self.overlayNode.alpha = 0.0
         }) { (success: Bool) in
-            toController.navigationController?.setToolbarHidden(false, animated: false)
-            toController.navigationController?.setNavigationBarHidden(false, animated: false)
             completion(success)
         }
     }
     
     override func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return self
-    }
-    
-    func closeCard(gesture: UITapGestureRecognizer) {
-        if let fromViewController = fromViewController, type == .present {
-            fromViewController.dismiss(animated: true, completion: nil)
-            finish()
-        }
     }
     
     override func animationEnded(_ transitionCompleted: Bool) {
@@ -127,11 +90,10 @@ class CardTransition: Transition {
         let translation = pan.translation(in: pan.view!.superview!)
         var progress = (translation.y / (pan.view!.frame.height))
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
-
+        print(progress)
         switch pan.state {
             
         case .began:
-
             if let toViewController = toViewController {
                 toViewController.dismiss(animated: true, completion: nil)
             }

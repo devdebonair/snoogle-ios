@@ -46,7 +46,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         
         definesPresentationContext = true
         
-        transition = CardTransition(duration: 0.2)
+        transition = CardTransition(duration: 0.25)
         transition.automaticallyManageGesture = true
         navigationController?.delegate = transition
     }
@@ -175,44 +175,35 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        transition.cardHeight = 0.52
-        present(controller, animated: true)
+        self.navigationController?.present(controller, animated: true)
     }
     
     func didTapCompose() {
         let controller = MenuItemComposeController()
-        controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        transition.cardHeight = 0.43
-        present(controller, animated: true)
+        self.navigationController?.present(controller, animated: true)
     }
     
     func didTapSettings() {
         let controller = MenuItemSubredditSettingsController()
-        controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        transition.cardHeight = 0.52
-        present(controller, animated: true)
+        self.navigationController?.present(controller, animated: true)
     }
     
     func didTapMedia() {
         let controller = MenuUserProfileController()
-        controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        transition.cardHeight = 0.59
-        present(controller, animated: true)
+        self.navigationController?.present(controller, animated: true)
     }
     
     func didTapSearch() {
         let controller = MenuSubredditListCollectionController()
-        controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        transition.cardHeight = 0.75
-        present(controller, animated: true)
+        self.navigationController?.present(controller, animated: true)
     }
     
     required init?(coder aDecoder: NSCoder) {
