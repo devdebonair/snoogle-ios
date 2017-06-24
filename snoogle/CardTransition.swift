@@ -90,7 +90,7 @@ class CardTransition: Transition {
         let translation = pan.translation(in: pan.view!.superview!)
         var progress = (translation.y / (pan.view!.frame.height))
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
-        print(progress)
+        
         switch pan.state {
             
         case .began:
