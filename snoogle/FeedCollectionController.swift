@@ -16,9 +16,20 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     let name: String
     let sort: ListingSort
     var listing: ListingSubreddit? = nil
-    var transition: CardTransition!
+    var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
     var token: NotificationToken? = nil
+    let slideTransition: SlideTransition
+    
+    var menuController: ASNavigationController {
+        let color = UIColor(red: 26/255, green: 26/255, blue: 26/255, alpha: 1.0)
+        let navigationBarColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
+        let controller = ASNavigationController(rootViewController: SubredditListItemController())
+        controller.navigationBar.isTranslucent = false
+        controller.navigationBar.barTintColor = navigationBarColor
+        controller.view.backgroundColor = color
+        return controller
+    }
     
     var leftBarItem: UIView = UIView() {
         didSet {
@@ -37,6 +48,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     init(name: String, sort: ListingSort = .hot) {
         self.name = name
         self.sort = sort
+        self.slideTransition = SlideTransition(duration: 0.20)
         
         super.init()
         
@@ -45,9 +57,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         }
         
         definesPresentationContext = true
-        
-        transition = CardTransition(duration: 0.25)
-        transition.automaticallyManageGesture = true
         navigationController?.delegate = transition
     }
     
@@ -78,9 +87,12 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.toolbar.isTranslucent = false
         navigationController?.isToolbarHidden = false
         
+        self.slideTransition.mainController = self.navigationController!
+        self.slideTransition.menuController = menuController
+        
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: self, action: #selector(didTapUser))
         
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -171,6 +183,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSort() {
+        transition = CardTransition(duration: 0.25)
         let controller = MenuItemSortController()
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
@@ -179,6 +192,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapCompose() {
+        transition = CardTransition(duration: 0.25)
         let controller = MenuItemComposeController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -186,6 +200,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSettings() {
+        transition = CardTransition(duration: 0.25)
         let controller = MenuItemSubredditSettingsController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -193,6 +208,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapMedia() {
+        transition = CardTransition(duration: 0.25)
         let controller = MenuUserProfileController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -200,10 +216,17 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapSearch() {
+        transition = CardTransition(duration: 0.25)
         let controller = MenuSubredditListCollectionController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         self.navigationController?.present(controller, animated: true)
+    }
+    
+    func didTapUser() {
+        let controller = menuController
+        controller.transitioningDelegate = slideTransition
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
