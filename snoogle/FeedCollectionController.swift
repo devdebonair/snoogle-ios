@@ -184,6 +184,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func didTapSort() {
         transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+        }
         let controller = MenuItemSortController()
         controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
@@ -193,6 +196,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func didTapCompose() {
         transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+        }
         let controller = MenuItemComposeController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -201,6 +207,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func didTapSettings() {
         transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+        }
         let controller = MenuItemSubredditSettingsController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -209,6 +218,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func didTapMedia() {
         transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+        }
         let controller = MenuUserProfileController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
@@ -217,6 +229,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func didTapSearch() {
         transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+        }
         let controller = MenuSubredditListCollectionController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
