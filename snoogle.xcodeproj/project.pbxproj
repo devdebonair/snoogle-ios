@@ -10,11 +10,11 @@
 		560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */; };
 		5610F94A1F0832330097E3A2 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9461F0832320097E3A2 /* CardTransition.swift */; };
 		5610F94B1F0832330097E3A2 /* SideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9471F0832320097E3A2 /* SideTransition.swift */; };
-		5610F94C1F0832330097E3A2 /* CoverTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9481F0832320097E3A2 /* CoverTransition.swift */; };
 		5610F94D1F0832330097E3A2 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9491F0832330097E3A2 /* Transition.swift */; };
 		5610F9551F0833770097E3A2 /* MarkdownBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9541F0833770097E3A2 /* MarkdownBuilder.swift */; };
 		5610F9571F0833AC0097E3A2 /* MarkdownInlineType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9561F0833AC0097E3A2 /* MarkdownInlineType.swift */; };
 		5610F9591F0833BC0097E3A2 /* MarkdownBlockType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9581F0833BC0097E3A2 /* MarkdownBlockType.swift */; };
+		5610F95B1F086A440097E3A2 /* CoverTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F95A1F0868F90097E3A2 /* CoverTransition.swift */; };
 		56119E871E8556B600A19C40 /* StringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56119E861E8556B600A19C40 /* StringTransform.swift */; };
 		56119E8C1E87683D00A19C40 /* CollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56119E8B1E87683D00A19C40 /* CollectionController.swift */; };
 		56119E8E1E87685E00A19C40 /* SectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56119E8D1E87685E00A19C40 /* SectionController.swift */; };
@@ -137,12 +137,12 @@
 /* Begin PBXFileReference section */
 		560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSlideViewModel.swift; sourceTree = "<group>"; };
 		5610F9461F0832320097E3A2 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardTransition.swift; path = ../snoogle/snoogle/CardTransition.swift; sourceTree = "<group>"; };
-		5610F9471F0832320097E3A2 /* SideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideTransition.swift; path = ../snoogle/snoogle/SideTransition.swift; sourceTree = "<group>"; };
-		5610F9481F0832320097E3A2 /* CoverTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoverTransition.swift; path = ../snoogle/snoogle/CoverTransition.swift; sourceTree = "<group>"; };
-		5610F9491F0832330097E3A2 /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Transition.swift; path = ../snoogle/snoogle/Transition.swift; sourceTree = "<group>"; };
+		5610F9471F0832320097E3A2 /* SideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideTransition.swift; path = snoogle/SideTransition.swift; sourceTree = "<group>"; };
+		5610F9491F0832330097E3A2 /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Transition.swift; path = snoogle/Transition.swift; sourceTree = "<group>"; };
 		5610F9541F0833770097E3A2 /* MarkdownBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarkdownBuilder.swift; path = ../../snoogle/snoogle/MarkdownBuilder.swift; sourceTree = "<group>"; };
 		5610F9561F0833AC0097E3A2 /* MarkdownInlineType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarkdownInlineType.swift; path = ../../../snoogle/snoogle/enums/MarkdownInlineType.swift; sourceTree = "<group>"; };
 		5610F9581F0833BC0097E3A2 /* MarkdownBlockType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarkdownBlockType.swift; path = ../../../snoogle/snoogle/enums/MarkdownBlockType.swift; sourceTree = "<group>"; };
+		5610F95A1F0868F90097E3A2 /* CoverTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoverTransition.swift; path = snoogle/CoverTransition.swift; sourceTree = "<group>"; };
 		56119E861E8556B600A19C40 /* StringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTransform.swift; sourceTree = "<group>"; };
 		56119E8B1E87683D00A19C40 /* CollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionController.swift; sourceTree = "<group>"; };
 		56119E8D1E87685E00A19C40 /* SectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionController.swift; sourceTree = "<group>"; };
@@ -457,7 +457,7 @@
 			children = (
 				5610F9471F0832320097E3A2 /* SideTransition.swift */,
 				5610F9461F0832320097E3A2 /* CardTransition.swift */,
-				5610F9481F0832320097E3A2 /* CoverTransition.swift */,
+				5610F95A1F0868F90097E3A2 /* CoverTransition.swift */,
 				5610F9491F0832330097E3A2 /* Transition.swift */,
 			);
 			name = transition;
@@ -741,6 +741,7 @@
 				561C8C711E7C78D500D9AEB3 /* Media.swift in Sources */,
 				562C1F161E147EB2001BA898 /* MediaElement.swift in Sources */,
 				563D03831E257A8B00BD24D4 /* NodeMedia.swift in Sources */,
+				5610F95B1F086A440097E3A2 /* CoverTransition.swift in Sources */,
 				56EE8CAC1E9077470043A9DF /* ArticleSectionController.swift in Sources */,
 				56E62B0D1ECB504400ACFC51 /* CommentSectionController.swift in Sources */,
 				5610F9571F0833AC0097E3A2 /* MarkdownInlineType.swift in Sources */,
@@ -849,7 +850,6 @@
 				56938F661EF8098A0026565F /* MarkdownStrong.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 				56EE8C961E8A13930043A9DF /* ServiceMultireddit.swift in Sources */,
-				5610F94C1F0832330097E3A2 /* CoverTransition.swift in Sources */,
 				56119E971E877E4000A19C40 /* SubmissionSectionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

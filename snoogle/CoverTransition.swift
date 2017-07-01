@@ -21,26 +21,22 @@ class CoverTransition: Transition {
         super.init(duration: duration, delay: delay)
     }
     
-    override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
+    override func animatePresent(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
         if automaticallyManageGesture {
             let pan = UIPanGestureRecognizer(target: self, action: #selector(interactionPanHandler(pan:)))
-            toController.view.addGestureRecognizer(pan)
-            if let toController = toController as? UIGestureRecognizerDelegate {
+            to.addGestureRecognizer(pan)
+            if let toController = toViewController as? UIGestureRecognizerDelegate {
                 pan.delegate = toController
             }
         }
         
-        if let navigation = fromController.navigationController {
-            snapshot = navigation.view.snapshotView(afterScreenUpdates: true)
-        } else {
-            snapshot = fromController.view.snapshotView(afterScreenUpdates: false)
-        }
+        snapshot = from.snapshotView(afterScreenUpdates: true)
         
         container.addSubview(snapshot)
-        container.addSubview(toController.view)
+        container.addSubview(to)
         
-        fromController.view.isHidden = true
-        toController.view.frame.origin.x = container.frame.width
+        from.isHidden = true
+        to.frame.origin.x = container.frame.width
         
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
             let screenPercentage: CGFloat =  0.01
@@ -48,23 +44,23 @@ class CoverTransition: Transition {
             self.snapshot.alpha = 0.50
             let scale: CGFloat = 0.93
             self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
-            toController.view.frame.origin.x = 0
+            to.frame.origin.x = 0
         }) { (success: Bool) in
             completion(success)
         }
     }
     
-    override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
-        fromController.view.clipsToBounds = false
-        fromController.view.layer.shadowOffset = CGSize(width: -8.0, height: 0.0)
-        fromController.view.layer.shadowOpacity = 0.20
-        fromController.view.layer.shadowRadius = 1.0
-        fromController.view.layer.shadowPath = UIBezierPath(rect: fromController.view.bounds).cgPath
+    override func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
+        from.clipsToBounds = false
+        from.layer.shadowOffset = CGSize(width: -8.0, height: 0.0)
+        from.layer.shadowOpacity = 0.20
+        from.layer.shadowRadius = 1.0
+        from.layer.shadowPath = UIBezierPath(rect: from.bounds).cgPath
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveLinear], animations: {
             self.snapshot.transform = .identity
             self.snapshot.alpha = 1.0
             self.snapshot.center.x = container.center.x
-            fromController.view.frame.origin.x = container.frame.width
+            from.frame.origin.x = container.frame.width
         }) { (success: Bool) in
             completion(success)
         }

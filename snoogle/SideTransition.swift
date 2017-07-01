@@ -28,11 +28,10 @@ class SlideTransition: Transition {
     private var offsetMenuModifier: CGFloat = 0.10
     private var offsetMainModifier: CGFloat = 0.10
     
-    override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
+    override func animatePresent(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
+        snapshot = from.snapshotView(afterScreenUpdates: true)
         
-        snapshot = fromController.view.snapshotView(afterScreenUpdates: true)
-        
-        if !isInteractive {            
+        if !isInteractive {
             let pan = UIPanGestureRecognizer(target: self, action: #selector(interactionPanHandler(pan:)))
             let tap = UITapGestureRecognizer(target: self, action: #selector(didTapOverlay))
             snapshot.addGestureRecognizer(pan)
@@ -40,51 +39,42 @@ class SlideTransition: Transition {
         }
         
         overlayNode.backgroundColor = .white
-        overlayNode.frame = fromController.view.frame
+        overlayNode.frame = from.frame
         overlayNode.clipsToBounds = false
         overlayNode.layer.shadowOffset = CGSize(width: -1.0, height: 0.0)
         overlayNode.layer.shadowOpacity = 0.20
         overlayNode.layer.shadowRadius = 3.0
-        overlayNode.layer.shadowPath = UIBezierPath(rect: fromController.view.bounds).cgPath
+        overlayNode.layer.shadowPath = UIBezierPath(rect: to.bounds).cgPath
         
-        toController.view.frame.origin.x = 0 - (container.frame.width * self.offsetMenuModifier)
+        to.frame.origin.x = 0 - (container.frame.width * self.offsetMenuModifier)
         
-        container.addSubview(toController.view)
+        container.addSubview(to)
         container.addSubnode(overlayNode)
         container.addSubview(snapshot)
         
         // +1 to remove black line between to and from controllers and position to under from
         let width: CGFloat = container.frame.width - (container.frame.width * offsetMenuModifier) + 1
-        toController.view.frame.size = CGSize(width: width, height: container.frame.height)
+        to.frame.size = CGSize(width: width, height: container.frame.height)
         
-        fromController.view.isHidden = true
-
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
             let percentageOfScreen: CGFloat = (container.frame.width * self.offsetMenuModifier)
             self.snapshot.frame.origin.x = container.frame.width - percentageOfScreen
             self.overlayNode.frame.origin.x = container.frame.width - percentageOfScreen
-            toController.view.frame.origin.x = 0
+            to.frame.origin.x = 0
             self.snapshot.alpha = 0.2
         }) { (success) in
             completion(success)
         }
     }
     
-    override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
+    override func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
             self.snapshot.frame.origin.x = 0.0
             self.overlayNode.frame = self.snapshot.frame
             self.snapshot.alpha = 1.0
-            fromController.view.frame.origin.x = 0 - (container.frame.width * self.offsetMenuModifier)
+            from.frame.origin.x = 0 - (container.frame.width * self.offsetMenuModifier)
         }) { (success) in
             completion(success)
-        }
-    }
-    
-    override func animationEnded(_ transitionCompleted: Bool) {
-        super.animationEnded(transitionCompleted)
-        if let toViewController = toViewController, transitionCompleted, type == .dismiss {
-            toViewController.view.isHidden = false
         }
     }
     
@@ -107,7 +97,6 @@ class SlideTransition: Transition {
         let translation = pan.translation(in: pan.view!.superview!)
         var progress = (translation.x / (pan.view!.frame.width * 0.9))
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
-        
         switch pan.state {
             
         case .began:
@@ -115,6 +104,7 @@ class SlideTransition: Transition {
             mainController.present(menuController, animated: true, completion: nil)
             
         case .changed:
+            print(progress)
             update(progress)
             
         case .cancelled:

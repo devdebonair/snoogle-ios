@@ -24,39 +24,35 @@ class CardTransition: Transition {
         overlayNode.backgroundColor = .black
         overlayNode.frame = UIScreen.main.bounds
     }
-
-    override func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool) -> Void) {
+    
+    override func animatePresent(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
         if automaticallyManageGesture {
             let pan = UIPanGestureRecognizer(target: self, action: #selector(interactionPanHandler(pan:)))
-            toController.view.addGestureRecognizer(pan)
-            if let toController = toController as? UIGestureRecognizerDelegate {
+            to.addGestureRecognizer(pan)
+            if let toController = toViewController as? UIGestureRecognizerDelegate {
                 pan.delegate = toController
             }
         }
         
-        if let navigation = fromController.navigationController {
-            snapshot = navigation.view.snapshotView(afterScreenUpdates: true)
-        } else {
-            snapshot = fromController.view.snapshotView(afterScreenUpdates: false)
-        }
+        snapshot = from.snapshotView(afterScreenUpdates: true)
         
-        fromController.view.isHidden = true
+        from.isHidden = true
         
         container.addSubview(snapshot)
         container.addSubnode(overlayNode)
-        container.addSubview(toController.view)
+        container.addSubview(to)
         
-        toController.view.clipsToBounds = false
-        toController.view.layer.shadowOffset = CGSize(width: 0.0, height: -1.0)
-        toController.view.layer.shadowOpacity = 0.20
-        toController.view.layer.shadowRadius = 1.0
-        toController.view.layer.shadowPath = UIBezierPath(rect: fromController.view.bounds).cgPath
+        to.clipsToBounds = false
+        to.layer.shadowOffset = CGSize(width: 0.0, height: -1.0)
+        to.layer.shadowOpacity = 0.20
+        to.layer.shadowRadius = 1.0
+        to.layer.shadowPath = UIBezierPath(rect: from.bounds).cgPath
         
-        toController.view.frame.size = CGSize(width: container.frame.width, height: container.frame.height * 0.5)
-        toController.view.frame.origin.y = container.frame.height
+        to.frame.size = CGSize(width: container.frame.width, height: container.frame.height * 0.5)
+        to.frame.origin.y = container.frame.height
         
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
-            toController.view.frame.origin.y = container.frame.height - toController.view.frame.height
+            to.frame.origin.y = container.frame.height - to.frame.height
             self.overlayNode.alpha = self.overlayAlpha
             let scale: CGFloat = 0.95
             self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
@@ -65,9 +61,9 @@ class CardTransition: Transition {
         }
     }
     
-    override func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
+    override func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseInOut], animations: {
-            fromController.view.frame.origin.y = container.frame.height
+            from.frame.origin.y = container.frame.height
             self.snapshot.transform = .identity
             self.overlayNode.alpha = 0.0
         }) { (success: Bool) in
@@ -81,8 +77,8 @@ class CardTransition: Transition {
     
     override func animationEnded(_ transitionCompleted: Bool) {
         super.animationEnded(transitionCompleted)
-        if let toViewController = toViewController, transitionCompleted, type == .dismiss {
-            toViewController.view.isHidden = false
+        if let toView = toView, transitionCompleted, type == .dismiss {
+            toView.isHidden = false
         }
     }
     

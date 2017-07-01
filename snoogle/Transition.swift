@@ -25,6 +25,9 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
     var toViewController: UIViewController? = nil
     var fromViewController: UIViewController? = nil
     
+    var toView: UIView? = nil
+    var fromView: UIView? = nil
+    
     init(duration: TimeInterval = 0.0, delay: TimeInterval = 0.0) {
         self.animationDuration = duration
         self.animationDelay = delay
@@ -50,27 +53,45 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
         guard  let toController = transitionContext.viewController(forKey: .to), let fromController = transitionContext.viewController(forKey: .from) else {
             return
         }
+        guard let toView = transitionContext.view(forKey: .to), let fromView = transitionContext.view(forKey: .from) else { return }
         
         self.toViewController = toController
         self.fromViewController = fromController
         
+        self.toView = toView
+        self.fromView = fromView
+        
         switch type {
         case .present:
-            present(toController: toController, fromController: fromController, container: container) { (success: Bool) in
+//            present(toController: toController, fromController: fromController, container: container) { (success: Bool) in
+//                if transitionContext.transitionWasCancelled {
+//                    transitionContext.completeTransition(false)
+//                } else {
+//                    transitionContext.completeTransition(success)
+//                }
+//            }
+            animatePresent(to: toView, from: fromView, container: container, completion: { (success: Bool) in
                 if transitionContext.transitionWasCancelled {
                     transitionContext.completeTransition(false)
                 } else {
                     transitionContext.completeTransition(success)
                 }
-            }
+            })
         case .dismiss:
-            dismiss(toController: toController, fromController: fromController, container: container) { (success: Bool) in
+//            dismiss(toController: toController, fromController: fromController, container: container) { (success: Bool) in
+//                if transitionContext.transitionWasCancelled {
+//                    transitionContext.completeTransition(false)
+//                } else {
+//                    transitionContext.completeTransition(success)
+//                }
+//            }
+            animateDismiss(to: toView, from: fromView, container: container, completion: { (success: Bool) in
                 if transitionContext.transitionWasCancelled {
                     transitionContext.completeTransition(false)
                 } else {
                     transitionContext.completeTransition(success)
                 }
-            }
+            })
         }
     }
     
@@ -85,6 +106,14 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
     }
     
     func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
+        completion(true)
+    }
+    
+    func animatePresent(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool)->Void) {
+        completion(true)
+    }
+    
+    func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool)->Void) {
         completion(true)
     }
     
