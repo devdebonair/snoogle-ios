@@ -63,13 +63,6 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
         
         switch type {
         case .present:
-//            present(toController: toController, fromController: fromController, container: container) { (success: Bool) in
-//                if transitionContext.transitionWasCancelled {
-//                    transitionContext.completeTransition(false)
-//                } else {
-//                    transitionContext.completeTransition(success)
-//                }
-//            }
             animatePresent(to: toView, from: fromView, container: container, completion: { (success: Bool) in
                 if transitionContext.transitionWasCancelled {
                     transitionContext.completeTransition(false)
@@ -78,13 +71,6 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
                 }
             })
         case .dismiss:
-//            dismiss(toController: toController, fromController: fromController, container: container) { (success: Bool) in
-//                if transitionContext.transitionWasCancelled {
-//                    transitionContext.completeTransition(false)
-//                } else {
-//                    transitionContext.completeTransition(success)
-//                }
-//            }
             animateDismiss(to: toView, from: fromView, container: container, completion: { (success: Bool) in
                 if transitionContext.transitionWasCancelled {
                     transitionContext.completeTransition(false)
@@ -105,19 +91,11 @@ class Transition: UIPercentDrivenInteractiveTransition, UIViewControllerTransiti
         }
     }
     
-    func present(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
-        completion(true)
-    }
-    
     func animatePresent(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool)->Void) {
         completion(true)
     }
     
     func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool)->Void) {
-        completion(true)
-    }
-    
-    func dismiss(toController: UIViewController, fromController: UIViewController, container: UIView, completion: @escaping (Bool)->Void) {
         completion(true)
     }
     
