@@ -104,7 +104,6 @@ class SlideTransition: Transition {
             mainController.present(menuController, animated: true, completion: nil)
             
         case .changed:
-            print(progress)
             update(progress)
             
         case .cancelled:

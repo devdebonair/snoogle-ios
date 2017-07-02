@@ -33,6 +33,7 @@ class SubredditListItemController: CollectionController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let navigationController = navigationController else { return }
         let color = UIColor(colorLiteralRed: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: "Recent Subreddits", attributes: [
             NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
@@ -41,26 +42,13 @@ class SubredditListItemController: CollectionController {
         
         let textNode = ASTextNode()
         textNode.attributedText = attributeString
-        let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
+        let size = textNode.calculateSizeThatFits(navigationController.navigationBar.frame.size)
         textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
-        
-        setToolbarItems([
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            ], animated: false)
-        self.navigationController?.toolbar.barTintColor = navigationController?.navigationBar.barTintColor
-        self.node.backgroundColor = navigationController?.navigationBar.barTintColor
-        self.navigationController?.isToolbarHidden = false
-        self.navigationController?.toolbar.isTranslucent = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
+        navigationController.toolbar.barTintColor = navigationController.navigationBar.barTintColor
+        self.node.backgroundColor = navigationController.navigationBar.barTintColor
+        navigationController.toolbar.isTranslucent = false
     }
     
     required init?(coder aDecoder: NSCoder) {

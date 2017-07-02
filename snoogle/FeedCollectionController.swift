@@ -21,13 +21,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     var token: NotificationToken? = nil
     let slideTransition: SlideTransition
     
-    var menuController: ASNavigationController {
-        let color = UIColor(red: 26/255, green: 26/255, blue: 26/255, alpha: 1.0)
-        let navigationBarColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
-        let controller = ASNavigationController(rootViewController: SubredditListItemController())
-        controller.navigationBar.isTranslucent = false
-        controller.navigationBar.barTintColor = navigationBarColor
-        controller.view.backgroundColor = color
+    var menuController: UIViewController {
+        let controller = ASNavigationController(rootViewController: PagerController())
         return controller
     }
     
