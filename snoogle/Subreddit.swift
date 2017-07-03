@@ -58,6 +58,11 @@ class Subreddit: Object, Mappable {
         return "id"
     }
     
+    func getListing(sort: ListingSort) throws -> ListingSubreddit? {
+        let realm = try Realm()
+        return realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(displayName):\(sort.rawValue)")
+    }
+    
     func mapping(map: Map) {
         bannerImage         <- map["banner_img"]
         wikiEnabled         <- map["wiki_enabled"]

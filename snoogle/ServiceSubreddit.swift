@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Realm
 import RealmSwift
 
 class ServiceSubreddit: Service {
@@ -19,104 +20,110 @@ class ServiceSubreddit: Service {
     
     func fetch(completion: ((Bool)->Void)? = nil) {
         requestFetch { (json: [String : Any]?) in
-            if let json = json, let subreddit = Subreddit(JSON: json) {
-                do {
-                    let realm = try Realm()
-                    try realm.write {
-                        realm.add(subreddit, update: true)
-                    }
-                    if let completion = completion { return completion(true) }
-                } catch {
-                    if let completion = completion { return completion(false) }
-                }
-            } else if let completion = completion {
+            guard let json = json, let subreddit = Subreddit(JSON: json) else {
+                guard let completion = completion else { return }
                 return completion(false)
             }
+            
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.add(subreddit, update: true)
+                }
+            } catch {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            guard let completion = completion else { return }
+            return completion(true)
         }
     }
     
     func listing(sort: ListingSort = .hot, completion: ((Bool)->Void)? = nil) {
         let name = self.name
-        let this = self
         
-        this.fetch { (success: Bool) in
-            this.requestListing { (json: [String:Any]?) in
-                do {
-                    let realm = try Realm()
-                    let sub = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-                    guard let newSub = sub, let json = json, let submissionJSON = json["data"] as? [[String:Any]] else {
-                        if let completion = completion { return completion(false) }
-                        return
-                    }
-                    try realm.write {
-                        let listing = ListingSubreddit()
-                        listing.id = ListingSubreddit.createId(subId: newSub.id, sort: sort)
-                        listing.subreddit = newSub
-                        listing.sort = sort.rawValue
-                        listing.submissions.removeAll()
-                        for subJSON in submissionJSON {
-                            let submission = Submission(JSON: subJSON)
-                            if let submission = submission {
-                                realm.add(submission, update: true)
-                                listing.submissions.append(submission)
-                            }
-                        }
-                        realm.add(listing, update: true)
-                    }
-                    if let completion = completion { return completion(true) }
-                } catch {
-                    if let completion = completion { return completion(false) }
-                }
+        self.requestListing { (json: [String:Any]?) in
+            guard let json = json, let submissionJSON = json["data"] as? [[String:Any]] else {
+                guard let completion = completion else { return }
+                return completion(false)
             }
+            
+            let jsonToSave: [String:Any] = [
+                "name": name,
+                "sort": sort.rawValue,
+                "submissions": submissionJSON
+            ]
+            
+            guard let listing = ListingSubreddit(JSON: jsonToSave) else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.add(listing, update: true)
+                }
+            } catch {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            guard let completion = completion else { return }
+            return completion(true)
         }
     }
     
     func moreListings(sort: ListingSort = .hot, completion: ((Bool)->Void)? = nil) {
         let name = self.name
         var listing: ListingSubreddit? = nil
-        var after: String? = nil
         
         do {
             let realm = try Realm()
-            let sub = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-            if let sub = sub {
-                listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: ListingSubreddit.createId(subId: sub.id, sort: sort))
-            }
+            let listingId = "listing:\(name):\(sort.rawValue)"
+            listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: listingId)
         } catch {
-            if let completion = completion { return completion(false) }
+            print("crashing initial")
+            print(error)
+            guard let completion = completion else { return }
+            return completion(false)
         }
         
-        after = listing?.after
-        
-        guard let guardedAfter = after else {
-            if let completion = completion { return completion(false) }
-            return
+        guard let _ = listing, let guardedAfter = listing?.after else {
+            return self.listing(sort: sort, completion: completion)
         }
         
         requestListing(sort: sort, after: guardedAfter) { (json: [String:Any]?) in
+            guard let json = json, let submissionJSON = json["data"] as? [[String:Any]] else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
             do {
                 let realm = try Realm()
-                let sub = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
+                let listingId = "listing:\(name):\(sort.rawValue)"
+                let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: listingId)
                 
-                guard let guardedSub = sub, let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: ListingSubreddit.createId(subId: guardedSub.id, sort: sort)), let json = json, let submissionJSON = json["data"] as? [[String:Any]] else {
-                    if let completion = completion { return completion(false) }
-                    return
+                guard let guardedListing = listing else {
+                    guard let completion = completion else { return }
+                    return completion(false)
                 }
                 
                 try realm.write {
                     for subJSON in submissionJSON {
-                        let submission = Submission(JSON: subJSON)
-                        if let submission = submission {
-                            realm.add(submission, update: true)
-                            listing.submissions.append(submission)
-                        }
+                        guard let submission = Submission(JSON: subJSON) else { continue }
+                        guardedListing.submissions.append(submission)
                     }
                 }
-                
-                if let completion = completion { return completion(true) }
             } catch {
-                if let completion = completion { return completion(false) }
+                print(error)
+                guard let completion = completion else { return }
+                return completion(false)
             }
+            
+            guard let completion = completion else { return }
+            return completion(true)
         }
     }
     

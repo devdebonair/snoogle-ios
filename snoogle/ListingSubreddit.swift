@@ -12,15 +12,15 @@ import ObjectMapper
 import ObjectMapper_Realm
 
 class ListingSubreddit: Object, Mappable {
-    dynamic var subreddit: Subreddit? = nil
     dynamic var sort: String = ""
     dynamic var id: String = ""
+    dynamic var name: String = ""
     
     dynamic var after: String? {
         return submissions.last?.name
     }
     
-    let submissions = List<Submission>()
+    var submissions = List<Submission>()
     
     required convenience init(map: Map) {
         self.init()
@@ -32,16 +32,9 @@ class ListingSubreddit: Object, Mappable {
     
     func mapping(map: Map) {
         sort        <- map["sort"]
-        subreddit   <- map["subreddit"]
+        name        <- map["name"]
+        submissions <- (map["submissions"], ListTransform<Submission>())
         
-        if let subreddit = subreddit, let sortType = ListingSort(rawValue: sort) {
-            id = "listing:\(subreddit.id):\(sortType.rawValue)"
-        }
-    }
-}
-
-extension ListingSubreddit {
-    static func createId(subId: String, sort: ListingSort) -> String {
-        return "listing:\(subId):\(sort.rawValue)"
+        id = "listing:\(name):\(sort)"
     }
 }
