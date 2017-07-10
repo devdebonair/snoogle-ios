@@ -19,25 +19,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
-        do {
-            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-            print("file deleted")
-        } catch let error {
-            print(error)
-        }
+//        do {
+//            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+//            print("file deleted")
+//        } catch let error {
+//            print(error)
+//        }
         
         let rootController = FeedCollectionController()
         navigationController = ASNavigationController(rootViewController: rootController)
         rootController.store.setSubreddit(name: "rocketleague")
         rootController.store.fetchListing()
         
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.makeKeyAndVisible()
-//        window?.rootViewController = navigationController
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = navigationController
         
-        ServiceMe().fetch { (success) in
-            print(success)
-        }
+//        ServiceMe().fetch { (success) in
+//            print(success)
+//        }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)

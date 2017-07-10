@@ -50,6 +50,18 @@ class Subreddit: Object, Mappable {
         return URL(string: bannerImage)
     }
     
+    var urlValidImage: URL? {
+        if let iconImage = iconImage, let urlIconImage = urlIconImage, !iconImage.isEmpty {
+            return urlIconImage
+        } else if let bannerImage = bannerImage, let urlBannerImage = urlBannerImage, !bannerImage.isEmpty {
+            return urlBannerImage
+        } else if let headerImage = headerImage, let urlHeaderImage = urlHeaderImage, !headerImage.isEmpty {
+            return urlHeaderImage
+        } else {
+            return nil
+        }
+    }
+    
     required convenience init(map: Map) {
         self.init()
     }

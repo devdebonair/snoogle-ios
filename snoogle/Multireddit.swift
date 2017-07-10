@@ -60,16 +60,18 @@ class Multireddit: Object, Mappable {
         
         do {
             let realm = try Realm()
-            for subJSON in subs {
-                let extractedSubJSON = Multireddit.formatSubreddit(json: subJSON)
-                let id = extractedSubJSON["id"]
-                let existingSub = realm.object(ofType: Subreddit.self, forPrimaryKey: id)
-                if let _ = id, let _ = existingSub {
-                    let updatedSub = realm.create(Subreddit.self, value: extractedSubJSON, update: true)
-                    subreddits.append(updatedSub)
-                } else {
-                    guard let newSub = Subreddit(JSON: subJSON) else { continue }
-                    subreddits.append(newSub)
+            try realm.write {                
+                for subJSON in subs {
+                    let extractedSubJSON = Multireddit.formatSubreddit(json: subJSON)
+                    let id = extractedSubJSON["id"]
+                    let existingSub = realm.object(ofType: Subreddit.self, forPrimaryKey: id)
+                    if let _ = id, let _ = existingSub {
+                        let updatedSub = realm.create(Subreddit.self, value: extractedSubJSON, update: true)
+                        subreddits.append(updatedSub)
+                    } else {
+                        guard let newSub = Subreddit(JSON: subJSON) else { continue }
+                        subreddits.append(newSub)
+                    }
                 }
             }
         } catch {

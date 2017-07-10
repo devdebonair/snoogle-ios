@@ -28,6 +28,7 @@ class SubscriptionStore {
     func setAccount(id: String) {
         DispatchQueue.global(qos: .background).async {
             ServiceMe().fetch { [weak self](success) in
+                print(success)
                 guard let weakSelf = self else { return }
                 DispatchQueue.main.async {
                     do {
