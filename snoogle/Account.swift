@@ -8,10 +8,11 @@
 
 import Foundation
 import RealmSwift
+import ObjectMapper
+import ObjectMapper_Realm
 
-class Account: Object {
+class Account: Object, Mappable {
     dynamic var isEmployee: Bool = false
-    dynamic var isFriend: Bool = false
     dynamic var isSuspended: Bool = false
     dynamic var id: String = ""
     dynamic var isOver18: Bool = false
@@ -22,10 +23,38 @@ class Account: Object {
     dynamic var inboxCount: Int = 0
     dynamic var hasMail: Int = 0
     dynamic var name: String = ""
-    dynamic var created: Double = 0.0
+    dynamic var created: Date = Date()
     dynamic var commentKarma: Int = 0
     
-    var dateCreated: Date {
-        return Date(timeIntervalSince1970: created)
+    var subredditRecent = List<Subreddit>()
+    var subredditSubscriptions = List<Subreddit>()
+    var subredditFavorites = List<Subreddit>()
+    var multireddits = List<Multireddit>()
+    
+    required convenience init?(map: Map) {
+        self.init()
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    func mapping(map: Map) {
+        isEmployee              <- map["is_employee"]
+        isSuspended             <- map["is_suspended"]
+        id                      <- map["id"]
+        isOver18                <- map["over_18"]
+        isGold                  <- map["is_gold"]
+        isMod                   <- map["is_mod"]
+        hasVerifiedEMail        <- map["has_verified_email"]
+        linkKarma               <- map["link_karma"]
+        inboxCount              <- map["inbox_count"]
+        hasMail                 <- map["has_mail"]
+        name                    <- map["name"]
+        created                 <- (map["created"], DateTransform())
+        commentKarma            <- map["comment_karma"]
+        subredditSubscriptions  <- (map["hamlet_subscriptions"], ListTransform<Subreddit>())
+        // TODO: Add Multireddits to account
+        multireddits            <- (map["hamlet_multireddits"], ListTransform<Multireddit>())
     }
 }

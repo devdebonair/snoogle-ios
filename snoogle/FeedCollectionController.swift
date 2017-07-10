@@ -11,57 +11,31 @@ import IGListKit
 import RealmSwift
 import AsyncDisplayKit
 
-class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate {
     
-    let name: String
-    let sort: ListingSort
-    var listing: ListingSubreddit? = nil
     var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
-    var token: NotificationToken? = nil
     let slideTransition: SlideTransition
+    var context: ASBatchContext? = nil
     
-    var menuController: UIViewController {
-        let controller = ASNavigationController(rootViewController: PagerController())
+    let store = SubredditStore()
+    
+    lazy var menuController: UIViewController = {
+        let controller = ASNavigationController(rootViewController: SubscriptionsPagerController())
         return controller
-    }
+    }()
     
-    var leftBarItem: UIView = UIView() {
-        didSet {
-           self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftBarItem)
-        }
-    }
-    
-    var sub: Subreddit? = nil {
-        didSet {
-            // Set the name of the Subreddit on the navigation bar
-            guard let guardedSub = sub else { return }
-            self.setLeftBarButton(subredditName: guardedSub.displayName)
-        }
-    }
-
-    init(name: String, sort: ListingSort = .hot) {
-        self.name = name
-        self.sort = sort
+    override init() {
         self.slideTransition = SlideTransition(duration: 0.20)
         
         super.init()
         
-        DispatchQueue.main.async {
-            self.loadListing()
-        }
+        store.delegate = self
         
         definesPresentationContext = true
         navigationController?.delegate = transition
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let sub = sub {
-            setLeftBarButton(subredditName: sub.displayName)
-        }
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         StatusBar.set(color: .clear)
@@ -102,14 +76,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             UIBarButtonItem(image: #imageLiteral(resourceName: "cogwheel"), style: .plain, target: self, action: #selector(didTapSettings)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             ], animated: false)
-        
-        ServiceSubreddit(name: name).listing(sort: sort) { success in
-            if success {
-                DispatchQueue.main.async {
-                    self.loadListing()
-                }
-            }
-        }
     }
     
     func setLeftBarButton(subredditName: String) {
@@ -125,42 +91,21 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
         textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         
-        leftBarItem = textNode.view
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
-    // reset the listing
-    fileprivate func loadListing() {
-        var realm: Realm!
-        do {
-            realm = try Realm()
-        } catch let error {
-            print(error)
-        }
-        
-        // get subreddit from realm
-        sub = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-        
-        // get previous listing from realm if sub exists
-        guard let guardedSub = sub else { return }
-        let listingId = ListingSubreddit.createId(subId: guardedSub.id, sort: sort)
-        listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: listingId)
-        
-        // add notification for when the listing changes
-        guard let guardedListing = listing else { return }
-        token = guardedListing.addNotificationBlock({ (object: ObjectChange) in
-            self.refresh()
-        })
-
-        self.refresh()
-    }
-    
-    // create map of view models and update ui
-    func refresh() {
-        guard let guardedListing = listing else { return }
-        models = guardedListing.submissions.map({ (submission: Submission) -> PostViewModel in
+    func didUpdatePosts(submissions: List<Submission>) {
+        self.models = submissions.map({ (submission) -> PostViewModel in
             return PostViewModel(submission: submission)
         })
-        self.adapter.performUpdates(animated: true)
+        self.adapter.performUpdates(animated: true, completion: nil)
+        guard let context = context else { return }
+        context.completeBatchFetching(true)
+        self.context = nil
+    }
+    
+    func didUpdateSubreddit(subreddit: Subreddit) {
+        self.setLeftBarButton(subredditName: subreddit.displayName)
     }
     
     override func shouldFetch() -> Bool {
@@ -172,9 +117,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     override func fetch(context: ASBatchContext) {
-        ServiceSubreddit(name: name).moreListings(sort: sort) { (success: Bool) in
-            context.completeBatchFetching(success)
-        }
+        store.fetchListing()
+        self.context = context
     }
     
     func didTapSort() {

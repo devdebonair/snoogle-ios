@@ -16,65 +16,48 @@ class ServiceMe: Service {
     
     func fetch(completion: ((Bool)->Void)? = nil) {
         requestFetch { (json: [String : Any]?) in
-            // implement
+            guard let json = json, let account = Account(JSON: json) else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.add(account, update: true)
+                }
+            } catch {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            guard let completion = completion else { return }
+            return completion(true)
         }
     }
     
     func multireddits(completion: ((Bool)->Void)? = nil) {
-        // Strategy to prevent overwrites from inconsistent data.
-        // Reddit does not return the full subreddit json
-        // This is needed because the keys in Subreddit do not match keys
-        //      the keys returned by the api. snake_case -> camelCase
-        let extractSubreddits = { (json: [String:Any]) -> [String : Any] in
-            var jsonToMerge = [String:Any]()
-            jsonToMerge["iconImage"] = json["icon_img"]
-            jsonToMerge["bannerImage"] = json["banner_img"]
-            jsonToMerge["description"] = json["description"]
-            jsonToMerge["displayName"] = json["display_name"]
-            jsonToMerge["publicDescription"] = json["public_description"]
-            jsonToMerge["name"] = json["name"]
-            jsonToMerge["subscribers"] = json["subscribers"]
-            jsonToMerge["keyColor"] = json["key_color"]
-            jsonToMerge["subredditType"] = json["subreddit_type"]
-            jsonToMerge["headerImage"] = json["header_img"]
-            if let name = jsonToMerge["name"] as? String {
-                jsonToMerge["id"] = Subreddit.getId(from: name)
-            }
-            return jsonToMerge
-        }
-        
         requestMultireddits { (json: [[String : Any]]?) in
-            if let json = json {
-                do {
-                    let realm = try Realm()
-                    try realm.write {
-                        for multiJSON in json {
-                            if let multi = Multireddit(JSON: multiJSON), let subs = multiJSON["subreddits"] as? [[String:Any]] {
-                                realm.add(multi, update: true)
-                                multi.subreddits.removeAll()
-                                for subJSON in subs {
-                                    let extractedSubJSON = extractSubreddits(subJSON)
-                                    let id = extractedSubJSON["id"]
-                                    let existingSub = realm.object(ofType: Subreddit.self, forPrimaryKey: id)
-                                    if let _ = id, let _ = existingSub {
-                                        let updatedSub = realm.create(Subreddit.self, value: extractedSubJSON, update: true)
-                                        multi.subreddits.append(updatedSub)
-                                    } else {
-                                        if let newSub = Subreddit(JSON: subJSON) {
-                                            multi.subreddits.append(newSub)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if let completion = completion { return completion(true) }
-                } catch {
-                    if let completion = completion { return completion(false) }
-                }
-            } else {
-                if let completion = completion { return completion(false) }
+            guard let json = json else {
+                guard let completion = completion else { return }
+                return completion(false)
             }
+            
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    for multiJSON in json {
+                        guard let multireddit = Multireddit(JSON: multiJSON) else { continue }
+                        realm.add(multireddit, update: true)
+                    }
+                }
+            } catch {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            
+            guard let completion = completion else { return }
+            return completion(true)
         }
     }
     

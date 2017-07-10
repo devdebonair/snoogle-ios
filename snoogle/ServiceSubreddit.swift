@@ -84,7 +84,6 @@ class ServiceSubreddit: Service {
             let listingId = "listing:\(name):\(sort.rawValue)"
             listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: listingId)
         } catch {
-            print("crashing initial")
             print(error)
             guard let completion = completion else { return }
             return completion(false)

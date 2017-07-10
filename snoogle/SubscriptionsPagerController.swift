@@ -1,5 +1,5 @@
 //
-//  PagerController.swift
+//  SubscriptionsPagerController.swift
 //  snoogle
 //
 //  Created by Vincent Moore on 7/1/17.
@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class PagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate {
+class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate {
     let pagerNode: ASPagerNode
     init() {
         let layout = ASPagerFlowLayout()
@@ -29,6 +29,7 @@ class PagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPag
         navigationController?.isToolbarHidden = false
         navigationController?.toolbar.barTintColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
         navigationController?.toolbar.isTranslucent = false
+        
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
@@ -73,7 +74,7 @@ class PagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPag
     }
     
     func numberOfPages(in pagerNode: ASPagerNode) -> Int {
-        return 5
+        return 4
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
