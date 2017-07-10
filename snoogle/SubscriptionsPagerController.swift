@@ -66,10 +66,19 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         self.controllers[.favorite]?.updateModels(models: models)
     }
     
-    func didUpdateMultireddits(multireddit: List<Multireddit>) {
-//        self.models[.recent] = subreddits.map({ (subreddit) -> SubredditListItemViewModel in
-//            return SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlIconImage)
-//        })
+    func didUpdateMultireddits(multireddits: List<Multireddit>) {
+        var models = [SubredditListItemViewModel]()
+        for multireddit in multireddits {
+            var url: URL? = nil
+            for subreddit in multireddit.subreddits {
+                if let urlValidImage = subreddit.urlValidImage {
+                    url = urlValidImage
+                    break
+                }
+            }
+            models.append(SubredditListItemViewModel(name: multireddit.displayName, subscribers: 0, imageUrl: url))
+        }
+        self.controllers[.multireddits]?.updateModels(models: models)
     }
     
     func didUpdateSubscriptions(subreddits: List<Subreddit>) {

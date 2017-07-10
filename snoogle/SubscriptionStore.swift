@@ -13,7 +13,7 @@ import RealmSwift
 protocol SubscriptionStoreDelegate {
     func didUpdateSubscriptions(subreddits: List<Subreddit>)
     func didUpdateRecent(subreddits: List<Subreddit>)
-    func didUpdateMultireddits(multireddit: List<Multireddit>)
+    func didUpdateMultireddits(multireddits: List<Multireddit>)
     func didUpdateFavorites(subreddits: List<Subreddit>)
     func didSelectSubreddit(subreddit: Subreddit)
 }
@@ -42,14 +42,14 @@ class SubscriptionStore {
                             weakSelf.delegate?.didUpdateRecent(subreddits: guardedAccount.subredditRecent)
                         })
                         weakSelf.tokenMultireddits = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
-                            weakSelf.delegate?.didUpdateMultireddits(multireddit: guardedAccount.multireddits)
+                            weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
                         })
                         weakSelf.tokenFavorites = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
                             weakSelf.delegate?.didUpdateFavorites(subreddits: guardedAccount.subredditFavorites)
                         })
                         weakSelf.delegate?.didUpdateSubscriptions(subreddits: guardedAccount.subredditSubscriptions)
                         weakSelf.delegate?.didUpdateRecent(subreddits: guardedAccount.subredditRecent)
-                        weakSelf.delegate?.didUpdateMultireddits(multireddit: guardedAccount.multireddits)
+                        weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
                         weakSelf.delegate?.didUpdateFavorites(subreddits: guardedAccount.subredditFavorites)
                     } catch {
                         print(error)
