@@ -1,8 +1,8 @@
 //
-//  SectionController.swift
+//  GenericSectionController.swift
 //  snoogle
 //
-//  Created by Vincent Moore on 3/25/17.
+//  Created by Vincent Moore on 7/12/17.
 //  Copyright © 2017 Vincent Moore. All rights reserved.
 //
 
@@ -10,9 +10,9 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class SectionController<T: ViewModelElement>: IGListSectionController, ASSectionController, ASSupplementaryNodeSource {
+class GenericSectionController: IGListSectionController, ASSectionController, ASSupplementaryNodeSource {
     
-    var model: T!
+    var model: ViewModelElement!
     
     override init() {
         super.init()
@@ -73,11 +73,13 @@ class SectionController<T: ViewModelElement>: IGListSectionController, ASSection
     }
     
     override func didUpdate(to object: Any) {
-        guard let object = object as? T else { return }
+        guard let object = object as? ViewModelElement else { return }
         self.model = object
     }
     
-    override func didSelectItem(at index: Int) {}
+    override func didSelectItem(at index: Int) {
+        self.model.didSelect(index: index)
+    }
     
     override func supportedElementKinds() -> [String] {
         return [UICollectionElementKindSectionHeader, UICollectionElementKindSectionFooter]

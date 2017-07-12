@@ -9,6 +9,10 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol PostViewModelDelegate {
+    func didSelectPost(post: PostViewModel)
+}
+
 class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let meta: String
     let title: String
@@ -19,6 +23,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let isSticky: Bool
     let vote: VoteType
     let saved: Bool
+    
+    var delegate: PostViewModelDelegate? = nil
     
     init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false) {
         self.id = id
@@ -58,6 +64,11 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     
     func didUnvote() {
         ServiceSubmission(id: id).unvote()
+    }
+    
+    func didSelect(index: Int) {
+        guard let delegate = delegate else { return }
+        delegate.didSelectPost(post: self)
     }
     
     func cell(index: Int) -> ASCellNode {

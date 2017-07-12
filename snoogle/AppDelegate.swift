@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let rootController = FeedCollectionController()
         navigationController = ASNavigationController(rootViewController: rootController)
-        rootController.store.setSubreddit(name: "animegifs")
+        rootController.store.setSubreddit(name: "overwatch")
         rootController.store.fetchListing()
         
         window = UIWindow(frame: UIScreen.main.bounds)

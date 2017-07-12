@@ -106,4 +106,3 @@ extension TextNodeViewController: UIGestureRecognizerDelegate {
         return true
     }
 }
-

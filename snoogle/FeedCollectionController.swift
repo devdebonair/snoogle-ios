@@ -11,7 +11,7 @@ import IGListKit
 import RealmSwift
 import AsyncDisplayKit
 
-class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate {
     
     var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
@@ -94,9 +94,17 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
+    override func sectionController() -> GenericSectionController {
+        let sectionController = GenericSectionController()
+        sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        return sectionController
+    }
+    
     func didUpdatePosts(submissions: List<Submission>) {
         self.models = submissions.map({ (submission) -> PostViewModel in
-            return PostViewModel(submission: submission)
+            let post = PostViewModel(submission: submission)
+            post.delegate = self
+            return post
         })
         self.adapter.performUpdates(animated: true, completion: nil)
         guard let context = context else { return }
@@ -110,10 +118,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     override func shouldFetch() -> Bool {
         return true
-    }
-    
-    override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return SubmissionSectionController()
     }
     
     override func fetch(context: ASBatchContext) {
@@ -180,6 +184,20 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     func didTapUser() {
         let controller = menuController
         controller.transitioningDelegate = slideTransition
+        self.navigationController?.present(controller, animated: true, completion: nil)
+    }
+    
+    func didSelectPost(post: PostViewModel) {
+        transition = CoverTransition(duration: 0.25, delay: 0.1)
+        if let transition = transition as? CoverTransition {
+            transition.automaticallyManageGesture = true
+        }
+        let articleController = ArticleCollectionController(id: post.id)
+        let controller = ASNavigationController(rootViewController: articleController)
+        controller.isToolbarHidden = true
+        controller.isNavigationBarHidden = true
+        controller.transitioningDelegate = transition
+        controller.delegate = transition
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
     

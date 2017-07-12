@@ -11,6 +11,9 @@ import IGListKit
 import AsyncDisplayKit
 
 class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDelegate, IGListAdapterDataSource {
+    let flowLayout = UICollectionViewFlowLayout()
+    let collectionNode: ASCollectionNode
+    
     var models = [IGListDiffable]()
     
     lazy var adapter: IGListAdapter = {
@@ -18,9 +21,6 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
         adapter.dataSource = self
         return adapter
     }()
-    
-    let flowLayout = UICollectionViewFlowLayout()
-    let collectionNode: ASCollectionNode
     
     init() {
         collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
@@ -44,8 +44,11 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        // TODO: Figure out how to make a blank section controller instead of explicit declaration
-        return SectionController<PostViewModel>()
+        return self.sectionController()
+    }
+    
+    func sectionController() -> GenericSectionController {
+        return GenericSectionController()
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {

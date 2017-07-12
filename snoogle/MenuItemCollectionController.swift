@@ -26,11 +26,6 @@ class MenuItemCollectionController: CollectionController {
         super.viewDidLoad()
         self.collectionNode.backgroundColor = .white
     }
-    
-    override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return SubmissionSortSectionController()
-    }
-
 }
 
 extension MenuItemCollectionController: UIGestureRecognizerDelegate {

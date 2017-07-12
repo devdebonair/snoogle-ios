@@ -17,9 +17,14 @@ protocol ViewModelElement {
     func footer() -> ASCellNode?
     func headerSize() -> ASSizeRange
     func footerSize() -> ASSizeRange
+    func didSelect(index: Int)
 }
 
 extension ViewModelElement {
+    func didSelect(index: Int) {
+        return
+    }
+    
     func header() -> ASCellNode? {
         return nil
     }

@@ -88,13 +88,6 @@ class ArticleCollectionController: CollectionController {
         models = [ArticleViewModel(submission: guardedSubmission)]
         self.adapter.performUpdates(animated: true)
     }
-    
-    override func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        if let _ = object as? ArticleViewModel {
-            return ArticleSectionController()
-        }
-        return CommentSectionController()
-    }
 }
 
 extension ArticleCollectionController: UIGestureRecognizerDelegate {
