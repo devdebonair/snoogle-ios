@@ -11,6 +11,7 @@ import AsyncDisplayKit
 
 protocol PostViewModelDelegate {
     func didSelectPost(post: PostViewModel)
+    func didTapLink(post: PostViewModel)
 }
 
 class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
@@ -23,10 +24,12 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let isSticky: Bool
     let vote: VoteType
     let saved: Bool
+    let hint: PostHintType?
+    let domain: String
     
     var delegate: PostViewModelDelegate? = nil
     
-    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false) {
+    init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false, hint: PostHintType? = nil, domain: String = "") {
         self.id = id
         self.meta = meta
         self.title = title
@@ -36,6 +39,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         self.isSticky = isSticky
         self.vote = vote
         self.saved = saved
+        self.hint = hint
+        self.domain = domain
     }
     
     override func primaryKey() -> NSObjectProtocol {
@@ -66,6 +71,11 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         ServiceSubmission(id: id).unvote()
     }
     
+    func didTapLink() {
+        guard let delegate = delegate else { return }
+        delegate.didTapLink(post: self)
+    }
+    
     func didSelect(index: Int) {
         guard let delegate = delegate else { return }
         delegate.didSelectPost(post: self)
@@ -85,6 +95,14 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let descriptionFont = UIFont.systemFont(ofSize: 13)
         let descriptionColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let descriptionLineSpacing: CGFloat = 4.0
+        
+        let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
+        let linkTitleColor = UIColor.darkText
+        let linkTitleLineSpacing: CGFloat = 2.0
+        
+        let linkSubtitleFont = UIFont.systemFont(ofSize: 13)
+        let linkSubtitleColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let linkSubtitleLineSpacing: CGFloat = 2.0
         
         let paragraphStyleMeta = NSMutableParagraphStyle()
         paragraphStyleMeta.lineSpacing = metaLineSpacing
@@ -117,6 +135,43 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                 NSForegroundColorAttributeName: descriptionColor,
                 NSParagraphStyleAttributeName: paragraphStyleDescription
             ])
+        
+        
+        
+        if let hint = hint, hint == .link {
+            let paragraphStyleLinkTitle = NSMutableParagraphStyle()
+            paragraphStyleLinkTitle.lineSpacing = linkTitleLineSpacing
+            
+            let paragraphStyleLinkSubtitle = NSMutableParagraphStyle()
+            paragraphStyleLinkSubtitle.lineSpacing = linkSubtitleLineSpacing
+            
+            let linkTitle = NSMutableAttributedString(
+                string: self.title,
+                attributes: [
+                    NSFontAttributeName: linkTitleFont,
+                    NSForegroundColorAttributeName: linkTitleColor,
+                    NSParagraphStyleAttributeName: paragraphStyleLinkTitle
+                ])
+            
+            let linkSubtitle = NSMutableAttributedString(
+                string: domain,
+                attributes: [
+                    NSFontAttributeName: linkSubtitleFont,
+                    NSForegroundColorAttributeName: linkSubtitleColor,
+                    NSParagraphStyleAttributeName: paragraphStyleLinkSubtitle
+                ])
+            let cell = CellNodePostLink(
+                meta: meta,
+                title: title,
+                subtitle: description,
+                media: self.media.first,
+                vote: vote,
+                saved: saved,
+                linkTitle: linkTitle,
+                linkSubtitle: linkSubtitle)
+            cell.delegate = self
+            return cell
+        }
         
         let post = CellNodePost(
             meta: meta,

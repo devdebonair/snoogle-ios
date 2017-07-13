@@ -47,6 +47,7 @@ class Submission: Object, Mappable {
     dynamic var ups: Int = 0
     dynamic var isNSFW: Bool = false
     dynamic var saved: Bool = false
+    dynamic var postHint: String = ""
     
     var likes = RealmOptional<Bool>()
     
@@ -68,7 +69,7 @@ class Submission: Object, Mappable {
     var metaIgnoreSub: String {
         var metaString = "\(authorName) • \(created.timeAgo(shortened: true))"
         if domain.lowercased() != "self.\(subredditName)".lowercased() {
-            metaString = "\(metaString)  • \(domain)"
+            metaString = "\(metaString)"
         }
         metaString += (score != 1) ? " • \(score) points" : " • \(score) point"
         return metaString
@@ -105,6 +106,11 @@ class Submission: Object, Mappable {
     var vote: VoteType {
         guard let guardedLikes = likes.value else { return .none }
         return guardedLikes ? .up : .down
+    }
+    
+    var hint: PostHintType? {
+        guard let hint = PostHintType(rawValue: postHint) else { return nil }
+        return hint
     }
     
     required convenience init?(map: Map) {
@@ -150,6 +156,7 @@ class Submission: Object, Mappable {
         ups                     <- map["ups"]
         isNSFW                  <- map["over_18"]
         saved                   <- map["saved"]
+        postHint                <- map["post_hint"]
         created                 <- (map["created"], DateTransform())
         
         if let likesData = map.JSON["likes"] as? Bool {

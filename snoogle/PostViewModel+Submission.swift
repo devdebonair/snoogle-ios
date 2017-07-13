@@ -22,6 +22,6 @@ extension PostViewModel {
                 media.append(toInsert)
             }
         }
-        self.init(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved)
+        self.init(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
     }
 }

@@ -34,6 +34,9 @@ class CellNodeMedia: ASCellNode {
         if media.count > 1 {
             mediaView = NodeMediaAlbum(media: media)
         }
+        if media.isEmpty {
+            mediaView = ASDisplayNode()
+        }
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -41,14 +44,14 @@ class CellNodeMedia: ASCellNode {
         
         if let mediaView = mediaView as? NodeMedia {
             child = mediaView
-        }
-        
-        if let mediaView = mediaView as? NodeMediaAlbum {
+        } else if let mediaView = mediaView as? NodeMediaAlbum {
             mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
             mediaView.style.height = ASDimension(unit: .points, value: 150)
             mediaView.collectionNode.clipsToBounds = false
             let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)
             child = insetMediaLayout
+        } else {
+            child = mediaView
         }
 
         let insetSpec = ASInsetLayoutSpec(insets: inset, child: child)

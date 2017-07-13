@@ -1,44 +1,34 @@
 //
-//  CellNodeDetail.swift
+//  CellNodePostLink.swift
 //  snoogle
 //
-//  Created by Vincent Moore on 12/26/16.
-//  Copyright © 2016 Vincent Moore. All rights reserved.
+//  Created by Vincent Moore on 7/13/17.
+//  Copyright © 2017 Vincent Moore. All rights reserved.
 //
 
 import Foundation
 import AsyncDisplayKit
 import UIKit
 
-protocol CellNodePostDelegate {
-    func didUpvote()
-    func didDownvote()
-    func didUnvote()
-    func didSave()
-    func didUnsave()
-    func didTapLink()
-//    func didTapComments()
-//    func didTapMedia()
-}
-
-class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
+class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
     let textMeta: ASTextNode
     let textTitle: ASTextNode
     let textSubtitle: ASTextNode
     let separator: ASDisplayNode
     let actionBar: CellNodePostActionBar
     
-    var mediaView: ASDisplayNode? = nil
+    var linkView: CellNodeLink
     
-    let media: [MediaElement]?
+    let media: MediaElement?
     
     var delegate: CellNodePostDelegate? = nil
     
-    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: [MediaElement], vote: VoteType, saved: Bool, numberOfComments: Int = 0) {
+    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: MediaElement? = nil, vote: VoteType, saved: Bool, numberOfComments: Int = 0, linkTitle: NSMutableAttributedString, linkSubtitle: NSMutableAttributedString) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
         separator = ASDisplayNode()
+        linkView = CellNodeLink(preview: media, title: linkTitle, subtitle: linkSubtitle)
         actionBar = CellNodePostActionBar(vote: vote, saved: saved, numberOfComments: numberOfComments)
         
         self.media = media
@@ -65,13 +55,6 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         
         let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         separator.backgroundColor = separatorColor
-        
-        if media.count == 1, let mediaItem = media.first {
-            mediaView = NodeMedia(media: mediaItem)
-        }
-        if media.count > 1 {
-            mediaView = NodeMediaAlbum(media: media)
-        }
     }
     
     override func didLoad() {
@@ -82,6 +65,13 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         self.shadowRadius = 1.0
         self.cornerRadius = 2.0
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        
+        self.linkView.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLink)))
+    }
+    
+    func didTapLink(gesture: UITapGestureRecognizer) {
+        guard let delegate = delegate else { return }
+        delegate.didTapLink()
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -89,6 +79,10 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
+        
+        let linkInset = UIEdgeInsets(top: 5.0, left: 0, bottom: 5.0, right: 0)
+        let linkWithInset = ASInsetLayoutSpec(insets: linkInset, child: linkView)
+        contentLayoutElements.append(linkWithInset)
         
         if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
             contentLayoutElements.append(textSubtitle)
@@ -111,35 +105,9 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
         let insetButtonLayout = ASInsetLayoutSpec(insets: buttonInset, child: actionBar)
-
+        
         var stackContainerElements = [ASLayoutElement]()
         stackContainerElements.append(insetContentLayout)
-
-        if let mediaView = mediaView {
-            
-            if let mediaView = mediaView as? NodeMedia {
-                stackContainerElements.append(mediaView)
-            }
-            
-            if let mediaView = mediaView as? NodeMediaAlbum {
-                mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
-                mediaView.style.height = ASDimension(unit: .points, value: 300)
-                mediaView.collectionNode.clipsToBounds = false
-                let inset = UIEdgeInsets(top: 0, left: padding, bottom: padding, right: 0)
-                let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)
-                stackContainerElements.append(insetMediaLayout)
-            }
-            
-            if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
-                
-                if let contentChildren = stackLayoutContent.children, contentChildren.count > 2 {
-                    let _ = stackLayoutContent.children?.popLast()
-                    let subtitleInset = UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)
-                    let subtitleInsetLayout = ASInsetLayoutSpec(insets: subtitleInset, child: textSubtitle)
-                    stackContainerElements.append(subtitleInsetLayout)
-                }
-            }
-        }
         
         stackContainerElements.append(separator)
         stackContainerElements.append(insetButtonLayout)
