@@ -112,6 +112,10 @@ class ServiceSubreddit: Service {
                 try realm.write {
                     for subJSON in submissionJSON {
                         guard let submission = Submission(JSON: subJSON) else { continue }
+                        let existingSubmission = realm.object(ofType: Submission.self, forPrimaryKey: submission.id)
+                        if let existingSubmission = existingSubmission {
+                            realm.delete(existingSubmission)
+                        }
                         guardedListing.submissions.append(submission)
                     }
                 }

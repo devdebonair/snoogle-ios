@@ -203,14 +203,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapLink(post: PostViewModel) {
-        print("we tapped the link")
         do {
             let realm = try Realm()
             let submission = realm.object(ofType: Submission.self, forPrimaryKey: post.id)
             guard let guardedSubmission = submission, let url = guardedSubmission.urlOrigin else { return }
-            print("we have the submission")
             transition = nil
-            print(url)
             let controller = SFSafariViewController(url: url)
             self.present(controller, animated: true, completion: nil)
         } catch {
