@@ -10,8 +10,9 @@ import Foundation
 import IGListKit
 import RealmSwift
 import AsyncDisplayKit
+import SafariServices
 
-class ArticleCollectionController: CollectionController {
+class ArticleCollectionController: CollectionController, ArticleViewModelDelegate {
     
     let id: String
     var submission: Submission? = nil
@@ -85,8 +86,15 @@ class ArticleCollectionController: CollectionController {
     func refresh() {
         guard let guardedSubmission = submission else { return }
 //        models = [ArticleViewModel(submission: guardedSubmission), CommentViewModel(comments: guardedSubmission.comments)]
-        models = [ArticleViewModel(submission: guardedSubmission)]
+        let articleModel = ArticleViewModel(submission: guardedSubmission)
+        articleModel.delegate = self
+        models = [articleModel]
         self.adapter.performUpdates(animated: true)
+    }
+
+    func didTapLink(url: URL) {
+        let controller = SFSafariViewController(url: url)
+        self.present(controller, animated: true, completion: nil)
     }
 }
 

@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import AsyncDisplayKit
 
-class ArticleViewModel: NSObject, ViewModelElement {
+protocol ArticleViewModelDelegate {
+    func didTapLink(url: URL)
+}
+
+class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
     let author: String
     let origin: String
     let created: Date
@@ -21,6 +25,8 @@ class ArticleViewModel: NSObject, ViewModelElement {
     let saved: Bool
     let numberOfComments: Int
     var newContent = [NSMutableAttributedString]()
+    
+    var delegate: ArticleViewModelDelegate? = nil
     
     var meta: String {
         return "\(author)\nposted on \(origin)\n\(created.timeAgo(shortened: false))"
@@ -107,7 +113,10 @@ class ArticleViewModel: NSObject, ViewModelElement {
         if let element = element as? NSMutableAttributedString {
             var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             if index == numberOfCells() - 1 { inset.bottom = 30 }
-            return CellNodeText(attributedText: element, inset: inset)
+            let cell = CellNodeText(attributedText: element, inset: inset)
+            cell.textNode.delegate = self
+            cell.textNode.isUserInteractionEnabled = true
+            return cell
         }
         
         return ASCellNode()
@@ -125,5 +134,14 @@ class ArticleViewModel: NSObject, ViewModelElement {
     
     func footerSize() -> ASSizeRange {
         return ASSizeRangeUnconstrained
+    }
+    
+    func textNode(_ textNode: ASTextNode, tappedLinkAttribute attribute: String, value: Any, at point: CGPoint, textRange: NSRange) {
+        guard let value = value as? URL, let delegate = delegate else { return }
+        delegate.didTapLink(url: value)
+    }
+    
+    func textNode(_ textNode: ASTextNode, shouldHighlightLinkAttribute attribute: String, value: Any, at point: CGPoint) -> Bool {
+        return true
     }
 }
