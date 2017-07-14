@@ -9,10 +9,26 @@
 import Foundation
 import IGListKit
 
-class MenuItemSortController: MenuItemCollectionController {
+protocol MenuItemSortControllerDelegate {
+    func didSelectSort(sort: ListingSort)
+}
+
+class MenuItemSortController: MenuItemCollectionController, SubmissionSortViewModelDelegate {
+    
+    var delegate: MenuItemSortControllerDelegate? = nil
+    
     override init() {
         super.init()
-        self.models = [SubmissionSortViewModel()]
+        let submissionSortModel = SubmissionSortViewModel()
+        submissionSortModel.delegate = self
+        self.models = [submissionSortModel]
+    }
+    
+    func didSelectSort(sort: ListingSort) {
+        DispatchQueue.main.async {
+            guard let delegate = self.delegate else { return }
+            delegate.didSelectSort(sort: sort)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

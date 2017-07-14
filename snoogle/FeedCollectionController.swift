@@ -12,7 +12,7 @@ import RealmSwift
 import AsyncDisplayKit
 import SafariServices
 
-class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate, MenuItemSortControllerDelegate {
     var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
     let slideTransition: SlideTransition
@@ -24,6 +24,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let controller = ASNavigationController(rootViewController: SubscriptionsPagerController())
         return controller
     }()
+    
+    var randomController: UIViewController? = nil
     
     override init() {
         self.slideTransition = SlideTransition(duration: 0.20)
@@ -98,6 +100,14 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
+    func didSelectSort(sort: ListingSort) {
+        store.setSort(sort: sort)
+        guard let transition = transition as? CardTransition, let controller = randomController else { return }
+        controller.dismiss(animated: true, completion: nil)
+        transition.finish()
+        randomController = nil
+    }
+    
     override func sectionController() -> GenericSectionController {
         let sectionController = GenericSectionController()
         sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
@@ -137,6 +147,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let controller = MenuItemSortController()
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
+        controller.delegate = self
+        self.randomController = controller
         self.navigationController?.present(controller, animated: true)
     }
     

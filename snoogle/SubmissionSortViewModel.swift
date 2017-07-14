@@ -9,7 +9,13 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol SubmissionSortViewModelDelegate {
+    func didSelectSort(sort: ListingSort)
+}
+
 class SubmissionSortViewModel: NSObject, ViewModelElement {
+    
+    var delegate: SubmissionSortViewModelDelegate? = nil
     
     private enum CellType: Int {
         case hot = 1
@@ -47,6 +53,23 @@ class SubmissionSortViewModel: NSObject, ViewModelElement {
             return CellNodeMenuItem(image: #imageLiteral(resourceName: "favorite"), title: "Top")
         case .seperator:
             return CellNodeSeparator()
+        }
+    }
+    
+    func didSelect(index: Int) {
+        guard let delegate = delegate else { return }
+        let type = cellTypes[index]
+        switch type {
+        case .hot:
+            delegate.didSelectSort(sort: .hot)
+        case .new:
+            delegate.didSelectSort(sort: .new)
+        case .rising:
+            delegate.didSelectSort(sort: .rising)
+        case .top:
+            delegate.didSelectSort(sort: .top)
+        default:
+            return
         }
     }
     

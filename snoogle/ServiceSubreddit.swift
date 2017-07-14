@@ -43,7 +43,7 @@ class ServiceSubreddit: Service {
     func listing(sort: ListingSort = .hot, completion: ((Bool)->Void)? = nil) {
         let name = self.name
         
-        self.requestListing { (json: [String:Any]?) in
+        self.requestListing(sort: sort, after: nil) { (json: [String:Any]?) in
             guard let json = json, let submissionJSON = json["data"] as? [[String:Any]] else {
                 guard let completion = completion else { return }
                 return completion(false)
