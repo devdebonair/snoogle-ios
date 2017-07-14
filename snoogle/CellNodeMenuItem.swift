@@ -17,7 +17,7 @@ class CellNodeMenuItem: ASCellNode {
         imageIcon.image = image
         textTitle.attributedText = NSAttributedString(string: title)
         
-        let font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightRegular)
+        let font = UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold)
         let color = UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
         let attributes = NSMutableAttributedString(
             string: title,

@@ -46,6 +46,11 @@ class SubredditStore {
         }
     }
     
+    func setSort(sort: ListingSort) {
+        self.sort = sort
+        self.fetchListing(refresh: true)
+    }
+    
     func fetchListing(refresh: Bool = false) {
         DispatchQueue.global(qos: .background).async {
             if let _ = self.tokenListing, !refresh {
