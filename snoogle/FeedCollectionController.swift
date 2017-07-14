@@ -135,7 +135,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             transition.automaticallyManageGesture = true
         }
         let controller = MenuItemSortController()
-        controller.modalPresentationStyle = .overCurrentContext
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         self.navigationController?.present(controller, animated: true)
