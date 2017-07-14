@@ -12,6 +12,11 @@ import AsyncDisplayKit
 protocol PostViewModelDelegate {
     func didSelectPost(post: PostViewModel)
     func didTapLink(post: PostViewModel)
+    func didUpvote(post: PostViewModel)
+    func didDownvote(post: PostViewModel)
+    func didSave(post: PostViewModel)
+    func didUnsave(post: PostViewModel)
+    func didUnvote(post: PostViewModel)
 }
 
 class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
@@ -52,23 +57,28 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     }
     
     func didUpvote() {
-        ServiceSubmission(id: id).upvote()
+        guard let delegate = delegate else { return }
+        delegate.didUpvote(post: self)
     }
     
     func didDownvote() {
-        ServiceSubmission(id: id).downvote()
+        guard let delegate = delegate else { return }
+        delegate.didDownvote(post: self)
     }
     
     func didSave() {
-        ServiceSubmission(id: id).save()
+        guard let delegate = delegate else { return }
+        delegate.didSave(post: self)
     }
     
     func didUnsave() {
-        ServiceSubmission(id: id).unsave()
+        guard let delegate = delegate else { return }
+        delegate.didUnsave(post: self)
     }
     
     func didUnvote() {
-        ServiceSubmission(id: id).unvote()
+        guard let delegate = delegate else { return }
+        delegate.didUnvote(post: self)
     }
     
     func didTapLink() {

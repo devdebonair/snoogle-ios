@@ -69,4 +69,101 @@ class SubredditStore {
             }
         }
     }
+    
+    func upvote(id: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                ServiceSubmission(id: id).upvote()
+                let realm = try Realm()
+                let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+                if let submission = submission {
+                    try realm.write {
+                        submission.ups = submission.ups + 1
+                        submission.score = submission.score + 1
+                        submission.likes.value = true
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func downvote(id: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                ServiceSubmission(id: id).downvote()
+                let realm = try Realm()
+                let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+                if let submission = submission {
+                    try realm.write {
+                        submission.ups = submission.ups - 1
+                        submission.score = submission.score - 1
+                        submission.likes.value = false
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func save(id: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                ServiceSubmission(id: id).save()
+                let realm = try Realm()
+                let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+                if let submission = submission {
+                    try realm.write {
+                        submission.saved = true
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func unsave(id: String) {
+        DispatchQueue.global(qos: .background).async {
+            do {
+                ServiceSubmission(id: id).unsave()
+                let realm = try Realm()
+                let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+                if let submission = submission {
+                    try realm.write {
+                        submission.saved = false
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func unvote(id: String) {
+        DispatchQueue.global(qos: .background).async {
+            ServiceSubmission(id: id).unvote()
+            do {
+                let realm = try Realm()
+                let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
+                if let submission = submission {
+                    try realm.write {
+                        if let likes = submission.likes.value, likes {
+                            submission.ups = submission.ups - 1
+                            submission.score = submission.score - 1
+                        }
+                        if let likes = submission.likes.value, !likes {
+                            submission.ups = submission.ups + 1
+                            submission.score = submission.score + 1
+                        }
+                        submission.likes.value = nil
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
 }

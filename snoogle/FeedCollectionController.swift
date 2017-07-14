@@ -13,7 +13,6 @@ import AsyncDisplayKit
 import SafariServices
 
 class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate {
-    
     var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
     let slideTransition: SlideTransition
@@ -213,6 +212,26 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         } catch {
             print(error)
         }
+    }
+    
+    func didUpvote(post: PostViewModel) {
+        store.upvote(id: post.id)
+    }
+    
+    func didDownvote(post: PostViewModel) {
+        store.downvote(id: post.id)
+    }
+    
+    func didSave(post: PostViewModel) {
+        store.save(id: post.id)
+    }
+    
+    func didUnsave(post: PostViewModel) {
+        store.unsave(id: post.id)
+    }
+    
+    func didUnvote(post: PostViewModel) {
+        store.unvote(id: post.id)
     }
     
     required init?(coder aDecoder: NSCoder) {
