@@ -24,6 +24,8 @@ class CellNodeLink: ASCellNode {
         
         super.init()
         
+        self.selectionStyle = .gray
+        
         automaticallyManagesSubnodes = true
     }
     
