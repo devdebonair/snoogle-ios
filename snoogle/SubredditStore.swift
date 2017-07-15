@@ -65,17 +65,19 @@ class SubredditStore {
         //      and we alert the controller before main thread is updated.
         DispatchQueue.main.async {
             ServiceSubreddit(name: self.name).listing(sort: self.sort) { [weak self] (success) in
-                guard let weakSelf = self else { return }
-                do {
-                    let realm = try Realm()
-                    let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
-                    guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
-                    weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                DispatchQueue.main.async {
+                    guard let weakSelf = self else { return }
+                    do {
+                        let realm = try Realm()
+                        let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
+                        guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
+                        weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                            delegate.didUpdatePosts(submissions: guardedListing.submissions)
+                        })
                         delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                    })
-                    delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                } catch {
-                    print(error)
+                    } catch {
+                        print(error)
+                    }
                 }
             }
         }
