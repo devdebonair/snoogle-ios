@@ -24,6 +24,7 @@ class SubredditStore {
     
     func setSubreddit(name: String) {
         self.name = name
+        self.sort = .hot
         self.tokenListing = nil
         self.tokenSubreddit = nil
         DispatchQueue.global(qos: .background).async {
@@ -52,24 +53,28 @@ class SubredditStore {
     }
     
     func fetchListing(refresh: Bool = false) {
-        DispatchQueue.global(qos: .background).async {
-            if let _ = self.tokenListing, !refresh {
+        if let _ = self.tokenListing, !refresh {
+            DispatchQueue.global(qos: .background).async {
                 return ServiceSubreddit(name: self.name).moreListings(sort: self.sort)
             }
+        }
+        
+        // This is ok to do on the main thread because it is the first fetch
+        // This is to avoid the issue where realm is changed on background thread
+        //      and we alert the controller before main thread is updated.
+        DispatchQueue.main.async {
             ServiceSubreddit(name: self.name).listing(sort: self.sort) { [weak self] (success) in
                 guard let weakSelf = self else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let realm = try Realm()
-                        let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
-                        guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
-                        weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
-                            delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                        })
+                do {
+                    let realm = try Realm()
+                    let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
+                    guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
+                    weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
                         delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                    } catch {
-                        print(error)
-                    }
+                    })
+                    delegate.didUpdatePosts(submissions: guardedListing.submissions)
+                } catch {
+                    print(error)
                 }
             }
         }
