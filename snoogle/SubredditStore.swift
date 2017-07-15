@@ -48,6 +48,7 @@ class SubredditStore {
     }
     
     func setSort(sort: ListingSort) {
+        guard sort != self.sort else { return }
         self.sort = sort
         self.fetchListing(refresh: true)
     }
