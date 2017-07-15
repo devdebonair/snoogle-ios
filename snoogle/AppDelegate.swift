@@ -28,16 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let rootController = FeedCollectionController()
         navigationController = ASNavigationController(rootViewController: rootController)
-        rootController.store.setSubreddit(name: "re_zero")
+        rootController.store.setSubreddit(name: "overwatch")
         rootController.store.fetchListing()
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = navigationController
-        
-//        ServiceMe().fetch { (success) in
-//            print(success)
-//        }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
