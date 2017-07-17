@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var navigationController: ASNavigationController!
-//    var feedStore: SubredditStore!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
@@ -28,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let rootController = FeedCollectionController()
         navigationController = ASNavigationController(rootViewController: rootController)
-        rootController.store.setSubreddit(name: "overwatch")
+        rootController.store.setSubreddit(name: "rocketleague")
         rootController.store.fetchListing()
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -66,4 +65,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 }
-

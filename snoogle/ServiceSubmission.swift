@@ -35,36 +35,30 @@ class ServiceSubmission: Service {
         }
     }
     
-    func getComments(completion: ((Bool)->Void)? = nil) {
-        requestGetComments { (json: [[String : Any]]?) in
-            if let json = json {
-                do {
-                    let realm = try Realm()
-                    let submission = realm.object(ofType: Submission.self, forPrimaryKey: self.id)
-                    guard let guardedSubmission = submission else {
-                        //TODO: Get submission
-                        print("we were not able to get the stuff")
-                        if let completion = completion { return completion(false) }
-                        return
-                    }
-                    let comments = List<Comment>()
-                    for dictionary in json {
-                        if let comment = Comment(JSON: dictionary) {
-                            comments.append(comment)
-                        }
-                    }
-                    print(comments.count)
-                    try realm.write {
-                        guardedSubmission.comments.removeAll()
-                        guardedSubmission.comments.append(contentsOf: comments)
-                    }
-                    if let completion = completion { return completion(true) }
-                } catch {
-                    if let completion = completion { return completion(false) }
+    func getComments(sort: ListingSort = .hot, completion: ((Bool)->Void)? = nil) {
+        requestGetComments(sort: sort) { (json: [[String : Any]]?) in
+            guard let json = json else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            do {
+                let realm = try Realm()
+                let jsonToSave: [String:Any] = [
+                    "name": self.id,
+                    "sort": sort.rawValue,
+                    "comments": json
+                ]
+                guard let comments = SubmissionComments(JSON: jsonToSave) else {
+                    guard let completion = completion else { return }
+                    return completion(false)
                 }
-            } else {
+                try realm.write {
+                    realm.add(comments, update: true)
+                }
+            } catch {
                 if let completion = completion { return completion(false) }
             }
+            if let completion = completion { return completion(true) }
         }
     }
     
@@ -190,8 +184,8 @@ extension ServiceSubmission {
             .sendHTTP()
     }
     
-    func requestGetComments(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "submissions/\(id)/comments", relativeTo: base)!
+    func requestGetComments(sort: ListingSort = .hot, completion: @escaping ([[String:Any]]?)->Void) {
+        let url = URL(string: "submissions/\(id)/comments/\(sort.rawValue)", relativeTo: base)!
         Network()
             .get()
             .url(url)

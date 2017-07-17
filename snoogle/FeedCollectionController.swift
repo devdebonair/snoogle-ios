@@ -208,6 +208,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             transition.automaticallyManageGesture = true
         }
         let articleController = ArticleCollectionController(id: post.id)
+        articleController.store.setSubmission(id: post.id)
+        articleController.store.fetchComments()
         let controller = ASNavigationController(rootViewController: articleController)
         controller.isToolbarHidden = true
         controller.isNavigationBarHidden = true

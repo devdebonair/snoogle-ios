@@ -54,7 +54,6 @@ class Account: Object, Mappable {
         created                 <- (map["created"], DateTransform())
         commentKarma            <- map["comment_karma"]
         subredditSubscriptions  <- (map["hamlet_subscriptions"], ListTransform<Subreddit>())
-        // TODO: Add Multireddits to account
         multireddits            <- (map["hamlet_multireddits"], ListTransform<Multireddit>())
     }
 }

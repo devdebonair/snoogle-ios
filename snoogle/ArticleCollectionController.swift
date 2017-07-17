@@ -12,55 +12,46 @@ import RealmSwift
 import AsyncDisplayKit
 import SafariServices
 
-class ArticleCollectionController: CollectionController, ArticleViewModelDelegate {
+class ArticleCollectionController: CollectionController, ArticleViewModelDelegate, SubmissionStoreDelegate {
     
-    let id: String
-    var submission: Submission? = nil
-    var token: NotificationToken? = nil
+    let store = SubmissionStore()
+    
+    private var commentModel: CommentViewModel? = nil
+    private var articleModel: ArticleViewModel? = nil
     
     init(id: String) {
-        self.id = id
         
         super.init()
         
         flowLayout.sectionFootersPinToVisibleBounds = true
-        
-        DispatchQueue.main.async {
-            self.load()
+        store.delegate = self
+    }
+    
+    func didUpdateComments(comments: List<Comment>) {
+        self.commentModel = CommentViewModel(comments: comments)
+        self.load()
+    }
+    
+    func didUpdateSubmission(submission: Submission) {
+        self.articleModel = ArticleViewModel(submission: submission)
+        self.articleModel?.delegate = self
+        self.load()
+    }
+
+    func load() {
+        var models = [IGListDiffable]()
+        if let articleModel = self.articleModel {
+            models.append(articleModel)
         }
+        if let commentModel = self.commentModel {
+            models.append(commentModel)
+        }
+        self.models = models
+        self.adapter.performUpdates(animated: true, completion: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // reset the listing
-    fileprivate func load() {
-        var realm: Realm!
-        do {
-            realm = try Realm()
-        } catch let error {
-            print(error)
-        }
-        // get submission from realm
-        submission = Query<Submission>().key("id").eqlStr(id).exec(realm: realm).first
-        
-        // add notification for when the listing changes
-        guard let guardedSubmission = submission else { return }
-        token = guardedSubmission.addNotificationBlock({ (object: ObjectChange) in
-            self.refresh()
-        })
-        
-        // Fetch submission from service
-        // TODO: fetch submission in article on background thread
-//        print("comments coming up")
-//        ServiceSubmission(id: guardedSubmission.id).getComments { (success: Bool) in
-//            DispatchQueue.main.async {
-//                print(guardedSubmission.comments.count)
-//            }
-//        }
-        
-        self.refresh()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,16 +71,6 @@ class ArticleCollectionController: CollectionController, ArticleViewModelDelegat
     
     func dismissController() {
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    // create map of view models and update ui
-    func refresh() {
-        guard let guardedSubmission = submission else { return }
-//        models = [ArticleViewModel(submission: guardedSubmission), CommentViewModel(comments: guardedSubmission.comments)]
-        let articleModel = ArticleViewModel(submission: guardedSubmission)
-        articleModel.delegate = self
-        models = [articleModel]
-        self.adapter.performUpdates(animated: true)
     }
 
     func didTapLink(url: URL) {

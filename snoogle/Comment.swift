@@ -41,7 +41,7 @@ class Comment: Object, Mappable {
     
     var meta: String {
         let pointPluralization = (score == 1 || score == -1) ? "point" : "points"
-        return "\(name) • \(created.timeAgo()) • \(score) \(pointPluralization)"
+        return "\(authorName) • \(created.timeAgo()) • \(score) \(pointPluralization)"
     }
     
     required convenience init(map: Map) {

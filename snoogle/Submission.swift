@@ -52,7 +52,6 @@ class Submission: Object, Mappable {
     var likes = RealmOptional<Bool>()
     
     var media = List<Media>()
-    var comments = List<Comment>()
     var articleComponents = List<ArticleComponent>()
     
     dynamic var subreddit: Subreddit? = nil
@@ -166,7 +165,24 @@ class Submission: Object, Mappable {
         }
         
         media                   <- (map["hamlet_media"], ListTransform<Media>())
-        comments                <- (map["comments"], ListTransform<Comment>())
         articleComponents       <- (map["selftext_parsed"], ListTransform<ArticleComponent>())
+        
+        do {
+            if let commentsJSON = map.JSON["comments"] as? [[String:Any]] {
+                let commentsJSON: [String:Any] = [
+                    "name": self.id,
+                    "sort": ListingSort.hot,
+                    "comments": commentsJSON
+                ]
+                if let comments = SubmissionComments(JSON: commentsJSON) {
+                    let realm = try Realm()
+                    try realm.write {
+                        realm.add(comments, update: true)
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
     }
 }
