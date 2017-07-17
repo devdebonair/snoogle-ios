@@ -80,8 +80,10 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             fixedBarButtonItem
             ], animated: false)
         
-        navigationController?.toolbar.tintColor = UIColor.lightGray
-        navigationController?.navigationBar.tintColor = UIColor.lightGray
+        let colorValue: Float = 200/255
+        let tintColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+        navigationController?.toolbar.tintColor = tintColor
+        navigationController?.navigationBar.tintColor = tintColor
     }
     
     func setLeftBarButton(subredditName: String) {
