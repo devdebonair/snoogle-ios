@@ -116,6 +116,20 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.context = nil
     }
     
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
+        self.store.clear()
+        menuController.dismiss(animated: true, completion: {
+            self.models = []
+            UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
+            self.adapter.performUpdates(animated: true, completion: { (success) in
+                self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
+                self.store.setSubreddit(name: subreddit.name)
+                self.store.fetchListing()
+            })
+        })
+        self.slideTransition.finish()
+    }
+    
     func didSelectPost(post: PostViewModel) {
         transition = CoverTransition(duration: 0.25, delay: 0.1)
         if let transition = transition as? CoverTransition {
@@ -130,6 +144,26 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         controller.transitioningDelegate = transition
         controller.delegate = transition
         self.navigationController?.present(controller, animated: true, completion: nil)
+    }
+    
+    func didUpvote(post: PostViewModel) {
+        store.upvote(id: post.id)
+    }
+    
+    func didDownvote(post: PostViewModel) {
+        store.downvote(id: post.id)
+    }
+    
+    func didSave(post: PostViewModel) {
+        store.save(id: post.id)
+    }
+    
+    func didUnsave(post: PostViewModel) {
+        store.unsave(id: post.id)
+    }
+    
+    func didUnvote(post: PostViewModel) {
+        store.unvote(id: post.id)
     }
     
     func didTapLink(post: PostViewModel) {
@@ -233,40 +267,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let controller = menuController
         controller.transitioningDelegate = slideTransition
         self.navigationController?.present(controller, animated: true, completion: nil)
-    }
-    
-    func didUpvote(post: PostViewModel) {
-        store.upvote(id: post.id)
-    }
-    
-    func didDownvote(post: PostViewModel) {
-        store.downvote(id: post.id)
-    }
-    
-    func didSave(post: PostViewModel) {
-        store.save(id: post.id)
-    }
-    
-    func didUnsave(post: PostViewModel) {
-        store.unsave(id: post.id)
-    }
-    
-    func didUnvote(post: PostViewModel) {
-        store.unvote(id: post.id)
-    }
-
-    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
-        self.store.clear()
-        menuController.dismiss(animated: true, completion: {
-            self.models = []
-            UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
-            self.adapter.performUpdates(animated: true, completion: { (success) in
-                self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
-                self.store.setSubreddit(name: subreddit.name)
-                self.store.fetchListing()
-            })
-        })
-        self.slideTransition.finish()
     }
     
     func didClear() {}
