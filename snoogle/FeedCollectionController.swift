@@ -12,7 +12,7 @@ import RealmSwift
 import AsyncDisplayKit
 import SafariServices
 
-class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate, MenuItemSortControllerDelegate {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate, MenuItemSortControllerDelegate, SubscriptionsPagerControllerDelegate {
     var transition: Transition!
     let TOOLBAR_HEIGHT: CGFloat = 49
     let slideTransition: SlideTransition
@@ -21,7 +21,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     let store = SubredditStore()
     
     lazy var menuController: UIViewController = {
-        let controller = ASNavigationController(rootViewController: SubscriptionsPagerController())
+        let pageController = SubscriptionsPagerController()
+        let controller = ASNavigationController(rootViewController: pageController)
+        pageController.delegate = self
         return controller
     }()
     
@@ -45,7 +47,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        StatusBar.set(color: .white)
+        StatusBar.set(color: .clear)
     }
     
     override func viewDidLoad() {
@@ -243,7 +245,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         }
         let commentController = CommentCollectionController()
         commentController.store.fetchComments(submissionId: post.id, sort: .hot)
-//        commentController.transitioningDelegate = transition
         commentController.collectionNode.view.bounces = false
         commentController.title = "Comments"
         let controller = ASNavigationController(rootViewController: commentController)
@@ -272,6 +273,22 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     func didUnvote(post: PostViewModel) {
         store.unvote(id: post.id)
     }
+
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
+        self.store.clear()
+        menuController.dismiss(animated: true, completion: {
+            self.models = []
+            UIView.transition(with: self.navigationController!.view, duration: 0.40, options: [.transitionFlipFromRight], animations: nil, completion: nil)
+            self.adapter.performUpdates(animated: true, completion: { (success) in
+                self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
+                self.store.setSubreddit(name: subreddit.name)
+                self.store.fetchListing()
+            })
+        })
+        self.slideTransition.finish()
+    }
+    
+    func didClear() {}
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

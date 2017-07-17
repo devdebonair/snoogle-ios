@@ -38,9 +38,8 @@ class SubredditListCollectionController: CollectionController {
         textNode.attributedText = attributeString
         let size = textNode.calculateSizeThatFits(navigationController.navigationBar.frame.size)
         textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
-        navigationController.toolbar.barTintColor = navigationController.navigationBar.barTintColor
+        
         self.node.backgroundColor = navigationController.navigationBar.barTintColor
         navigationController.toolbar.isTranslucent = false
     }

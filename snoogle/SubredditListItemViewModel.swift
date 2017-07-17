@@ -9,10 +9,16 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol SubredditListItemViewModelDelegate {
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel)
+}
+
 class SubredditListItemViewModel: NSObject, ViewModelElement {
     let name: String
     let numberOfSubscribers: Int
     let imageUrl: URL?
+    
+    var delegate: SubredditListItemViewModelDelegate? = nil
     
     init(name: String, subscribers: Int, imageUrl: URL?) {
         self.name = name
@@ -29,5 +35,10 @@ class SubredditListItemViewModel: NSObject, ViewModelElement {
     
     func numberOfCells() -> Int {
         return 1
+    }
+    
+    func didSelect(index: Int) {
+        guard let delegate = delegate else { return }
+        delegate.didSelectSubreddit(subreddit: self)
     }
 }

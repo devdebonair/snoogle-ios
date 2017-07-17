@@ -13,6 +13,7 @@ import RealmSwift
 protocol SubredditStoreDelegate {
     func didUpdatePosts(submissions: List<Submission>)
     func didUpdateSubreddit(subreddit: Subreddit)
+    func didClear()
 }
 
 class SubredditStore {
@@ -81,6 +82,17 @@ class SubredditStore {
                 }
             }
         }
+    }
+    
+    func clear() {
+        guard let delegate = delegate else { return }
+        self.name = ""
+        self.tokenListing?.stop()
+        self.tokenSubreddit?.stop()
+        self.tokenSubreddit = nil
+        self.tokenListing = nil
+        self.sort = .hot
+        delegate.didClear()
     }
     
     func upvote(id: String) {

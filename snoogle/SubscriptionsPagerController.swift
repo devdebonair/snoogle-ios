@@ -11,7 +11,12 @@ import AsyncDisplayKit
 import IGListKit
 import RealmSwift
 
-class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SubscriptionStoreDelegate {
+protocol SubscriptionsPagerControllerDelegate {
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel)
+}
+
+class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SubscriptionStoreDelegate, SubredditListItemViewModelDelegate {
+    
     private enum Pages: Int {
         case favorite = 0
         case recent = 1
@@ -31,6 +36,11 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     
     let pagerNode: ASPagerNode
     
+    let pageBackgroundColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
+    let pageToolbarColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
+    
+    var delegate: SubscriptionsPagerControllerDelegate? = nil
+    
     init() {
         let layout = ASPagerFlowLayout()
         layout.scrollDirection = .horizontal
@@ -49,19 +59,24 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     func didUpdateRecent(subreddits: List<Subreddit>) {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
-            models.append(SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage))
+            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
+            model.delegate = self
+            models.append(model)
         }
         self.controllers[.recent]?.updateModels(models: models)
     }
     
-    func didSelectSubreddit(subreddit: Subreddit) {
-        print("swagger")
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
+        guard let delegate = delegate else { return }
+        delegate.didSelectSubreddit(subreddit: subreddit)
     }
     
     func didUpdateFavorites(subreddits: List<Subreddit>) {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
-            models.append(SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage))
+            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
+            model.delegate = self
+            models.append(model)
         }
         self.controllers[.favorite]?.updateModels(models: models)
     }
@@ -84,7 +99,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     func didUpdateSubscriptions(subreddits: List<Subreddit>) {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
-            models.append(SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage))
+            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
+            model.delegate = self
+            models.append(model)
         }
         self.controllers[.subscriptions]?.updateModels(models: models)
     }
@@ -96,7 +113,8 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         
         navigationController?.isNavigationBarHidden = true
         navigationController?.isToolbarHidden = false
-        navigationController?.toolbar.barTintColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
+        let colorValue: CGFloat = 25/255
+        navigationController?.toolbar.barTintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.isTranslucent = false
         
         setToolbarItems([
@@ -120,8 +138,8 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         pagerNode.allowsAutomaticInsetsAdjustment = false
         pagerNode.view.alwaysBounceVertical = false
         
-        StatusBar.set(color: UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0))
-        node.backgroundColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
+        StatusBar.set(color: pageBackgroundColor)
+        pagerNode.backgroundColor = pageBackgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,10 +167,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
         let page = pageOrder[index]
         let controllers = self.controllers
+        
+        let navigationColor = self.pageBackgroundColor
         return { () -> ASCellNode in
-            let color = UIColor(red: 26/255, green: 26/255, blue: 26/255, alpha: 1.0)
-            let navigationBarColor = UIColor(red: 16/255, green: 16/255, blue: 16/255, alpha: 1.0)
-            
             var pageController: SubredditListCollectionController? = nil
             switch page {
             case .favorite:
@@ -170,8 +187,7 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
             return ASCellNode(viewControllerBlock: { () -> UIViewController in
                 let navigation = ASNavigationController(rootViewController: guardedPageController)
                 navigation.navigationBar.isTranslucent = false
-                navigation.navigationBar.barTintColor = navigationBarColor
-                navigation.view.backgroundColor = color
+                navigation.navigationBar.barTintColor = navigationColor
                 return navigation
             }, didLoad: nil)
         }

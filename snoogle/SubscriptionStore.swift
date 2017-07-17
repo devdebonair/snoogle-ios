@@ -15,7 +15,6 @@ protocol SubscriptionStoreDelegate {
     func didUpdateRecent(subreddits: List<Subreddit>)
     func didUpdateMultireddits(multireddits: List<Multireddit>)
     func didUpdateFavorites(subreddits: List<Subreddit>)
-    func didSelectSubreddit(subreddit: Subreddit)
 }
 
 class SubscriptionStore {
