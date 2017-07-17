@@ -17,7 +17,7 @@ protocol CellNodePostDelegate {
     func didSave()
     func didUnsave()
     func didTapLink()
-//    func didTapComments()
+    func didTapComments()
 //    func didTapMedia()
 }
 
@@ -177,5 +177,10 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
     func didDownvote() {
         guard let delegate = delegate else { return }
         delegate.didDownvote()
+    }
+    
+    func didTapComments() {
+        guard let delegate = delegate else { return }
+        delegate.didTapComments()
     }
 }

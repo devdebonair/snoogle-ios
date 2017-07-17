@@ -11,6 +11,7 @@ import AsyncDisplayKit
 import UIKit
 
 class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
+    
     let textMeta: ASTextNode
     let textTitle: ASTextNode
     let textSubtitle: ASTextNode
@@ -145,5 +146,10 @@ class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
     func didDownvote() {
         guard let delegate = delegate else { return }
         delegate.didDownvote()
+    }
+    
+    func didTapComments() {
+        guard let delegate = delegate else { return }
+        delegate.didTapComments()
     }
 }

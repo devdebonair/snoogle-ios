@@ -17,6 +17,7 @@ protocol PostViewModelDelegate {
     func didSave(post: PostViewModel)
     func didUnsave(post: PostViewModel)
     func didUnvote(post: PostViewModel)
+    func didTapComments(post: PostViewModel)
 }
 
 class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
@@ -89,6 +90,11 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     func didSelect(index: Int) {
         guard let delegate = delegate else { return }
         delegate.didSelectPost(post: self)
+    }
+    
+    func didTapComments() {
+        guard let delegate = delegate else { return }
+        delegate.didTapComments(post: self)
     }
     
     func cell(index: Int) -> ASCellNode {

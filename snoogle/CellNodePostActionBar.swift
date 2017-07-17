@@ -15,7 +15,7 @@ protocol CellNodePostActionBarDelegate {
     func didUnvote()
     func didSave()
     func didUnsave()
-    //    func didTapComments()
+    func didTapComments()
 }
 
 class CellNodePostActionBar: ASCellNode {
@@ -134,6 +134,7 @@ class CellNodePostActionBar: ASCellNode {
         buttonUpVote.addTarget(self, action: #selector(self.upvote), forControlEvents: .touchUpInside)
         buttonDownVote.addTarget(self, action: #selector(self.downvote), forControlEvents: .touchUpInside)
         buttonSave.addTarget(self, action: #selector(self.saved), forControlEvents: .touchUpInside)
+        buttonDiscussion.addTarget(self, action: #selector(self.tappedDiscussion), forControlEvents: .touchUpInside)
     }
     
     func upvote() {
@@ -162,6 +163,11 @@ class CellNodePostActionBar: ASCellNode {
     
     func saved() {
         isSaved = !isSaved
+    }
+    
+    func tappedDiscussion() {
+        guard let delegate = delegate else { return }
+        delegate.didTapComments()
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

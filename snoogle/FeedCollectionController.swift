@@ -233,6 +233,26 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         }
     }
     
+    func didTapComments(post: PostViewModel) {
+        transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+            transition.cardHeight = 0.9
+            transition.overlayAlpha = 0.9
+            transition.scaleValue = 1.0
+        }
+        let commentController = CommentCollectionController()
+        commentController.store.fetchComments(submissionId: post.id, sort: .hot)
+//        commentController.transitioningDelegate = transition
+        commentController.collectionNode.view.bounces = false
+        commentController.title = "Comments"
+        let controller = ASNavigationController(rootViewController: commentController)
+        controller.transitioningDelegate = transition
+        controller.navigationBar.barTintColor = .white
+        controller.navigationBar.frame.size = CGSize(width: node.frame.width, height: 120.0)
+        self.navigationController?.present(controller, animated: true)
+    }
+    
     func didUpvote(post: PostViewModel) {
         store.upvote(id: post.id)
     }
