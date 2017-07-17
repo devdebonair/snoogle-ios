@@ -13,12 +13,13 @@ import AsyncDisplayKit
 import SafariServices
 
 class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate, MenuItemSortControllerDelegate, SubscriptionsPagerControllerDelegate {
-    var transition: Transition!
-    let TOOLBAR_HEIGHT: CGFloat = 49
-    let slideTransition: SlideTransition
-    var context: ASBatchContext? = nil
-    
     let store = SubredditStore()
+    let slideTransition: SlideTransition
+    let TOOLBAR_HEIGHT: CGFloat = 49
+    
+    var transition: Transition!
+    var context: ASBatchContext? = nil
+    var randomController: UIViewController? = nil
     
     lazy var menuController: UIViewController = {
         let pageController = SubscriptionsPagerController()
@@ -27,15 +28,10 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         return controller
     }()
     
-    var randomController: UIViewController? = nil
-    
     override init() {
         self.slideTransition = SlideTransition(duration: 0.20)
-        
         super.init()
-        
         store.delegate = self
-        
         definesPresentationContext = true
         navigationController?.delegate = transition
     }
@@ -104,18 +100,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
-    func didSelectSort(sort: ListingSort) {
-        store.setSort(sort: sort)
-        guard let transition = transition as? CardTransition, let controller = randomController else { return }
-        controller.dismiss(animated: true, completion: nil)
-        transition.finish()
-        randomController = nil
-    }
-    
-    override func sectionController() -> GenericSectionController {
-        let sectionController = GenericSectionController()
-        sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-        return sectionController
+    func didUpdateSubreddit(subreddit: Subreddit) {
+        self.setLeftBarButton(subredditName: subreddit.displayName)
     }
     
     func didUpdatePosts(submissions: List<Submission>) {
@@ -130,17 +116,60 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.context = nil
     }
     
-    func didUpdateSubreddit(subreddit: Subreddit) {
-        self.setLeftBarButton(subredditName: subreddit.displayName)
+    func didSelectPost(post: PostViewModel) {
+        transition = CoverTransition(duration: 0.25, delay: 0.1)
+        if let transition = transition as? CoverTransition {
+            transition.automaticallyManageGesture = true
+        }
+        let articleController = ArticleCollectionController(id: post.id)
+        articleController.store.setSubmission(id: post.id)
+        articleController.store.fetchComments()
+        let controller = ASNavigationController(rootViewController: articleController)
+        controller.isToolbarHidden = true
+        controller.isNavigationBarHidden = true
+        controller.transitioningDelegate = transition
+        controller.delegate = transition
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
     
-    override func shouldFetch() -> Bool {
-        return true
+    func didTapLink(post: PostViewModel) {
+        do {
+            let realm = try Realm()
+            let submission = realm.object(ofType: Submission.self, forPrimaryKey: post.id)
+            guard let guardedSubmission = submission, let url = guardedSubmission.urlOrigin else { return }
+            transition = nil
+            let controller = SFSafariViewController(url: url)
+            self.present(controller, animated: true, completion: nil)
+        } catch {
+            print(error)
+        }
     }
     
-    override func fetch(context: ASBatchContext) {
-        store.fetchListing()
-        self.context = context
+    func didTapComments(post: PostViewModel) {
+        transition = CardTransition(duration: 0.25)
+        if let transition = transition as? CardTransition {
+            transition.automaticallyManageGesture = true
+            transition.cardHeight = 0.9
+            transition.overlayAlpha = 0.9
+            transition.scaleValue = 1.0
+        }
+        let commentController = CommentCollectionController()
+        commentController.store.fetchComments(submissionId: post.id, sort: .hot)
+        commentController.collectionNode.view.bounces = false
+        commentController.title = "Comments"
+        let controller = ASNavigationController(rootViewController: commentController)
+        controller.transitioningDelegate = transition
+        controller.navigationBar.barTintColor = .white
+        controller.navigationBar.frame.size = CGSize(width: node.frame.width, height: 120.0)
+        self.navigationController?.present(controller, animated: true)
+    }
+    
+    func didSelectSort(sort: ListingSort) {
+        store.setSort(sort: sort)
+        guard let transition = transition as? CardTransition, let controller = randomController else { return }
+        controller.dismiss(animated: true, completion: nil)
+        transition.finish()
+        randomController = nil
     }
     
     func didTapSort() {
@@ -206,54 +235,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
     
-    func didSelectPost(post: PostViewModel) {
-        transition = CoverTransition(duration: 0.25, delay: 0.1)
-        if let transition = transition as? CoverTransition {
-            transition.automaticallyManageGesture = true
-        }
-        let articleController = ArticleCollectionController(id: post.id)
-        articleController.store.setSubmission(id: post.id)
-        articleController.store.fetchComments()
-        let controller = ASNavigationController(rootViewController: articleController)
-        controller.isToolbarHidden = true
-        controller.isNavigationBarHidden = true
-        controller.transitioningDelegate = transition
-        controller.delegate = transition
-        self.navigationController?.present(controller, animated: true, completion: nil)
-    }
-    
-    func didTapLink(post: PostViewModel) {
-        do {
-            let realm = try Realm()
-            let submission = realm.object(ofType: Submission.self, forPrimaryKey: post.id)
-            guard let guardedSubmission = submission, let url = guardedSubmission.urlOrigin else { return }
-            transition = nil
-            let controller = SFSafariViewController(url: url)
-            self.present(controller, animated: true, completion: nil)
-        } catch {
-            print(error)
-        }
-    }
-    
-    func didTapComments(post: PostViewModel) {
-        transition = CardTransition(duration: 0.25)
-        if let transition = transition as? CardTransition {
-            transition.automaticallyManageGesture = true
-            transition.cardHeight = 0.9
-            transition.overlayAlpha = 0.9
-            transition.scaleValue = 1.0
-        }
-        let commentController = CommentCollectionController()
-        commentController.store.fetchComments(submissionId: post.id, sort: .hot)
-        commentController.collectionNode.view.bounces = false
-        commentController.title = "Comments"
-        let controller = ASNavigationController(rootViewController: commentController)
-        controller.transitioningDelegate = transition
-        controller.navigationBar.barTintColor = .white
-        controller.navigationBar.frame.size = CGSize(width: node.frame.width, height: 120.0)
-        self.navigationController?.present(controller, animated: true)
-    }
-    
     func didUpvote(post: PostViewModel) {
         store.upvote(id: post.id)
     }
@@ -278,7 +259,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.store.clear()
         menuController.dismiss(animated: true, completion: {
             self.models = []
-            UIView.transition(with: self.navigationController!.view, duration: 0.40, options: [.transitionFlipFromRight], animations: nil, completion: nil)
+            UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
             self.adapter.performUpdates(animated: true, completion: { (success) in
                 self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
                 self.store.setSubreddit(name: subreddit.name)
@@ -289,6 +270,21 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didClear() {}
+    
+    override func sectionController() -> GenericSectionController {
+        let sectionController = GenericSectionController()
+        sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        return sectionController
+    }
+    
+    override func fetch(context: ASBatchContext) {
+        store.fetchListing()
+        self.context = context
+    }
+    
+    override func shouldFetch() -> Bool {
+        return true
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
