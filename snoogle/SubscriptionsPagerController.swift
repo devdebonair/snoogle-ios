@@ -15,7 +15,7 @@ protocol SubscriptionsPagerControllerDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel)
 }
 
-class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SubscriptionStoreDelegate, SubredditListItemViewModelDelegate {
+class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SubscriptionStoreDelegate, SubredditListItemViewModelDelegate, UICollectionViewDelegate {
     
     private enum Pages: Int {
         case favorite = 0
@@ -33,11 +33,10 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     ]
     
     let store = SubscriptionStore()
-    
     let pagerNode: ASPagerNode
-    
     let pageBackgroundColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
     let pageToolbarColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
+    let pageControl: UIPageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
     
     var delegate: SubscriptionsPagerControllerDelegate? = nil
     
@@ -54,6 +53,16 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         pagerNode.setDataSource(self)
         pagerNode.setDelegate(self)
         store.delegate = self
+    }
+    
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        // Function is called before the page fully transitions and changes
+        //      currentPageIndex. This only happens when swiping forwards.
+        if pageControl.currentPage == pagerNode.currentPageIndex {
+            pageControl.currentPage = pagerNode.currentPageIndex + 1
+        } else {
+            pageControl.currentPage = pagerNode.currentPageIndex
+        }
     }
     
     private func sortAndUpdate(page: Pages, subreddits: List<Subreddit>) {
@@ -106,17 +115,17 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         navigationController?.toolbar.barTintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.isTranslucent = false
         
-        setToolbarItems([
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        ], animated: false)
+//        setToolbarItems([
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+//            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+//            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+//            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+//            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
+//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        ], animated: false)
         
         node.addSubnode(pagerNode)
         pagerNode.frame = node.frame
@@ -129,6 +138,13 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         
         StatusBar.set(color: pageBackgroundColor)
         pagerNode.backgroundColor = pageBackgroundColor
+        
+        setToolbarItems([
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(customView: pageControl),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            ], animated: false)
+        pageControl.numberOfPages = controllers.count
     }
     
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
