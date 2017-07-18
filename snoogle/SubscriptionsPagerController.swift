@@ -56,29 +56,27 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         store.delegate = self
     }
     
-    func didUpdateRecent(subreddits: List<Subreddit>) {
+    private func sortAndUpdate(page: Pages, subreddits: List<Subreddit>) {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
             let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
             model.delegate = self
             models.append(model)
         }
-        self.controllers[.recent]?.updateModels(models: models)
+        models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
+        self.controllers[page]?.updateModels(models: models)
     }
     
-    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
-        guard let delegate = delegate else { return }
-        delegate.didSelectSubreddit(subreddit: subreddit)
+    func didUpdateRecent(subreddits: List<Subreddit>) {
+        sortAndUpdate(page: .recent, subreddits: subreddits)
     }
     
     func didUpdateFavorites(subreddits: List<Subreddit>) {
-        var models = [SubredditListItemViewModel]()
-        for subreddit in subreddits {
-            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
-            model.delegate = self
-            models.append(model)
-        }
-        self.controllers[.favorite]?.updateModels(models: models)
+        sortAndUpdate(page: .favorite, subreddits: subreddits)
+    }
+    
+    func didUpdateSubscriptions(subreddits: List<Subreddit>) {
+        sortAndUpdate(page: .subscriptions, subreddits: subreddits)
     }
     
     func didUpdateMultireddits(multireddits: List<Multireddit>) {
@@ -93,17 +91,8 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
             }
             models.append(SubredditListItemViewModel(name: multireddit.displayName, subscribers: 0, imageUrl: url))
         }
+        models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
         self.controllers[.multireddits]?.updateModels(models: models)
-    }
-    
-    func didUpdateSubscriptions(subreddits: List<Subreddit>) {
-        var models = [SubredditListItemViewModel]()
-        for subreddit in subreddits {
-            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
-            model.delegate = self
-            models.append(model)
-        }
-        self.controllers[.subscriptions]?.updateModels(models: models)
     }
     
     override func viewDidLoad() {
@@ -142,17 +131,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         pagerNode.backgroundColor = pageBackgroundColor
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        pagerNode.frame = node.frame
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
+        guard let delegate = delegate else { return }
+        delegate.didSelectSubreddit(subreddit: subreddit)
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -191,5 +172,14 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
                 return navigation
             }, didLoad: nil)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        pagerNode.frame = node.frame
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
