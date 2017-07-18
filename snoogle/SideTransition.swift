@@ -90,6 +90,7 @@ class SlideTransition: Transition {
     func didTapOverlay() {
         guard let toViewController = self.toViewController else { return }
         toViewController.dismiss(animated: true, completion: nil)
+        finish()
     }
     
     func interactionPanHandlerForPresentation(pan: UIPanGestureRecognizer) {
