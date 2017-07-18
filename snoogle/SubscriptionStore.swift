@@ -31,6 +31,7 @@ class SubscriptionStore {
                 DispatchQueue.main.async {
                     do {
                         let realm = try Realm()
+                        realm.refresh()
                         let account = realm.object(ofType: Account.self, forPrimaryKey: id)
                         guard let guardedAccount = account else { return }
                         weakSelf.tokenSubscriptions = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in

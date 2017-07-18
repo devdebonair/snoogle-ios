@@ -40,6 +40,7 @@ class CommentStore {
                 DispatchQueue.main.async {
                     do {
                         let realm = try Realm()
+                        realm.refresh()
                         let comments = realm.object(ofType: SubmissionComments.self, forPrimaryKey: "comments:\(weakSelf.id):\(sort.rawValue)")
                         guard let guardedComments = comments, let delegate = weakSelf.delegate else { return }
                         weakSelf.tokenComments = guardedComments.addNotificationBlock({ (_) in

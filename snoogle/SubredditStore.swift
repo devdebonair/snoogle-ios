@@ -34,6 +34,7 @@ class SubredditStore {
                 DispatchQueue.main.async {
                     do {
                         let realm = try Realm()
+                        realm.refresh()
                         let subreddit = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
                         guard let guardedSubreddit = subreddit, let delegate = weakSelf.delegate else { return }
                         weakSelf.tokenSubreddit = guardedSubreddit.addNotificationBlock({ (_) in
@@ -57,9 +58,7 @@ class SubredditStore {
     func fetchListing(refresh: Bool = false) {
         if let _ = self.tokenListing, !refresh {
             DispatchQueue.global(qos: .background).async {
-                ServiceSubreddit(name: self.name).moreListings(sort: self.sort) { [weak self] (success) in
-                    guard let weakSelf = self else { return }
-                }
+                ServiceSubreddit(name: self.name).moreListings(sort: self.sort)
             }
         } else {
             // This is ok to do on the main thread because it is the first fetch
@@ -71,13 +70,12 @@ class SubredditStore {
                         guard let weakSelf = self else { return }
                         do {
                             let realm = try Realm()
+                            realm.refresh()
                             let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
                             guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
                             weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
-                                print("updating delegate through notification")
                                 delegate.didUpdatePosts(submissions: guardedListing.submissions)
                             })
-                            print("updating post outside notification with refresh")
                             delegate.didUpdatePosts(submissions: guardedListing.submissions)
                         } catch {
                             print(error)
