@@ -18,10 +18,12 @@ protocol CellNodePostDelegate {
     func didUnsave()
     func didTapLink()
     func didTapComments()
-//    func didTapMedia()
+    func didTapMedia(index: Int)
 }
 
-class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
+class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDelegate {
+    let media: [MediaElement]?
+    
     let textMeta: ASTextNode
     let textTitle: ASTextNode
     let textSubtitle: ASTextNode
@@ -29,9 +31,6 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
     let actionBar: CellNodePostActionBar
     
     var mediaView: ASDisplayNode? = nil
-    
-    let media: [MediaElement]?
-    
     var delegate: CellNodePostDelegate? = nil
     
     init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: [MediaElement], vote: VoteType, saved: Bool, numberOfComments: Int = 0) {
@@ -66,12 +65,18 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         separator.backgroundColor = separatorColor
         
-        if media.count == 1, let mediaItem = media.first {
-            mediaView = NodeMedia(media: mediaItem)
+        if !media.isEmpty {
+            mediaView = CellNodeMediaAlbum(media: media)
         }
-        if media.count > 1 {
-            mediaView = NodeMediaAlbum(media: media)
+        
+        if let mediaView = mediaView as? CellNodeMediaAlbum {
+            mediaView.delegate = self
         }
+    }
+    
+    func didTapMedia(selectedIndex: Int) {
+        guard let delegate = delegate else { return }
+        delegate.didTapMedia(index: selectedIndex)
     }
     
     override func didLoad() {
@@ -82,6 +87,17 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         self.shadowRadius = 1.0
         self.cornerRadius = 2.0
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        
+        if let media = media, media.count == 1, let mediaView = mediaView as? CellNodeMediaAlbum {
+            mediaView.collectionNode.view.bounces = false
+            mediaView.collectionNode.view.isScrollEnabled = false
+            mediaView.collectionNode.clipsToBounds = true
+        }
+        
+        if let media = media, media.count > 1, let mediaView = mediaView as? CellNodeMediaAlbum {
+            mediaView.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+            mediaView.flowLayout.minimumLineSpacing = 15.0
+        }
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -115,23 +131,16 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate {
         var stackContainerElements = [ASLayoutElement]()
         stackContainerElements.append(insetContentLayout)
 
-        if let mediaView = mediaView {
-            
-            if let mediaView = mediaView as? NodeMedia {
+        if let mediaView = mediaView as? CellNodeMediaAlbum, let media = media {
+            if media.count == 1 {
                 stackContainerElements.append(mediaView)
-            }
-            
-            if let mediaView = mediaView as? NodeMediaAlbum {
-                mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
-                mediaView.style.height = ASDimension(unit: .points, value: 300)
-                mediaView.collectionNode.clipsToBounds = false
-                let inset = UIEdgeInsets(top: 0, left: padding, bottom: padding, right: 0)
+            } else if media.count > 1 {
+                let inset = UIEdgeInsets(top: 0, left: 0, bottom: padding, right: 0)
                 let insetMediaLayout = ASInsetLayoutSpec(insets: inset, child: mediaView)
                 stackContainerElements.append(insetMediaLayout)
             }
             
             if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
-                
                 if let contentChildren = stackLayoutContent.children, contentChildren.count > 2 {
                     let _ = stackLayoutContent.children?.popLast()
                     let subtitleInset = UIEdgeInsets(top: 20, left: padding, bottom: 20, right: padding)

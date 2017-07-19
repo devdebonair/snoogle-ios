@@ -51,7 +51,13 @@ class CellNodeLink: ASCellNode {
             mediaItems.append(preview)
         }
         
-        let media = CellNodeMedia(media: mediaItems)
+        let media: ASDisplayNode
+        if let preview = preview {
+            media = CellNodeMedia(media: preview)
+        } else {
+            media = ASDisplayNode()
+        }
+
         media.style.width = ASDimension(unit: .points, value: 100.0)
         media.style.height = ASDimension(unit: .points, value: 120.0)
         

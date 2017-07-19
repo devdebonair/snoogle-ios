@@ -115,18 +115,6 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         navigationController?.toolbar.barTintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.isTranslucent = false
         
-//        setToolbarItems([
-//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-//            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: nil, action: nil),
-//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-//            UIBarButtonItem(image: #imageLiteral(resourceName: "photo"), style: .plain, target: nil, action: nil),
-//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-//            UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: nil, action: nil),
-//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-//            UIBarButtonItem(image: #imageLiteral(resourceName: "search"), style: .plain, target: nil, action: nil),
-//            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//        ], animated: false)
-        
         node.addSubnode(pagerNode)
         pagerNode.frame = node.frame
         

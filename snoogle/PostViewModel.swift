@@ -18,6 +18,7 @@ protocol PostViewModelDelegate {
     func didUnsave(post: PostViewModel)
     func didUnvote(post: PostViewModel)
     func didTapComments(post: PostViewModel)
+    func didTapMedia(post: PostViewModel, index: Int)
 }
 
 class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
@@ -95,6 +96,11 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     func didTapComments() {
         guard let delegate = delegate else { return }
         delegate.didTapComments(post: self)
+    }
+    
+    func didTapMedia(index: Int) {
+        guard let delegate = delegate else { return }
+        delegate.didTapMedia(post: self, index: index)
     }
     
     func cell(index: Int) -> ASCellNode {
@@ -176,6 +182,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                     NSForegroundColorAttributeName: linkSubtitleColor,
                     NSParagraphStyleAttributeName: paragraphStyleLinkSubtitle
                 ])
+            
             let cell = CellNodePostLink(
                 meta: meta,
                 title: title,
@@ -185,7 +192,9 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                 saved: saved,
                 linkTitle: linkTitle,
                 linkSubtitle: linkSubtitle)
+            
             cell.delegate = self
+            
             return cell
         }
         

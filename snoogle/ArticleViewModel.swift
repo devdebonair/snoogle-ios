@@ -104,9 +104,19 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
         }
         
         // Media
-        if let element = element as? [MediaElement] {
-            let inset = UIEdgeInsets(top: 20, left: 0, bottom: 10, right: 0)
-            return CellNodeMedia(media: element, inset: inset)
+        if let media = element as? [MediaElement] {
+            let cell = CellNodeMediaAlbum(media: media)
+//            if media.count == 1 {
+//                cell.collectionNode.view.bounces = false
+//                cell.collectionNode.view.isScrollEnabled = false
+//                cell.collectionNode.clipsToBounds = true
+//            }
+//            
+//            if media.count > 1 {
+//                cell.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+//                cell.flowLayout.minimumLineSpacing = 15.0
+//            }
+            return cell
         }
         
         // Content

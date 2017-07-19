@@ -14,7 +14,7 @@ class NodeSlide: ASDisplayNode {
     let collectionNode: ASCollectionNode
     let flowLayout: UICollectionViewFlowLayout
     let models: [ViewModelElement]
-    
+        
     init(models: [ViewModelElement]) {
         self.models = models
         self.flowLayout = UICollectionViewFlowLayout()
@@ -25,13 +25,11 @@ class NodeSlide: ASDisplayNode {
         automaticallyManagesSubnodes = true
         
         collectionNode.dataSource = self
-        collectionNode.delegate = self
         
         collectionNode.backgroundColor = .clear
         collectionNode.frame = frame
         
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
     }
     
     override func didLoad() {
@@ -46,10 +44,9 @@ class NodeSlide: ASDisplayNode {
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec(insets: .zero, child: collectionNode)
     }
-    
 }
 
-extension NodeSlide: ASCollectionDelegate, ASCollectionDataSource {
+extension NodeSlide: ASCollectionDataSource {
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let model = models[indexPath.section]
