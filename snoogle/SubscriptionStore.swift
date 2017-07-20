@@ -25,6 +25,19 @@ class SubscriptionStore {
     private var tokenFavorites: RLMNotificationToken? = nil
     
     func setAccount(id: String) {
+        do {
+            let realm = try Realm()
+            let account = realm.object(ofType: Account.self, forPrimaryKey: id)
+            if let account = account {
+                self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
+                self.delegate?.didUpdateRecent(subreddits: account.subredditRecent)
+                self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
+                self.delegate?.didUpdateFavorites(subreddits: account.subredditFavorites)
+            }
+        } catch {
+            print(error)
+        }
+        
         DispatchQueue.global(qos: .background).async {
             ServiceMe().fetch { [weak self](success) in
                 guard let weakSelf = self else { return }

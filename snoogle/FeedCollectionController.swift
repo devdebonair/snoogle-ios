@@ -198,6 +198,26 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationController?.present(controller, animated: true)
     }
     
+    func didTapMedia(post: PostViewModel, index: Int) {
+//        let sectionIndex = models.index { (model) -> Bool in
+//            guard let model = model as? PostViewModel else { return false }
+//            return model.id == post.id
+//        }
+//        guard let guardedSectionIndex = sectionIndex else { return }
+//        let postCell = collectionNode.nodeForItem(at: IndexPath(item: 0, section: guardedSectionIndex))
+//        guard let guardedPostCell = postCell as? CellNodePost else { return }
+//        guard let albumCell = guardedPostCell.mediaView as? CellNodeMediaAlbum else { return }
+//        let selectedMediaCellFrame = albumCell.collectionNode.collectionViewLayout.layoutAttributesForItem(at: IndexPath(row: index, section: 0))
+//        guard let guardedSelectedMediaCellFrame = selectedMediaCellFrame else { return }
+//        let x: CGFloat = guardedSelectedMediaCellFrame.frame.origin.x - albumCell.collectionNode.view.contentOffset.x
+//        let y: CGFloat = 0
+//        let transitionFrame = CGRect(x: x, y: y, width: guardedSelectedMediaCellFrame.frame.width, height: guardedSelectedMediaCellFrame.frame.height)
+
+        let controller = MediaCollectionController(media: post.media)
+        controller.startingIndex = index
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     func didSelectSort(sort: ListingSort) {
         store.setSort(sort: sort)
         guard let transition = transition as? CardTransition, let controller = randomController else { return }
