@@ -18,4 +18,18 @@ struct StatusBar {
         guard let statusBar = StatusBar.statusBar else { return }
         statusBar.backgroundColor = color
     }
+    
+    static func hide() {
+        guard let statusBar = StatusBar.statusBar else { return }
+        UIView.animate(withDuration: 0.1, delay: 0.1, options: [.curveLinear], animations: {
+            statusBar.frame.origin.y -= statusBar.frame.height
+        }, completion: nil)
+    }
+    
+    static func show() {
+        guard let statusBar = StatusBar.statusBar else { return }
+        UIView.animate(withDuration: 0.1, delay: 0.1, options: [.curveEaseOut], animations: {
+            statusBar.frame.origin.y += statusBar.frame.height
+        }, completion: nil)
+    }
 }

@@ -199,22 +199,41 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func didTapMedia(post: PostViewModel, index: Int) {
-//        let sectionIndex = models.index { (model) -> Bool in
-//            guard let model = model as? PostViewModel else { return false }
-//            return model.id == post.id
-//        }
-//        guard let guardedSectionIndex = sectionIndex else { return }
-//        let postCell = collectionNode.nodeForItem(at: IndexPath(item: 0, section: guardedSectionIndex))
-//        guard let guardedPostCell = postCell as? CellNodePost else { return }
-//        guard let albumCell = guardedPostCell.mediaView as? CellNodeMediaAlbum else { return }
-//        let selectedMediaCellFrame = albumCell.collectionNode.collectionViewLayout.layoutAttributesForItem(at: IndexPath(row: index, section: 0))
-//        guard let guardedSelectedMediaCellFrame = selectedMediaCellFrame else { return }
-//        let x: CGFloat = guardedSelectedMediaCellFrame.frame.origin.x - albumCell.collectionNode.view.contentOffset.x
-//        let y: CGFloat = 0
-//        let transitionFrame = CGRect(x: x, y: y, width: guardedSelectedMediaCellFrame.frame.width, height: guardedSelectedMediaCellFrame.frame.height)
+        let sectionIndex = models.index { (model) -> Bool in
+            guard let model = model as? PostViewModel else { return false }
+            return model.id == post.id
+        }
+        
+        guard let guardedSectionIndex = sectionIndex else { return }
+        
+        let postCellIndexPath = IndexPath(item: 0, section: guardedSectionIndex)
+        guard let postCell = collectionNode.nodeForItem(at: postCellIndexPath) as? CellNodePost, let albumCell = postCell.mediaView as? CellNodeMediaAlbum, let postLayout = collectionNode.collectionViewLayout.layoutAttributesForItem(at: postCellIndexPath) else { return }
+        
+        let postLocation = self.collectionNode.convert(postLayout.frame, to: self.collectionNode)
+        
+        let mediaCellIndexPath = IndexPath(row: index, section: 0)
+        guard let mediaCell = albumCell.collectionNode.nodeForItem(at: mediaCellIndexPath) as? CellNodeMedia else { return }
+        guard let selectedMediaCellLayout = albumCell.collectionNode.collectionViewLayout.layoutAttributesForItem(at: mediaCellIndexPath) else { return }
+        
+        let xOrigin: CGFloat = selectedMediaCellLayout.frame.origin.x - albumCell.collectionNode.view.contentOffset.x
+        let yOrigin: CGFloat = postLocation.origin.y + postCell.mediaView!.frame.origin.y - self.collectionNode.view.contentOffset.y
+        let origin = CGRect(x: xOrigin, y: yOrigin, width: selectedMediaCellLayout.frame.width, height: selectedMediaCellLayout.frame.height)
 
+        let height = aspectHeight(self.collectionNode.frame.size, mediaCell.frame.size)
+        let destination: CGRect = CGRect(x: 0, y: 0, width: node.frame.width, height: height)
+        
+        transition = FrameTransition(duration: 0.8, delay: 1.0, origin: origin, destination: destination, node: mediaCell)
+        
         let controller = MediaCollectionController(media: post.media)
+        controller.transitioningDelegate = transition
         controller.startingIndex = index
+        
+        if let videoMedia = mediaCell.mediaView as? ASVideoNode {
+            if let currentTime = videoMedia.currentItem?.currentTime() {
+                controller.startingTime = currentTime
+            }
+        }
+        
         self.present(controller, animated: true, completion: nil)
     }
     

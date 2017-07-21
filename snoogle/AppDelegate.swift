@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let rootController = FeedCollectionController()
         navigationController = ASNavigationController(rootViewController: rootController)
-        rootController.store.setSubreddit(name: "advice")
+        rootController.store.setSubreddit(name: "doujinshi")
         rootController.store.fetchListing()
         
         window = UIWindow(frame: UIScreen.main.bounds)

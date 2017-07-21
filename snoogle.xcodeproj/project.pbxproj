@@ -83,6 +83,11 @@
 		565AAFE71EDC08780024CB65 /* CellNodeMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */; };
 		565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */; };
 		565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEC1EDC0E870024CB65 /* TextCell.swift */; };
+		566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */; };
+		566DD88C1F20FD19005049EB /* CellNodeMediaPageActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */; };
+		566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88D1F21752C005049EB /* FrameTransition.swift */; };
+		566DD8901F21B484005049EB /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88F1F21B484005049EB /* Math.swift */; };
+		566DD8921F225A04005049EB /* CGRect+Distance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD8911F225A04005049EB /* CGRect+Distance.swift */; };
 		567B02771E29081D00C32C09 /* SortSelectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02761E29081D00C32C09 /* SortSelectViewModel.swift */; };
 		567B02791E290D9900C32C09 /* CellNodeSortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */; };
 		567DA6131EF964B40089FCFD /* MarkdownHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567DA6121EF964B40089FCFD /* MarkdownHeader.swift */; };
@@ -214,6 +219,11 @@
 		565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMenuItem.swift; sourceTree = "<group>"; };
 		565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNodeViewController.swift; sourceTree = "<group>"; };
 		565AAFEC1EDC0E870024CB65 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPage.swift; sourceTree = "<group>"; };
+		566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPageActionBar.swift; sourceTree = "<group>"; };
+		566DD88D1F21752C005049EB /* FrameTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTransition.swift; sourceTree = "<group>"; };
+		566DD88F1F21B484005049EB /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		566DD8911F225A04005049EB /* CGRect+Distance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Distance.swift"; sourceTree = "<group>"; };
 		567B02761E29081D00C32C09 /* SortSelectViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortSelectViewModel.swift; sourceTree = "<group>"; };
 		567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeSortSelection.swift; sourceTree = "<group>"; };
 		567DA6121EF964B40089FCFD /* MarkdownHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHeader.swift; sourceTree = "<group>"; };
@@ -390,6 +400,7 @@
 				56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */,
 				56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */,
 				56E62B0A1ECB4BFA00ACFC51 /* CommentViewModel+Comment.swift */,
+				566DD8911F225A04005049EB /* CGRect+Distance.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -416,6 +427,8 @@
 				56F5960D1F1724A900B2B1A5 /* CellNodeLink.swift */,
 				56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */,
 				5603892E1F1D010D000BC2CA /* CellNodeBlankView.swift */,
+				566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */,
+				566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -489,6 +502,7 @@
 				5610F9461F0832320097E3A2 /* CardTransition.swift */,
 				5610F95A1F0868F90097E3A2 /* CoverTransition.swift */,
 				5610F9491F0832330097E3A2 /* Transition.swift */,
+				566DD88D1F21752C005049EB /* FrameTransition.swift */,
 			);
 			name = transition;
 			path = ..;
@@ -598,6 +612,7 @@
 				56119E9D1E87970100A19C40 /* structs */,
 				56C4E2BF1E227E0F0080E6E0 /* view models */,
 				56A5B3A11E0C597700C6A08E /* Assets.xcassets */,
+				566DD88F1F21B484005049EB /* Math.swift */,
 			);
 			path = snoogle;
 			sourceTree = "<group>";
@@ -821,6 +836,7 @@
 				5603892F1F1D010D000BC2CA /* CellNodeBlankView.swift in Sources */,
 				56E9B4631E7E599F00578389 /* MultiredditEdits.swift in Sources */,
 				56119E871E8556B600A19C40 /* StringTransform.swift in Sources */,
+				566DD8901F21B484005049EB /* Math.swift in Sources */,
 				563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
@@ -828,9 +844,11 @@
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				5610F9591F0833BC0097E3A2 /* MarkdownBlockType.swift in Sources */,
 				563D037F1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift in Sources */,
+				566DD88C1F20FD19005049EB /* CellNodeMediaPageActionBar.swift in Sources */,
 				563127A81EFBDB7E00C6961B /* StatusBar.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56EE8C941E8A135E0043A9DF /* ServiceFrontpage.swift in Sources */,
+				566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */,
 				56938F681EF80DDA0026565F /* MarkdownDelete.swift in Sources */,
 				56938F641EF808810026565F /* MarkdownInlineElement.swift in Sources */,
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
@@ -899,7 +917,9 @@
 				5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */,
 				56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */,
 				56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */,
+				566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,
+				566DD8921F225A04005049EB /* CGRect+Distance.swift in Sources */,
 				56938F661EF8098A0026565F /* MarkdownStrong.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 				56EE8C961E8A13930043A9DF /* ServiceMultireddit.swift in Sources */,

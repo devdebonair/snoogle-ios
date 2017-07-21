@@ -11,7 +11,9 @@ import IGListKit
 import RealmSwift
 import AsyncDisplayKit
 
-class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, UICollectionViewDelegate {
+class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate {
+    
+    private var isInitialAppearance = true
     
     let media: [MediaElement]
     let pagerNode: ASPagerNode
@@ -19,25 +21,20 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     var startingIndex: Int = 0
     
     let buttonClose = ASButtonNode()
-    let progressIndicator = UIProgressView()
-    lazy var progressNode: ASDisplayNode = {
-        return ASDisplayNode(viewBlock: { () -> UIView in
-            return self.progressIndicator
-        })
-    }()
+    let actionBar = CellNodeMediaPageActionBar()
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+    var startingTime: CMTime = CMTimeMake(0,0)
     
     init(media: [MediaElement]) {
         self.media = media
         let layout = ASPagerFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = .zero
+        
         // TODO: https://stackoverflow.com/questions/42486960/uicollectionview-horizontal-paging-with-space-between-pages
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
+        
         pagerNode = ASPagerNode(collectionViewLayout: layout)
         
         super.init(node: ASDisplayNode())
@@ -57,14 +54,9 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        setProgress(x: Float(scrollView.contentOffset.x))
-    }
-    
-    func setProgress(x: Float) {
-        let xOffset = x
-        let totalXOffset = pagerNode.view.contentSize.width - pagerNode.frame.width
-        let progress: Float = Float(xOffset) / Float(totalXOffset)
-        progressIndicator.setProgress(progress, animated: false)
+        let totalXOffset = scrollView.contentSize.width - scrollView.frame.width
+        let progress: Float = Float(scrollView.contentOffset.x) / Float(totalXOffset)
+        actionBar.setProgress(progress)
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
@@ -74,15 +66,15 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     func toggleControls() {
         UIView.animate(withDuration: 0.3, delay: 0.2, options: [.curveEaseOut], animations: {
             self.buttonClose.alpha = self.buttonClose.alpha == 0.0 ? 1.0 : 0.0
-            self.progressNode.alpha = self.progressNode.alpha == 0.0 ? 1.0 : 0.0
+            self.actionBar.alpha = self.actionBar.alpha == 0.0 ? 1.0 : 0.0
             
             let positionButtonCloseHidden: CGFloat = -self.buttonClose.frame.height
             let positionButtonCloseShow: CGFloat = 10.0
-            let positionProgressHidden: CGFloat = self.pagerNode.frame.height
-            let positionProgressShow: CGFloat = self.node.frame.height - self.progressNode.frame.height
+            let positionMenuHidden: CGFloat = self.pagerNode.frame.height
+            let positionMenuShow: CGFloat = self.pagerNode.frame.height - (self.pagerNode.frame.height * 0.07)
             
             self.buttonClose.frame.origin.y = self.buttonClose.frame.origin.y == positionButtonCloseHidden ? positionButtonCloseShow : positionButtonCloseHidden
-            self.progressNode.frame.origin.y = self.progressNode.frame.origin.y == positionProgressHidden ? positionProgressShow : positionProgressHidden
+            self.actionBar.frame.origin.y = self.actionBar.frame.origin.y == positionMenuHidden ? positionMenuShow : positionMenuHidden
         }, completion: nil)
     }
     
@@ -91,21 +83,18 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         
         node.addSubnode(pagerNode)
         node.addSubnode(buttonClose)
-        node.addSubnode(progressNode)
+        node.addSubnode(actionBar)
         
-        pagerNode.frame = node.frame
         pagerNode.backgroundColor = .black
         
-        buttonClose.frame.origin = CGPoint(x: 10, y: 10)
+        pagerNode.frame = node.frame
         buttonClose.frame.size = CGSize(width: 40, height: 40)
+        actionBar.frame.size = CGSize(width: pagerNode.frame.width, height: 44.0)
+        
+        buttonClose.frame.origin = CGPoint(x: 10, y: 10)
+        actionBar.frame.origin = CGPoint(x: 0, y: pagerNode.frame.height - (pagerNode.frame.height * 0.07))
         
         buttonClose.contentEdgeInsets = UIEdgeInsets(top: 13, left: 13, bottom: 13, right: 13)
-        
-        progressNode.frame.size = CGSize(width: pagerNode.frame.width, height: 30.0)
-        progressNode.frame.origin = CGPoint(x: 0, y: node.frame.height - progressNode.frame.height)
-        
-        progressIndicator.trackTintColor = .darkGray
-        progressIndicator.progressTintColor = .white
         
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = false
@@ -115,9 +104,8 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
-        let min = CGSize(width: pagerNode.frame.width, height: 0.0)
         let max = CGSize(width: pagerNode.frame.width, height: pagerNode.frame.height)
-        return ASSizeRange(min: min, max: max)
+        return ASSizeRange(min: max, max: max)
     }
     
     func numberOfPages(in pagerNode: ASPagerNode) -> Int {
@@ -126,17 +114,33 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
         let mediaItem = media[index]
+        let startingTime = self.startingTime
+        let startingIndex = self.startingIndex
         return { () -> ASCellNode in
-            return CellNodeMedia(media: mediaItem)
+            let cell = CellNodeMediaPage(media: mediaItem)
+            if let _ = cell.cellMedia.mediaView as? ASVideoNode, index == startingIndex {
+                cell.cellMedia.initialTime = startingTime
+            }
+            return cell
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        StatusBar.hide()
         pagerNode.frame = node.frame
-        pagerNode.reloadData {
-            self.pagerNode.scrollToPage(at: self.startingIndex, animated: false)
+        
+        if isInitialAppearance {
+            pagerNode.reloadData {
+                self.pagerNode.scrollToPage(at: self.startingIndex, animated: false)
+            }
         }
+        isInitialAppearance = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        StatusBar.show()
     }
     
     required init?(coder aDecoder: NSCoder) {

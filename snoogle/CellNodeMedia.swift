@@ -18,6 +18,7 @@ class CellNodeMedia: ASCellNode {
     let media: MediaElement
     let inset: UIEdgeInsets
     var mediaView = ASImageNode()
+    var initialTime: CMTime? = nil
     var delegate: CellNodeMediaDelegate? = nil {
         didSet {
             guard let _ = delegate else { return }
@@ -74,6 +75,8 @@ class CellNodeMedia: ASCellNode {
                 mediaView.placeholderFadeDuration = 2.0
                 mediaView.backgroundColor = .black
                 mediaView.muted = true
+                mediaView.isUserInteractionEnabled = false
+                mediaView.delegate = self
             }
         }
     }
@@ -118,6 +121,14 @@ extension CellNodeMedia: ASMultiplexImageNodeDataSource {
             return media.urlHuge
         default:
             return nil
+        }
+    }
+}
+
+extension CellNodeMedia: ASVideoNodeDelegate {
+    func videoNode(_ videoNode: ASVideoNode, didSetCurrentItem currentItem: AVPlayerItem) {
+        if let initialTime = initialTime {
+            currentItem.seek(to: initialTime)
         }
     }
 }

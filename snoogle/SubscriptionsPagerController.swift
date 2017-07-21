@@ -181,6 +181,12 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         pagerNode.frame = node.frame
+        StatusBar.hide()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        StatusBar.show()
     }
     
     required init?(coder aDecoder: NSCoder) {
