@@ -87,7 +87,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     func setLeftBarButton(subredditName: String) {
         let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBlack)
+            NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack)
             ])
         let range = (attributeString.string as NSString).range(of: "r/")
         attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
