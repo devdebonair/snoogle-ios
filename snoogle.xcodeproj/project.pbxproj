@@ -10,6 +10,7 @@
 		5603892F1F1D010D000BC2CA /* CellNodeBlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5603892E1F1D010D000BC2CA /* CellNodeBlankView.swift */; };
 		560389321F1D25DD000BC2CA /* CommentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560389311F1D25DD000BC2CA /* CommentController.swift */; };
 		560389341F1D2622000BC2CA /* CommentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560389331F1D2622000BC2CA /* CommentStore.swift */; };
+		560475901F23BE8B009CEFAD /* SearchPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5604758F1F23BE8B009CEFAD /* SearchPageController.swift */; };
 		560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */; };
 		5610F94A1F0832330097E3A2 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9461F0832320097E3A2 /* CardTransition.swift */; };
 		5610F94B1F0832330097E3A2 /* SideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9471F0832320097E3A2 /* SideTransition.swift */; };
@@ -60,7 +61,6 @@
 		563127BB1EFCECA400C6961B /* Merriweather-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */; };
 		563127BC1EFCECA400C6961B /* Merriweather-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 563127B41EFCECA300C6961B /* Merriweather-Black.ttf */; };
 		563127BD1EFCECA400C6961B /* Merriweather-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */; };
-		563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */; };
 		563D037F1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */; };
 		563D03831E257A8B00BD24D4 /* CellNodeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */; };
 		56486D201EF57BCA00E68B53 /* ArticleMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */; };
@@ -146,6 +146,7 @@
 		5603892E1F1D010D000BC2CA /* CellNodeBlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeBlankView.swift; sourceTree = "<group>"; };
 		560389311F1D25DD000BC2CA /* CommentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentController.swift; sourceTree = "<group>"; };
 		560389331F1D2622000BC2CA /* CommentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentStore.swift; sourceTree = "<group>"; };
+		5604758F1F23BE8B009CEFAD /* SearchPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageController.swift; sourceTree = "<group>"; };
 		560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSlideViewModel.swift; sourceTree = "<group>"; };
 		5610F9461F0832320097E3A2 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardTransition.swift; path = ../snoogle/snoogle/CardTransition.swift; sourceTree = "<group>"; };
 		5610F9471F0832320097E3A2 /* SideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideTransition.swift; path = snoogle/SideTransition.swift; sourceTree = "<group>"; };
@@ -196,7 +197,6 @@
 		563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Italic.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Italic.ttf"; sourceTree = "<group>"; };
 		563127B41EFCECA300C6961B /* Merriweather-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Black.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Black.ttf"; sourceTree = "<group>"; };
 		563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Regular.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Regular.ttf"; sourceTree = "<group>"; };
-		563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeButtonBar.swift; sourceTree = "<group>"; };
 		563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMediaAlbum.swift; sourceTree = "<group>"; };
 		563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMedia.swift; sourceTree = "<group>"; };
 		56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMeta.swift; sourceTree = "<group>"; };
@@ -320,6 +320,14 @@
 			name = comment;
 			sourceTree = "<group>";
 		};
+		5604758E1F23BE67009CEFAD /* search */ = {
+			isa = PBXGroup;
+			children = (
+				5604758F1F23BE8B009CEFAD /* SearchPageController.swift */,
+			);
+			name = search;
+			sourceTree = "<group>";
+		};
 		5610F9601F0A18E40097E3A2 /* feed */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,7 +425,6 @@
 				563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */,
 				563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */,
 				56126EC11E1DAC580063B6ED /* CellNodeSeparator.swift */,
-				563D03791E23ED9900BD24D4 /* CellNodeButtonBar.swift */,
 				567B02781E290D9900C32C09 /* CellNodeSortSelection.swift */,
 				56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */,
 				565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */,
@@ -450,6 +457,7 @@
 				560389301F1D25B8000BC2CA /* comment */,
 				5610F9601F0A18E40097E3A2 /* feed */,
 				561EAB091F1EB62E00C55CD3 /* media */,
+				5604758E1F23BE67009CEFAD /* search */,
 				56F596061F117A1600B2B1A5 /* subscriptions */,
 				5651C0641EDC7A28001F3FE9 /* MenuItemCollectionController.swift */,
 				565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */,
@@ -837,7 +845,6 @@
 				56E9B4631E7E599F00578389 /* MultiredditEdits.swift in Sources */,
 				56119E871E8556B600A19C40 /* StringTransform.swift in Sources */,
 				566DD8901F21B484005049EB /* Math.swift in Sources */,
-				563D037A1E23ED9900BD24D4 /* CellNodeButtonBar.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
 				56ABC6231EF8210D00DC3B46 /* MarkdownParagraph.swift in Sources */,
@@ -920,6 +927,7 @@
 				566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,
 				566DD8921F225A04005049EB /* CGRect+Distance.swift in Sources */,
+				560475901F23BE8B009CEFAD /* SearchPageController.swift in Sources */,
 				56938F661EF8098A0026565F /* MarkdownStrong.swift in Sources */,
 				56A5B39B1E0C597700C6A08E /* AppDelegate.swift in Sources */,
 				56EE8C961E8A13930043A9DF /* ServiceMultireddit.swift in Sources */,
