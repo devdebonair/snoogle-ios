@@ -52,7 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(success)
 //        }
         
-        ServiceSearch(term: "naruto").search(type: .links) { (success) in
+//        ServiceSearch(term: "naruto").search(type: .links) { (success) in
+//            print(success)
+//        }
+
+        ServiceSearch(term: "naruto").search(type: .subreddits) { (success) in
             print(success)
         }
         
