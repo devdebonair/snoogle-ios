@@ -44,7 +44,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(success)
 //        }
         
-        ServiceSearch(term: "naruto").search(type: .discussions) { (success) in
+//        ServiceSearch(term: "naruto").search(type: .discussions) { (success) in
+//            print(success)
+//        }
+
+//        ServiceSearch(term: "naruto").search(type: .videos) { (success) in
+//            print(success)
+//        }
+        
+        ServiceSearch(term: "naruto").search(type: .links) { (success) in
             print(success)
         }
         
