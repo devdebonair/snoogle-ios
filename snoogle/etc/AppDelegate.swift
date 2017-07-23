@@ -40,7 +40,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Error with audio sessions")
         }
         
-        ServiceSearch(term: "naruto").search(type: .photos) { (success) in
+//        ServiceSearch(term: "naruto").search(type: .photos) { (success) in
+//            print(success)
+//        }
+        
+        ServiceSearch(term: "naruto").search(type: .discussions) { (success) in
             print(success)
         }
         

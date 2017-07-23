@@ -12,6 +12,7 @@ import RealmSwift
 class ServiceSearch: Service {
     enum SearchType: Int {
         case photos = 0
+        case discussions = 1
     }
     
     let term: String
@@ -39,6 +40,8 @@ class ServiceSearch: Service {
         switch type {
         case .photos:
             self.searchPhotos(completion: completion)
+        case .discussions:
+            self.searchDiscussions(completion: completion)
         }
     }
     
@@ -76,9 +79,62 @@ class ServiceSearch: Service {
             return completion(true)
         }
     }
+    
+    func searchDiscussions(completion: ((Bool)->Void)? = nil) {
+        let term = self.term
+        self.requestDiscussions() { (json: [[String:Any]]?) in
+            guard let guardedJSON = json else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            do {
+                let realm = try Realm()
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                guard let guardedResult = result else {
+                    guard let completion = completion else { return }
+                    return completion(false)
+                }
+                var submissions = [Submission]()
+                for subJSON in guardedJSON {
+                    if let submission = Submission(JSON: subJSON) {
+                        submissions.append(submission)
+                    }
+                }
+                try realm.write {
+                    realm.add(submissions, update: true)
+                    guardedResult.discussions.removeAll()
+                    guardedResult.discussions.append(objectsIn: submissions)
+                }
+            } catch {
+                print(error)
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            guard let completion = completion else { return }
+            return completion(true)
+        }
+    }
 
     func requestPhotos(completion: @escaping ([[String:Any]]?)->Void) {
         let url = URL(string: "search/\(term)/photos", relativeTo: base)!
+        Network()
+            .get()
+            .url(url)
+            .parse(type: .json)
+            .success() { (data, response) in
+                return completion(data as? [[String:Any]])
+            }
+            .failure() { _ in
+                return completion(nil)
+            }
+            .error() { _ in
+                return completion(nil)
+            }
+            .sendHTTP()
+    }
+    
+    func requestDiscussions(completion: @escaping ([[String:Any]]?)->Void) {
+        let url = URL(string: "search/\(term)/discussions", relativeTo: base)!
         Network()
             .get()
             .url(url)
