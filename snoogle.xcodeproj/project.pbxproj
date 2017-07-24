@@ -13,6 +13,9 @@
 		560475901F23BE8B009CEFAD /* SearchPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5604758F1F23BE8B009CEFAD /* SearchPageController.swift */; };
 		560475921F23CAA1009CEFAD /* CellNodeMoreChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560475911F23CAA1009CEFAD /* CellNodeMoreChevron.swift */; };
 		5605292D1F257DF90046D946 /* SearchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5605292C1F257DF90046D946 /* SearchStore.swift */; };
+		5605292F1F267EE60046D946 /* CellNodeHeaderFootnote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5605292E1F267EE60046D946 /* CellNodeHeaderFootnote.swift */; };
+		560529311F2682400046D946 /* DiscussionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560529301F2682400046D946 /* DiscussionViewModel.swift */; };
+		560529331F2684520046D946 /* DiscussionGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560529321F2684520046D946 /* DiscussionGroupViewModel.swift */; };
 		560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */; };
 		5610F94A1F0832330097E3A2 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9461F0832320097E3A2 /* CardTransition.swift */; };
 		5610F94B1F0832330097E3A2 /* SideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9471F0832320097E3A2 /* SideTransition.swift */; };
@@ -157,6 +160,9 @@
 		5604758F1F23BE8B009CEFAD /* SearchPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageController.swift; sourceTree = "<group>"; };
 		560475911F23CAA1009CEFAD /* CellNodeMoreChevron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMoreChevron.swift; sourceTree = "<group>"; };
 		5605292C1F257DF90046D946 /* SearchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStore.swift; sourceTree = "<group>"; };
+		5605292E1F267EE60046D946 /* CellNodeHeaderFootnote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeHeaderFootnote.swift; sourceTree = "<group>"; };
+		560529301F2682400046D946 /* DiscussionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionViewModel.swift; sourceTree = "<group>"; };
+		560529321F2684520046D946 /* DiscussionGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionGroupViewModel.swift; sourceTree = "<group>"; };
 		560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSlideViewModel.swift; sourceTree = "<group>"; };
 		5610F9461F0832320097E3A2 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardTransition.swift; path = ../snoogle/snoogle/CardTransition.swift; sourceTree = "<group>"; };
 		5610F9471F0832320097E3A2 /* SideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideTransition.swift; path = snoogle/SideTransition.swift; sourceTree = "<group>"; };
@@ -478,6 +484,7 @@
 				5651C0781EDFC121001F3FE9 /* CellNodeUserKarma.swift */,
 				565AAFE21EDC05570024CB65 /* Header.swift */,
 				565AAFEC1EDC0E870024CB65 /* TextCell.swift */,
+				5605292E1F267EE60046D946 /* CellNodeHeaderFootnote.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -678,6 +685,8 @@
 				5651C0681EDC92BC001F3FE9 /* SubmissionSortViewModel.swift */,
 				561C28651F23EF5A00ACAECC /* SubredditListGroupViewModel.swift */,
 				56C084381EFF1FD1004128F4 /* SubredditListItemViewModel.swift */,
+				560529301F2682400046D946 /* DiscussionViewModel.swift */,
+				560529321F2684520046D946 /* DiscussionGroupViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -865,6 +874,7 @@
 				56DAC4921F1AEFEE00AD0D62 /* SubmissionComments.swift in Sources */,
 				561C8C651E7C75BE00D9AEB3 /* Account.swift in Sources */,
 				5651C0791EDFC121001F3FE9 /* CellNodeUserKarma.swift in Sources */,
+				560529311F2682400046D946 /* DiscussionViewModel.swift in Sources */,
 				56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */,
 				560389321F1D25DD000BC2CA /* CommentController.swift in Sources */,
 				56EE8C981E8A13BE0043A9DF /* ServiceSubmission.swift in Sources */,
@@ -887,6 +897,7 @@
 				56E9B4631E7E599F00578389 /* MultiredditEdits.swift in Sources */,
 				56119E871E8556B600A19C40 /* StringTransform.swift in Sources */,
 				566DD8901F21B484005049EB /* Math.swift in Sources */,
+				5605292F1F267EE60046D946 /* CellNodeHeaderFootnote.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
 				56ABC6231EF8210D00DC3B46 /* MarkdownParagraph.swift in Sources */,
@@ -971,6 +982,7 @@
 				5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */,
 				56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */,
 				561C28661F23EF5A00ACAECC /* SubredditListGroupViewModel.swift in Sources */,
+				560529331F2684520046D946 /* DiscussionGroupViewModel.swift in Sources */,
 				56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */,
 				566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,

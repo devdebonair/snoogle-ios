@@ -11,17 +11,15 @@ import Realm
 import RealmSwift
 
 protocol SearchStoreDelegate {
-    func didUpdateSubreddits(subreddits: List<Subreddit>)
+    func didUpdateResults(result: SearchResult)
 }
 
 class SearchStore {
     var delegate: SearchStoreDelegate? = nil
-    var tokenSubreddit: RLMNotificationToken? = nil
     private var term: String = ""
     
     func set(term: String) {
         self.term = term
-        self.tokenSubreddit = nil
     }
     
     func fetchSubreddits() {
@@ -32,10 +30,23 @@ class SearchStore {
                     let realm = try Realm()
                     let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
                     guard let guardedSearchResult = searchResult else { return }
-                    weakSelf.tokenSubreddit = guardedSearchResult.addNotificationBlock({ (_) in
-                        weakSelf.delegate?.didUpdateSubreddits(subreddits: guardedSearchResult.subreddits)
-                    })
-                    weakSelf.delegate?.didUpdateSubreddits(subreddits: guardedSearchResult.subreddits)
+                    weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func fetchDiscussions() {
+        ServiceSearch(term: term).search(type: .discussions) { [weak self] (success) in
+            DispatchQueue.main.async {
+                guard let weakSelf = self else { return }
+                do {
+                    let realm = try Realm()
+                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
+                    guard let guardedSearchResult = searchResult else { return }
+                    weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
                 } catch {
                     print(error)
                 }

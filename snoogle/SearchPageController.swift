@@ -8,10 +8,11 @@
 
 import Foundation
 import AsyncDisplayKit
+import IGListKit
 import RealmSwift
 
 class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource, ASPagerDelegate, SearchStoreDelegate {
-    
+
     let pagerNode: ASPagerNode
     let store = SearchStore()
     
@@ -41,12 +42,19 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         pagerNode.setDelegate(self)
     }
     
-    func didUpdateSubreddits(subreddits: List<Subreddit>) {
-        if let allController = controllers[.all] as? SearchAllController {
-            let swag = List<Subreddit>(subreddits[0..<3])
-            let models = [SubredditListGroupViewModel(subreddits: swag)]
-            allController.updateModels(models: models)
+    func didUpdateResults(result: SearchResult) {
+        guard let allController = controllers[.all] as? SearchAllController else { return }
+        var models = [IGListDiffable]()
+        if !result.subreddits.isEmpty {
+            let subreddits = result.subreddits[0..<3]
+            let swag = List<Subreddit>(subreddits)
+            models.append(SubredditListGroupViewModel(subreddits: swag))
         }
+        if !result.discussions.isEmpty {
+            let swag = List<Submission>(result.discussions[0..<3])
+            models.append(DiscussionGroupViewModel(submissions: swag))
+        }
+        allController.updateModels(models: models)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {}
@@ -58,6 +66,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         store.set(term: "pokemon")
         store.fetchSubreddits()
+        store.fetchDiscussions()
         store.delegate = self
         
         edgesForExtendedLayout = []

@@ -11,6 +11,9 @@ import AsyncDisplayKit
 
 class SearchAllController: CollectionController {
     
+    let discussion: DiscussionGroupViewModel? = nil
+    let subreddit: SubredditListGroupViewModel? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
