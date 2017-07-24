@@ -24,40 +24,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch let error {
 //            print(error)
 //        }
-        
+//        
 //        let rootController = FeedCollectionController()
 //        navigationController = ASNavigationController(rootViewController: rootController)
 //        rootController.store.setSubreddit(name: "doujinshi")
 //        rootController.store.fetchListing()
-//
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.makeKeyAndVisible()
+
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
 //        window?.rootViewController = navigationController
+        window?.rootViewController = SearchPageController()
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
             print("Error with audio sessions")
-        }
-        
-//        ServiceSearch(term: "naruto").search(type: .photos) { (success) in
-//            print(success)
-//        }
-        
-//        ServiceSearch(term: "naruto").search(type: .discussions) { (success) in
-//            print(success)
-//        }
-
-//        ServiceSearch(term: "naruto").search(type: .videos) { (success) in
-//            print(success)
-//        }
-        
-//        ServiceSearch(term: "naruto").search(type: .links) { (success) in
-//            print(success)
-//        }
-
-        ServiceSearch(term: "naruto").search(type: .subreddits) { (success) in
-            print(success)
         }
         
         return true

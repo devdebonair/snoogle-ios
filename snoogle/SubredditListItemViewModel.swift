@@ -8,6 +8,7 @@
 
 import Foundation
 import AsyncDisplayKit
+import UIKit
 
 protocol SubredditListItemViewModelDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel)
@@ -15,22 +16,34 @@ protocol SubredditListItemViewModelDelegate {
 
 class SubredditListItemViewModel: NSObject, ViewModelElement {
     let name: String
-    let numberOfSubscribers: Int
+    let subtitle: String
     let imageUrl: URL?
     
     var delegate: SubredditListItemViewModelDelegate? = nil
     
-    init(name: String, subscribers: Int, imageUrl: URL?) {
+    init(name: String, subtitle: String, imageUrl: URL?) {
         self.name = name
-        self.numberOfSubscribers = subscribers
+        self.subtitle = subtitle
         self.imageUrl = imageUrl
     }
     
     func cell(index: Int) -> ASCellNode {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        let subcribersWithCommas = numberFormatter.string(from: NSNumber(value: numberOfSubscribers))!
-        return CellNodeSubredditListItem(title: name, subtitle: "\(subcribersWithCommas) Subcribers", url: imageUrl, imageHeight: 55.0)
+        let colorFloat: CGFloat = 170/255
+        let textColor = UIColor(red: colorFloat, green: colorFloat, blue: colorFloat, alpha: 1.0)
+        let title = NSMutableAttributedString(
+            string: self.name,
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
+                NSForegroundColorAttributeName: textColor
+            ])
+        
+        let subtitle = NSMutableAttributedString(
+            string: self.subtitle,
+            attributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
+                NSForegroundColorAttributeName: textColor
+            ])
+        return CellNodeSubredditListItem(title: title, subtitle: subtitle, url: imageUrl, imageHeight: 55.0)
     }
     
     func numberOfCells() -> Int {

@@ -8,10 +8,21 @@
 
 import Foundation
 import AsyncDisplayKit
+import RealmSwift
 
-class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource, ASPagerDelegate {
+class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource, ASPagerDelegate, SearchStoreDelegate {
     
     let pagerNode: ASPagerNode
+    let store = SearchStore()
+    
+    private enum Pages: Int {
+        case all = 0
+    }
+    
+    private let pageOrder: [Pages] = [.all]
+    private let controllers: [Pages: UIViewController] = [
+        .all: SearchAllController()
+    ]
     
     init() {
         let layout = ASPagerFlowLayout()
@@ -30,12 +41,24 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         pagerNode.setDelegate(self)
     }
     
+    func didUpdateSubreddits(subreddits: List<Subreddit>) {
+        if let allController = controllers[.all] as? SearchAllController {
+            let swag = List<Subreddit>(subreddits[0..<3])
+            let models = [SubredditListGroupViewModel(subreddits: swag)]
+            allController.updateModels(models: models)
+        }
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         node.addSubnode(pagerNode)
+        
+        store.set(term: "pokemon")
+        store.fetchSubreddits()
+        store.delegate = self
         
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = false
@@ -50,12 +73,16 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     }
     
     func numberOfPages(in pagerNode: ASPagerNode) -> Int {
-        return 0
+        return 1
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
+        let page = controllers[pageOrder[index]]
         return { () -> ASCellNode in
-            return ASCellNode()
+            guard let guardedPage = page else { return ASCellNode() }
+            return ASCellNode(viewControllerBlock: { () -> UIViewController in
+                return guardedPage
+            }, didLoad: nil)
         }
     }
     

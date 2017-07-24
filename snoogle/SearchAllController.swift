@@ -10,8 +10,20 @@ import Foundation
 import AsyncDisplayKit
 
 class SearchAllController: CollectionController {
-    func updateModel(models: [IGListDiffable]) {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+    }
+    
+    func updateModels(models: [IGListDiffable]) {
         self.models = models
         self.adapter.performUpdates(animated: true, completion: nil)
+    }
+    
+    override func sectionController() -> GenericSectionController {
+        let sectionController = GenericSectionController()
+        sectionController.inset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+        return sectionController
     }
 }

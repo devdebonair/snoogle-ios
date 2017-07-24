@@ -68,7 +68,8 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     private func sortAndUpdate(page: Pages, subreddits: List<Subreddit>) {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
-            let model = SubredditListItemViewModel(name: subreddit.displayName, subscribers: subreddit.subscribers, imageUrl: subreddit.urlValidImage)
+            let subtitle = "\(NSNumber(value: subreddit.subscribers).convertToCommaWithString() ?? "0") Subcribers"
+            let model = SubredditListItemViewModel(name: subreddit.displayName, subtitle: subtitle, imageUrl: subreddit.urlValidImage)
             model.delegate = self
             models.append(model)
         }
@@ -98,7 +99,7 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
                     break
                 }
             }
-            models.append(SubredditListItemViewModel(name: multireddit.displayName, subscribers: 0, imageUrl: url))
+            models.append(SubredditListItemViewModel(name: multireddit.displayName, subtitle: multireddit.curator, imageUrl: url))
         }
         models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
         self.controllers[.multireddits]?.updateModels(models: models)

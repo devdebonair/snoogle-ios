@@ -15,8 +15,9 @@ class CellNodeSubredditListItem: ASCellNode {
     let textNodeSubtitle = ASTextNode()
     let imageNode = ASNetworkImageNode()
     let imageHeight: CGFloat
+    var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
     
-    init(title: String, subtitle: String, url: URL? = nil, imageHeight: CGFloat = 40) {
+    init(title: NSMutableAttributedString, subtitle: NSMutableAttributedString, url: URL? = nil, imageHeight: CGFloat = 40) {
         self.imageHeight = imageHeight
         
         super.init()
@@ -40,19 +41,8 @@ class CellNodeSubredditListItem: ASCellNode {
         let textColor = UIColor(red: colorFloat, green: colorFloat, blue: colorFloat, alpha: 1.0)
         imageNode.placeholderColor = textColor
         
-        self.textNodeTitle.attributedText = NSAttributedString(
-            string: title,
-            attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
-                NSForegroundColorAttributeName: textColor
-            ])
-
-        self.textNodeSubtitle.attributedText = NSAttributedString(
-            string: subtitle,
-            attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
-                NSForegroundColorAttributeName: textColor
-            ])
+        self.textNodeTitle.attributedText = title
+        self.textNodeSubtitle.attributedText = subtitle
         
         imageNode.url = url
         imageNode.cornerRadius = 6.0
@@ -64,19 +54,21 @@ class CellNodeSubredditListItem: ASCellNode {
         
         let textStack = ASStackLayoutSpec(
             direction: .vertical,
-            spacing: 2,
+            spacing: 4,
             justifyContent: .start,
             alignItems: .start,
             children: [textNodeTitle, textNodeSubtitle])
         
         let layout = ASStackLayoutSpec(
             direction: .horizontal,
-            spacing: 20,
+            spacing: 15,
             justifyContent: .start,
             alignItems: .center,
             children: [imageNode, textStack])
         
-        return ASInsetLayoutSpec(insets: UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20), child: layout)
+        textStack.style.flexShrink = 1.0
+        
+        return ASInsetLayoutSpec(insets: inset, child: layout)
     }
     
 }

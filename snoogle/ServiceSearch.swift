@@ -230,11 +230,12 @@ class ServiceSearch: Service {
     }
 
     func requestPhotos(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/\(term)/photos", relativeTo: base)!
+        let url = URL(string: "search/photos", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
+            .query(key: "term", item: term)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }
@@ -248,11 +249,12 @@ class ServiceSearch: Service {
     }
     
     func requestDiscussions(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/\(term)/discussions", relativeTo: base)!
+        let url = URL(string: "search/discussions", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
+            .query(key: "term", item: term)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }
@@ -266,11 +268,12 @@ class ServiceSearch: Service {
     }
     
     func requestVideos(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/\(term)/videos", relativeTo: base)!
+        let url = URL(string: "search/videos", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
+            .query(key: "term", item: term)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }
@@ -284,11 +287,12 @@ class ServiceSearch: Service {
     }
     
     func requestLinks(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/\(term)/links", relativeTo: base)!
+        let url = URL(string: "search/links", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
+            .query(key: "term", item: term)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }
@@ -302,11 +306,12 @@ class ServiceSearch: Service {
     }
     
     func requestSubreddits(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/\(term)/subreddits", relativeTo: base)!
+        let url = URL(string: "search/subreddits", relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
+            .query(key: "term", item: term)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }
