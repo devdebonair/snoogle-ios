@@ -100,7 +100,7 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
             let cell = CellNodeSubredditListItem(title: title, subtitle: subtitle, url: model.imageUrl, imageHeight: 55.0)
             cell.textNodeSubtitle.maximumNumberOfLines = 2
             cell.backgroundColor = .white
-            cell.inset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+            cell.inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             return cell
         }
         
