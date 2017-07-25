@@ -50,6 +50,10 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
             let swag = List<Subreddit>(subreddits)
             models.append(SubredditListGroupViewModel(subreddits: swag))
         }
+        if !result.photos.isEmpty {
+            let swag = List<Submission>(result.photos[0..<6])
+            models.append(PhotoGridGroupViewModel(submissions: swag))
+        }
         if !result.discussions.isEmpty {
             let swag = List<Submission>(result.discussions[0..<3])
             models.append(DiscussionGroupViewModel(submissions: swag))
@@ -65,6 +69,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         node.addSubnode(pagerNode)
         
         store.set(term: "pokemon")
+        store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
         store.delegate = self

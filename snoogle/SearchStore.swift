@@ -53,4 +53,20 @@ class SearchStore {
             }
         }
     }
+    
+    func fetchPhotos() {
+        ServiceSearch(term: term).search(type: .photos) { [weak self] (success) in
+            DispatchQueue.main.async {
+                guard let weakSelf = self else { return }
+                do {
+                    let realm = try Realm()
+                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
+                    guard let guardedSearchResult = searchResult else { return }
+                    weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
 }
