@@ -12,12 +12,11 @@ import RealmSwift
 import AsyncDisplayKit
 import SafariServices
 
-class FeedCollectionController: CollectionController, UINavigationControllerDelegate, SubredditStoreDelegate, PostViewModelDelegate, MenuItemSortControllerDelegate, SubscriptionsPagerControllerDelegate {
+class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
     let store = SubredditStore()
     let slideTransition: SlideTransition
     let TOOLBAR_HEIGHT: CGFloat = 49
     
-    var transition: Transition!
     var context: ASBatchContext? = nil
     var randomController: UIViewController? = nil
     
@@ -100,6 +99,33 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
+    override func sectionController() -> GenericSectionController {
+        let sectionController = GenericSectionController()
+        sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        return sectionController
+    }
+    
+    override func fetch(context: ASBatchContext) {
+        store.fetchListing()
+        self.context = context
+    }
+    
+    override func shouldFetch() -> Bool {
+        return true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+////////////////////////////////////////
+//
+//  SUBREDDIT STORE DELEGATE
+//
+////////////////////////////////////////
+
+extension FeedCollectionController: SubredditStoreDelegate {
     func didUpdateSubreddit(subreddit: Subreddit) {
         self.setLeftBarButton(subredditName: subreddit.displayName)
     }
@@ -110,18 +136,28 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             post.delegate = self
             return post
         })
-        self.adapter.performUpdates(animated: true, completion: nil)
+        self.updateModels()
         guard let context = context else { return }
         context.completeBatchFetching(true)
         self.context = nil
     }
     
+    func didClear() {}
+}
+
+////////////////////////////////////////
+//
+//  SUBSCRIPTIONS SIDE BAR MENU ACTIONS
+//
+////////////////////////////////////////
+
+extension FeedCollectionController: SubscriptionsPagerControllerDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
         self.store.clear()
         menuController.dismiss(animated: true, completion: {
             self.models = []
             UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
-            self.adapter.performUpdates(animated: true, completion: { (success) in
+            self.updateModels(completion: { (success) in
                 self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
                 self.store.setSubreddit(name: subreddit.name)
                 self.store.fetchListing()
@@ -129,7 +165,15 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         })
         self.slideTransition.finish()
     }
-    
+}
+
+////////////////////////////////////////
+//
+//  POST SUBMISSION ACTIONS
+//
+////////////////////////////////////////
+
+extension FeedCollectionController: PostViewModelDelegate {
     func didSelectPost(post: PostViewModel) {
         transition = CoverTransition(duration: 0.25, delay: 0.1)
         if let transition = transition as? CoverTransition {
@@ -144,26 +188,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         controller.transitioningDelegate = transition
         controller.delegate = transition
         self.navigationController?.present(controller, animated: true, completion: nil)
-    }
-    
-    func didUpvote(post: PostViewModel) {
-        store.upvote(id: post.id)
-    }
-    
-    func didDownvote(post: PostViewModel) {
-        store.downvote(id: post.id)
-    }
-    
-    func didSave(post: PostViewModel) {
-        store.save(id: post.id)
-    }
-    
-    func didUnsave(post: PostViewModel) {
-        store.unsave(id: post.id)
-    }
-    
-    func didUnvote(post: PostViewModel) {
-        store.unvote(id: post.id)
     }
     
     func didTapLink(post: PostViewModel) {
@@ -218,7 +242,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let xOrigin: CGFloat = selectedMediaCellLayout.frame.origin.x - albumCell.collectionNode.view.contentOffset.x
         let yOrigin: CGFloat = postLocation.origin.y + postCell.mediaView!.frame.origin.y - self.collectionNode.view.contentOffset.y
         let origin = CGRect(x: xOrigin, y: yOrigin, width: selectedMediaCellLayout.frame.width, height: selectedMediaCellLayout.frame.height)
-
+        
         let height = aspectHeight(self.collectionNode.frame.size, mediaCell.frame.size)
         let destination: CGRect = CGRect(x: 0, y: 0, width: node.frame.width, height: height)
         
@@ -237,6 +261,34 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.present(controller, animated: true, completion: nil)
     }
     
+    func didUpvote(post: PostViewModel) {
+        store.upvote(id: post.id)
+    }
+    
+    func didDownvote(post: PostViewModel) {
+        store.downvote(id: post.id)
+    }
+    
+    func didSave(post: PostViewModel) {
+        store.save(id: post.id)
+    }
+    
+    func didUnsave(post: PostViewModel) {
+        store.unsave(id: post.id)
+    }
+    
+    func didUnvote(post: PostViewModel) {
+        store.unvote(id: post.id)
+    }
+}
+
+////////////////////////////////////////
+//
+//  MENU SORT SELECTION
+//
+////////////////////////////////////////
+
+extension FeedCollectionController: MenuItemSortControllerDelegate {
     func didSelectSort(sort: ListingSort) {
         store.setSort(sort: sort)
         guard let transition = transition as? CardTransition, let controller = randomController else { return }
@@ -244,7 +296,15 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         transition.finish()
         randomController = nil
     }
-    
+}
+
+////////////////////////////////////////
+//
+//  TAB BAR ACTIONS
+//
+////////////////////////////////////////
+
+extension FeedCollectionController {
     func didTapSort() {
         transition = CardTransition(duration: 0.25)
         if let transition = transition as? CardTransition {
@@ -306,26 +366,5 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let controller = menuController
         controller.transitioningDelegate = slideTransition
         self.navigationController?.present(controller, animated: true, completion: nil)
-    }
-    
-    func didClear() {}
-    
-    override func sectionController() -> GenericSectionController {
-        let sectionController = GenericSectionController()
-        sectionController.inset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-        return sectionController
-    }
-    
-    override func fetch(context: ASBatchContext) {
-        store.fetchListing()
-        self.context = context
-    }
-    
-    override func shouldFetch() -> Bool {
-        return true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

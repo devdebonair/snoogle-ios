@@ -11,6 +11,7 @@ import IGListKit
 import AsyncDisplayKit
 
 class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDelegate, IGListAdapterDataSource {
+    var transition: Transition? = nil
     let flowLayout = UICollectionViewFlowLayout()
     let collectionNode: ASCollectionNode
     
