@@ -18,11 +18,13 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     
     private enum Pages: Int {
         case all = 0
+        case subreddits = 1
     }
     
-    private let pageOrder: [Pages] = [.all]
+    private let pageOrder: [Pages] = [.all, .subreddits]
     private let controllers: [Pages: UIViewController] = [
-        .all: SearchAllController()
+        .all: SearchAllController(),
+        .subreddits: SearchSubredditController()
     ]
     
     init() {
@@ -43,21 +45,32 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     }
     
     func didUpdateResults(result: SearchResult) {
-        guard let allController = controllers[.all] as? SearchAllController else { return }
-        var models = [IGListDiffable]()
-        if !result.subreddits.isEmpty {
-            let subreddits = result.subreddits.count >= 3 ? List<Subreddit>(result.subreddits[0..<3]): result.subreddits
-            models.append(SubredditListGroupViewModel(subreddits: subreddits))
+        if let allController = controllers[.all] as? SearchAllController {
+            var models = [IGListDiffable]()
+            if !result.subreddits.isEmpty {
+                let subreddits = result.subreddits.count >= 3 ? List<Subreddit>(result.subreddits[0..<3]): result.subreddits
+                models.append(SubredditListGroupViewModel(subreddits: subreddits))
+            }
+            if !result.photos.isEmpty {
+                let photos = result.photos.count >= 6 ? List<Submission>(result.photos[0..<6]) : result.photos
+                models.append(PhotoGridGroupViewModel(submissions: photos))
+            }
+            if !result.discussions.isEmpty {
+                let discussions = result.discussions.count >= 3 ? List<Submission>(result.discussions[0..<3]) : result.discussions
+                models.append(DiscussionGroupViewModel(submissions: discussions))
+            }
+            allController.updateModels(models: models)
         }
-        if !result.photos.isEmpty {
-            let photos = result.photos.count >= 6 ? List<Submission>(result.photos[0..<6]) : result.photos
-            models.append(PhotoGridGroupViewModel(submissions: photos))
+        if let subredditController = controllers[.subreddits] as? SearchSubredditController {
+            let models = result.subreddits.map({ (subreddit) -> SubredditListItemViewModel in
+                let model = SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescription, imageUrl: subreddit.urlValidImage)
+                model.backgroundColor = .white
+                model.titleColor = .darkText
+                model.subtitleColor = .darkText
+                return model
+            })
+            subredditController.updateModels(models: Array(models))
         }
-        if !result.discussions.isEmpty {
-            let discussions = result.discussions.count >= 3 ? List<Submission>(result.discussions[0..<3]) : result.discussions
-            models.append(DiscussionGroupViewModel(submissions: discussions))
-        }
-        allController.updateModels(models: models)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {}
@@ -86,7 +99,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     }
     
     func numberOfPages(in pagerNode: ASPagerNode) -> Int {
-        return 1
+        return pageOrder.count
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
