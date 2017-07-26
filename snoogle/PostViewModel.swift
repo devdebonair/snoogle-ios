@@ -119,7 +119,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let descriptionLineSpacing: CGFloat = 4.0
         
         let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
-        let linkTitleColor = UIColor.darkText
+        let linkTitleColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         let linkTitleLineSpacing: CGFloat = 2.0
         
         let linkSubtitleFont = UIFont.systemFont(ofSize: 13)

@@ -15,7 +15,6 @@ import SafariServices
 class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
     let store = SubredditStore()
     let slideTransition: SlideTransition
-    let TOOLBAR_HEIGHT: CGFloat = 49
     
     var context: ASBatchContext? = nil
     var randomController: UIViewController? = nil
@@ -86,7 +85,8 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     func setLeftBarButton(subredditName: String) {
         let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack)
+            NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack),
+            NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
             ])
         let range = (attributeString.string as NSString).range(of: "r/")
         attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
