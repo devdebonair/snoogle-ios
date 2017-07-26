@@ -114,7 +114,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let metaColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let metaLineSpacing: CGFloat = 2.0
         
-        let descriptionFont = UIFont.systemFont(ofSize: 13)
+        let descriptionFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightRegular)
         let descriptionColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let descriptionLineSpacing: CGFloat = 4.0
         

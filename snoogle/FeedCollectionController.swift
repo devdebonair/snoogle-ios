@@ -80,7 +80,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let colorValue: Float = 200/255
         let tintColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.tintColor = tintColor
-        navigationController?.navigationBar.tintColor = tintColor
+        navigationController?.navigationBar.tintColor = .darkText
     }
     
     func setLeftBarButton(subredditName: String) {
