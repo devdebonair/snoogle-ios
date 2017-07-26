@@ -19,12 +19,14 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     private enum Pages: Int {
         case all = 0
         case subreddits = 1
+        case discussions = 2
     }
     
-    private let pageOrder: [Pages] = [.all, .subreddits]
+    private let pageOrder: [Pages] = [.all, .subreddits, .discussions]
     private let controllers: [Pages: UIViewController] = [
         .all: SearchAllController(),
-        .subreddits: SearchSubredditController()
+        .subreddits: SearchSubredditController(),
+        .discussions: SearchSubredditController()
     ]
     
     init() {
@@ -68,6 +70,12 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
                 model.titleColor = .darkText
                 model.subtitleColor = .darkText
                 return model
+            })
+            subredditController.updateModels(models: Array(models))
+        }
+        if let subredditController = controllers[.discussions] as? SearchSubredditController {
+            let models = result.discussions.map({ (submission) -> DiscussionViewModel in
+                return DiscussionViewModel(submission: submission)
             })
             subredditController.updateModels(models: Array(models))
         }

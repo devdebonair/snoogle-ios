@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class DiscussionViewModel: ViewModelElement {
+class DiscussionViewModel: NSObject, ViewModelElement {
     
     let title: String
     let meta: String
