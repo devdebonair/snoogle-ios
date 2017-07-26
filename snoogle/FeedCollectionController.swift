@@ -59,7 +59,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "user"), style: .plain, target: self, action: #selector(didTapUser))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "more-vertical"), style: .plain, target: self, action: #selector(didTapUser))
         
         let fixedBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixedBarButtonItem.width = 40.0
@@ -79,7 +79,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let colorValue: Float = 200/255
         let tintColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.tintColor = tintColor
-        navigationController?.navigationBar.tintColor = .darkText
+        navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
     }
     
     func setLeftBarButton(subredditName: String) {
