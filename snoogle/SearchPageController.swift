@@ -88,7 +88,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         node.addSubnode(pagerNode)
         
-        store.set(term: "spiderman")
+        store.set(term: "anime")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
