@@ -31,8 +31,7 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionNode.backgroundColor = .clear
-        self.adapter.performUpdates(animated: true, completion: nil)
+        self.updateModels()
     }
     
     func fetch(context: ASBatchContext) {
