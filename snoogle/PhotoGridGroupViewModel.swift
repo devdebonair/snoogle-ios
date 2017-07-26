@@ -91,7 +91,10 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
             
         case .grid:
             let cell = CellNodeMediaGrid(models: models)
-            cell.numberOfColumns = 3
+            cell.backgroundColor = .white
+            cell.numberOfColumns = models.count < 3 ? models.count : 3
+            cell.flowLayout.minimumInteritemSpacing = 5.0
+            cell.flowLayout.minimumLineSpacing = 5.0
             return cell
         }
     }

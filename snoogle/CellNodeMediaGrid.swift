@@ -48,7 +48,7 @@ class CellNodeMediaGrid: ASCellNode {
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let numberOfRows: CGFloat = CGFloat(models.count/numberOfColumns)
-        let height: CGFloat = (constrainedSize.max.width / CGFloat(numberOfColumns)) * numberOfRows
+        let height: CGFloat = (constrainedSize.max.width / CGFloat(numberOfColumns)) * numberOfRows - flowLayout.minimumLineSpacing
         collectionNode.style.height = ASDimension(unit: .points, value: height)
         return ASInsetLayoutSpec(insets: .zero, child: collectionNode)
     }
@@ -68,8 +68,10 @@ extension CellNodeMediaGrid: ASCollectionDataSource, ASCollectionDelegate {
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
-        let width: CGFloat = (collectionNode.frame.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right)/CGFloat(numberOfColumns)
-        let max = CGSize(width: width, height: width)
+        let originLength: CGFloat = (collectionNode.frame.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right)/CGFloat(numberOfColumns)
+        let width: CGFloat = originLength - flowLayout.minimumInteritemSpacing
+        let height: CGFloat = originLength - flowLayout.minimumLineSpacing
+        let max = CGSize(width: width, height: height)
         return ASSizeRange(min: max, max: max)
     }
     

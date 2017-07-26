@@ -46,17 +46,16 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         guard let allController = controllers[.all] as? SearchAllController else { return }
         var models = [IGListDiffable]()
         if !result.subreddits.isEmpty {
-            let subreddits = result.subreddits[0..<3]
-            let swag = List<Subreddit>(subreddits)
-            models.append(SubredditListGroupViewModel(subreddits: swag))
+            let subreddits = result.subreddits.count >= 3 ? List<Subreddit>(result.subreddits[0..<3]): result.subreddits
+            models.append(SubredditListGroupViewModel(subreddits: subreddits))
         }
         if !result.photos.isEmpty {
-            let swag = List<Submission>(result.photos[0..<6])
-            models.append(PhotoGridGroupViewModel(submissions: swag))
+            let photos = result.photos.count >= 6 ? List<Submission>(result.photos[0..<6]) : result.photos
+            models.append(PhotoGridGroupViewModel(submissions: photos))
         }
         if !result.discussions.isEmpty {
-            let swag = List<Submission>(result.discussions[0..<3])
-            models.append(DiscussionGroupViewModel(submissions: swag))
+            let discussions = result.discussions.count >= 3 ? List<Submission>(result.discussions[0..<3]) : result.discussions
+            models.append(DiscussionGroupViewModel(submissions: discussions))
         }
         allController.updateModels(models: models)
     }
@@ -68,7 +67,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         node.addSubnode(pagerNode)
         
-        store.set(term: "pokemon")
+        store.set(term: "spiderman")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
