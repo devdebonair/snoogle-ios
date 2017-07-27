@@ -41,7 +41,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         pagerNode = ASPagerNode(collectionViewLayout: layout)
         
-        self.headerNode = CellNodePagerHeader(sections: ["All", "Subreddits", "Discussions", "Photos"])
+        self.headerNode = CellNodePagerHeader(sections: ["Everything", "Subreddits", "Discussions", "Photos"])
         
         super.init(node: ASDisplayNode())
         
@@ -109,12 +109,12 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         self.headerNode.backgroundColor = .white
         self.headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-        self.headerNode.textFont = UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold)
+        self.headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         
         self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: ""), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage(named: "")
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         
         let searchBar = UISearchBar()
         navigationItem.titleView = searchBar
@@ -151,6 +151,8 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         super.viewWillAppear(animated)
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     required init?(coder aDecoder: NSCoder) {

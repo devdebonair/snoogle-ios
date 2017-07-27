@@ -29,11 +29,14 @@ class CellNodePagerHeader: ASDisplayNode {
         automaticallyManagesSubnodes = true
         
         collectionNode.dataSource = self
+        collectionNode.delegate = self
         
         collectionNode.backgroundColor = .clear
         collectionNode.frame = frame
         
         flowLayout.scrollDirection = .horizontal
+        
+        selectionBar.backgroundColor = UIColor(colorLiteralRed: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
     }
     
     override func didLoad() {
@@ -45,15 +48,19 @@ class CellNodePagerHeader: ASDisplayNode {
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        return ASInsetLayoutSpec(insets: .zero, child: collectionNode)
+        selectionBar.style.height = ASDimension(unit: .points, value: 2.0)
+        selectionBar.style.width = ASDimension(unit: .fraction, value: 0.25)
+        collectionNode.style.width = ASDimension(unit: .fraction, value: 1.0)
+        collectionNode.style.height = ASDimension(unit: .points, value: 42)
+        let stackLayout = ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: .start, alignItems: .start, children: [collectionNode, selectionBar])
+        return stackLayout
     }
 }
 
-extension CellNodePagerHeader: ASCollectionDataSource {
+extension CellNodePagerHeader: ASCollectionDataSource, ASCollectionDelegate {
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         let title = sections[indexPath.section]
-        let inset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         let text = NSMutableAttributedString(
             string: title,
             attributes: [
@@ -61,7 +68,7 @@ extension CellNodePagerHeader: ASCollectionDataSource {
                 NSFontAttributeName: textFont
             ])
         return { _ -> ASCellNode in
-            return CellNodeText(attributedText: text, inset: inset)
+            return CellNodeTextCenter(attributedText: text, inset: .zero)
         }
     }
     
@@ -70,10 +77,9 @@ extension CellNodePagerHeader: ASCollectionDataSource {
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
-        let height: CGFloat = collectionNode.frame.height - flowLayout.sectionInset.top - flowLayout.sectionInset.bottom
+        let height: CGFloat = collectionNode.frame.height
         let width: CGFloat = collectionNode.frame.width / CGFloat(4.0)
-        print(width)
-        let max = CGSize(width: width, height: height)
+        let max = CGSize(width: width, height: 0)
         let min = CGSize(width: width, height: height)
         return ASSizeRange(min: min, max: max)
     }
