@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import AsyncDisplayKit
 import IGListKit
 import RealmSwift
@@ -15,6 +16,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
 
     let pagerNode: ASPagerNode
     let store = SearchStore()
+    let headerNode: CellNodePagerHeader
     
     private enum Pages: Int {
         case all = 0
@@ -34,11 +36,12 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         layout.scrollDirection = .horizontal
         layout.sectionInset = .zero
         
-        // TODO: https://stackoverflow.com/questions/42486960/uicollectionview-horizontal-paging-with-space-between-pages
         layout.minimumLineSpacing = 0.0
         layout.minimumInteritemSpacing = 0.0
         
         pagerNode = ASPagerNode(collectionViewLayout: layout)
+        
+        self.headerNode = CellNodePagerHeader(sections: ["All", "Subreddits", "Discussions", "Photos"])
         
         super.init(node: ASDisplayNode())
         
@@ -87,8 +90,12 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         super.viewDidLoad()
         
         node.addSubnode(pagerNode)
+        node.addSubnode(headerNode)
         
-        store.set(term: "anime")
+        headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
+        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
+        
+        store.set(term: "pokemon")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
@@ -99,6 +106,26 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         automaticallyAdjustsScrollViewInsets = false
         pagerNode.allowsAutomaticInsetsAdjustment = false
         pagerNode.view.alwaysBounceVertical = false
+        
+        self.headerNode.backgroundColor = .white
+        self.headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        self.headerNode.textFont = UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold)
+        
+        self.navigationController?.navigationBar.barTintColor = .white
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: ""), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage(named: "")
+        
+        let searchBar = UISearchBar()
+        navigationItem.titleView = searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "pokemon"
+        
+        headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
+        headerNode.clipsToBounds = false
+        headerNode.shadowOpacity = 0.10
+        headerNode.shadowRadius = 1.0
+        headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -122,7 +149,8 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        pagerNode.frame = node.frame
+        headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
+        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
     }
     
     required init?(coder aDecoder: NSCoder) {
