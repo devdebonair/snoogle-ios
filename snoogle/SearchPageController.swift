@@ -22,13 +22,15 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         case all = 0
         case subreddits = 1
         case discussions = 2
+        case photos = 3
     }
     
-    private let pageOrder: [Pages] = [.all, .subreddits, .discussions]
+    private let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
     private let controllers: [Pages: UIViewController] = [
         .all: SearchAllController(),
         .subreddits: SearchSubredditController(),
-        .discussions: SearchSubredditController()
+        .discussions: SearchSubredditController(),
+        .photos: SearchPhotoCollectionController()
     ]
     
     init() {
@@ -82,6 +84,15 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
             })
             subredditController.updateModels(models: Array(models))
         }
+        if let photoController = controllers[.photos] as? SearchPhotoCollectionController {
+            var models = [MediaViewModel]()
+            for submission in result.photos {
+                guard let media = submission.media.first, let element = media.getMediaElement() else { continue }
+                models.append(MediaViewModel(media: element))
+            }
+            photoController.models = [MultipleMediaViewModel(models: models)]
+            photoController.updateModels()
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {}
@@ -95,7 +106,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
         
-        store.set(term: "pokemon")
+        store.set(term: "hentai")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()

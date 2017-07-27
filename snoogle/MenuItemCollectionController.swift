@@ -11,10 +11,12 @@ import IGListKit
 
 class MenuItemCollectionController: CollectionController {
     
-    override init() {
+    init() {
         super.init()
         self.node.backgroundColor = .white
-        flowLayout.sectionHeadersPinToVisibleBounds = true
+        if let flowLayout = flowLayout as? UICollectionViewFlowLayout {
+            flowLayout.sectionHeadersPinToVisibleBounds = true
+        }
         collectionNode.backgroundColor = .white
     }
     

@@ -11,7 +11,7 @@ import UIKit
 import AsyncDisplayKit
 
 class SubredditListItemController: CollectionController {
-    override init() {
+    init() {
         super.init()
 //        self.models = [
 //            SubredditListItemViewModel(name: "Haikyuu!!!", subscribers: 100000, imageUrl: URL(string: "https://s-media-cache-ak0.pinimg.com/736x/cb/5d/e6/cb5de6cb47316257345fe4d9c3f2ca58.jpg")),

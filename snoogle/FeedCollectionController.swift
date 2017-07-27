@@ -26,7 +26,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         return controller
     }()
     
-    override init() {
+    init() {
         self.slideTransition = SlideTransition(duration: 0.20)
         super.init()
         store.delegate = self

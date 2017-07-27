@@ -22,8 +22,9 @@ class ArticleCollectionController: CollectionController, ArticleViewModelDelegat
     init(id: String) {
         
         super.init()
-        
-        flowLayout.sectionFootersPinToVisibleBounds = true
+        if let flowLayout = flowLayout as? UICollectionViewFlowLayout {
+            flowLayout.sectionFootersPinToVisibleBounds = true
+        }
         store.delegate = self
     }
     

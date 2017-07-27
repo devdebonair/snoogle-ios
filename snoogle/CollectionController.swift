@@ -12,7 +12,7 @@ import AsyncDisplayKit
 
 class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDelegate, IGListAdapterDataSource {
     var transition: Transition? = nil
-    let flowLayout = UICollectionViewFlowLayout()
+    let flowLayout: UICollectionViewLayout
     let collectionNode: ASCollectionNode
     
     var models = [IGListDiffable]()
@@ -23,7 +23,8 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
         return adapter
     }()
     
-    init() {
+    init(collectionLayout: UICollectionViewLayout = UICollectionViewFlowLayout()) {
+        self.flowLayout = collectionLayout
         collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
         super.init(node: collectionNode)
         collectionNode.delegate = self

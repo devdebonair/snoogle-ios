@@ -60,6 +60,8 @@
 		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
 		562A8E361F28DF1000DF5041 /* CellNodePagerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */; };
 		562A8E381F29874300DF5041 /* CellNodeTextCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */; };
+		562A8E3D1F29B63500DF5041 /* MosaicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */; };
+		562A8E3F1F29B75D00DF5041 /* SearchPhotoCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E3E1F29B75D00DF5041 /* SearchPhotoCollectionController.swift */; };
 		562BD45A1E26983600F1DC01 /* NodeSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562BD4591E26983600F1DC01 /* NodeSlide.swift */; };
 		562C1F031E118E24001BA898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F021E118E24001BA898 /* Config.swift */; };
 		562C1F071E11C921001BA898 /* CellNodePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562C1F061E11C921001BA898 /* CellNodePost.swift */; };
@@ -131,6 +133,7 @@
 		56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */; };
 		56DAC4921F1AEFEE00AD0D62 /* SubmissionComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */; };
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
+		56E32E221F2A76C800BB8072 /* MultipleMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
 		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
@@ -214,6 +217,8 @@
 		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
 		562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodePagerHeader.swift; sourceTree = "<group>"; };
 		562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeTextCenter.swift; sourceTree = "<group>"; };
+		562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicCollectionViewLayout.swift; sourceTree = "<group>"; };
+		562A8E3E1F29B75D00DF5041 /* SearchPhotoCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPhotoCollectionController.swift; sourceTree = "<group>"; };
 		562BD4591E26983600F1DC01 /* NodeSlide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeSlide.swift; sourceTree = "<group>"; };
 		562C1F021E118E24001BA898 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		562C1F061E11C921001BA898 /* CellNodePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePost.swift; sourceTree = "<group>"; };
@@ -287,6 +292,7 @@
 		56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionStore.swift; sourceTree = "<group>"; };
 		56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionComments.swift; sourceTree = "<group>"; };
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleMediaViewModel.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
@@ -363,6 +369,7 @@
 				561C28671F23F92700ACAECC /* SearchAllController.swift */,
 				5605292C1F257DF90046D946 /* SearchStore.swift */,
 				5605293C1F282F5F0046D946 /* SearchSubredditController.swift */,
+				562A8E3E1F29B75D00DF5041 /* SearchPhotoCollectionController.swift */,
 			);
 			name = search;
 			sourceTree = "<group>";
@@ -455,6 +462,14 @@
 				561EAB0A1F1EB65F00C55CD3 /* MediaCollectionController.swift */,
 			);
 			name = media;
+			sourceTree = "<group>";
+		};
+		562A8E3B1F29B60D00DF5041 /* layouts */ = {
+			isa = PBXGroup;
+			children = (
+				562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */,
+			);
+			path = layouts;
 			sourceTree = "<group>";
 		};
 		562C1F0C1E145FD2001BA898 /* extensions */ = {
@@ -676,6 +691,7 @@
 				561B1DB21F246A37006501E3 /* etc */,
 				562C1F0C1E145FD2001BA898 /* extensions */,
 				563127AD1EFCEC4E00C6961B /* fonts */,
+				562A8E3B1F29B60D00DF5041 /* layouts */,
 				566E6FB91EFAB48C0014E077 /* libraries */,
 				562C1F101E14665D001BA898 /* models */,
 				563D037D1E24C66F00BD24D4 /* nodes */,
@@ -708,6 +724,7 @@
 				560529321F2684520046D946 /* DiscussionGroupViewModel.swift */,
 				560529361F27AAD50046D946 /* PhotoGridGroupViewModel.swift */,
 				5605293A1F27B3920046D946 /* MediaViewModel.swift */,
+				56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -961,11 +978,13 @@
 				561C8C731E7C876100D9AEB3 /* User.swift in Sources */,
 				56119E991E87965E00A19C40 /* MediaType.swift in Sources */,
 				560529371F27AAD50046D946 /* PhotoGridGroupViewModel.swift in Sources */,
+				56E32E221F2A76C800BB8072 /* MultipleMediaViewModel.swift in Sources */,
 				561C8C671E7C761E00D9AEB3 /* Subreddit.swift in Sources */,
 				56F596081F117CE700B2B1A5 /* SubscriptionStore.swift in Sources */,
 				56F5960A1F13BA7F00B2B1A5 /* SubredditListCollectionController.swift in Sources */,
 				561C8C631E7C4D1700D9AEB3 /* Submission.swift in Sources */,
 				5610F95D1F08A2E90097E3A2 /* SubscriptionsPagerController.swift in Sources */,
+				562A8E3D1F29B63500DF5041 /* MosaicCollectionViewLayout.swift in Sources */,
 				56ABC6251EF8219900DC3B46 /* MarkdownStyleElement.swift in Sources */,
 				561C8C6F1E7C77AD00D9AEB3 /* PrivateMessage.swift in Sources */,
 				5651C0871EE11F79001F3FE9 /* MenuSubredditListCollectionController.swift in Sources */,
@@ -1010,6 +1029,7 @@
 				56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */,
 				561C28661F23EF5A00ACAECC /* SubredditListGroupViewModel.swift in Sources */,
 				560529331F2684520046D946 /* DiscussionGroupViewModel.swift in Sources */,
+				562A8E3F1F29B75D00DF5041 /* SearchPhotoCollectionController.swift in Sources */,
 				56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */,
 				566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */,
 				56DDBCA11E81852900923CF5 /* Query.swift in Sources */,
