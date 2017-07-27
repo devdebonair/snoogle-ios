@@ -95,7 +95,10 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {}
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let progress = scrollView.contentOffset.x / scrollView.contentSize.width
+        self.headerNode.setProgress(progress)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +109,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
         
-        store.set(term: "hentai")
+        store.set(term: "naruto")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()

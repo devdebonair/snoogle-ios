@@ -47,6 +47,10 @@ class CellNodePagerHeader: ASDisplayNode {
         collectionNode.view.alwaysBounceVertical = false
     }
     
+    func setProgress(_ progress: CGFloat) {
+        selectionBar.frame.origin.x = collectionNode.view.contentSize.width * progress
+    }
+    
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         selectionBar.style.height = ASDimension(unit: .points, value: 2.0)
         selectionBar.style.width = ASDimension(unit: .fraction, value: 0.25)
