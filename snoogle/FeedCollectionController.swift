@@ -356,6 +356,7 @@ extension FeedCollectionController {
         if let transition = transition as? CardTransition {
             transition.automaticallyManageGesture = true
             transition.cardHeight = 1.0
+            transition.overlayAlpha = 1.0
         }
         let controller = ASNavigationController(rootViewController: SearchPageController())
         controller.transitioningDelegate = transition
