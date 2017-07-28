@@ -24,16 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch let error {
 //            print(error)
 //        }
-//        
-//        let rootController = FeedCollectionController()
-//        navigationController = ASNavigationController(rootViewController: rootController)
-//        rootController.store.setSubreddit(name: "naruto")
-//        rootController.store.fetchListing()
+        
+        let rootController = FeedCollectionController()
+        navigationController = ASNavigationController(rootViewController: rootController)
+        rootController.store.setSubreddit(name: "pokemon")
+        rootController.store.fetchListing()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-//        window?.rootViewController = navigationController
-        window?.rootViewController = ASNavigationController(rootViewController: SearchPageController())
+        window?.rootViewController = navigationController
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)

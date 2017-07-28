@@ -109,11 +109,13 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
         
-        store.set(term: "naruto")
+        store.set(term: "pokemon")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
         store.delegate = self
+        
+        pagerNode.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = false

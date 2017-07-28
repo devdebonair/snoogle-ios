@@ -355,10 +355,10 @@ extension FeedCollectionController {
         transition = CardTransition(duration: 0.25)
         if let transition = transition as? CardTransition {
             transition.automaticallyManageGesture = true
+            transition.cardHeight = 1.0
         }
-        let controller = MenuSubredditListCollectionController()
+        let controller = ASNavigationController(rootViewController: SearchPageController())
         controller.transitioningDelegate = transition
-        controller.collectionNode.view.bounces = false
         self.navigationController?.present(controller, animated: true)
     }
     
