@@ -132,11 +132,6 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
-        let searchBar = UISearchBar()
-        navigationItem.titleView = searchBar
-        searchBar.sizeToFit()
-        searchBar.placeholder = "pokemon"
-        
         headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
         headerNode.clipsToBounds = false
         headerNode.shadowOpacity = 0.10

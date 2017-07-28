@@ -134,6 +134,8 @@
 		56DAC4921F1AEFEE00AD0D62 /* SubmissionComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */; };
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
 		56E32E221F2A76C800BB8072 /* MultipleMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */; };
+		56E32E241F2B740D00BB8072 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E231F2B740D00BB8072 /* SearchController.swift */; };
+		56E32E261F2B997C00BB8072 /* UISearchBar+BorderColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
 		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
@@ -293,6 +295,8 @@
 		56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionComments.swift; sourceTree = "<group>"; };
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleMediaViewModel.swift; sourceTree = "<group>"; };
+		56E32E231F2B740D00BB8072 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+BorderColor.swift"; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
@@ -370,6 +374,7 @@
 				5605292C1F257DF90046D946 /* SearchStore.swift */,
 				5605293C1F282F5F0046D946 /* SearchSubredditController.swift */,
 				562A8E3E1F29B75D00DF5041 /* SearchPhotoCollectionController.swift */,
+				56E32E231F2B740D00BB8072 /* SearchController.swift */,
 			);
 			name = search;
 			sourceTree = "<group>";
@@ -486,6 +491,7 @@
 				566DD8911F225A04005049EB /* CGRect+Distance.swift */,
 				56E896601F257600005599DF /* NSNumber+CommaString.swift */,
 				560529381F27ACD40046D946 /* Media+MediaElement.swift */,
+				56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -939,6 +945,7 @@
 				566DD8901F21B484005049EB /* Math.swift in Sources */,
 				5605293B1F27B3920046D946 /* MediaViewModel.swift in Sources */,
 				5605292F1F267EE60046D946 /* CellNodeHeaderFootnote.swift in Sources */,
+				56E32E241F2B740D00BB8072 /* SearchController.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				56E7CEC71E1CAEAB001B48EE /* CellNodeText.swift in Sources */,
 				56ABC6231EF8210D00DC3B46 /* MarkdownParagraph.swift in Sources */,
@@ -1023,6 +1030,7 @@
 				56C084371EFF1F24004128F4 /* CellNodeSubredditListItem.swift in Sources */,
 				5610F94A1F0832330097E3A2 /* CardTransition.swift in Sources */,
 				56EE8CA81E8B4CB10043A9DF /* ASButtonNode+Animate.swift in Sources */,
+				56E32E261F2B997C00BB8072 /* UISearchBar+BorderColor.swift in Sources */,
 				561C8C691E7C763800D9AEB3 /* Comment.swift in Sources */,
 				567072B21F23D20500B44388 /* CellNodeSubredditActionListItem.swift in Sources */,
 				5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */,
