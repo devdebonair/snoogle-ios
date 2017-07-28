@@ -136,6 +136,7 @@
 		56E32E221F2A76C800BB8072 /* MultipleMediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */; };
 		56E32E241F2B740D00BB8072 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E231F2B740D00BB8072 /* SearchController.swift */; };
 		56E32E261F2B997C00BB8072 /* UISearchBar+BorderColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */; };
+		56E32E281F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
 		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
@@ -297,6 +298,7 @@
 		56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleMediaViewModel.swift; sourceTree = "<group>"; };
 		56E32E231F2B740D00BB8072 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+BorderColor.swift"; sourceTree = "<group>"; };
+		56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeButtonTextLeft.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 				560529341F27973C0046D946 /* CellNodeMediaGrid.swift */,
 				562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */,
 				562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */,
+				56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -999,6 +1002,7 @@
 				56126EC01E1D9DBD0063B6ED /* ViewModelElement.swift in Sources */,
 				568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */,
 				5610F9551F0833770097E3A2 /* MarkdownBuilder.swift in Sources */,
+				56E32E281F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift in Sources */,
 				5651C0651EDC7A28001F3FE9 /* MenuItemCollectionController.swift in Sources */,
 				56119E901E8768C400A19C40 /* NSObject+IGListDiffable.swift in Sources */,
 				562C1F181E148061001BA898 /* Video.swift in Sources */,
