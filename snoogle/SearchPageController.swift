@@ -180,6 +180,14 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         let imageNode = ASImageNode()
         imageNode.image = #imageLiteral(resourceName: "left-chevron")
         self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: imageNode.view)
+        self.navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = nil
     }
     
     required init?(coder aDecoder: NSCoder) {
