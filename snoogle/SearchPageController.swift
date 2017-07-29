@@ -144,6 +144,8 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.shadowOpacity = 0.10
         headerNode.shadowRadius = 1.0
         headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {

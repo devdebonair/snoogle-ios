@@ -25,7 +25,7 @@ class SearchPhotoCollectionController: CollectionController, MosaicCollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        node.backgroundColor = .white
     }
     
     required init?(coder aDecoder: NSCoder) {
