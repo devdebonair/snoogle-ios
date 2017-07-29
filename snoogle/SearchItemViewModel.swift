@@ -9,6 +9,10 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol SearchItemViewModelDelegate {
+    func didSelectSearchItem(searchItem: SearchItemViewModel)
+}
+
 class SearchItemViewModel: NSObject, ViewModelElement {
     enum CellType: Int {
         case separator = 0
@@ -17,6 +21,8 @@ class SearchItemViewModel: NSObject, ViewModelElement {
     
     let text: String
     let cellOrder: [CellType] = [.cell]
+    
+    var delegate: SearchItemViewModelDelegate? = nil
     
     init(text: String = "") {
         self.text = text
@@ -50,6 +56,7 @@ class SearchItemViewModel: NSObject, ViewModelElement {
     }
     
     func didSelect(index: Int) {
-        print("selected \(text)")
+        guard let delegate = delegate else { return }
+        delegate.didSelectSearchItem(searchItem: self)
     }
 }

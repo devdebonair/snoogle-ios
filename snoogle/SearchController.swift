@@ -22,7 +22,9 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
             let realm = try Realm()
             self.previousResults = realm.objects(SearchResult.self)
             let viewModels = self.previousResults.map({ (result) -> SearchItemViewModel in
-                return SearchItemViewModel(text: result.term)
+                let model = SearchItemViewModel(text: result.term)
+                model.delegate = self
+                return model
             })
             self.models = Array(viewModels)
         } catch {
@@ -72,12 +74,16 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
             let viewModels = self.previousResults.filter({ (result) -> Bool in
                 return result.term.lowercased().starts(with: searchText.lowercased())
             }).map({ (result) -> SearchItemViewModel in
-                return SearchItemViewModel(text: result.term)
+                let model = SearchItemViewModel(text: result.term)
+                model.delegate = self
+                return model
             })
             self.models = Array(viewModels)
         } else {
             let viewModels = self.previousResults.map({ (result) -> SearchItemViewModel in
-                return SearchItemViewModel(text: result.term)
+                let model = SearchItemViewModel(text: result.term)
+                model.delegate = self
+                return model
             })
             self.models = Array(viewModels)
         }
@@ -93,5 +99,12 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
             let controller = SearchPageController(term: searchText)
             self.navigationController?.pushViewController(controller, animated: true)
         }
+    }
+}
+
+extension SearchController: SearchItemViewModelDelegate {
+    func didSelectSearchItem(searchItem: SearchItemViewModel) {
+        let controller = SearchPageController(term: searchItem.text)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
