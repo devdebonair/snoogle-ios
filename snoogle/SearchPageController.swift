@@ -146,6 +146,11 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "arrow-left"), style: .plain, target: self, action: #selector(didTapLeftNavItem))
+    }
+    
+    func didTapLeftNavItem() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
