@@ -66,6 +66,7 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         self.navigationController?.navigationBar.barTintColor = .white
         self.node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         self.searchController.searchBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.updateModels()
     }
     
