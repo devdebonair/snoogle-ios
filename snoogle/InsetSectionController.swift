@@ -16,7 +16,6 @@ class InsetSectionController: GenericSectionController {
         self.inset = inset
         let bottom = self.inset.bottom
         self.inset.bottom = 0
-        print(isLastSection)
         if isLastSection {
             self.inset.bottom = bottom
         }

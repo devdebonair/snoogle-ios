@@ -18,7 +18,6 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     let store = SearchStore()
     let headerNode: CellNodePagerHeader
     let term: String
-    let searchBar = UISearchBar()
     
     private enum Pages: Int {
         case all = 0
@@ -55,6 +54,8 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         
         store.delegate = self
         store.set(term: term)
+        
+        self.title = term
     }
     
     func didUpdateResults(result: SearchResult) {
@@ -113,7 +114,9 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         node.addSubnode(headerNode)
         
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
-        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
+        
+        let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
+        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: pagerHeight)
         
         store.fetchPhotos()
         store.fetchSubreddits()
@@ -141,10 +144,6 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.shadowOpacity = 0.10
         headerNode.shadowRadius = 1.0
         headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
-        
-        self.searchBar.placeholder = self.term
-        
-        self.navigationItem.titleView = searchBar
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -169,19 +168,13 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
-        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
+        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: pagerHeight)
+        
+        self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        
-        self.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
-        self.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
-        self.searchBar.isUserInteractionEnabled = false
-        
-        let imageNode = ASImageNode()
-        imageNode.image = #imageLiteral(resourceName: "left-chevron")
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: imageNode.view)
-        self.navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.tintColor = .darkText
     }
     
     override func viewWillDisappear(_ animated: Bool) {

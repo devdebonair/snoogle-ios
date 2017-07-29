@@ -138,6 +138,7 @@
 		56E32E261F2B997C00BB8072 /* UISearchBar+BorderColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */; };
 		56E32E281F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */; };
 		56E32E2A1F2BA4A200BB8072 /* SearchItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */; };
+		56E32E2C1F2D231100BB8072 /* InsetSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E2B1F2D231100BB8072 /* InsetSectionController.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
 		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
@@ -301,6 +302,7 @@
 		56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+BorderColor.swift"; sourceTree = "<group>"; };
 		56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeButtonTextLeft.swift; sourceTree = "<group>"; };
 		56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemViewModel.swift; sourceTree = "<group>"; };
+		56E32E2B1F2D231100BB8072 /* InsetSectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetSectionController.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				56F5960B1F164D1D00B2B1A5 /* GenericSectionController.swift */,
+				56E32E2B1F2D231100BB8072 /* InsetSectionController.swift */,
 			);
 			name = "section controllers";
 			sourceTree = "<group>";
@@ -963,6 +966,7 @@
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56EE8C941E8A135E0043A9DF /* ServiceFrontpage.swift in Sources */,
 				566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */,
+				56E32E2C1F2D231100BB8072 /* InsetSectionController.swift in Sources */,
 				56938F681EF80DDA0026565F /* MarkdownDelete.swift in Sources */,
 				56938F641EF808810026565F /* MarkdownInlineElement.swift in Sources */,
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,

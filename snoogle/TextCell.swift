@@ -10,7 +10,6 @@ import Foundation
 import AsyncDisplayKit
 
 class TextCell: ASCellNode {
-    
     var inset = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
     let textNode = ASTextNode()
     
@@ -25,6 +24,4 @@ class TextCell: ASCellNode {
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec(insets: inset, child: textNode)
     }
-    
-    
 }

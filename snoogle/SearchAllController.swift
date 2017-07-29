@@ -21,8 +21,7 @@ class SearchAllController: CollectionController {
     }
     
     override func sectionController() -> GenericSectionController {
-        let sectionController = GenericSectionController()
-        sectionController.inset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
         return sectionController
     }
 }
