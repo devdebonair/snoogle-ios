@@ -19,7 +19,7 @@ class SearchStore {
     private var term: String = ""
     
     func set(term: String) {
-        self.term = term
+        self.term = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
     
     func fetchSubreddits() {

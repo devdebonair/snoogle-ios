@@ -21,7 +21,7 @@ class CellNodeButtonTextLeft: ASCellNode {
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let spacing: CGFloat = 15.0
         imageNode.style.preferredSize = CGSize(width: 11, height: 11)
-        let stackLayout = ASStackLayoutSpec(direction: .horizontal, spacing: spacing, justifyContent: .center, alignItems: .center, children: [imageNode, textNode])
+        let stackLayout = ASStackLayoutSpec(direction: .horizontal, spacing: spacing, justifyContent: .start, alignItems: .center, children: [imageNode, textNode])
         let inset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
         return ASInsetLayoutSpec(insets: inset, child: stackLayout)
     }

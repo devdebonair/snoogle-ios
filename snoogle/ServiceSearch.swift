@@ -21,7 +21,7 @@ class ServiceSearch: Service {
     let term: String
     
     init(term: String) {
-        self.term = term
+        self.term = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         super.init()
     }
     

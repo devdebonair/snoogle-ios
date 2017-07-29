@@ -137,6 +137,7 @@
 		56E32E241F2B740D00BB8072 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E231F2B740D00BB8072 /* SearchController.swift */; };
 		56E32E261F2B997C00BB8072 /* UISearchBar+BorderColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */; };
 		56E32E281F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */; };
+		56E32E2A1F2BA4A200BB8072 /* SearchItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */; };
 		56E62B031EC9E47E00ACFC51 /* PostViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */; };
 		56E62B051EC9E90700ACFC51 /* ArticleViewModel+Submission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */; };
 		56E62B071EC9F74700ACFC51 /* CellNodePostActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */; };
@@ -299,6 +300,7 @@
 		56E32E231F2B740D00BB8072 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+BorderColor.swift"; sourceTree = "<group>"; };
 		56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeButtonTextLeft.swift; sourceTree = "<group>"; };
+		56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemViewModel.swift; sourceTree = "<group>"; };
 		56E62B021EC9E47E00ACFC51 /* PostViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ArticleViewModel+Submission.swift"; sourceTree = "<group>"; };
 		56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodePostActionBar.swift; sourceTree = "<group>"; };
@@ -734,6 +736,7 @@
 				560529361F27AAD50046D946 /* PhotoGridGroupViewModel.swift */,
 				5605293A1F27B3920046D946 /* MediaViewModel.swift */,
 				56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */,
+				56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -1027,6 +1030,7 @@
 				560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */,
 				565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */,
 				5610F94B1F0832330097E3A2 /* SideTransition.swift in Sources */,
+				56E32E2A1F2BA4A200BB8072 /* SearchItemViewModel.swift in Sources */,
 				56119E8C1E87683D00A19C40 /* CollectionController.swift in Sources */,
 				5651C0831EE11D58001F3FE9 /* MenuSubredditListViewModel.swift in Sources */,
 				5651C07F1EDFC853001F3FE9 /* MenuUserProfileController.swift in Sources */,

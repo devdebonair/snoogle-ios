@@ -17,6 +17,8 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     let pagerNode: ASPagerNode
     let store = SearchStore()
     let headerNode: CellNodePagerHeader
+    let term: String
+    let searchBar = UISearchBar()
     
     private enum Pages: Int {
         case all = 0
@@ -33,7 +35,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         .photos: SearchPhotoCollectionController()
     ]
     
-    init() {
+    init(term: String) {
         let layout = ASPagerFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = .zero
@@ -44,11 +46,15 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         pagerNode = ASPagerNode(collectionViewLayout: layout)
         
         self.headerNode = CellNodePagerHeader(sections: ["Everything", "Subreddits", "Discussions", "Photos"])
+        self.term = term
         
         super.init(node: ASDisplayNode())
         
         pagerNode.setDataSource(self)
         pagerNode.setDelegate(self)
+        
+        store.delegate = self
+        store.set(term: term)
     }
     
     func didUpdateResults(result: SearchResult) {
@@ -109,11 +115,9 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
         
-        store.set(term: "pokemon")
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
-        store.delegate = self
         
         pagerNode.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
@@ -137,6 +141,10 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         headerNode.shadowOpacity = 0.10
         headerNode.shadowRadius = 1.0
         headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
+        
+        self.searchBar.placeholder = self.term
+        
+        self.navigationItem.titleView = searchBar
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -164,6 +172,14 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: node.frame.height - headerNode.frame.height)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        self.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
+        self.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
+        self.searchBar.isUserInteractionEnabled = false
+        
+        let imageNode = ASImageNode()
+        imageNode.image = #imageLiteral(resourceName: "left-chevron")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(customView: imageNode.view)
     }
     
     required init?(coder aDecoder: NSCoder) {
