@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeMediaGrid: ASCellNode {
+class CellNodeMediaGrid: CellNode {
     
     let collectionNode: ASCollectionNode
     let flowLayout: UICollectionViewFlowLayout
@@ -22,8 +22,6 @@ class CellNodeMediaGrid: ASCellNode {
         self.collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
         
         super.init()
-        
-        automaticallyManagesSubnodes = true
         
         collectionNode.dataSource = self
         collectionNode.delegate = self
@@ -46,7 +44,7 @@ class CellNodeMediaGrid: ASCellNode {
         collectionNode.view.isScrollEnabled = false
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let numberOfRows: CGFloat = CGFloat(models.count/numberOfColumns)
         let height: CGFloat = (constrainedSize.max.width / CGFloat(numberOfColumns)) * numberOfRows - flowLayout.minimumLineSpacing
         collectionNode.style.height = ASDimension(unit: .points, value: height)

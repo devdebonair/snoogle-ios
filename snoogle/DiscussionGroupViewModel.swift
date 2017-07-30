@@ -10,6 +10,11 @@ import Foundation
 import AsyncDisplayKit
 import RealmSwift
 
+protocol DiscussionGroupViewModelDelegate {
+    func didSelectDiscussion(discussion: DiscussionViewModel)
+    func didSelectMoreDiscussions()
+}
+
 class DiscussionGroupViewModel: NSObject, ViewModelElement {
     enum CellType: Int {
         case discussion = 1
@@ -18,6 +23,7 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
     }
     
     let models: [DiscussionViewModel]
+    var delegate: DiscussionGroupViewModelDelegate? = nil
     var cellOrder: [CellType] {
         var order = [CellType]()
         order.append(.header)
@@ -83,7 +89,13 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
     }
     
     func didSelect(index: Int) {
-        //        guard let delegate = delegate else { return }
-        //        delegate.didSelectSubreddit(subreddit: self)
+        guard let delegate = delegate else { return }
+        if index == cellOrder.count - 1 {
+            return delegate.didSelectMoreDiscussions()
+        }
+        let subArr = Array(cellOrder[0...index])
+        let filterdArr = subArr.filter { $0 == .discussion }
+        let model = models[filterdArr.count-1]
+        delegate.didSelectDiscussion(discussion: model)
     }
 }

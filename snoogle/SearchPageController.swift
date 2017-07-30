@@ -26,7 +26,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         case photos = 3
     }
     
-    private let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
+    fileprivate let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
     private let controllers: [Pages: UIViewController] = [
         .all: SearchAllController(),
         .subreddits: SearchSubredditController(),
@@ -63,7 +63,9 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
             var models = [IGListDiffable]()
             if !result.subreddits.isEmpty {
                 let subreddits = result.subreddits.count >= 3 ? List<Subreddit>(result.subreddits[0..<3]): result.subreddits
-                models.append(SubredditListGroupViewModel(subreddits: subreddits))
+                let model = SubredditListGroupViewModel(subreddits: subreddits)
+                model.delegate = self
+                models.append(model)
             }
             if !result.photos.isEmpty {
                 let photos = result.photos.count >= 6 ? List<Submission>(result.photos[0..<6]) : result.photos
@@ -71,7 +73,9 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
             }
             if !result.discussions.isEmpty {
                 let discussions = result.discussions.count >= 3 ? List<Submission>(result.discussions[0..<3]) : result.discussions
-                models.append(DiscussionGroupViewModel(submissions: discussions))
+                let model = DiscussionGroupViewModel(submissions: discussions)
+                model.delegate = self
+                models.append(model)
             }
             allController.updateModels(models: models)
         }
@@ -81,13 +85,16 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
                 model.backgroundColor = .white
                 model.titleColor = .darkText
                 model.subtitleColor = .darkText
+                model.delegate = self
                 return model
             })
             subredditController.updateModels(models: Array(models))
         }
         if let subredditController = controllers[.discussions] as? SearchSubredditController {
             let models = result.discussions.map({ (submission) -> DiscussionViewModel in
-                return DiscussionViewModel(submission: submission)
+                let model = DiscussionViewModel(submission: submission)
+                model.delegate = self
+                return model
             })
             subredditController.updateModels(models: Array(models))
         }
@@ -189,5 +196,25 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension SearchPageController: SubredditListItemViewModelDelegate, SubredditListGroupViewModelDelegate {
+    func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
+        print(subreddit.name)
+    }
+    func didSelectMoreSubreddits() {
+        guard let index = pageOrder.index(of: .subreddits) else { return }
+        self.pagerNode.scrollToPage(at: index, animated: true)
+    }
+}
+
+extension SearchPageController: DiscussionViewModelDelegate, DiscussionGroupViewModelDelegate {
+    func didSelectDiscussion(discussion: DiscussionViewModel) {
+        print(discussion.id)
+    }
+    func didSelectMoreDiscussions() {
+        guard let index = pageOrder.index(of: .discussions) else { return }
+        self.pagerNode.scrollToPage(at: index, animated: true)
     }
 }

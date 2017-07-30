@@ -15,7 +15,6 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
     let models: [MediaViewModel]
     
     enum CellType: Int {
-        case seperator = 0
         case grid = 1
         case header = 2
         case footer = 3
@@ -24,9 +23,7 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
     var cellOrder: [CellType] {
         var order = [CellType]()
         order.append(.header)
-        order.append(.seperator)
         order.append(.grid)
-        order.append(.seperator)
         order.append(.footer)
         return order
     }
@@ -55,12 +52,6 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
         
         switch type {
             
-        case .seperator:
-            let cell = CellNodeSeparator()
-            let colorValue: Float = 240/255
-            cell.separator.backgroundColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-            return cell
-            
         case .header:
             let text = NSMutableAttributedString(
                 string: "Photos",
@@ -70,6 +61,9 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
                 ])
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+            let colorValue: Float = 240/255
+            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            cell.hasSeparator = true
             cell.backgroundColor = .white
             return cell
             
@@ -92,10 +86,13 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
             
         case .grid:
             let cell = CellNodeMediaGrid(models: models)
+            let colorValue: Float = 240/255
+            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.backgroundColor = .white
             cell.numberOfColumns = models.count < 3 ? models.count : 3
             cell.flowLayout.minimumInteritemSpacing = 5.0
             cell.flowLayout.minimumLineSpacing = 5.0
+            cell.hasSeparator = true
             return cell
         }
     }
