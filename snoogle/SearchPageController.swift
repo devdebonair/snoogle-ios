@@ -19,7 +19,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     let headerNode: CellNodePagerHeader
     let term: String
     
-    private enum Pages: Int {
+    fileprivate enum Pages: Int {
         case all = 0
         case subreddits = 1
         case discussions = 2
@@ -27,7 +27,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
     }
     
     fileprivate let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
-    private let controllers: [Pages: UIViewController] = [
+    fileprivate let controllers: [Pages: UIViewController] = [
         .all: SearchAllController(),
         .subreddits: SearchSubredditController(),
         .discussions: SearchSubredditController(),
@@ -211,7 +211,16 @@ extension SearchPageController: SubredditListItemViewModelDelegate, SubredditLis
 
 extension SearchPageController: DiscussionViewModelDelegate, DiscussionGroupViewModelDelegate {
     func didSelectDiscussion(discussion: DiscussionViewModel) {
-        print(discussion.id)
+        let transition = CoverTransition(duration: 0.25, delay: 0.1)
+        transition.automaticallyManageGesture = true
+        let articleController = ArticleCollectionController(id: discussion.id)
+        articleController.store.setSubmission(id: discussion.id)
+        articleController.store.fetchComments()
+        let controller = NavigationController(rootViewController: articleController)
+        controller.transition = transition
+        controller.isToolbarHidden = true
+        controller.isNavigationBarHidden = true
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
     func didSelectMoreDiscussions() {
         guard let index = pageOrder.index(of: .discussions) else { return }

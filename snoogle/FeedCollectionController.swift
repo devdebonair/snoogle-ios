@@ -174,18 +174,15 @@ extension FeedCollectionController: SubscriptionsPagerControllerDelegate {
 
 extension FeedCollectionController: PostViewModelDelegate {
     func didSelectPost(post: PostViewModel) {
-        transition = CoverTransition(duration: 0.25, delay: 0.1)
-        if let transition = transition as? CoverTransition {
-            transition.automaticallyManageGesture = true
-        }
+        let transition = CoverTransition(duration: 0.25, delay: 0.1)
+        transition.automaticallyManageGesture = true
         let articleController = ArticleCollectionController(id: post.id)
         articleController.store.setSubmission(id: post.id)
         articleController.store.fetchComments()
-        let controller = ASNavigationController(rootViewController: articleController)
+        let controller = NavigationController(rootViewController: articleController)
         controller.isToolbarHidden = true
         controller.isNavigationBarHidden = true
-        controller.transitioningDelegate = transition
-        controller.delegate = transition
+        controller.transition = transition
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
     

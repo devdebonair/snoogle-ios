@@ -28,6 +28,7 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
         collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
         super.init(node: collectionNode)
         collectionNode.delegate = self
+        transitioningDelegate = self.transition
         self.adapter.setASDKCollectionNode(collectionNode)
     }
     

@@ -20,7 +20,6 @@ class ArticleCollectionController: CollectionController, ArticleViewModelDelegat
     private var articleModel: ArticleViewModel? = nil
     
     init(id: String) {
-        
         super.init()
         if let flowLayout = flowLayout as? UICollectionViewFlowLayout {
             flowLayout.sectionFootersPinToVisibleBounds = true
