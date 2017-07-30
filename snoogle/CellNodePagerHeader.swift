@@ -16,7 +16,12 @@ class CellNodePagerHeader: ASDisplayNode {
     let selectionBar = ASDisplayNode()
     let sections: [String]
     
-    var textColor: UIColor = .darkText
+    var textColor: UIColor = .darkText {
+        didSet {
+            selectionBar.backgroundColor = textColor
+        }
+    }
+    
     var textFont: UIFont = UIFont.systemFont(ofSize: 12)
     
     init(sections: [String]) {
@@ -35,8 +40,6 @@ class CellNodePagerHeader: ASDisplayNode {
         collectionNode.frame = frame
         
         flowLayout.scrollDirection = .horizontal
-        
-        selectionBar.backgroundColor = UIColor(colorLiteralRed: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
     }
     
     override func didLoad() {
