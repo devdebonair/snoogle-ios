@@ -17,7 +17,6 @@ class CellNodeText: CellNode {
         super.init()
         textNode.attributedText = attributedText
         textNode.maximumNumberOfLines = 0
-        textNode.isLayerBacked = true
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
