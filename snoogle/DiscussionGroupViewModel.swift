@@ -12,7 +12,6 @@ import RealmSwift
 
 class DiscussionGroupViewModel: NSObject, ViewModelElement {
     enum CellType: Int {
-        case seperator = 0
         case discussion = 1
         case header = 2
         case footer = 3
@@ -22,10 +21,8 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
     var cellOrder: [CellType] {
         var order = [CellType]()
         order.append(.header)
-        order.append(.seperator)
         for _ in self.models {
             order.append(.discussion)
-            order.append(.seperator)
         }
         order.append(.footer)
         return order
@@ -41,11 +38,6 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
         let type = cellOrder[index]
         
         switch type {
-        case .seperator:
-            let cell = CellNodeSeparator()
-            let colorValue: Float = 240/255
-            cell.separator.backgroundColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-            return cell
         case .header:
             let text = NSMutableAttributedString(
                 string: "Discussions",
@@ -53,7 +45,11 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
                     NSForegroundColorAttributeName: UIColor.darkText
                 ])
-            let cell = CellNodeText(attributedText: text, inset: UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20))
+            let cell = CellNodeText(attributedText: text)
+            cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+            let colorValue: Float = 240/255
+            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            cell.hasSeparator = true
             cell.backgroundColor = .white
             return cell
             
@@ -80,7 +76,6 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
             let model = models[filterdArr.count-1]
             return model.cell(index: 0)
         }
-        
     }
     
     func numberOfCells() -> Int {

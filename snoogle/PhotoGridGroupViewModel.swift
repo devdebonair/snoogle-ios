@@ -68,7 +68,8 @@ class PhotoGridGroupViewModel: NSObject, ViewModelElement {
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
                     NSForegroundColorAttributeName: UIColor.darkText
                 ])
-            let cell = CellNodeText(attributedText: text, inset: UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20))
+            let cell = CellNodeText(attributedText: text)
+            cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
             cell.backgroundColor = .white
             return cell
             

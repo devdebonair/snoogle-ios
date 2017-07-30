@@ -81,7 +81,9 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             metaAttributes.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: range)
             metaAttributes.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12), range: range)
             
-            return CellNodeText(attributedText: metaAttributes, inset: inset)
+            let cell = CellNodeText(attributedText: metaAttributes)
+            cell.inset = inset
+            return cell
         }
         
         // Title
@@ -100,7 +102,9 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             
-            return CellNodeText(attributedText: titleAttributes, inset: inset)
+            let cell = CellNodeText(attributedText: titleAttributes)
+            cell.inset = inset
+            return cell
         }
         
         // Media
@@ -123,7 +127,8 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
         if let element = element as? NSMutableAttributedString {
             var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             if index == numberOfCells() - 1 { inset.bottom = 30 }
-            let cell = CellNodeText(attributedText: element, inset: inset)
+            let cell = CellNodeText(attributedText: element)
+            cell.inset = inset
             cell.textNode.delegate = self
             cell.textNode.isUserInteractionEnabled = true
             return cell

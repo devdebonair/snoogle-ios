@@ -21,6 +21,7 @@ class CellNode: ASCellNode {
     init(didLoad: ((CellNode)->Void)? = nil) {
         self.didLoadBlock = didLoad
         super.init()
+        automaticallyManagesSubnodes = true
     }
     
     func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {

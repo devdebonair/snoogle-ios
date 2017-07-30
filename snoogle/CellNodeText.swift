@@ -10,25 +10,17 @@ import Foundation
 import UIKit
 import AsyncDisplayKit
 
-class CellNodeText: ASCellNode {
-    
+class CellNodeText: CellNode {
     let textNode = ASTextNode()
-    let inset: UIEdgeInsets
     
-    init(attributedText: NSMutableAttributedString, inset: UIEdgeInsets = .zero) {
-        self.inset = inset
-        
+    init(attributedText: NSMutableAttributedString) {
         super.init()
-        
         textNode.attributedText = attributedText
         textNode.maximumNumberOfLines = 0
-//        textNode.isLayerBacked = true
-        
-        automaticallyManagesSubnodes = true
+        textNode.isLayerBacked = true
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        return ASInsetLayoutSpec(insets: inset, child: textNode)
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        return ASInsetLayoutSpec(insets: .zero, child: textNode)
     }
-    
 }

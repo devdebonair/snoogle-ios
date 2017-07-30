@@ -16,7 +16,6 @@ protocol SubredditListGroupViewModelDelegate {
 
 class SubredditListGroupViewModel: NSObject, ViewModelElement {
     enum CellType: Int {
-        case seperator = 0
         case subreddit = 1
         case header = 2
         case footer = 3
@@ -27,10 +26,8 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
     var cellOrder: [CellType] {
         var order = [CellType]()
         order.append(.header)
-        order.append(.seperator)
         for _ in self.models {
             order.append(.subreddit)
-            order.append(.seperator)
         }
         order.append(.footer)
         return order
@@ -46,11 +43,6 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
         let type = cellOrder[index]
         
         switch type {
-        case .seperator:
-            let cell = CellNodeSeparator()
-            let colorValue: Float = 240/255
-            cell.separator.backgroundColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-            return cell
         case .header:
             let text = NSMutableAttributedString(
                 string: "Subreddits",
@@ -58,7 +50,11 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
                     NSForegroundColorAttributeName: UIColor.darkText
                 ])
-            let cell = CellNodeText(attributedText: text, inset: UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20))
+            let cell = CellNodeText(attributedText: text)
+            cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+            cell.hasSeparator = true
+            let colorValue: Float = 240/255
+            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.backgroundColor = .white
             return cell
 
@@ -98,6 +94,9 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
                     NSForegroundColorAttributeName: textColor
                 ])
             let cell = CellNodeSubredditListItem(title: title, subtitle: subtitle, url: model.imageUrl, imageHeight: 55.0)
+            let colorValue: Float = 240/255
+            cell.hasSeparator = true
+            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.textNodeSubtitle.maximumNumberOfLines = 2
             cell.backgroundColor = .white
             cell.inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)

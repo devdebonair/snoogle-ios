@@ -9,18 +9,18 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeHeaderFootnote: ASCellNode {
+class CellNodeHeaderFootnote: CellNode {
     let textNodeHeader = ASTextNode()
     let textNodeFootnote = ASTextNode()
-    var inset: UIEdgeInsets = .zero
     
-    override init() {
-        super.init()
-        automaticallyManagesSubnodes = true
-    }
-    
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let stack = ASStackLayoutSpec(direction: .vertical, spacing: 20.0, justifyContent: .spaceBetween, alignItems: .start, children: [textNodeHeader, textNodeFootnote])
-        return ASInsetLayoutSpec(insets: inset, child: stack)
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        return ASStackLayoutSpec(
+            direction: .vertical,
+            spacing: 20.0,
+            justifyContent: .spaceBetween,
+            alignItems: .start,
+            children: [
+                textNodeHeader,
+                textNodeFootnote])
     }
 }

@@ -9,13 +9,12 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeSubredditListItem: ASCellNode {
+class CellNodeSubredditListItem: CellNode {
     
     let textNodeTitle = ASTextNode()
     let textNodeSubtitle = ASTextNode()
     let imageNode = ASNetworkImageNode()
     let imageHeight: CGFloat
-    var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
     
     init(title: NSMutableAttributedString, subtitle: NSMutableAttributedString, url: URL? = nil, imageHeight: CGFloat = 40) {
         self.imageHeight = imageHeight
@@ -29,7 +28,7 @@ class CellNodeSubredditListItem: ASCellNode {
         imageNode.isLayerBacked = true
         
         textNodeTitle.maximumNumberOfLines = 1
-        textNodeSubtitle.maximumNumberOfLines = 1
+        textNodeSubtitle.maximumNumberOfLines = 2
         
         imageNode.cornerRadius = imageHeight / 2
         imageNode.clipsToBounds = true
@@ -47,9 +46,11 @@ class CellNodeSubredditListItem: ASCellNode {
         imageNode.url = url
         imageNode.cornerRadius = 6.0
         imageNode.clipsToBounds = true
+        
+        self.inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         imageNode.style.preferredSize = CGSize(width: imageHeight, height: imageHeight)
         
         let textStack = ASStackLayoutSpec(
@@ -68,7 +69,6 @@ class CellNodeSubredditListItem: ASCellNode {
         
         textStack.style.flexShrink = 1.0
         
-        return ASInsetLayoutSpec(insets: inset, child: layout)
+        return layout
     }
-    
 }
