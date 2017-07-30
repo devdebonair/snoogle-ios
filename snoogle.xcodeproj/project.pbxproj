@@ -508,17 +508,22 @@
 		562C1F0F1E14663D001BA898 /* cells */ = {
 			isa = PBXGroup;
 			children = (
+				56E32E2D1F2E35D900BB8072 /* CellNode.swift */,
 				56126EBB1E1D989E0063B6ED /* CellNodeArticleButtonBar.swift */,
 				5651C0801EE0942C001F3FE9 /* CellNodeAvatarItem.swift */,
 				5603892E1F1D010D000BC2CA /* CellNodeBlankView.swift */,
+				56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */,
 				56978ACE1E1F7D9E0060B558 /* CellNodeComment.swift */,
+				5605292E1F267EE60046D946 /* CellNodeHeaderFootnote.swift */,
 				56F5960D1F1724A900B2B1A5 /* CellNodeLink.swift */,
 				563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */,
 				563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */,
+				560529341F27973C0046D946 /* CellNodeMediaGrid.swift */,
 				566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */,
 				566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */,
 				565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */,
 				560475911F23CAA1009CEFAD /* CellNodeMoreChevron.swift */,
+				562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */,
 				562C1F061E11C921001BA898 /* CellNodePost.swift */,
 				56E62B061EC9F74700ACFC51 /* CellNodePostActionBar.swift */,
 				56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */,
@@ -527,15 +532,10 @@
 				567072B11F23D20500B44388 /* CellNodeSubredditActionListItem.swift */,
 				56C084361EFF1F24004128F4 /* CellNodeSubredditListItem.swift */,
 				56E7CEC61E1CAEAB001B48EE /* CellNodeText.swift */,
+				562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */,
 				5651C0781EDFC121001F3FE9 /* CellNodeUserKarma.swift */,
 				565AAFE21EDC05570024CB65 /* Header.swift */,
 				565AAFEC1EDC0E870024CB65 /* TextCell.swift */,
-				5605292E1F267EE60046D946 /* CellNodeHeaderFootnote.swift */,
-				560529341F27973C0046D946 /* CellNodeMediaGrid.swift */,
-				562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */,
-				562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */,
-				56E32E271F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift */,
-				56E32E2D1F2E35D900BB8072 /* CellNode.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
