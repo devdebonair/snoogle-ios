@@ -12,7 +12,7 @@ import AsyncDisplayKit
 import IGListKit
 import RealmSwift
 
-class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource, ASPagerDelegate, SearchStoreDelegate {
+class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SearchStoreDelegate {
 
     let pagerNode: ASPagerNode
     let store = SearchStore()
@@ -180,6 +180,7 @@ class SearchPageController: ASViewController<ASDisplayNode> , ASPagerDataSource,
         super.viewWillAppear(animated)
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
+        
         pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: pagerHeight)
         
         self.navigationController?.navigationBar.isTranslucent = false

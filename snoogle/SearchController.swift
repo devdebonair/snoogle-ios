@@ -35,6 +35,7 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,24 +50,35 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         collectionNode.frame.size.height = collectionNode.frame.size.height - keyboardHeight
     }
     
+    func keyboardWillDisappear(notification: Notification) {
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let frame = keyboardFrame.cgRectValue
+        let keyboardHeight = frame.height
+        collectionNode.frame.size.height = collectionNode.frame.size.height + keyboardHeight
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchResultsUpdater = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.showsCancelButton = true
-        searchController.searchBar.delegate = self
         searchController.delegate = self
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.showsCancelButton = true
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
         searchController.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
+        
         self.navigationItem.titleView = searchController.searchBar
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         self.navigationController?.navigationBar.barTintColor = .white
         self.node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        self.searchController.searchBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        self.definesPresentationContext = true
         self.updateModels()
     }
     
@@ -92,11 +104,13 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
         self.dismiss(animated: true, completion: nil)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            searchBar.resignFirstResponder()
             let controller = SearchPageController(term: searchText)
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -105,6 +119,7 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
 
 extension SearchController: SearchItemViewModelDelegate {
     func didSelectSearchItem(searchItem: SearchItemViewModel) {
+        self.searchController.searchBar.resignFirstResponder()
         let controller = SearchPageController(term: searchItem.text)
         self.navigationController?.pushViewController(controller, animated: true)
     }
