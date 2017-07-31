@@ -166,6 +166,7 @@
 		56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F5960F1F173BBA00B2B1A5 /* PostHintType.swift */; };
 		56F596121F17BC3200B2B1A5 /* CellNodePostLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */; };
 		56FBFD841F2E9B1500A777AD /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FBFD831F2E9B1500A777AD /* NavigationController.swift */; };
+		56FBFD881F2FC91400A777AD /* NodePager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FBFD871F2FC91400A777AD /* NodePager.swift */; };
 		C54C438B155E98E4DF5ED4E9 /* Pods_snoogle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */; };
 /* End PBXBuildFile section */
 
@@ -331,6 +332,7 @@
 		56F5960F1F173BBA00B2B1A5 /* PostHintType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHintType.swift; sourceTree = "<group>"; };
 		56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodePostLink.swift; sourceTree = "<group>"; };
 		56FBFD831F2E9B1500A777AD /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		56FBFD871F2FC91400A777AD /* NodePager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePager.swift; sourceTree = "<group>"; };
 		83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_snoogle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A727E4D47AFA852E69E660A2 /* Pods-snoogle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-snoogle.release.xcconfig"; path = "Pods/Target Support Files/Pods-snoogle/Pods-snoogle.release.xcconfig"; sourceTree = "<group>"; };
 		D0412A6CD53A668DF8B77E91 /* Pods-snoogle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-snoogle.debug.xcconfig"; path = "Pods/Target Support Files/Pods-snoogle/Pods-snoogle.debug.xcconfig"; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 			isa = PBXGroup;
 			children = (
 				562BD4591E26983600F1DC01 /* NodeSlide.swift */,
+				56FBFD871F2FC91400A777AD /* NodePager.swift */,
 			);
 			name = nodes;
 			sourceTree = "<group>";
@@ -965,6 +968,7 @@
 				562C1F131E147E82001BA898 /* Photo.swift in Sources */,
 				5610F9591F0833BC0097E3A2 /* MarkdownBlockType.swift in Sources */,
 				563D037F1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift in Sources */,
+				56FBFD881F2FC91400A777AD /* NodePager.swift in Sources */,
 				566DD88C1F20FD19005049EB /* CellNodeMediaPageActionBar.swift in Sources */,
 				563127A81EFBDB7E00C6961B /* StatusBar.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,

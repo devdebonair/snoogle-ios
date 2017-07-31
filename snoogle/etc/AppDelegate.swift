@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         let rootController = FeedCollectionController()
-        navigationController = ASNavigationController(rootViewController: rootController)
+        navigationController = NavigationController(rootViewController: rootController)
         rootController.store.setSubreddit(name: "pokemon")
         rootController.store.fetchListing()
 

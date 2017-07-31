@@ -12,11 +12,9 @@ import AsyncDisplayKit
 import IGListKit
 import RealmSwift
 
-class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SearchStoreDelegate {
-
-    let pagerNode: ASPagerNode
+class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate {
+    let pager: NodePager
     let store = SearchStore()
-    let headerNode: CellNodePagerHeader
     let term: String
     
     fileprivate enum Pages: Int {
@@ -24,6 +22,15 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
         case subreddits = 1
         case discussions = 2
         case photos = 3
+    }
+    
+    fileprivate enum SearchTimeType: String {
+        case all = "All"
+        case hour = "Hour"
+        case day = "Day"
+        case week = "Week"
+        case month = "Month"
+        case year = "Year"
     }
     
     fileprivate let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
@@ -35,27 +42,14 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
     ]
     
     init(term: String) {
-        let layout = ASPagerFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = .zero
-        
-        layout.minimumLineSpacing = 0.0
-        layout.minimumInteritemSpacing = 0.0
-        
-        pagerNode = ASPagerNode(collectionViewLayout: layout)
-        
-        self.headerNode = CellNodePagerHeader(sections: ["Everything", "Subreddits", "Discussions", "Photos"])
         self.term = term
-        
-        super.init(node: ASDisplayNode())
-        
-        pagerNode.setDataSource(self)
-        pagerNode.setDelegate(self)
-        
-        store.delegate = self
-        store.set(term: term)
-        
+        self.pager = NodePager()
+        super.init(node: self.pager)
+        self.pager.delegate = self
+        self.store.delegate = self
+        self.store.set(term: term)
         self.title = term
+        pager.delegate = self
     }
     
     func didUpdateResults(result: SearchResult) {
@@ -109,28 +103,14 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
         }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let progress = scrollView.contentOffset.x / scrollView.contentSize.width
-        self.headerNode.setProgress(progress)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        node.addSubnode(pagerNode)
-        node.addSubnode(headerNode)
-        
-        headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
-        
-        let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
-        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: pagerHeight)
         
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
         
-        pagerNode.view.alwaysBounceVertical = false
-        pagerNode.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
@@ -139,67 +119,103 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
         navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
         
-        headerNode.backgroundColor = .white
-        headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-        headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
-        headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
-        headerNode.clipsToBounds = false
-        headerNode.shadowOpacity = 0.10
-        headerNode.shadowRadius = 1.0
-        headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
+        navigationController?.toolbar.isTranslucent = false
+        navigationController?.toolbar.barTintColor = .white
+        
+        setToolbarItems([
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "All", selector: #selector(didTapAll)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "Hour", selector: #selector(didTapHour)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "Week", selector: #selector(didTapWeek)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "Day", selector: #selector(didTapDay)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "Month", selector: #selector(didTapMonth)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            createToolBarButton(text: "Year", selector: #selector(didTapYear)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+        ], animated: false)
+        
+        selectBarItem(time: .week)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
         
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = false
         automaticallyAdjustsScrollViewInsets = false
-        pagerNode.allowsAutomaticInsetsAdjustment = false
     }
     
-    func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
-        let max = CGSize(width: pagerNode.frame.width, height: pagerNode.frame.height)
-        return ASSizeRange(min: max, max: max)
+    func createToolBarButton(text: String, selector: Selector? = nil) -> UIBarButtonItem {
+        let button = UIBarButtonItem(title: text, style: .plain, target: self, action: selector)
+        return button
     }
     
-    func numberOfPages(in pagerNode: ASPagerNode) -> Int {
-        return pageOrder.count
-    }
-    
-    func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
-        let page = controllers[pageOrder[index]]
-        return { () -> ASCellNode in
-            guard let guardedPage = page else { return ASCellNode() }
-            return ASCellNode(viewControllerBlock: { () -> UIViewController in
-                return guardedPage
-            }, didLoad: nil)
+    fileprivate func selectBarItem(time: SearchTimeType) {
+        guard let items = self.toolbarItems else { return }
+        for item in items {
+            if let title = item.title {
+                let type = SearchTimeType(rawValue: title)
+                if type == time {
+                    item.setTitleTextAttributes([
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
+                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+                    ], for: [])
+                } else {
+                    item.setTitleTextAttributes([
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
+                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
+                    ], for: [])
+                }
+            }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // TODO: Issue where size of node shrinks 64 pixels
-        node.frame.size.height = 736.0
-        
-        headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
-        let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
-        
-        pagerNode.frame = CGRect(x: 0, y: headerNode.frame.height, width: node.frame.width, height: pagerHeight)
-        
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.tintColor = .darkText
+        self.navigationController?.isToolbarHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.isToolbarHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension SearchPageController {
+    func didTapAll() {
+        selectBarItem(time: .all)
+    }
+    
+    func didTapHour() {
+        selectBarItem(time: .hour)
+    }
+    
+    func didTapDay() {
+        selectBarItem(time: .day)
+    }
+    
+    func didTapWeek() {
+        selectBarItem(time: .week)
+    }
+    
+    func didTapMonth() {
+        selectBarItem(time: .month)
+    }
+    
+    func didTapYear() {
+        selectBarItem(time: .year)
     }
 }
 
@@ -209,7 +225,7 @@ extension SearchPageController: SubredditListItemViewModelDelegate, SubredditLis
     }
     func didSelectMoreSubreddits() {
         guard let index = pageOrder.index(of: .subreddits) else { return }
-        self.pagerNode.scrollToPage(at: index, animated: true)
+        self.pager.scrollToPage(at: index, animated: true)
     }
 }
 
@@ -228,6 +244,21 @@ extension SearchPageController: DiscussionViewModelDelegate, DiscussionGroupView
     }
     func didSelectMoreDiscussions() {
         guard let index = pageOrder.index(of: .discussions) else { return }
-        self.pagerNode.scrollToPage(at: index, animated: true)
+        self.pager.scrollToPage(at: index, animated: true)
+    }
+}
+
+extension SearchPageController: NodePagerDelegate {
+    func pager(didScroll: ASPagerNode) {}
+    func pager(didScrollToPage index: Int, pager: ASPagerNode) {}
+    
+    func numberOfPages() -> Int {
+        return pageOrder.count
+    }
+    
+    func pager(controllerAtIndex index: Int) -> UIViewController {
+        let page = controllers[pageOrder[index]]
+        guard let guardedPage = page else { return UIViewController() }
+        return guardedPage
     }
 }
