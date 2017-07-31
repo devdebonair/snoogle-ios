@@ -129,32 +129,31 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
         store.fetchSubreddits()
         store.fetchDiscussions()
         
+        pagerNode.view.alwaysBounceVertical = false
         pagerNode.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
-        edgesForExtendedLayout = []
-        extendedLayoutIncludesOpaqueBars = false
-        automaticallyAdjustsScrollViewInsets = false
-        pagerNode.allowsAutomaticInsetsAdjustment = false
-        pagerNode.view.alwaysBounceVertical = false
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
         
-        self.headerNode.backgroundColor = .white
-        self.headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-        self.headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
-        
-        self.navigationController?.navigationBar.barTintColor = .white
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        
+        headerNode.backgroundColor = .white
+        headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
         headerNode.clipsToBounds = false
         headerNode.shadowOpacity = 0.10
         headerNode.shadowRadius = 1.0
         headerNode.layer.shadowPath = UIBezierPath(rect: headerNode.bounds).cgPath
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
-        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
+        
+        edgesForExtendedLayout = []
+        extendedLayoutIncludesOpaqueBars = false
+        automaticallyAdjustsScrollViewInsets = false
+        pagerNode.allowsAutomaticInsetsAdjustment = false
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -178,6 +177,10 @@ class SearchPageController: ASViewController<ASDisplayNode>, ASPagerDataSource, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // TODO: Issue where size of node shrinks 64 pixels
+        node.frame.size.height = 736.0
+        
         headerNode.frame = CGRect(x: 0, y: 0, width: node.frame.width, height: 44)
         let pagerHeight: CGFloat = node.frame.height - headerNode.frame.height - (self.navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height
         
