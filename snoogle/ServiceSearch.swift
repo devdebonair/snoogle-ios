@@ -28,10 +28,10 @@ class ServiceSearch: Service {
     func search(type: SearchType, time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         do {
             let realm = try Realm()
-            if realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(self.term)") == nil {
+            if realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)") == nil {
                 try realm.write {
                     let result = SearchResult()
-                    result.id = "search:\(self.term)"
+                    result.id = "search:\(self.term):\(time.rawValue)"
                     result.term = self.term
                     realm.add(result)
                 }
@@ -63,7 +63,7 @@ class ServiceSearch: Service {
             }
             do {
                 let realm = try Realm()
-                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)")
                 guard let guardedResult = result else {
                     guard let completion = completion else { return }
                     return completion(false)
@@ -98,7 +98,7 @@ class ServiceSearch: Service {
             }
             do {
                 let realm = try Realm()
-                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)")
                 guard let guardedResult = result else {
                     guard let completion = completion else { return }
                     return completion(false)
@@ -133,7 +133,7 @@ class ServiceSearch: Service {
             }
             do {
                 let realm = try Realm()
-                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)")
                 guard let guardedResult = result else {
                     guard let completion = completion else { return }
                     return completion(false)
@@ -168,7 +168,7 @@ class ServiceSearch: Service {
             }
             do {
                 let realm = try Realm()
-                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)")
                 guard let guardedResult = result else {
                     guard let completion = completion else { return }
                     return completion(false)
@@ -203,7 +203,7 @@ class ServiceSearch: Service {
             }
             do {
                 let realm = try Realm()
-                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term)")
+                let result = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(term):\(time.rawValue)")
                 guard let guardedResult = result else {
                     guard let completion = completion else { return }
                     return completion(false)

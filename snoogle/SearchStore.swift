@@ -16,19 +16,21 @@ protocol SearchStoreDelegate {
 
 class SearchStore {
     var delegate: SearchStoreDelegate? = nil
-    private var term: String = ""
+    var time: SearchTimeType = .week
+    var term: String = ""
     
-    func set(term: String) {
+    func set(term: String, time: SearchTimeType = .week) {
         self.term = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        self.time = time
     }
     
     func fetchSubreddits() {
-        ServiceSearch(term: term).search(type: .subreddits) { [weak self] (success) in
+        ServiceSearch(term: term).search(type: .subreddits, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
-                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
+                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
                 } catch {
@@ -39,12 +41,12 @@ class SearchStore {
     }
     
     func fetchDiscussions() {
-        ServiceSearch(term: term).search(type: .discussions) { [weak self] (success) in
+        ServiceSearch(term: term).search(type: .discussions, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
-                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
+                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
                 } catch {
@@ -55,12 +57,12 @@ class SearchStore {
     }
     
     func fetchPhotos() {
-        ServiceSearch(term: term).search(type: .photos) { [weak self] (success) in
+        ServiceSearch(term: term).search(type: .photos, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
-                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term)")
+                    let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
                 } catch {

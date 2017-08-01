@@ -38,8 +38,8 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         super.init(node: self.pager)
         self.pager.delegate = self
         self.store.delegate = self
-        self.store.set(term: term)
-        self.title = term
+        self.store.set(term: term, time: .week)
+        self.title = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         pager.delegate = self
     }
     
@@ -90,6 +90,22 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
                 models.append(MediaViewModel(media: element))
             }
             photoController.models = [MultipleMediaViewModel(models: models)]
+            photoController.updateModels()
+        }
+    }
+    
+    func clearResults() {
+        if let allController = controllers[.all] as? SearchAllController {
+            allController.updateModels(models: [])
+        }
+        if let subredditController = controllers[.subreddits] as? SearchSubredditController {
+            subredditController.updateModels(models: [])
+        }
+        if let subredditController = controllers[.discussions] as? SearchSubredditController {
+            subredditController.updateModels(models: [])
+        }
+        if let photoController = controllers[.photos] as? SearchPhotoCollectionController {
+            photoController.models = []
             photoController.updateModels()
         }
     }
@@ -186,27 +202,63 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
 
 extension SearchPageController {
     func didTapAll() {
+        guard self.store.time != .all else { return }
         selectBarItem(time: .all)
+        self.clearResults()
+        self.store.set(term: term, time: .all)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
     
     func didTapHour() {
+        guard self.store.time != .hour else { return }
         selectBarItem(time: .hour)
+        self.clearResults()
+        self.store.set(term: term, time: .hour)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
     
     func didTapDay() {
+        guard self.store.time != .day else { return }
         selectBarItem(time: .day)
+        self.clearResults()
+        self.store.set(term: term, time: .day)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
     
     func didTapWeek() {
+        guard self.store.time != .week else { return }
         selectBarItem(time: .week)
+        self.clearResults()
+        self.store.set(term: term, time: .week)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
     
     func didTapMonth() {
+        guard self.store.time != .month else { return }
         selectBarItem(time: .month)
+        self.clearResults()
+        self.store.set(term: term, time: .month)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
     
     func didTapYear() {
+        guard self.store.time != .year else { return }
         selectBarItem(time: .year)
+        self.clearResults()
+        self.store.set(term: term, time: .year)
+        self.store.fetchPhotos()
+        self.store.fetchSubreddits()
+        self.store.fetchDiscussions()
     }
 }
 

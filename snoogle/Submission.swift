@@ -48,6 +48,7 @@ class Submission: Object, Mappable {
     dynamic var isNSFW: Bool = false
     dynamic var saved: Bool = false
     dynamic var postHint: String = ""
+    dynamic var selftextStripped: String = ""
     
     var likes = RealmOptional<Bool>()
     
@@ -78,15 +79,8 @@ class Submission: Object, Mappable {
         return "\(metaIgnoreSub) • \(subredditName)"
     }
     
-    var selftextCondensed: String {
-        let arrayOfWords = selftext.components(separatedBy: .whitespacesAndNewlines)
-        let retval = arrayOfWords.joined(separator: " ")
-        let retvalWithoutBangs = retval.replacingOccurrences(of: "#", with: "")
-        return retvalWithoutBangs
-    }
-    
     var selftextTruncated: String {
-        var descriptionShortened = selftextCondensed
+        var descriptionShortened = selftextStripped.trimmingCharacters(in: .whitespacesAndNewlines)
         let maxCharacterLimit = 250
         if descriptionShortened.characters.count > maxCharacterLimit {
             descriptionShortened = descriptionShortened[0..<maxCharacterLimit]
@@ -157,6 +151,7 @@ class Submission: Object, Mappable {
         saved                   <- map["saved"]
         postHint                <- map["post_hint"]
         created                 <- (map["created"], DateTransform())
+        selftextStripped        <- map["selftext_stripped"]
         
         if let likesData = map.JSON["likes"] as? Bool {
             likes.value = likesData
