@@ -25,7 +25,7 @@ class ServiceSearch: Service {
         super.init()
     }
     
-    func search(type: SearchType, completion: ((Bool)->Void)? = nil) {
+    func search(type: SearchType, time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         do {
             let realm = try Realm()
             if realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(self.term)") == nil {
@@ -42,21 +42,21 @@ class ServiceSearch: Service {
         }
         switch type {
         case .photos:
-            self.searchPhotos(completion: completion)
+            self.searchPhotos(time: time, completion: completion)
         case .discussions:
-            self.searchDiscussions(completion: completion)
+            self.searchDiscussions(time: time, completion: completion)
         case .videos:
-            self.searchVideos(completion: completion)
+            self.searchVideos(time: time, completion: completion)
         case .links:
-            self.searchLinks(completion: completion)
+            self.searchLinks(time: time, completion: completion)
         case .subreddits:
-            self.searchSubreddits(completion: completion)
+            self.searchSubreddits(time: time, completion: completion)
         }
     }
     
-    func searchPhotos(completion: ((Bool)->Void)? = nil) {
+    func searchPhotos(time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         let term = self.term
-        self.requestPhotos() { (json: [[String:Any]]?) in
+        self.requestSearch(type: .photos, time: time) { (json: [[String:Any]]?) in
             guard let guardedJSON = json else {
                 guard let completion = completion else { return }
                 return completion(false)
@@ -89,9 +89,9 @@ class ServiceSearch: Service {
         }
     }
     
-    func searchDiscussions(completion: ((Bool)->Void)? = nil) {
+    func searchDiscussions(time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         let term = self.term
-        self.requestDiscussions() { (json: [[String:Any]]?) in
+        self.requestSearch(type: .discussions, time: time) { (json: [[String:Any]]?) in
             guard let guardedJSON = json else {
                 guard let completion = completion else { return }
                 return completion(false)
@@ -124,9 +124,9 @@ class ServiceSearch: Service {
         }
     }
     
-    func searchVideos(completion: ((Bool)->Void)? = nil) {
+    func searchVideos(time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         let term = self.term
-        self.requestVideos() { (json: [[String:Any]]?) in
+        self.requestSearch(type: .videos, time: time) { (json: [[String:Any]]?) in
             guard let guardedJSON = json else {
                 guard let completion = completion else { return }
                 return completion(false)
@@ -159,9 +159,9 @@ class ServiceSearch: Service {
         }
     }
     
-    func searchLinks(completion: ((Bool)->Void)? = nil) {
+    func searchLinks(time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         let term = self.term
-        self.requestLinks() { (json: [[String:Any]]?) in
+        self.requestSearch(type: .links, time: time) { (json: [[String:Any]]?) in
             guard let guardedJSON = json else {
                 guard let completion = completion else { return }
                 return completion(false)
@@ -194,9 +194,9 @@ class ServiceSearch: Service {
         }
     }
     
-    func searchSubreddits(completion: ((Bool)->Void)? = nil) {
+    func searchSubreddits(time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
         let term = self.term
-        self.requestSubreddits() { (json: [[String:Any]]?) in
+        self.requestSearch(type: .subreddits, time: time) { (json: [[String:Any]]?) in
             guard let guardedJSON = json else {
                 guard let completion = completion else { return }
                 return completion(false)
@@ -228,90 +228,28 @@ class ServiceSearch: Service {
             return completion(true)
         }
     }
-
-    func requestPhotos(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/photos", relativeTo: base)!
-        Network()
-            .get()
-            .url(url)
-            .parse(type: .json)
-            .query(key: "term", item: term)
-            .success() { (data, response) in
-                return completion(data as? [[String:Any]])
-            }
-            .failure() { _ in
-                return completion(nil)
-            }
-            .error() { _ in
-                return completion(nil)
-            }
-            .sendHTTP()
-    }
     
-    func requestDiscussions(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/discussions", relativeTo: base)!
+    func requestSearch(type: SearchType, time: SearchTimeType = .week, completion: @escaping ([[String:Any]]?)->Void) {
+        var urlString = ""
+        switch type {
+        case .photos:
+            urlString = "search/photos"
+        case .videos:
+            urlString = "search/videos"
+        case .links:
+            urlString = "search/links"
+        case .discussions:
+            urlString = "search/discussions"
+        case .subreddits:
+            urlString = "search/subreddits"
+        }
+        let url = URL(string: urlString, relativeTo: base)!
         Network()
             .get()
             .url(url)
             .parse(type: .json)
             .query(key: "term", item: term)
-            .success() { (data, response) in
-                return completion(data as? [[String:Any]])
-            }
-            .failure() { _ in
-                return completion(nil)
-            }
-            .error() { _ in
-                return completion(nil)
-            }
-            .sendHTTP()
-    }
-    
-    func requestVideos(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/videos", relativeTo: base)!
-        Network()
-            .get()
-            .url(url)
-            .parse(type: .json)
-            .query(key: "term", item: term)
-            .success() { (data, response) in
-                return completion(data as? [[String:Any]])
-            }
-            .failure() { _ in
-                return completion(nil)
-            }
-            .error() { _ in
-                return completion(nil)
-            }
-            .sendHTTP()
-    }
-    
-    func requestLinks(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/links", relativeTo: base)!
-        Network()
-            .get()
-            .url(url)
-            .parse(type: .json)
-            .query(key: "term", item: term)
-            .success() { (data, response) in
-                return completion(data as? [[String:Any]])
-            }
-            .failure() { _ in
-                return completion(nil)
-            }
-            .error() { _ in
-                return completion(nil)
-            }
-            .sendHTTP()
-    }
-    
-    func requestSubreddits(completion: @escaping ([[String:Any]]?)->Void) {
-        let url = URL(string: "search/subreddits", relativeTo: base)!
-        Network()
-            .get()
-            .url(url)
-            .parse(type: .json)
-            .query(key: "term", item: term)
+            .query(key: "time", item: time.rawValue)
             .success() { (data, response) in
                 return completion(data as? [[String:Any]])
             }

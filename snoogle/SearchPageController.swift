@@ -24,15 +24,6 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         case photos = 3
     }
     
-    fileprivate enum SearchTimeType: String {
-        case all = "All"
-        case hour = "Hour"
-        case day = "Day"
-        case week = "Week"
-        case month = "Month"
-        case year = "Year"
-    }
-    
     fileprivate let pageOrder: [Pages] = [.all, .subreddits, .discussions, .photos]
     fileprivate let controllers: [Pages: UIViewController] = [
         .all: SearchAllController(),
@@ -156,7 +147,7 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         guard let items = self.toolbarItems else { return }
         for item in items {
             if let title = item.title {
-                let type = SearchTimeType(rawValue: title)
+                let type = SearchTimeType(rawValue: title.lowercased())
                 if type == time {
                     item.setTitleTextAttributes([
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
