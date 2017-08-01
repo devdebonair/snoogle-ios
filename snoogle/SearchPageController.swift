@@ -66,7 +66,7 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         }
         if let subredditController = controllers[.subreddits] as? SearchSubredditController {
             let models = result.subreddits.map({ (subreddit) -> SubredditListItemViewModel in
-                let model = SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescription, imageUrl: subreddit.urlValidImage)
+                let model = SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescriptionStripped, imageUrl: subreddit.urlValidImage)
                 model.backgroundColor = .white
                 model.titleColor = .darkText
                 model.subtitleColor = .darkText

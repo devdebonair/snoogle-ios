@@ -34,6 +34,7 @@ class Subreddit: Object, Mappable {
     dynamic var subredditType: String = "public"
     dynamic var submissionType: String = "any"
     dynamic var isNSFW: Bool = false
+    dynamic var publicDescriptionStripped: String = ""
     
     var urlIconImage: URL? {
         guard let iconImage = iconImage else { return nil }
@@ -76,28 +77,29 @@ class Subreddit: Object, Mappable {
     }
     
     func mapping(map: Map) {
-        bannerImage         <- map["banner_img"]
-        wikiEnabled         <- map["wiki_enabled"]
-        showMedia           <- map["show_media"]
-        id                  <- map["id"]
-        info                <- map["description"]
-        submitText          <- map["submit_text"]
-        displayName         <- map["display_name"]
-        headerImage         <- map["header_img"]
-        title               <- map["title"]
-        publicDescription   <- map["public_description"]
-        spoilersEnabled     <- map["spoilers_enabled"]
-        iconImage           <- map["icon_img"]
-        headerTitle         <- map["header_title"]
-        accountsActive      <- map["accounts_active"]
-        subscribers         <- map["subscribers"]
-        keyColor            <- map["key_color"]
-        name                <- map["name"]
-        quarantined         <- map["quarantine"]
-        subredditType       <- map["subreddit_type"]
-        submissionType      <- map["submission_type"]
-        isNSFW              <- map["over18"]
-        created             <- (map["created"], DateTransform())
+        bannerImage                 <- map["banner_img"]
+        wikiEnabled                 <- map["wiki_enabled"]
+        showMedia                   <- map["show_media"]
+        id                          <- map["id"]
+        info                        <- map["description"]
+        submitText                  <- map["submit_text"]
+        displayName                 <- map["display_name"]
+        headerImage                 <- map["header_img"]
+        title                       <- map["title"]
+        publicDescription           <- map["public_description"]
+        spoilersEnabled             <- map["spoilers_enabled"]
+        iconImage                   <- map["icon_img"]
+        headerTitle                 <- map["header_title"]
+        accountsActive              <- map["accounts_active"]
+        subscribers                 <- map["subscribers"]
+        keyColor                    <- map["key_color"]
+        name                        <- map["name"]
+        quarantined                 <- map["quarantine"]
+        subredditType               <- map["subreddit_type"]
+        submissionType              <- map["submission_type"]
+        isNSFW                      <- map["over18"]
+        created                     <- (map["created"], DateTransform())
+        publicDescriptionStripped   <- map["public_description_stripped"]
         
         // Fetching subreddits in multireddits do not provide id
         // First 3 characters are the type of [Thing] and the rest is the id [t5_]30cz1 -> 30cz1
@@ -108,9 +110,7 @@ class Subreddit: Object, Mappable {
 }
 
 extension Subreddit {
-    
     static func getId(from name: String) -> String {
         return name[3..<name.characters.count]
     }
-    
 }
