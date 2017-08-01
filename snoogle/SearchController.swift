@@ -18,22 +18,18 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     init() {
         searchController = UISearchController(searchResultsController: nil)
         super.init()
-        do {
-            let realm = try Realm()
-            self.previousResults = realm.objects(SearchResult.self)
-            let viewModels = self.previousResults.map({ (result) -> SearchItemViewModel in
-                let model = SearchItemViewModel(text: result.term)
-                model.delegate = self
-                return model
-            })
-            self.models = Array(viewModels)
-        } catch {
-            print(error)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        do {
+            let realm = try Realm()
+            self.previousResults = realm.objects(SearchResult.self)
+            self.models = self.filterResults(searchTerm: (searchController.searchBar.text ?? ""))
+            self.updateModels()
+        } catch {
+            print(error)
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
@@ -83,24 +79,26 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            let viewModels = self.previousResults.filter({ (result) -> Bool in
-                return result.term.lowercased().starts(with: searchText.lowercased())
-            }).map({ (result) -> SearchItemViewModel in
-                let model = SearchItemViewModel(text: result.term)
-                model.delegate = self
-                return model
-            })
-            self.models = Array(viewModels)
-        } else {
-            let viewModels = self.previousResults.map({ (result) -> SearchItemViewModel in
-                let model = SearchItemViewModel(text: result.term)
-                model.delegate = self
-                return model
-            })
-            self.models = Array(viewModels)
-        }
+        guard let searchTerm = searchController.searchBar.text else { return }
+        self.models = filterResults(searchTerm: searchTerm)
         self.updateModels()
+    }
+    
+    func filterResults(searchTerm: String) -> [SearchItemViewModel] {
+        let previousTerms = self.previousResults.map({ (result) -> String in
+            return result.term.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        })
+        var uniques = Array(Set(Array(previousTerms)))
+        if !searchTerm.isEmpty {
+            uniques = uniques.filter({ (term) -> Bool in
+                return term.starts(with: searchTerm.lowercased())
+            })
+        }
+        return uniques.map({ (term) -> SearchItemViewModel in
+            let model = SearchItemViewModel(text: term)
+            model.delegate = self
+            return model
+        })
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
