@@ -12,10 +12,17 @@ import AsyncDisplayKit
 import IGListKit
 import RealmSwift
 
+protocol SearchPageControllerDelegate {
+    func didSelectSubreddit(name: String)
+}
+
 class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate {
     let pager: NodePager
     let store = SearchStore()
     let term: String
+    
+    var delegate: SearchPageControllerDelegate? = nil
+    var randomController: NavigationController? = nil
     
     fileprivate enum Pages: Int {
         case all = 0
@@ -264,7 +271,16 @@ extension SearchPageController {
 
 extension SearchPageController: SubredditListItemViewModelDelegate, SubredditListGroupViewModelDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
-        print(subreddit.name)
+        let transition = CoverTransition(duration: 0.25, delay: 0.1)
+        transition.automaticallyManageGesture = true
+        let subredditPageController = SubredditPageCollectionController(name: subreddit.name)
+        subredditPageController.delegate = self
+        let controller = NavigationController(rootViewController: subredditPageController)
+        controller.transition = transition
+        controller.isToolbarHidden = true
+        controller.isNavigationBarHidden = true
+        self.randomController = controller
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
     func didSelectMoreSubreddits() {
         guard let index = pageOrder.index(of: .subreddits) else { return }
@@ -303,5 +319,15 @@ extension SearchPageController: NodePagerDelegate {
         let page = controllers[pageOrder[index]]
         guard let guardedPage = page else { return UIViewController() }
         return guardedPage
+    }
+}
+
+extension SearchPageController: SubredditPageCollectionControllerDelegate {
+    func didTapBrowse(name: String) {
+        guard let delegate = delegate else { return }
+        self.randomController?.dismiss(animated: true, completion: {
+            delegate.didSelectSubreddit(name: name)
+        })
+        randomController?.transition?.finish()
     }
 }

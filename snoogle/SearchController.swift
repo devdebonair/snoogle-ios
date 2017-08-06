@@ -15,6 +15,8 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     let searchController: UISearchController!
     var previousResults: Results<SearchResult>!
     
+    var delegate: SearchPageControllerDelegate? = nil
+    
     init() {
         searchController = UISearchController(searchResultsController: nil)
         super.init()
@@ -119,6 +121,7 @@ extension SearchController: SearchItemViewModelDelegate {
     func didSelectSearchItem(searchItem: SearchItemViewModel) {
         self.searchController.searchBar.resignFirstResponder()
         let controller = SearchPageController(term: searchItem.text)
+        controller.delegate = delegate
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }

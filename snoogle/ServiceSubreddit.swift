@@ -178,6 +178,32 @@ class ServiceSubreddit: Service {
             }
         }
     }
+    
+    func fetchActivity(completion: ((Bool)->Void)? = nil) {
+        requestActivity { (json: [String:Any]?) in
+            guard let json = json else {
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            do {
+                let realm = try Realm()
+                let activity = SubredditActivity(JSON: json)
+                guard let guardedActivity = activity else {
+                    guard let completion = completion else { return }
+                    return completion(false)
+                }
+                try realm.write {
+                    realm.add(guardedActivity, update: true)
+                }
+            } catch {
+                print(error)
+                guard let completion = completion else { return }
+                return completion(false)
+            }
+            guard let completion = completion else { return }
+            return completion(true)
+        }
+    }
 }
 
 // Network
@@ -291,6 +317,24 @@ extension ServiceSubreddit {
                 return completion(nil)
             }
             .error() { _ in
+                return completion(nil)
+            }
+            .sendHTTP()
+    }
+    
+    func requestActivity(completion: @escaping ([String:Any]?)->Void) {
+        let url = URL(string: "subreddit/\(name)/activity", relativeTo: base)!
+        Network()
+            .get()
+            .url(url)
+            .parse(type: .json)
+            .success() { (data, response) in
+                return completion(data as? [String:Any])
+            }
+            .failure() { _ in
+                return completion(nil)
+            }
+            .error() { (error: Error) in
                 return completion(nil)
             }
             .sendHTTP()

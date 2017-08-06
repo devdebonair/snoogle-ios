@@ -36,7 +36,7 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
     
     init(subreddits: List<Subreddit>) {
         models = subreddits.map({ (subreddit) -> SubredditListItemViewModel in
-            return SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescription, imageUrl: subreddit.urlValidImage)
+            return SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescriptionStripped, imageUrl: subreddit.urlValidImage)
         })
     }
     

@@ -99,6 +99,16 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
+    func transitionToSubreddit(name: String) {
+        self.models = []
+        UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
+        self.updateModels(completion: { (success) in
+            self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
+            self.store.setSubreddit(name: name)
+            self.store.fetchListing()
+        })
+    }
+    
     override func sectionController() -> GenericSectionController {
         let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
         return sectionController
@@ -115,6 +125,21 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+////////////////////////////////////////
+//
+//  SEARCH PAGE ACTIONS
+//
+////////////////////////////////////////
+
+extension FeedCollectionController: SearchPageControllerDelegate {
+    func didSelectSubreddit(name: String) {
+        self.store.clear()
+        self.randomController?.dismiss(animated: true, completion: {
+            self.transitionToSubreddit(name: name)
+        })
     }
 }
 
@@ -154,13 +179,7 @@ extension FeedCollectionController: SubscriptionsPagerControllerDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
         self.store.clear()
         menuController.dismiss(animated: true, completion: {
-            self.models = []
-            UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
-            self.updateModels(completion: { (success) in
-                self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
-                self.store.setSubreddit(name: subreddit.name)
-                self.store.fetchListing()
-            })
+            self.transitionToSubreddit(name: subreddit.name)
         })
         self.slideTransition.finish()
     }
@@ -355,7 +374,10 @@ extension FeedCollectionController {
 //            transition.cardHeight = 1.0
 //            transition.overlayAlpha = 1.0
 //        }
-        let controller = ASNavigationController(rootViewController: SearchController())
+        let searchController = SearchController()
+        searchController.delegate = self
+        let controller = ASNavigationController(rootViewController: searchController)
+        self.randomController = controller
 //        controller.transitioningDelegate = transition
         self.navigationController?.present(controller, animated: true)
     }
