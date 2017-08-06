@@ -18,6 +18,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     var context: ASBatchContext? = nil
     var randomController: UIViewController? = nil
+    var name: String = ""
     
     lazy var menuController: UIViewController = {
         let pageController = SubscriptionsPagerController()
@@ -26,12 +27,13 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         return controller
     }()
     
-    init() {
+    init(name: String) {
         self.slideTransition = SlideTransition(duration: 0.20)
         super.init()
         store.delegate = self
         definesPresentationContext = true
         navigationController?.delegate = transition
+        self.name = name
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,6 +82,10 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let tintColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.tintColor = tintColor
         navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        
+        self.store.setSubreddit(name: name)
+        self.store.fetchListing()
+        self.setLeftBarButton(subredditName: name)
     }
     
     func setLeftBarButton(subredditName: String) {
@@ -102,7 +108,9 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     func transitionToSubreddit(name: String) {
         self.models = []
         UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
+        self.setLeftBarButton(subredditName: "")
         self.updateModels(completion: { (success) in
+            self.setLeftBarButton(subredditName: name)
             self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
             self.store.setSubreddit(name: name)
             self.store.fetchListing()
@@ -151,7 +159,7 @@ extension FeedCollectionController: SearchPageControllerDelegate {
 
 extension FeedCollectionController: SubredditStoreDelegate {
     func didUpdateSubreddit(subreddit: Subreddit) {
-        self.setLeftBarButton(subredditName: subreddit.displayName)
+//        self.setLeftBarButton(subredditName: subreddit.displayName)
     }
     
     func didUpdatePosts(submissions: List<Submission>) {
@@ -305,7 +313,10 @@ extension FeedCollectionController: PostViewModelDelegate {
 
 extension FeedCollectionController: MenuItemSortControllerDelegate {
     func didSelectSort(sort: ListingSort) {
-        store.setSort(sort: sort)
+        self.models = []
+        self.updateModels(animated: true) { (success) in
+            self.store.setSort(sort: sort)
+        }
         guard let transition = transition as? CardTransition, let controller = randomController else { return }
         controller.dismiss(animated: true, completion: nil)
         transition.finish()

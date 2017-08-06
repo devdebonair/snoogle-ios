@@ -25,10 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-        let rootController = FeedCollectionController()
+        let rootController = FeedCollectionController(name: "pokemon")
         navigationController = NavigationController(rootViewController: rootController)
-        rootController.store.setSubreddit(name: "pokemon")
-        rootController.store.fetchListing()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
