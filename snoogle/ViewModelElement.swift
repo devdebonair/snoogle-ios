@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AsyncDisplayKit
+import IGListKit
 
 protocol ViewModelElement {
     func numberOfCells() -> Int
@@ -17,6 +18,7 @@ protocol ViewModelElement {
     func footer() -> ASCellNode?
     func headerSize() -> ASSizeRange
     func footerSize() -> ASSizeRange
+    func cellSize(at index: Int, context: IGListCollectionContext) -> ASSizeRange
     func didSelect(index: Int)
 }
 
@@ -39,5 +41,12 @@ extension ViewModelElement {
     
     func footerSize() -> ASSizeRange {
         return ASSizeRangeZero
+    }
+    
+    func cellSize(at index: Int, context: IGListCollectionContext) -> ASSizeRange {
+        let width: CGFloat = context.containerSize.width
+        let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
+        let min = CGSize(width: width, height: 0.0)
+        return ASSizeRange(min: min, max: max)
     }
 }

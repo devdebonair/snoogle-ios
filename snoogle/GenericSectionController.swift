@@ -21,10 +21,7 @@ class GenericSectionController: IGListSectionController, ASSectionController, AS
     
     func sizeRangeForItem(at index: Int) -> ASSizeRange {
         guard let context = collectionContext else { return ASSizeRangeUnconstrained }
-        let width: CGFloat = context.containerSize.width - self.inset.left - self.inset.right
-        let max = CGSize(width: width, height: CGFloat(Float.greatestFiniteMagnitude))
-        let min = CGSize(width: width, height: 0.0)
-        return ASSizeRange(min: min, max: max)
+        return model.cellSize(at: index, context: context)
     }
     
     func nodeBlockForItem(at index: Int) -> ASCellNodeBlock {
