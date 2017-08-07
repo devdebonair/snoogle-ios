@@ -9,20 +9,16 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeButtonTextLeft: ASCellNode {
+class CellNodeButtonTextLeft: CellNode {
     let textNode = ASTextNode()
     let imageNode = ASImageNode()
+    var imageSize: CGFloat = 11.0
+    var spacing: CGFloat = 15.0
     
-    override init() {
-        super.init()
-        automaticallyManagesSubnodes = true
-    }
+    var justify: ASStackLayoutJustifyContent = .start
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let spacing: CGFloat = 15.0
-        imageNode.style.preferredSize = CGSize(width: 11, height: 11)
-        let stackLayout = ASStackLayoutSpec(direction: .horizontal, spacing: spacing, justifyContent: .start, alignItems: .center, children: [imageNode, textNode])
-        let inset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
-        return ASInsetLayoutSpec(insets: inset, child: stackLayout)
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        imageNode.style.preferredSize = CGSize(width: imageSize, height: imageSize)
+        return ASStackLayoutSpec(direction: .horizontal, spacing: spacing, justifyContent: justify, alignItems: .center, children: [imageNode, textNode])
     }
 }

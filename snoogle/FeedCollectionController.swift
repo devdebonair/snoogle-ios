@@ -307,60 +307,118 @@ extension FeedCollectionController: PostViewModelDelegate {
 
 ////////////////////////////////////////
 //
-//  MENU SORT SELECTION
-//
-////////////////////////////////////////
-
-extension FeedCollectionController: MenuItemSortControllerDelegate {
-    func didSelectSort(sort: ListingSort) {
-        self.models = []
-        self.updateModels(animated: true) { (success) in
-            self.store.setSort(sort: sort)
-        }
-        guard let transition = transition as? CardTransition, let controller = randomController else { return }
-        controller.dismiss(animated: true, completion: nil)
-        transition.finish()
-        randomController = nil
-    }
-}
-
-////////////////////////////////////////
-//
 //  TAB BAR ACTIONS
 //
 ////////////////////////////////////////
 
 extension FeedCollectionController {
     func didTapSort() {
-        transition = CardTransition(duration: 0.25)
-        if let transition = transition as? CardTransition {
-            transition.automaticallyManageGesture = true
-        }
-        let controller = MenuItemSortController()
+        let transition = CardTransition(duration: 0.25)
+        transition.automaticallyManageGesture = true
+        transition.overlayAlpha = 0.9
+        transition.scaleValue = 1.0
+        
+        let controller = CollectionController()
+        controller.transition = transition
+        
+        let attributes = [
+            NSForegroundColorAttributeName: UIColor.darkText,
+            NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium)
+        ]
+        
+        let hot = NSMutableAttributedString(string: "Sort by Hot", attributes: attributes)
+        let new = NSMutableAttributedString(string: "Sort by New", attributes: attributes)
+        let rising = NSMutableAttributedString(string: "Sort by Rising", attributes: attributes)
+        let top = NSMutableAttributedString(string: "Sort by Top", attributes: attributes)
+        let cancel = NSMutableAttributedString(string: "Cancel", attributes: attributes)
+        
+        let itemHot = MenuItemViewModel(image: #imageLiteral(resourceName: "burn"), text: hot, didSelect: {
+            self.models = []
+            self.updateModels(animated: true) { (success) in
+                self.store.setSort(sort: .hot)
+            }
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        let itemNew = MenuItemViewModel(image: #imageLiteral(resourceName: "new"), text: new, didSelect: {
+            self.models = []
+            self.updateModels(animated: true) { (success) in
+                self.store.setSort(sort: .new)
+            }
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        let itemRising = MenuItemViewModel(image: #imageLiteral(resourceName: "analytics"), text: rising, didSelect: {
+            self.models = []
+            self.updateModels(animated: true) { (success) in
+                self.store.setSort(sort: .rising)
+            }
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        let itemTop = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: top, didSelect: {
+            self.models = []
+            self.updateModels(animated: true) { (success) in
+                self.store.setSort(sort: .top)
+            }
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        let itemCancel = MenuItemViewModel(image: #imageLiteral(resourceName: "close"), text: cancel, didSelect: {
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        
+        controller.models = [itemHot, itemNew, itemRising, itemTop, itemCancel]
+        
+        transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
+        
+        controller.updateModels(animated: false)
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
-        controller.delegate = self
-        self.randomController = controller
         self.navigationController?.present(controller, animated: true)
     }
     
     func didTapCompose() {
-        transition = CardTransition(duration: 0.25)
-        if let transition = transition as? CardTransition {
-            transition.automaticallyManageGesture = true
-        }
-        let controller = MenuItemComposeController()
-        controller.transitioningDelegate = transition
-        controller.collectionNode.view.bounces = false
-        self.navigationController?.present(controller, animated: true)
+        
     }
     
     func didTapSettings() {
-        transition = CardTransition(duration: 0.25)
-        if let transition = transition as? CardTransition {
-            transition.automaticallyManageGesture = true
-        }
-        let controller = MenuItemSubredditSettingsController()
+        let transition = CardTransition(duration: 0.25)
+        transition.automaticallyManageGesture = true
+        transition.overlayAlpha = 0.9
+        transition.scaleValue = 1.0
+        
+        let controller = CollectionController()
+        controller.transition = transition
+        
+        let attributes = [
+            NSForegroundColorAttributeName: UIColor.darkText,
+            NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium)
+        ]
+        
+        let rules = NSMutableAttributedString(string: "Rules", attributes: attributes)
+        let favorite = NSMutableAttributedString(string: "Favorite", attributes: attributes)
+        let multireddit = NSMutableAttributedString(string: "Add to Multireddit", attributes: attributes)
+        let resize = NSMutableAttributedString(string: "Resize Posts", attributes: attributes)
+        let subscribe = NSMutableAttributedString(string: "Subscribe to Subreddit", attributes: attributes)
+        let cancel = NSMutableAttributedString(string: "Cancel", attributes: attributes)
+        
+        let itemRules = MenuItemViewModel(image: #imageLiteral(resourceName: "rules"), text: rules, didSelect: {})
+        let itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: favorite, didSelect: {})
+        let itemMultireddit = MenuItemViewModel(image: #imageLiteral(resourceName: "multireddit"), text: multireddit, didSelect: {})
+        let itemResize = MenuItemViewModel(image: #imageLiteral(resourceName: "resize"), text: resize, didSelect: {})
+        let itemSubscribe = MenuItemViewModel(image: #imageLiteral(resourceName: "plus"), text: subscribe, didSelect: {})
+        let itemCancel = MenuItemViewModel(image: #imageLiteral(resourceName: "close"), text: cancel, didSelect: {
+            controller.dismiss(animated: true, completion: nil)
+            controller.transition?.finish()
+        })
+        
+        controller.models = [itemRules, itemFavorite, itemMultireddit, itemResize, itemSubscribe, itemCancel]
+        
+        transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
+        
+        controller.updateModels(animated: false)
         controller.transitioningDelegate = transition
         controller.collectionNode.view.bounces = false
         self.navigationController?.present(controller, animated: true)
@@ -378,18 +436,10 @@ extension FeedCollectionController {
     }
     
     func didTapSearch() {
-        transition = nil
-//        transition = CardTransition(duration: 0.25)
-//        if let transition = transition as? CardTransition {
-//            transition.automaticallyManageGesture = true
-//            transition.cardHeight = 1.0
-//            transition.overlayAlpha = 1.0
-//        }
         let searchController = SearchController()
         searchController.delegate = self
         let controller = ASNavigationController(rootViewController: searchController)
         self.randomController = controller
-//        controller.transitioningDelegate = transition
         self.navigationController?.present(controller, animated: true)
     }
     
@@ -399,3 +449,4 @@ extension FeedCollectionController {
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
 }
+
