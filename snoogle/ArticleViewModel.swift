@@ -98,7 +98,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                 string: element,
                 attributes: [
                     NSFontAttributeName: titleFont,
-                    NSForegroundColorAttributeName: UIColor.darkText,
+                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             

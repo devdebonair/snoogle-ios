@@ -247,14 +247,14 @@
 		562C1F171E148061001BA898 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		563127A71EFBDB7E00C6961B /* StatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		563127AB1EFC0AF600C6961B /* PhotoSizeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSizeType.swift; sourceTree = "<group>"; };
-		563127AE1EFCECA300C6961B /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Bold.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Bold.ttf"; sourceTree = "<group>"; };
-		563127AF1EFCECA300C6961B /* Merriweather-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-LightItalic.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-LightItalic.ttf"; sourceTree = "<group>"; };
-		563127B01EFCECA300C6961B /* Merriweather-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-BlackItalic.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-BlackItalic.ttf"; sourceTree = "<group>"; };
-		563127B11EFCECA300C6961B /* Merriweather-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-BoldItalic.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-BoldItalic.ttf"; sourceTree = "<group>"; };
-		563127B21EFCECA300C6961B /* Merriweather-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Light.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Light.ttf"; sourceTree = "<group>"; };
-		563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Italic.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Italic.ttf"; sourceTree = "<group>"; };
-		563127B41EFCECA300C6961B /* Merriweather-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Black.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Black.ttf"; sourceTree = "<group>"; };
-		563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Merriweather-Regular.ttf"; path = "../../../../Downloads/Merriweather/Merriweather-Regular.ttf"; sourceTree = "<group>"; };
+		563127AE1EFCECA300C6961B /* Merriweather-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Bold.ttf"; sourceTree = "<group>"; };
+		563127AF1EFCECA300C6961B /* Merriweather-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-LightItalic.ttf"; sourceTree = "<group>"; };
+		563127B01EFCECA300C6961B /* Merriweather-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-BlackItalic.ttf"; sourceTree = "<group>"; };
+		563127B11EFCECA300C6961B /* Merriweather-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-BoldItalic.ttf"; sourceTree = "<group>"; };
+		563127B21EFCECA300C6961B /* Merriweather-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Light.ttf"; sourceTree = "<group>"; };
+		563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Italic.ttf"; sourceTree = "<group>"; };
+		563127B41EFCECA300C6961B /* Merriweather-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Black.ttf"; sourceTree = "<group>"; };
+		563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Regular.ttf"; sourceTree = "<group>"; };
 		563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMediaAlbum.swift; sourceTree = "<group>"; };
 		563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMedia.swift; sourceTree = "<group>"; };
 		56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMeta.swift; sourceTree = "<group>"; };
@@ -611,14 +611,7 @@
 		563127AD1EFCEC4E00C6961B /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				563127B41EFCECA300C6961B /* Merriweather-Black.ttf */,
-				563127B01EFCECA300C6961B /* Merriweather-BlackItalic.ttf */,
-				563127AE1EFCECA300C6961B /* Merriweather-Bold.ttf */,
-				563127B11EFCECA300C6961B /* Merriweather-BoldItalic.ttf */,
-				563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */,
-				563127B21EFCECA300C6961B /* Merriweather-Light.ttf */,
-				563127AF1EFCECA300C6961B /* Merriweather-LightItalic.ttf */,
-				563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */,
+				569A0EB01F37BE1000787064 /* merriweather */,
 			);
 			path = fonts;
 			sourceTree = "<group>";
@@ -718,6 +711,21 @@
 				569A0EAC1F3618B600787064 /* SubredditActivityViewModel.swift */,
 			);
 			name = "subreddit page";
+			sourceTree = "<group>";
+		};
+		569A0EB01F37BE1000787064 /* merriweather */ = {
+			isa = PBXGroup;
+			children = (
+				563127B41EFCECA300C6961B /* Merriweather-Black.ttf */,
+				563127B01EFCECA300C6961B /* Merriweather-BlackItalic.ttf */,
+				563127AE1EFCECA300C6961B /* Merriweather-Bold.ttf */,
+				563127B11EFCECA300C6961B /* Merriweather-BoldItalic.ttf */,
+				563127B31EFCECA300C6961B /* Merriweather-Italic.ttf */,
+				563127B21EFCECA300C6961B /* Merriweather-Light.ttf */,
+				563127AF1EFCECA300C6961B /* Merriweather-LightItalic.ttf */,
+				563127B51EFCECA300C6961B /* Merriweather-Regular.ttf */,
+			);
+			path = merriweather;
 			sourceTree = "<group>";
 		};
 		56A5B38E1E0C597600C6A08E = {

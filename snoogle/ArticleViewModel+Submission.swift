@@ -30,7 +30,7 @@ extension ArticleViewModel {
             paragraphStyleDescription.lineSpacing = 8.0
             let attributesToAdd: [String:Any] = [
                 NSParagraphStyleAttributeName: paragraphStyleDescription,
-                NSForegroundColorAttributeName: UIColor.darkText
+                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
             ]
             let font = UIFont(name: "Merriweather-Light", size: 15)!
             let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: font)
