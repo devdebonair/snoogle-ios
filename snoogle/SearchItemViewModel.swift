@@ -46,11 +46,12 @@ class SearchItemViewModel: NSObject, ViewModelElement {
                 string: text,
                 attributes: [
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0),
-                    NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular)
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightRegular)
                 ])
             cell.imageNode.image = #imageLiteral(resourceName: "search")
             cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0))
             cell.backgroundColor = .white
+            cell.inset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
             return cell
         }
     }
