@@ -586,7 +586,6 @@
 		562C1F111E146675001BA898 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				56E8D0E71F33585400B3332B /* subreddit page */,
 				56119E8B1E87683D00A19C40 /* CollectionController.swift */,
 				56C0843A1EFF2265004128F4 /* SubredditListItemController.swift */,
 				565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */,
@@ -595,8 +594,9 @@
 				5610F9601F0A18E40097E3A2 /* feed */,
 				561EAB091F1EB62E00C55CD3 /* media */,
 				56E8D0E61F33565A00B3332B /* menu */,
-				56F596061F117A1600B2B1A5 /* subscriptions */,
 				5604758E1F23BE67009CEFAD /* search */,
+				56F596061F117A1600B2B1A5 /* subscriptions */,
+				56E8D0E71F33585400B3332B /* subreddit page */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
