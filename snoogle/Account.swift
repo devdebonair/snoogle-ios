@@ -26,9 +26,7 @@ class Account: Object, Mappable {
     dynamic var created: Date = Date()
     dynamic var commentKarma: Int = 0
     
-    var subredditRecent = List<Subreddit>()
     var subredditSubscriptions = List<Subreddit>()
-    var subredditFavorites = List<Subreddit>()
     var multireddits = List<Multireddit>()
     
     required convenience init?(map: Map) {

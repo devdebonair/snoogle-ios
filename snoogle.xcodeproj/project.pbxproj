@@ -178,6 +178,7 @@
 		56F5960E1F1724A900B2B1A5 /* CellNodeLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F5960D1F1724A900B2B1A5 /* CellNodeLink.swift */; };
 		56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F5960F1F173BBA00B2B1A5 /* PostHintType.swift */; };
 		56F596121F17BC3200B2B1A5 /* CellNodePostLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */; };
+		56F5A5341F38E4CC00D1CFA4 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F5A5331F38E4CC00D1CFA4 /* AppUser.swift */; };
 		56FBFD841F2E9B1500A777AD /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FBFD831F2E9B1500A777AD /* NavigationController.swift */; };
 		56FBFD881F2FC91400A777AD /* NodePager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FBFD871F2FC91400A777AD /* NodePager.swift */; };
 		C54C438B155E98E4DF5ED4E9 /* Pods_snoogle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */; };
@@ -357,6 +358,7 @@
 		56F5960D1F1724A900B2B1A5 /* CellNodeLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeLink.swift; sourceTree = "<group>"; };
 		56F5960F1F173BBA00B2B1A5 /* PostHintType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHintType.swift; sourceTree = "<group>"; };
 		56F596111F17BC3200B2B1A5 /* CellNodePostLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodePostLink.swift; sourceTree = "<group>"; };
+		56F5A5331F38E4CC00D1CFA4 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		56FBFD831F2E9B1500A777AD /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		56FBFD871F2FC91400A777AD /* NodePager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePager.swift; sourceTree = "<group>"; };
 		83D7A2D234DE1E812575C5BB /* Pods_snoogle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_snoogle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -483,6 +485,7 @@
 			isa = PBXGroup;
 			children = (
 				561C8C641E7C75BE00D9AEB3 /* Account.swift */,
+				56F5A5331F38E4CC00D1CFA4 /* AppUser.swift */,
 				561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */,
 				56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */,
 				561C8C681E7C763800D9AEB3 /* Comment.swift */,
@@ -996,6 +999,7 @@
 				5610F95B1F086A440097E3A2 /* CoverTransition.swift in Sources */,
 				56E32E2E1F2E35D900BB8072 /* CellNode.swift in Sources */,
 				5610F9571F0833AC0097E3A2 /* MarkdownInlineType.swift in Sources */,
+				56F5A5341F38E4CC00D1CFA4 /* AppUser.swift in Sources */,
 				563127AC1EFC0AF600C6961B /* PhotoSizeType.swift in Sources */,
 				56EE8C9A1E8A13F90043A9DF /* ServiceSubreddit.swift in Sources */,
 				560529351F27973C0046D946 /* CellNodeMediaGrid.swift in Sources */,

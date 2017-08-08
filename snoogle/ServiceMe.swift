@@ -42,7 +42,6 @@ class ServiceMe: Service {
                 guard let completion = completion else { return }
                 return completion(false)
             }
-            
             do {
                 let realm = try Realm()
                 try realm.write {

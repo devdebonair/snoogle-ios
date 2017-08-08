@@ -30,9 +30,7 @@ class SubscriptionStore {
             let account = realm.object(ofType: Account.self, forPrimaryKey: id)
             if let account = account {
                 self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
-                self.delegate?.didUpdateRecent(subreddits: account.subredditRecent)
                 self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
-                self.delegate?.didUpdateFavorites(subreddits: account.subredditFavorites)
             }
         } catch {
             print(error)
@@ -50,19 +48,11 @@ class SubscriptionStore {
                         weakSelf.tokenSubscriptions = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
                             weakSelf.delegate?.didUpdateSubscriptions(subreddits: guardedAccount.subredditSubscriptions)
                         })
-                        weakSelf.tokenRecent = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
-                            weakSelf.delegate?.didUpdateRecent(subreddits: guardedAccount.subredditRecent)
-                        })
                         weakSelf.tokenMultireddits = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
                             weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
                         })
-                        weakSelf.tokenFavorites = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
-                            weakSelf.delegate?.didUpdateFavorites(subreddits: guardedAccount.subredditFavorites)
-                        })
                         weakSelf.delegate?.didUpdateSubscriptions(subreddits: guardedAccount.subredditSubscriptions)
-                        weakSelf.delegate?.didUpdateRecent(subreddits: guardedAccount.subredditRecent)
                         weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
-                        weakSelf.delegate?.didUpdateFavorites(subreddits: guardedAccount.subredditFavorites)
                     } catch {
                         print(error)
                     }
