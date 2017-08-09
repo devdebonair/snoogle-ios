@@ -101,6 +101,7 @@
 		565AAFE71EDC08780024CB65 /* CellNodeMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */; };
 		565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */; };
 		565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEC1EDC0E870024CB65 /* TextCell.swift */; };
+		566237A81F3B34F0002D7DB7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566237A71F3B34F0002D7DB7 /* LoginViewController.swift */; };
 		566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */; };
 		566DD88C1F20FD19005049EB /* CellNodeMediaPageActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */; };
 		566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88D1F21752C005049EB /* FrameTransition.swift */; };
@@ -279,6 +280,7 @@
 		565AAFE61EDC08780024CB65 /* CellNodeMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMenuItem.swift; sourceTree = "<group>"; };
 		565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNodeViewController.swift; sourceTree = "<group>"; };
 		565AAFEC1EDC0E870024CB65 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		566237A71F3B34F0002D7DB7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPage.swift; sourceTree = "<group>"; };
 		566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPageActionBar.swift; sourceTree = "<group>"; };
 		566DD88D1F21752C005049EB /* FrameTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTransition.swift; sourceTree = "<group>"; };
@@ -600,6 +602,7 @@
 				5604758E1F23BE67009CEFAD /* search */,
 				56F596061F117A1600B2B1A5 /* subscriptions */,
 				56E8D0E71F33585400B3332B /* subreddit page */,
+				566237A71F3B34F0002D7DB7 /* LoginViewController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -1144,6 +1147,7 @@
 				5651C06B1EDEFB45001F3FE9 /* MenuItemSortController.swift in Sources */,
 				56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */,
 				561C28661F23EF5A00ACAECC /* SubredditListGroupViewModel.swift in Sources */,
+				566237A81F3B34F0002D7DB7 /* LoginViewController.swift in Sources */,
 				560529331F2684520046D946 /* DiscussionGroupViewModel.swift in Sources */,
 				562A8E3F1F29B75D00DF5041 /* SearchPhotoCollectionController.swift in Sources */,
 				56F596101F173BBA00B2B1A5 /* PostHintType.swift in Sources */,
