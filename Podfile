@@ -6,5 +6,6 @@ target 'snoogle' do
   pod 'Texture'
   pod 'RealmSwift'
   pod 'ObjectMapper+Realm'
-  pod 'Texture/IGListKit'  
+  pod 'Texture/IGListKit'
+  pod 'KeychainSwift', '~> 8.0'
 end

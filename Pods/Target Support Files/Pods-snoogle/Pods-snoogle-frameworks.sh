@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/IGListKit/IGListKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KeychainSwift/KeychainSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ObjectMapper/ObjectMapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ObjectMapper+Realm/ObjectMapper_Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PINCache/PINCache.framework"
@@ -96,6 +97,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/IGListKit/IGListKit.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/KeychainSwift/KeychainSwift.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ObjectMapper/ObjectMapper.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ObjectMapper+Realm/ObjectMapper_Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PINCache/PINCache.framework"
