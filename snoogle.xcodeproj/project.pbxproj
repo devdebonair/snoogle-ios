@@ -102,6 +102,8 @@
 		565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */; };
 		565AAFED1EDC0E870024CB65 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565AAFEC1EDC0E870024CB65 /* TextCell.swift */; };
 		566237A81F3B34F0002D7DB7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566237A71F3B34F0002D7DB7 /* LoginViewController.swift */; };
+		566237AA1F3C8C80002D7DB7 /* ServiceRedditAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566237A91F3C8C80002D7DB7 /* ServiceRedditAuth.swift */; };
+		566237AC1F3CABA3002D7DB7 /* ServiceReddit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566237AB1F3CABA3002D7DB7 /* ServiceReddit.swift */; };
 		566DD88A1F20D7A9005049EB /* CellNodeMediaPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */; };
 		566DD88C1F20FD19005049EB /* CellNodeMediaPageActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */; };
 		566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566DD88D1F21752C005049EB /* FrameTransition.swift */; };
@@ -281,6 +283,8 @@
 		565AAFEA1EDC0D760024CB65 /* TextNodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNodeViewController.swift; sourceTree = "<group>"; };
 		565AAFEC1EDC0E870024CB65 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		566237A71F3B34F0002D7DB7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		566237A91F3C8C80002D7DB7 /* ServiceRedditAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRedditAuth.swift; sourceTree = "<group>"; };
+		566237AB1F3CABA3002D7DB7 /* ServiceReddit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceReddit.swift; sourceTree = "<group>"; };
 		566DD8891F20D7A9005049EB /* CellNodeMediaPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPage.swift; sourceTree = "<group>"; };
 		566DD88B1F20FD19005049EB /* CellNodeMediaPageActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMediaPageActionBar.swift; sourceTree = "<group>"; };
 		566DD88D1F21752C005049EB /* FrameTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameTransition.swift; sourceTree = "<group>"; };
@@ -849,6 +853,8 @@
 				56EE8C971E8A13BE0043A9DF /* ServiceSubmission.swift */,
 				56EE8C991E8A13F90043A9DF /* ServiceSubreddit.swift */,
 				56EE8C9F1E8A147A0043A9DF /* ServiceUser.swift */,
+				566237A91F3C8C80002D7DB7 /* ServiceRedditAuth.swift */,
+				566237AB1F3CABA3002D7DB7 /* ServiceReddit.swift */,
 			);
 			name = services;
 			sourceTree = "<group>";
@@ -1066,6 +1072,7 @@
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
 				56C084391EFF1FD1004128F4 /* SubredditListItemViewModel.swift in Sources */,
 				56ABC6291EF8374100DC3B46 /* MarkdownCode.swift in Sources */,
+				566237AC1F3CABA3002D7DB7 /* ServiceReddit.swift in Sources */,
 				56FBFD841F2E9B1500A777AD /* NavigationController.swift in Sources */,
 				565113141E89E1DA00DC9D69 /* VoteType.swift in Sources */,
 				5651C0771EDFAAD3001F3FE9 /* MenuItemSubredditSettingsController.swift in Sources */,
@@ -1107,6 +1114,7 @@
 				56126EC01E1D9DBD0063B6ED /* ViewModelElement.swift in Sources */,
 				568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */,
 				5610F9551F0833770097E3A2 /* MarkdownBuilder.swift in Sources */,
+				566237AA1F3C8C80002D7DB7 /* ServiceRedditAuth.swift in Sources */,
 				56E32E281F2BA3AF00BB8072 /* CellNodeButtonTextLeft.swift in Sources */,
 				5651C0651EDC7A28001F3FE9 /* MenuItemCollectionController.swift in Sources */,
 				56119E901E8768C400A19C40 /* NSObject+IGListDiffable.swift in Sources */,

@@ -18,7 +18,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     var context: ASBatchContext? = nil
     var randomController: UIViewController? = nil
-    var name: String = ""
+    var name: String? = nil
     
     lazy var menuController: UIViewController = {
         let pageController = SubscriptionsPagerController()
@@ -27,7 +27,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         return controller
     }()
     
-    init(name: String) {
+    init(name: String? = nil) {
         self.slideTransition = SlideTransition(duration: 0.20)
         super.init()
         store.delegate = self
@@ -83,9 +83,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.toolbar.tintColor = tintColor
         navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         
-        self.store.setSubreddit(name: name)
-        self.store.fetchListing()
-        self.setLeftBarButton(subredditName: name)
+        if let name = self.name {
+            self.store.setSubreddit(name: name)
+            self.store.fetchListing()
+            self.setLeftBarButton(subredditName: name)
+        }
     }
     
     func setLeftBarButton(subredditName: String) {
@@ -107,6 +109,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     func transitionToSubreddit(name: String) {
         self.models = []
+        self.name = name
         UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
         self.setLeftBarButton(subredditName: "")
         self.updateModels(completion: { (success) in

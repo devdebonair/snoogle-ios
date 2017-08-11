@@ -9,6 +9,8 @@
 import Foundation
 import AsyncDisplayKit
 import SafariServices
+import KeychainSwift
+import RealmSwift
 
 class LoginViewController: ASViewController<ASDisplayNode> {
     let button = ASButtonNode()
@@ -44,7 +46,7 @@ class LoginViewController: ASViewController<ASDisplayNode> {
     }
     
     func didTapButton() {
-        let url = URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=TrXPd_2qf8vU4w&response_type=code&state=_&redirect_uri=snoogle%3A%2F%2Freddit%2Fauth&duration=permanent&scope=creddits%20modcontributors%20modmail%20modconfig%20subscribe%20structuredstyles%20vote%20wikiedit%20mysubreddits%20submit%20modlog%20modposts%20modflair%20save%20modothers%20read%20privatemessages%20report%20identity%20livemanage%20account%20modtraffic%20wikiread%20edit%20modwiki%20modself%20history%20flair")
+        let url = URL(string: "https://www.reddit.com/api/v1/authorize.compact?client_id=82Lt0biR5aH4ng&response_type=code&state=_&redirect_uri=snoogle%3A%2F%2Freddit%2Fauth&duration=permanent&scope=creddits%20modcontributors%20modmail%20modconfig%20subscribe%20structuredstyles%20vote%20wikiedit%20mysubreddits%20submit%20modlog%20modposts%20modflair%20save%20modothers%20read%20privatemessages%20report%20identity%20livemanage%20account%20modtraffic%20wikiread%20edit%20modwiki%20modself%20history%20flair")
         guard let guardedUrl = url else { return }
         let controller = SFSafariViewController(url: guardedUrl)
         self.safariController = controller
@@ -53,9 +55,26 @@ class LoginViewController: ASViewController<ASDisplayNode> {
     
     func didReceiveAuthToken(notification: Notification) {
         guard let code = notification.object as? String else { return }
-        print(code)
         self.safariController?.dismiss(animated: true, completion: nil)
         self.safariController = nil
+        ServiceRedditAuth().fetchTokens(code: code) { [weak self] (name) in
+            guard let weakSelf = self, let name = name else { return }
+            let nameStripped = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            ServiceMe(user: nameStripped).fetch(completion: { (success) in
+                if success {
+                    do {
+                        try AppUser.addAccount(name: name, isActive: true)
+                        DispatchQueue.main.async {
+                            weakSelf.dismiss(animated: true, completion: nil)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    print("an error occured")
+                }
+            })
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

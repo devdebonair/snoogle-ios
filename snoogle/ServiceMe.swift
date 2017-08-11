@@ -10,9 +10,7 @@ import Foundation
 import RealmSwift
 import ObjectMapper
 
-class ServiceMe: Service {
-    
-    override init() {}
+class ServiceMe: ServiceReddit {
     
     func fetch(completion: ((Bool)->Void)? = nil) {
         requestFetch { (json: [String : Any]?) in
@@ -174,7 +172,8 @@ class ServiceMe: Service {
 extension ServiceMe {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)

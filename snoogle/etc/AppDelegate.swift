@@ -18,19 +18,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
-//        do {
-//            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
-//            print("file deleted")
-//        } catch let error {
-//            print(error)
-//        }
-        
-        let rootController = FeedCollectionController(name: "pokemon")
+        do {
+            try FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+            print("file deleted")
+        } catch let error {
+            print(error)
+        }
+        let rootController = FeedCollectionController()
         navigationController = NavigationController(rootViewController: rootController)
-
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = navigationController
+        
+        do {
+            let realm = try Realm()
+            let app = realm.objects(AppUser.self).first
+            if let app = app {
+                if app.accounts.isEmpty {
+                    window?.rootViewController?.present(LoginViewController(), animated: false, completion: nil)
+//                    navigationController.present(LoginViewController(), animated: false, completion: nil)
+                }
+                if !app.accounts.isEmpty, app.activeAccount == nil {
+                    try realm.write {
+                        app.activeAccount = app.accounts.first
+                    }
+                }
+            } else {
+                let newApp = AppUser()
+                try realm.write {
+                    realm.add(newApp)
+                }
+                window?.rootViewController?.present(LoginViewController(), animated: false, completion: nil)
+//                navigationController.present(LoginViewController(), animated: false, completion: nil)
+            }
+        } catch {
+            print(error)
+        }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)

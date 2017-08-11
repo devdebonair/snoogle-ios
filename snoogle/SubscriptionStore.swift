@@ -27,37 +27,21 @@ class SubscriptionStore {
     func setAccount(id: String) {
         do {
             let realm = try Realm()
-            let account = realm.object(ofType: Account.self, forPrimaryKey: id)
-            if let account = account {
+            guard let account = AppUser.getActiveAccount(realm: realm) else { return }
+            self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
+            self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
+            self.tokenSubscriptions = account.subredditSubscriptions.addNotificationBlock({ (_) in
                 self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
+            })
+            self.tokenMultireddits = account.subredditSubscriptions.addNotificationBlock({ (_) in
                 self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
-            }
+            })
+            self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
+            self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
+
+            ServiceMe(user: account.name).fetch()
         } catch {
             print(error)
-        }
-        
-        DispatchQueue.global(qos: .background).async {
-            ServiceMe().fetch { [weak self](success) in
-                guard let weakSelf = self else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let realm = try Realm()
-                        realm.refresh()
-                        let account = realm.object(ofType: Account.self, forPrimaryKey: id)
-                        guard let guardedAccount = account else { return }
-                        weakSelf.tokenSubscriptions = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
-                            weakSelf.delegate?.didUpdateSubscriptions(subreddits: guardedAccount.subredditSubscriptions)
-                        })
-                        weakSelf.tokenMultireddits = guardedAccount.subredditSubscriptions.addNotificationBlock({ (_) in
-                            weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
-                        })
-                        weakSelf.delegate?.didUpdateSubscriptions(subreddits: guardedAccount.subredditSubscriptions)
-                        weakSelf.delegate?.didUpdateMultireddits(multireddits: guardedAccount.multireddits)
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
         }
     }
 }
