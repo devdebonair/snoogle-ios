@@ -159,7 +159,7 @@ class ServiceSubreddit: ServiceReddit {
         requestSubmitText(title: title, text: text) { (json: [String : Any]?) in
             if let json = json, let name = json["name"] as? String {
                 let id = name[3..<name.characters.count-1]
-                ServiceSubmission(id: id).fetch()
+                ServiceSubmission(id: id, user: self.user).fetch()
                 if let completion = completion { return completion(true) }
             } else {
                 if let completion = completion { return completion(false) }
@@ -171,7 +171,7 @@ class ServiceSubreddit: ServiceReddit {
         requestSubmitLink(title: title, link: link) { (json: [String : Any]?) in
             if let json = json, let name = json["name"] as? String {
                 let id = name[3..<name.characters.count-1]
-                ServiceSubmission(id: id).fetch()
+                ServiceSubmission(id: id, user: self.user).fetch()
                 if let completion = completion { return completion(true) }
             } else {
                 if let completion = completion { return completion(false) }

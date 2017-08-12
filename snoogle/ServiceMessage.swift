@@ -9,15 +9,12 @@
 import Foundation
 import RealmSwift
 
-class ServiceMessage: Service {
+class ServiceMessage: ServiceReddit {
     let id: String
     
-    override init() {
-        self.id = ""
-    }
-    
-    init(id: String, completion: ((Bool)->Void)? = nil) {
+    init(id: String, user: String) {
         self.id = id
+        super.init(user: user)
     }
     
     func fetch(completion: ((Bool)->Void)? = nil) {
@@ -64,7 +61,8 @@ class ServiceMessage: Service {
 extension ServiceMessage {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "message/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -82,7 +80,8 @@ extension ServiceMessage {
     
     func requestCompose(to: String, subject: String, text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "message", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -104,7 +103,8 @@ extension ServiceMessage {
     
     func requestReply(text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "message/\(id)/reply", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -124,7 +124,8 @@ extension ServiceMessage {
     
     func requestDelete(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "message/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .delete()
             .url(url)
             .parse(type: .json)

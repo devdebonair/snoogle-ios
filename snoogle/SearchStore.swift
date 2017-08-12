@@ -18,6 +18,22 @@ class SearchStore {
     var delegate: SearchStoreDelegate? = nil
     var time: SearchTimeType = .week
     var term: String = ""
+    private var user: String? = nil
+    private var tokenApp: RLMNotificationToken? = nil
+    
+    init() {
+        do {
+            let realm = try Realm()
+            let apps = realm.objects(AppUser.self)
+            self.tokenApp = apps.addNotificationBlock({ (_) in
+                self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            })
+            guard let app = apps.first else { return }
+            self.user = app.activeAccount?.name
+        } catch {
+            print(error)
+        }
+    }
     
     func set(term: String, time: SearchTimeType = .week) {
         self.term = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -25,7 +41,8 @@ class SearchStore {
     }
     
     func fetchSubreddits() {
-        ServiceSearch(term: term).search(type: .subreddits, time: time) { [weak self] (success) in
+        guard let user = user else { return }
+        ServiceSearch(term: term, user: user).search(type: .subreddits, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {
@@ -41,7 +58,9 @@ class SearchStore {
     }
     
     func fetchDiscussions() {
-        ServiceSearch(term: term).search(type: .discussions, time: time) { [weak self] (success) in
+        guard let user = user else { return }
+        
+        ServiceSearch(term: term, user: user).search(type: .discussions, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {
@@ -57,7 +76,9 @@ class SearchStore {
     }
     
     func fetchPhotos() {
-        ServiceSearch(term: term).search(type: .photos, time: time) { [weak self] (success) in
+        guard let user = user else { return }
+        
+        ServiceSearch(term: term, user: user).search(type: .photos, time: time) { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {

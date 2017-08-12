@@ -10,12 +10,13 @@ import Foundation
 import RealmSwift
 import ObjectMapper_Realm
 
-class ServiceSubmission: Service {
+class ServiceSubmission: ServiceReddit {
     
     var id = ""
     
-    init(id: String) {
+    init(id: String, user: String) {
         self.id = id
+        super.init(user: user)
     }
     
     func fetch(completion: ((Bool)->Void)? = nil) {
@@ -168,7 +169,8 @@ class ServiceSubmission: Service {
 extension ServiceSubmission {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -186,7 +188,8 @@ extension ServiceSubmission {
     
     func requestGetComments(sort: ListingSort = .hot, completion: @escaping ([[String:Any]]?)->Void) {
         let url = URL(string: "submissions/\(id)/comments/\(sort.rawValue)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -204,7 +207,8 @@ extension ServiceSubmission {
     
     func requestUpvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/upvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -221,7 +225,8 @@ extension ServiceSubmission {
     
     func requestDownvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/downvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -238,7 +243,8 @@ extension ServiceSubmission {
     
     func requestSave(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/save", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -255,7 +261,8 @@ extension ServiceSubmission {
     
     func requestUnvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/unvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -272,7 +279,8 @@ extension ServiceSubmission {
     
     func requestUnsave(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/unsave", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -289,7 +297,8 @@ extension ServiceSubmission {
     
     func requestHide(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/hide", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -306,7 +315,8 @@ extension ServiceSubmission {
     
     func requestUnhide(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/unhide", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -324,7 +334,8 @@ extension ServiceSubmission {
     // check why contenttype needs to be specified.
     func requestReply(text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)/reply", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -344,7 +355,8 @@ extension ServiceSubmission {
     // check why contenttype needs to be specified.
     func requestEdit(text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .put()
             .url(url)
             .contentType(type: .json)
@@ -364,7 +376,8 @@ extension ServiceSubmission {
     
     func requestDelete(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "submissions/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .delete()
             .url(url)
             .success() { (data, response) in

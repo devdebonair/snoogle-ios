@@ -20,10 +20,10 @@ class SubredditStore {
     var delegate: SubredditStoreDelegate? = nil
     var tokenSubreddit: RLMNotificationToken? = nil
     var tokenListing: RLMNotificationToken? = nil
+    private var tokenApp: RLMNotificationToken? = nil
     private var sort: ListingSort = .hot
     private var name: String = ""
     private var user: String? = nil
-    private var tokenApp: RLMNotificationToken? = nil
     
     init() {
         do {
@@ -119,9 +119,11 @@ class SubredditStore {
     }
     
     func upvote(id: String) {
+        guard let user = user else { return }
+        
         DispatchQueue.global(qos: .background).async {
             do {
-                ServiceSubmission(id: id).upvote()
+                ServiceSubmission(id: id, user: user).upvote()
                 let realm = try Realm()
                 let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
                 if let submission = submission {
@@ -138,9 +140,11 @@ class SubredditStore {
     }
     
     func downvote(id: String) {
+        guard let user = user else { return }
+        
         DispatchQueue.global(qos: .background).async {
             do {
-                ServiceSubmission(id: id).downvote()
+                ServiceSubmission(id: id, user: user).downvote()
                 let realm = try Realm()
                 let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
                 if let submission = submission {
@@ -157,9 +161,11 @@ class SubredditStore {
     }
     
     func save(id: String) {
+        guard let user = user else { return }
+        
         DispatchQueue.global(qos: .background).async {
             do {
-                ServiceSubmission(id: id).save()
+                ServiceSubmission(id: id, user: user).save()
                 let realm = try Realm()
                 let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
                 if let submission = submission {
@@ -174,9 +180,10 @@ class SubredditStore {
     }
     
     func unsave(id: String) {
+        guard let user = user else { return }
         DispatchQueue.global(qos: .background).async {
             do {
-                ServiceSubmission(id: id).unsave()
+                ServiceSubmission(id: id, user: user).unsave()
                 let realm = try Realm()
                 let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
                 if let submission = submission {
@@ -191,8 +198,9 @@ class SubredditStore {
     }
     
     func unvote(id: String) {
+        guard let user = user else { return }
         DispatchQueue.global(qos: .background).async {
-            ServiceSubmission(id: id).unvote()
+            ServiceSubmission(id: id, user: user).unvote()
             do {
                 let realm = try Realm()
                 let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)

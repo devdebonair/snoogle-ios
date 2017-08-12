@@ -9,11 +9,12 @@
 import Foundation
 import RealmSwift
 
-class ServiceUser: Service {
+class ServiceUser: ServiceReddit {
     let name: String
     
-    init(name: String) {
+    init(name: String, user: String) {
         self.name = name
+        super.init(user: user)
     }
     
     func fetch(completion: ((Bool)->Void)? = nil) {
@@ -87,7 +88,8 @@ class ServiceUser: Service {
 extension ServiceUser {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -108,7 +110,8 @@ extension ServiceUser {
     
     func requestSubmissions(sort: ListingSort = .hot, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)/submissions/\(sort.rawValue)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -126,7 +129,8 @@ extension ServiceUser {
     
     func requestComments(sort: ListingSort = .hot, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)/comments/\(sort)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -144,7 +148,8 @@ extension ServiceUser {
     
     func requestAdd(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)/friend", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .parse(type: .json)
@@ -162,7 +167,8 @@ extension ServiceUser {
     
     func requestRemove(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)/unfriend", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .parse(type: .json)
@@ -180,7 +186,8 @@ extension ServiceUser {
     
     func requestTrophies(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "users/\(name)/trophies", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)

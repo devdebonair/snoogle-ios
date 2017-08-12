@@ -191,7 +191,8 @@ extension ServiceMe {
     
     func requestMultireddits(completion: @escaping ([[String:Any]]?)->Void) {
         let url = URL(string: "me/multireddits", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -209,7 +210,8 @@ extension ServiceMe {
     
     func requestSubscriptions(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/subscriptions", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -227,7 +229,8 @@ extension ServiceMe {
     
     func requestTrophies(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/trophies", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -245,7 +248,8 @@ extension ServiceMe {
     
     func requestFriends(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/friends", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -263,7 +267,8 @@ extension ServiceMe {
     
     func requestBlocked(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/blocked", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -281,7 +286,8 @@ extension ServiceMe {
     
     func requestInbox(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -299,7 +305,8 @@ extension ServiceMe {
     
     func requestUnread(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/unread", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -317,7 +324,8 @@ extension ServiceMe {
     
     func requestPrivateMessages(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/private", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -335,7 +343,8 @@ extension ServiceMe {
     
     func requestCommentReplies(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/replies/comments", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -353,7 +362,8 @@ extension ServiceMe {
     
     func requestSubmissionReplies(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/replies/submissions", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -371,7 +381,8 @@ extension ServiceMe {
     
     func requestMentions(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/mentions", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -389,7 +400,8 @@ extension ServiceMe {
     
     func requestSent(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "me/inbox/sent", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)

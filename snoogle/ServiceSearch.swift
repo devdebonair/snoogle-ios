@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class ServiceSearch: Service {
+class ServiceSearch: ServiceReddit {
     enum SearchType: Int {
         case photos = 0
         case discussions = 1
@@ -20,9 +20,9 @@ class ServiceSearch: Service {
     
     let term: String
     
-    init(term: String) {
+    init(term: String, user: String) {
         self.term = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        super.init()
+        super.init(user: user)
     }
     
     func search(type: SearchType, time: SearchTimeType = .week, completion: ((Bool)->Void)? = nil) {
@@ -244,7 +244,8 @@ class ServiceSearch: Service {
             urlString = "search/subreddits"
         }
         let url = URL(string: urlString, relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)

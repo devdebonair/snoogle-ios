@@ -8,16 +8,17 @@
 
 import Foundation
 
-class ServiceMultireddit: Service {
+class ServiceMultireddit: ServiceReddit {
     
     var name: String
     
-    override init() {
-        self.name = ""
+    convenience override init(user: String) {
+        self.init(name: "", user: user)
     }
     
-    init(name: String, completion: ((Bool)->Void)? = nil) {
+    init(name: String, user: String) {
         self.name = name
+        super.init(user: user)
     }
     
     func add(subreddit: String, completion: ((Bool)->Void)? = nil) {
@@ -78,7 +79,8 @@ class ServiceMultireddit: Service {
 extension ServiceMultireddit {
     func requestAdd(subreddit: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits/\(name)/subreddits", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -98,7 +100,8 @@ extension ServiceMultireddit {
     
     func requestRemove(subreddit: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits/\(name)/subreddits", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .delete()
             .url(url)
             .contentType(type: .json)
@@ -118,7 +121,8 @@ extension ServiceMultireddit {
     
     func requestCopy(source: String, from username: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits/copy", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -140,7 +144,8 @@ extension ServiceMultireddit {
     
     func requestEdit(changes: MultiredditEdits, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits/\(name)", relativeTo: base)!
-        let network = Network().put().url(url).contentType(type: .json).parse(type: .json)
+        guard var network = self.oauthRequest() else { return completion(nil) }
+        network = network.put().url(url).contentType(type: .json).parse(type: .json)
         if let title = changes.title {
             _ = network.body(add: "title", value: title)
         }
@@ -178,7 +183,8 @@ extension ServiceMultireddit {
     
     func requestDelete(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits/\(name)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .delete()
             .url(url)
             .success() { (data, response) in
@@ -195,7 +201,8 @@ extension ServiceMultireddit {
     
     func requestCreate(description: String, subreddits: [String], completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "multireddits", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)

@@ -9,12 +9,13 @@
 import Foundation
 import RealmSwift
 
-class ServiceComment: Service {
+class ServiceComment: ServiceReddit {
     
     var id: String
     
-    init(id: String) {
+    init(id: String, user: String) {
         self.id = id
+        super.init(user: user)
     }
     
     func fetch(completion: ((Bool)->Void)? = nil) {
@@ -121,7 +122,8 @@ class ServiceComment: Service {
 extension ServiceComment {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -139,7 +141,8 @@ extension ServiceComment {
     
     func requestUpvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/upvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -156,7 +159,8 @@ extension ServiceComment {
     
     func requestDownvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/downvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -173,7 +177,8 @@ extension ServiceComment {
     
     func requestSave(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/save", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -190,7 +195,8 @@ extension ServiceComment {
     
     func requestUnvote(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/unvote", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -207,7 +213,8 @@ extension ServiceComment {
     
     func requestUnsave(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/unsave", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .success() { (data, response) in
@@ -225,7 +232,8 @@ extension ServiceComment {
     // check why contenttype needs to be specified.
     func requestReply(text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)/reply", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .contentType(type: .json)
@@ -245,7 +253,8 @@ extension ServiceComment {
     // check why contenttype needs to be specified.
     func requestEdit(text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .put()
             .url(url)
             .contentType(type: .json)
@@ -265,7 +274,8 @@ extension ServiceComment {
     
     func requestDelete(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "comments/\(id)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .delete()
             .url(url)
             .success() { (data, response) in

@@ -18,6 +18,22 @@ class CommentStore {
     var id: String = ""
     var delegate: CommentStoreDelegate? = nil
     var tokenComments: RLMNotificationToken? = nil
+    private var user: String? = nil
+    private var tokenApp: RLMNotificationToken? = nil
+    
+    init() {
+        do {
+            let realm = try Realm()
+            let apps = realm.objects(AppUser.self)
+            self.tokenApp = apps.addNotificationBlock({ (_) in
+                self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            })
+            guard let app = apps.first else { return }
+            self.user = app.activeAccount?.name
+        } catch {
+            print(error)
+        }
+    }
     
     func fetchComments(submissionId: String, sort: ListingSort = .hot) {
         self.id = submissionId
@@ -34,8 +50,10 @@ class CommentStore {
             print(error)
         }
         
+        guard let user = user else { return }
+        
         DispatchQueue.global(qos: .background).async {
-            ServiceSubmission(id: self.id).getComments(sort: sort, completion: { [weak self] (success) in
+            ServiceSubmission(id: self.id, user: user).getComments(sort: sort, completion: { [weak self] (success) in
                 guard let weakSelf = self, success else { return }
                 DispatchQueue.main.async {
                     do {

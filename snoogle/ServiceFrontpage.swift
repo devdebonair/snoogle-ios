@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ServiceFrontPage: Service {
+class ServiceFrontPage: ServiceReddit {
     func listing(sort: ListingSort = .hot, completion: ((Bool)->Void)? = nil) {
         requestListing(sort: sort) { (json: [String : Any]?) in
             // implement
@@ -19,7 +19,8 @@ class ServiceFrontPage: Service {
 extension ServiceFrontPage {
     func requestListing(sort: ListingSort = .hot, after: String? = nil, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "frontpage/\(sort.rawValue)", relativeTo: base)!
-        var network = Network()
+        guard var network = self.oauthRequest() else { return completion(nil) }
+        network = network
             .get()
             .url(url)
         
