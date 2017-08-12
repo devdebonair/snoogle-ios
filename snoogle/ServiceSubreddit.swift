@@ -10,12 +10,13 @@ import Foundation
 import Realm
 import RealmSwift
 
-class ServiceSubreddit: Service {
+class ServiceSubreddit: ServiceReddit {
     
     var name: String
     
-    init(name: String) {
+    init(name: String, user: String) {
         self.name = name
+        super.init(user: user)
     }
     
     func fetch(completion: ((Bool)->Void)? = nil) {
@@ -48,7 +49,6 @@ class ServiceSubreddit: Service {
                 guard let completion = completion else { return }
                 return completion(false)
             }
-            
             let jsonToSave: [String:Any] = [
                 "name": name,
                 "sort": sort.rawValue,
@@ -210,7 +210,8 @@ class ServiceSubreddit: Service {
 extension ServiceSubreddit {
     func requestFetch(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -228,15 +229,17 @@ extension ServiceSubreddit {
     
     func requestListing(sort: ListingSort = .hot, after: String? = nil, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/listing/\(sort.rawValue)", relativeTo: base)!
-        var network = Network()
-            .get()
-            .url(url)
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        let _ = network
+                .get()
+                .url(url)
         
         if let after = after {
-            network = network.query(key: "after", item: after)
+            let _ = network.query(key: "after", item: after)
         }
         
-        network.parse(type: .json)
+        network
+            .parse(type: .json)
             .success() { (data, response) in
                 return completion(data as? [String:Any])
             }
@@ -251,7 +254,8 @@ extension ServiceSubreddit {
     
     func requestSubscribe(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/subscribe", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -269,7 +273,8 @@ extension ServiceSubreddit {
     
     func requestUnsubscribe(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/unsubscribe", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)
@@ -287,7 +292,10 @@ extension ServiceSubreddit {
     
     func requestSubmitText(title: String, text: String, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/submit/text", relativeTo: base)!
-        Network().post().url(url)
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
+            .post()
+            .url(url)
             .body(add: "title", value: title)
             .body(add: "text", value: text)
             .success() { (data, response) in
@@ -304,7 +312,8 @@ extension ServiceSubreddit {
     
     func requestSubmitLink(title: String, link: URL, completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/submit/link", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .post()
             .url(url)
             .body(add: "title", value: title)
@@ -324,7 +333,8 @@ extension ServiceSubreddit {
     
     func requestActivity(completion: @escaping ([String:Any]?)->Void) {
         let url = URL(string: "subreddit/\(name)/activity", relativeTo: base)!
-        Network()
+        guard let network = self.oauthRequest() else { return completion(nil) }
+        network
             .get()
             .url(url)
             .parse(type: .json)

@@ -16,6 +16,15 @@ protocol SubredditPageStoreDelegate {
 
 class SubredditPageStore {
     var delegate: SubredditPageStoreDelegate? = nil
+    var user: String? = nil
+    
+    init() {
+        do {
+            self.user = try AppUser.getActiveAccount()?.name
+        } catch {
+            print(error)
+        }
+    }
 
     func fetchSubreddit(name: String) {
         DispatchQueue.main.async {
@@ -31,7 +40,8 @@ class SubredditPageStore {
     }
     
     func fetchActivity(name: String) {
-        ServiceSubreddit(name: name).fetchActivity(completion: { [weak self] (success) in
+        guard let user = user else { return }
+        ServiceSubreddit(name: name, user: user).fetchActivity(completion: { [weak self] (success) in
             DispatchQueue.main.async {
                 guard let weakSelf = self else { return }
                 do {

@@ -37,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let app = app {
                 if app.accounts.isEmpty {
                     window?.rootViewController?.present(LoginViewController(), animated: false, completion: nil)
-//                    navigationController.present(LoginViewController(), animated: false, completion: nil)
                 }
                 if !app.accounts.isEmpty, app.activeAccount == nil {
                     try realm.write {
@@ -50,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     realm.add(newApp)
                 }
                 window?.rootViewController?.present(LoginViewController(), animated: false, completion: nil)
-//                navigationController.present(LoginViewController(), animated: false, completion: nil)
             }
         } catch {
             print(error)

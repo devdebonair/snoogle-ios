@@ -22,14 +22,33 @@ class SubredditStore {
     var tokenListing: RLMNotificationToken? = nil
     private var sort: ListingSort = .hot
     private var name: String = ""
+    private var user: String? = nil
+    private var tokenApp: RLMNotificationToken? = nil
+    
+    init() {
+        do {
+            let realm = try Realm()
+            let apps = realm.objects(AppUser.self)
+            self.tokenApp = apps.addNotificationBlock({ (_) in
+                self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            })
+            guard let app = apps.first else { return }
+            self.user = app.activeAccount?.name
+        } catch {
+            print(error)
+        }
+    }
     
     func setSubreddit(name: String) {
+        guard let user = user else { return }
+        
         self.name = name
         self.sort = .hot
         self.tokenListing = nil
         self.tokenSubreddit = nil
+        
         DispatchQueue.global(qos: .background).async {
-            ServiceSubreddit(name: name).fetch(completion: { [weak self] (success) in
+            ServiceSubreddit(name: name, user: user).fetch(completion: { [weak self] (success) in
                 guard let weakSelf = self else { return }
                 DispatchQueue.main.async {
                     do {
@@ -56,16 +75,18 @@ class SubredditStore {
     }
     
     func fetchListing(refresh: Bool = false) {
+         guard let user = user else { return }
+        
         if let _ = self.tokenListing, !refresh {
             DispatchQueue.global(qos: .background).async {
-                ServiceSubreddit(name: self.name).moreListings(sort: self.sort)
+                ServiceSubreddit(name: self.name, user: user).moreListings(sort: self.sort)
             }
         } else {
             // This is ok to do on the main thread because it is the first fetch
             // This is to avoid the issue where realm is changed on background thread
             //      and we alert the controller before main thread is updated.
             DispatchQueue.main.async {
-                ServiceSubreddit(name: self.name).listing(sort: self.sort) { [weak self] (success) in
+                ServiceSubreddit(name: self.name, user: user).listing(sort: self.sort) { [weak self] (success) in
                     DispatchQueue.main.async {
                         guard let weakSelf = self else { return }
                         do {
