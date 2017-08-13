@@ -275,4 +275,13 @@ class SubredditStore {
             }
         }
     }
+    
+    func addToFavorites() {
+        do {
+            let relam = try Realm()
+            
+        } catch {
+            print(error)
+        }
+    }
 }

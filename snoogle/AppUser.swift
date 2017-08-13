@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 
 class AppUser: Object {
-    
     enum AppUserError: Error {
         case invalidUser
         case invalidAccount
@@ -18,8 +17,6 @@ class AppUser: Object {
     
     dynamic var activeAccount: Account?
     var accounts = List<Account>()
-    var subredditRecent = List<Subreddit>()
-    var subredditFavorites = List<Subreddit>()
     
     static func addAccount(name: String, isActive: Bool = false) throws {
         let realm = try Realm()
