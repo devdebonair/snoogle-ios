@@ -13,6 +13,7 @@ import RealmSwift
 protocol SubredditStoreDelegate {
     func didUpdatePosts(submissions: List<Submission>)
     func didUpdateSubreddit(subreddit: Subreddit)
+    func didSetToFrontpage()
     func didClear()
 }
 
@@ -24,6 +25,14 @@ class SubredditStore {
     private var sort: ListingSort = .hot
     private var name: String = ""
     private var user: String? = nil
+    private var source: FeedSource = .subreddit
+    
+    enum FeedSource: Int {
+        case frontpage = 0
+        case subreddit = 1
+        case all = 2
+        case popular = 3
+    }
     
     init() {
         do {
@@ -39,32 +48,41 @@ class SubredditStore {
         }
     }
     
-    func setSubreddit(name: String) {
+    func setSubreddit(name: String, source: FeedSource = .subreddit) {
         guard let user = user else { return }
         
         self.name = name
         self.sort = .hot
+        self.source = source
         self.tokenListing = nil
         self.tokenSubreddit = nil
         
-        DispatchQueue.global(qos: .background).async {
-            ServiceSubreddit(name: name, user: user).fetch(completion: { [weak self] (success) in
-                guard let weakSelf = self else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let realm = try Realm()
-                        realm.refresh()
-                        let subreddit = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-                        guard let guardedSubreddit = subreddit, let delegate = weakSelf.delegate else { return }
-                        weakSelf.tokenSubreddit = guardedSubreddit.addNotificationBlock({ (_) in
+        if source == .frontpage {
+            self.name = ""
+            guard let delegate = delegate else { return }
+            delegate.didSetToFrontpage()
+        }
+        
+        if source == .subreddit {
+            DispatchQueue.global(qos: .background).async {
+                ServiceSubreddit(name: name, user: user).fetch(completion: { [weak self] (success) in
+                    guard let weakSelf = self else { return }
+                    DispatchQueue.main.async {
+                        do {
+                            let realm = try Realm()
+                            realm.refresh()
+                            let subreddit = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
+                            guard let guardedSubreddit = subreddit, let delegate = weakSelf.delegate else { return }
+                            weakSelf.tokenSubreddit = guardedSubreddit.addNotificationBlock({ (_) in
+                                delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
+                            })
                             delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
-                        })
-                        delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
-                    } catch {
-                        print(error)
+                        } catch {
+                            print(error)
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     }
     
@@ -75,31 +93,65 @@ class SubredditStore {
     }
     
     func fetchListing(refresh: Bool = false) {
-         guard let user = user else { return }
+        guard let user = user else { return }
         
         if let _ = self.tokenListing, !refresh {
-            DispatchQueue.global(qos: .background).async {
-                ServiceSubreddit(name: self.name, user: user).moreListings(sort: self.sort)
+            
+            if source == .frontpage {
+                DispatchQueue.global(qos: .background).async {
+                    ServiceFrontpage(user: user).moreListings(sort: self.sort)
+                }
+            }
+            
+            if source == .subreddit {
+                DispatchQueue.global(qos: .background).async {
+                    ServiceSubreddit(name: self.name, user: user).moreListings(sort: self.sort)
+                }
             }
         } else {
-            // This is ok to do on the main thread because it is the first fetch
-            // This is to avoid the issue where realm is changed on background thread
-            //      and we alert the controller before main thread is updated.
-            DispatchQueue.main.async {
-                ServiceSubreddit(name: self.name, user: user).listing(sort: self.sort) { [weak self] (success) in
-                    DispatchQueue.main.async {
-                        guard let weakSelf = self else { return }
-                        do {
-                            let realm = try Realm()
-                            realm.refresh()
-                            let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
-                            guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
-                            weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+            
+            if source == .frontpage {
+                DispatchQueue.main.async {
+                    ServiceFrontpage(user: user).listing(sort: self.sort) { [weak self] (success) in
+                        DispatchQueue.main.async {
+                            guard let weakSelf = self else { return }
+                            do {
+                                let realm = try Realm()
+                                realm.refresh()
+                                let listing = realm.object(ofType: ListingFrontpage.self, forPrimaryKey: "frontpage:\(user):\(weakSelf.sort.rawValue)")
+                                guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
+                                weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                                    delegate.didUpdatePosts(submissions: guardedListing.submissions)
+                                })
                                 delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                            })
-                            delegate.didUpdatePosts(submissions: guardedListing.submissions)
-                        } catch {
-                            print(error)
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if source == .subreddit {
+                // This is ok to do on the main thread because it is the first fetch
+                // This is to avoid the issue where realm is changed on background thread
+                //      and we alert the controller before main thread is updated.
+                DispatchQueue.main.async {
+                    ServiceSubreddit(name: self.name, user: user).listing(sort: self.sort) { [weak self] (success) in
+                        DispatchQueue.main.async {
+                            guard let weakSelf = self else { return }
+                            do {
+                                let realm = try Realm()
+                                realm.refresh()
+                                let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
+                                guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
+                                weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                                    delegate.didUpdatePosts(submissions: guardedListing.submissions)
+                                })
+                                delegate.didUpdatePosts(submissions: guardedListing.submissions)
+                            } catch {
+                                print(error)
+                            }
                         }
                     }
                 }
@@ -115,6 +167,7 @@ class SubredditStore {
         self.tokenSubreddit = nil
         self.tokenListing = nil
         self.sort = .hot
+        self.source = .subreddit
         delegate.didClear()
     }
     

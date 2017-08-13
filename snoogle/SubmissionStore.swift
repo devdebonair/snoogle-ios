@@ -76,7 +76,6 @@ class SubmissionStore {
     }
     
     func fetchComments(sort: ListingSort = .hot) {
-        
         do {
             let realm = try Realm()
             let comments = realm.object(ofType: SubmissionComments.self, forPrimaryKey: "comments:\(self.id):\(sort.rawValue)")

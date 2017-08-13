@@ -107,7 +107,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
     }
     
-    func transitionToSubreddit(name: String) {
+    func transitionToSubreddit(name: String, source: SubredditStore.FeedSource = .subreddit) {
         self.models = []
         self.name = name
         UIView.transition(with: self.navigationController!.view, duration: 0.50, options: [.transitionFlipFromRight], animations: nil, completion: nil)
@@ -115,7 +115,12 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.updateModels(completion: { (success) in
             self.setLeftBarButton(subredditName: name)
             self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
-            self.store.setSubreddit(name: name)
+            if source == .subreddit {
+                self.store.setSubreddit(name: name)
+            }
+            if source == .frontpage {
+                self.store.setSubreddit(name: "", source: .frontpage)
+            }
             self.store.fetchListing()
         })
     }
@@ -177,6 +182,10 @@ extension FeedCollectionController: SubredditStoreDelegate {
         self.context = nil
     }
     
+    func didSetToFrontpage() {
+        self.setLeftBarButton(subredditName: "Frontpage")
+    }
+    
     func didClear() {}
 }
 
@@ -191,6 +200,13 @@ extension FeedCollectionController: SubscriptionsPagerControllerDelegate {
         self.store.clear()
         menuController.dismiss(animated: true, completion: {
             self.transitionToSubreddit(name: subreddit.name)
+        })
+        self.slideTransition.finish()
+    }
+    func didSelectFrontpage() {
+        self.store.clear()
+        menuController.dismiss(animated: true, completion: {
+            self.transitionToSubreddit(name: "Frontpage", source: .frontpage)
         })
         self.slideTransition.finish()
     }

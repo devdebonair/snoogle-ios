@@ -13,6 +13,7 @@ import RealmSwift
 
 protocol SubscriptionsPagerControllerDelegate {
     func didSelectSubreddit(subreddit: SubredditListItemViewModel)
+    func didSelectFrontpage()
 }
 
 class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate, SubscriptionStoreDelegate, SubredditListItemViewModelDelegate, UICollectionViewDelegate {
@@ -65,7 +66,7 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         }
     }
     
-    private func sortAndUpdate(page: Pages, subreddits: List<Subreddit>) {
+    private func mapAndSort(subreddits: List<Subreddit>) -> [SubredditListItemViewModel] {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
             let subtitle = "\(NSNumber(value: subreddit.subscribers).convertToCommaWithString() ?? "0") Subcribers"
@@ -74,19 +75,25 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
             models.append(model)
         }
         models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
-        self.controllers[page]?.updateModels(models: models)
+        return models
     }
     
     func didUpdateRecent(subreddits: List<Subreddit>) {
-        sortAndUpdate(page: .recent, subreddits: subreddits)
+        let models = mapAndSort(subreddits: subreddits)
+        self.controllers[.recent]?.updateModels(models: models)
     }
     
     func didUpdateFavorites(subreddits: List<Subreddit>) {
-        sortAndUpdate(page: .favorite, subreddits: subreddits)
+        let models = mapAndSort(subreddits: subreddits)
+        self.controllers[.favorite]?.updateModels(models: models)
     }
     
     func didUpdateSubscriptions(subreddits: List<Subreddit>) {
-        sortAndUpdate(page: .subscriptions, subreddits: subreddits)
+        var models = mapAndSort(subreddits: subreddits)
+        let frontpage = SubredditListItemViewModel(name: "Home", subtitle: "All Subscriptions Combined", imageUrl: nil)
+        frontpage.delegate = self
+        models.insert(frontpage, at: 0)
+        self.controllers[.subscriptions]?.updateModels(models: models)
     }
     
     func didUpdateMultireddits(multireddits: List<Multireddit>) {
@@ -138,6 +145,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
         guard let delegate = delegate else { return }
+        if subreddit.name == "Home" {
+            return delegate.didSelectFrontpage()
+        }
         delegate.didSelectSubreddit(subreddit: subreddit)
     }
     
