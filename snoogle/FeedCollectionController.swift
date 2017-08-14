@@ -445,13 +445,13 @@ extension FeedCollectionController {
         }
                 
         if self.store.isFavorited() {
-            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: unfavorite, didSelect: {
+            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite-delete"), text: unfavorite, didSelect: {
                 self.store.unfavorite()
                 controller.dismiss(animated: true, completion: nil)
                 controller.transition?.finish()
             })
         } else {
-            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: favorite, didSelect: {
+            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite-add"), text: favorite, didSelect: {
                 self.store.favorite()
                 controller.dismiss(animated: true, completion: nil)
                 controller.transition?.finish()
