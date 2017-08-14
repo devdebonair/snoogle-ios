@@ -12,6 +12,10 @@ import ObjectMapper
 import ObjectMapper_Realm
 
 class Account: Object, Mappable {
+    enum AccountError: Error {
+        case invalidSubreddit
+    }
+    
     dynamic var isEmployee: Bool = false
     dynamic var isSuspended: Bool = false
     dynamic var id: String = ""
@@ -53,5 +57,26 @@ class Account: Object, Mappable {
         commentKarma            <- map["comment_karma"]
         subredditSubscriptions  <- (map["hamlet_subscriptions"], ListTransform<Subreddit>())
         multireddits            <- (map["hamlet_multireddits"], ListTransform<Multireddit>())
+    }
+    
+    func isSubscribed(to subreddit: String) -> Bool {
+        let subscriptionNames = self.subredditSubscriptions.map { (subreddit) -> String in
+            return subreddit.displayName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
+        return subscriptionNames.contains(subreddit.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
+    }
+    
+    func subscribe(to subreddit: String, realm: Realm) throws {
+        let subreddit = Query<Subreddit>().key("displayName").eqlStr(subreddit).exec(realm: realm).first
+        guard let guardedSubreddit = subreddit else { throw AccountError.invalidSubreddit }
+        self.subredditSubscriptions.append(guardedSubreddit)
+    }
+    
+    func unsubscribe(from subreddit: String, realm: Realm) throws {
+        let subreddit = Query<Subreddit>().key("displayName").eqlStr(subreddit).exec(realm: realm).first
+        guard let guardedSubreddit = subreddit else { throw AccountError.invalidSubreddit }
+        if let index = self.subredditSubscriptions.index(of: guardedSubreddit) {
+            self.subredditSubscriptions.remove(objectAtIndex: index)
+        }
     }
 }

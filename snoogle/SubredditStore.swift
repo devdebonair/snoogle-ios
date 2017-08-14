@@ -286,4 +286,41 @@ class SubredditStore {
             print(error)
         }
     }
+    
+    func subscribe() {
+        guard let user = user else { return }
+        ServiceSubreddit(name: self.name, user: user).subscribe()
+        do {
+            let realm = try Realm()
+            guard let account = AppUser.getActiveAccount(realm: realm) else { return }
+            try realm.write {
+                try account.subscribe(to: self.name, realm: realm)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func unsubscribe() {
+        guard let user = user else { return }
+        ServiceSubreddit(name: self.name, user: user).unsubscribe()
+        do {
+            let realm = try Realm()
+            guard let account = AppUser.getActiveAccount(realm: realm) else { return }
+            try realm.write {
+                try account.unsubscribe(from: self.name, realm: realm)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func isSubscribed() -> Bool {
+        do {
+            guard let isSubscribed = try AppUser.getActiveAccount()?.isSubscribed(to: self.name) else { return false}
+            return isSubscribed
+        } catch {
+            return false
+        }
+    }
 }

@@ -421,13 +421,27 @@ extension FeedCollectionController {
         let multireddit = NSMutableAttributedString(string: "Add to Multireddit", attributes: attributes)
         let resize = NSMutableAttributedString(string: "Resize Posts", attributes: attributes)
         let subscribe = NSMutableAttributedString(string: "Subscribe to Subreddit", attributes: attributes)
+        let unsubscribe = NSMutableAttributedString(string: "Unsubscribe from Subreddit", attributes: attributes)
         let cancel = NSMutableAttributedString(string: "Cancel", attributes: attributes)
         
         let itemRules = MenuItemViewModel(image: #imageLiteral(resourceName: "rules"), text: rules, didSelect: {})
         let itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: favorite, didSelect: {})
         let itemMultireddit = MenuItemViewModel(image: #imageLiteral(resourceName: "multireddit"), text: multireddit, didSelect: {})
         let itemResize = MenuItemViewModel(image: #imageLiteral(resourceName: "resize"), text: resize, didSelect: {})
-        let itemSubscribe = MenuItemViewModel(image: #imageLiteral(resourceName: "plus"), text: subscribe, didSelect: {})
+        var itemSubscribe: MenuItemViewModel
+        if self.store.isSubscribed() {
+            itemSubscribe = MenuItemViewModel(image: #imageLiteral(resourceName: "minus"), text: unsubscribe, didSelect: {
+                self.store.unsubscribe()
+                controller.dismiss(animated: true, completion: nil)
+                controller.transition?.finish()
+            })
+        } else {
+            itemSubscribe = MenuItemViewModel(image: #imageLiteral(resourceName: "plus"), text: subscribe, didSelect: {
+                self.store.subscribe()
+                controller.dismiss(animated: true, completion: nil)
+                controller.transition?.finish()
+            })
+        }
         let itemCancel = MenuItemViewModel(image: #imageLiteral(resourceName: "close"), text: cancel, didSelect: {
             controller.dismiss(animated: true, completion: nil)
             controller.transition?.finish()

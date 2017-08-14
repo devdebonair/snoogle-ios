@@ -256,7 +256,7 @@ extension ServiceSubreddit {
         let url = URL(string: "subreddit/\(name)/subscribe", relativeTo: base)!
         guard let network = self.oauthRequest() else { return completion(nil) }
         network
-            .get()
+            .post()
             .url(url)
             .parse(type: .json)
             .success() { (data, response) in
@@ -275,7 +275,7 @@ extension ServiceSubreddit {
         let url = URL(string: "subreddit/\(name)/unsubscribe", relativeTo: base)!
         guard let network = self.oauthRequest() else { return completion(nil) }
         network
-            .get()
+            .post()
             .url(url)
             .parse(type: .json)
             .success() { (data, response) in
