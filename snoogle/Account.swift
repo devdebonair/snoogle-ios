@@ -79,4 +79,18 @@ class Account: Object, Mappable {
             self.subredditSubscriptions.remove(objectAtIndex: index)
         }
     }
+    
+    func getConfig() -> AccountConfig? {
+        do {
+            let realm = try Realm()
+            return self.getConfig(realm: realm)
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+    
+    func getConfig(realm: Realm) -> AccountConfig? {
+        return AccountConfig.getConfig(for: self.name, realm: realm)
+    }
 }

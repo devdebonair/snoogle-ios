@@ -71,14 +71,15 @@ class SubredditStore {
                         do {
                             let realm = try Realm()
                             realm.refresh()
-                            let subreddit = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-                            guard let guardedSubreddit = subreddit else { return }
-                            try AccountConfig.add(subreddit: weakSelf.name, to: .recent, for: user)
+                            guard let subreddit = Subreddit.getBy(name: name, realm: realm) else { return }
+                            try realm.write {
+                                try AppUser.getActiveAccount(realm: realm)?.getConfig(realm: realm)?.add(subreddit: weakSelf.name, to: .recent, realm: realm)
+                            }
                             guard let delegate = weakSelf.delegate else { return }
-                            weakSelf.tokenSubreddit = guardedSubreddit.addNotificationBlock({ (_) in
-                                delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
+                            weakSelf.tokenSubreddit = subreddit.addNotificationBlock({ (_) in
+                                delegate.didUpdateSubreddit(subreddit: subreddit)
                             })
-                            delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
+                            delegate.didUpdateSubreddit(subreddit: subreddit)
                         } catch {
                             print(error)
                         }
@@ -278,15 +279,6 @@ class SubredditStore {
         }
     }
     
-    func addToFavorites() {
-        guard let user = user else { return }
-        do {
-            try AccountConfig.add(subreddit: self.name, to: .favorites, for: user)
-        } catch {
-            print(error)
-        }
-    }
-    
     func subscribe() {
         guard let user = user else { return }
         ServiceSubreddit(name: self.name, user: user).subscribe()
@@ -315,10 +307,42 @@ class SubredditStore {
         }
     }
     
+    func favorite() {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                try AppUser.getActiveAccount(realm: realm)?.getConfig(realm: realm)?.add(subreddit: self.name, to: .favorites, realm: realm)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func unfavorite() {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                try AppUser.getActiveAccount(realm: realm)?.getConfig(realm: realm)?.remove(subreddit: self.name, from: .favorites, realm: realm)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func isSubscribed() -> Bool {
         do {
-            guard let isSubscribed = try AppUser.getActiveAccount()?.isSubscribed(to: self.name) else { return false}
+            guard let isSubscribed = try AppUser.getActiveAccount()?.isSubscribed(to: self.name) else { return false }
             return isSubscribed
+        } catch {
+            return false
+        }
+    }
+    
+    func isFavorited() -> Bool {
+        do {
+            let realm = try Realm()
+            guard let isFavorited = try AppUser.getActiveAccount(realm: realm)?.getConfig(realm: realm)?.isFavorited(subreddit: self.name, realm: realm) else { return false }
+            return isFavorited
         } catch {
             return false
         }

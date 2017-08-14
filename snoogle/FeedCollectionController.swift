@@ -418,6 +418,7 @@ extension FeedCollectionController {
         
         let rules = NSMutableAttributedString(string: "Rules", attributes: attributes)
         let favorite = NSMutableAttributedString(string: "Favorite", attributes: attributes)
+        let unfavorite = NSMutableAttributedString(string: "Unfavorite", attributes: attributes)
         let multireddit = NSMutableAttributedString(string: "Add to Multireddit", attributes: attributes)
         let resize = NSMutableAttributedString(string: "Resize Posts", attributes: attributes)
         let subscribe = NSMutableAttributedString(string: "Subscribe to Subreddit", attributes: attributes)
@@ -425,10 +426,10 @@ extension FeedCollectionController {
         let cancel = NSMutableAttributedString(string: "Cancel", attributes: attributes)
         
         let itemRules = MenuItemViewModel(image: #imageLiteral(resourceName: "rules"), text: rules, didSelect: {})
-        let itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: favorite, didSelect: {})
         let itemMultireddit = MenuItemViewModel(image: #imageLiteral(resourceName: "multireddit"), text: multireddit, didSelect: {})
         let itemResize = MenuItemViewModel(image: #imageLiteral(resourceName: "resize"), text: resize, didSelect: {})
         var itemSubscribe: MenuItemViewModel
+        var itemFavorite: MenuItemViewModel
         if self.store.isSubscribed() {
             itemSubscribe = MenuItemViewModel(image: #imageLiteral(resourceName: "minus"), text: unsubscribe, didSelect: {
                 self.store.unsubscribe()
@@ -442,6 +443,21 @@ extension FeedCollectionController {
                 controller.transition?.finish()
             })
         }
+                
+        if self.store.isFavorited() {
+            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: unfavorite, didSelect: {
+                self.store.unfavorite()
+                controller.dismiss(animated: true, completion: nil)
+                controller.transition?.finish()
+            })
+        } else {
+            itemFavorite = MenuItemViewModel(image: #imageLiteral(resourceName: "favorite"), text: favorite, didSelect: {
+                self.store.favorite()
+                controller.dismiss(animated: true, completion: nil)
+                controller.transition?.finish()
+            })
+        }
+        
         let itemCancel = MenuItemViewModel(image: #imageLiteral(resourceName: "close"), text: cancel, didSelect: {
             controller.dismiss(animated: true, completion: nil)
             controller.transition?.finish()

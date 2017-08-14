@@ -113,4 +113,8 @@ extension Subreddit {
     static func getId(from name: String) -> String {
         return name[3..<name.characters.count]
     }
+    
+    static func getBy(name: String, realm: Realm) -> Subreddit? {
+        return Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
+    }
 }

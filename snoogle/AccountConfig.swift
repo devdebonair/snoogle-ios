@@ -31,45 +31,67 @@ class AccountConfig: Object {
         return "id"
     }
     
-    static func add(subreddit: String, to: ListType, for account: String) throws {
-        let realm = try Realm()
-        try AccountConfig.add(subreddit: subreddit, to: to, for: account, realm: realm)
+    func isFavorited(subreddit: String, realm: Realm) throws -> Bool {
+        guard let sub = Subreddit.getBy(name: subreddit, realm: realm) else { throw AccountConfigError.invalidSubreddit }
+        return self.isFavorited(subreddit: sub)
+    }
+
+    func isFavorited(subreddit: Subreddit) -> Bool {
+        return self.subredditFavorites.contains(subreddit)
     }
     
-    // TODO: Check for performance optimizatin by requiring fuction to be called under write transaction
-    static func add(subreddit: String, to: ListType, for account: String, realm: Realm) throws {
-        let config = AccountConfig.getConfig(for: account, realm: realm)
-        let subreddit = Query<Subreddit>().key("displayName").eqlStr(subreddit).exec(realm: realm).first
-        guard let guardedConfig = config else { throw AccountConfigError.invalidConfig }
-        guard let guardedSubreddit = subreddit else { throw AccountConfigError.invalidSubreddit }
-        switch to {
-        case .favorites:
-            guard !guardedConfig.subredditFavorites.contains(guardedSubreddit) else { return }
-            try realm.write {
-                guardedConfig.subredditFavorites.append(guardedSubreddit)
-            }
-        case .recent:
-            try realm.write {
-                let index = guardedConfig.subredditRecent.index(of: guardedSubreddit)
-                guard let guardedIndex = index else {
-                    return guardedConfig.subredditRecent.insert(guardedSubreddit, at: 0)
-                }
-                guardedConfig.subredditRecent.remove(objectAtIndex: guardedIndex)
-                guardedConfig.subredditRecent.insert(guardedSubreddit, at: 0)
-            }
+    func add(subreddit: String, to: ListType) throws {
+        let realm = try Realm()
+        try realm.write {
+            try self.add(subreddit: subreddit, to: to, realm: realm)
         }
     }
     
-    static func getConfig(for account: String, realm: Realm) -> AccountConfig? {
-        let accountTrimmed = account.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return realm.object(ofType: AccountConfig.self, forPrimaryKey: "config:\(accountTrimmed)")
+    func add(subreddit: String, to: ListType, realm: Realm) throws {
+        guard let sub = Subreddit.getBy(name: subreddit, realm: realm) else { throw AccountConfigError.invalidSubreddit }
+        switch to {
+        case .favorites:
+            guard !self.subredditFavorites.contains(sub) else { return }
+            self.subredditFavorites.append(sub)
+        case .recent:
+            if let index = self.subredditRecent.index(of: sub) {
+                self.subredditRecent.remove(objectAtIndex: index)
+            }
+            self.subredditRecent.insert(sub, at: 0)
+        }
     }
     
-    // TODO: Should be called in write transaction
+    func remove(subreddit: String, from: ListType) throws {
+        let realm = try Realm()
+        try realm.write {
+            try self.remove(subreddit: subreddit, from: from, realm: realm)
+        }
+    }
+    
+    func remove(subreddit: String, from: ListType, realm: Realm) throws {
+        guard let sub = Subreddit.getBy(name: subreddit, realm: realm) else { throw AccountConfigError.invalidSubreddit }
+        switch from {
+        case .favorites:
+            if let index = self.subredditFavorites.index(of: sub) {
+                self.subredditFavorites.remove(objectAtIndex: index)
+            }
+        case .recent:
+            if let index = self.subredditRecent.index(of: sub) {
+                self.subredditRecent.remove(objectAtIndex: index)
+            }
+        }
+    }
+}
+
+// Statics
+extension AccountConfig {
+    static func getConfig(for account: String, realm: Realm) -> AccountConfig? {
+        return realm.object(ofType: AccountConfig.self, forPrimaryKey: "config:\(account.trimmedLowercase())")
+    }
+    
     static func create(for account: String, realm: Realm) {
-        let accountTrimmed = account.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let config = AccountConfig()
-        config.id = "config:\(accountTrimmed)"
+        config.id = "config:\(account.trimmedLowercase())"
         realm.add(config)
     }
 }
