@@ -25,6 +25,7 @@ class AppUser: Object {
         guard let guardedApp = app else { throw AppUserError.invalidUser }
         guard let guardedAccount = account else { throw AppUserError.invalidAccount }
         try realm.write {
+            AccountConfig.create(for: guardedAccount.name, realm: realm)
             guardedApp.accounts.append(guardedAccount)
             print(isActive)
             if isActive {

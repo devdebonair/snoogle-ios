@@ -72,7 +72,9 @@ class SubredditStore {
                             let realm = try Realm()
                             realm.refresh()
                             let subreddit = Query<Subreddit>().key("displayName").eqlStr(name).exec(realm: realm).first
-                            guard let guardedSubreddit = subreddit, let delegate = weakSelf.delegate else { return }
+                            guard let guardedSubreddit = subreddit else { return }
+                            try AccountConfig.add(subreddit: weakSelf.name, to: .recent, for: user)
+                            guard let delegate = weakSelf.delegate else { return }
                             weakSelf.tokenSubreddit = guardedSubreddit.addNotificationBlock({ (_) in
                                 delegate.didUpdateSubreddit(subreddit: guardedSubreddit)
                             })
@@ -277,9 +279,9 @@ class SubredditStore {
     }
     
     func addToFavorites() {
+        guard let user = user else { return }
         do {
-            let relam = try Realm()
-            
+            try AccountConfig.add(subreddit: self.name, to: .favorites, for: user)
         } catch {
             print(error)
         }

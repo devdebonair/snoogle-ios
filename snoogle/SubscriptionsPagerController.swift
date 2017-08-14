@@ -67,6 +67,12 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     }
     
     private func mapAndSort(subreddits: List<Subreddit>) -> [SubredditListItemViewModel] {
+        var models = map(subreddits: subreddits)
+        models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
+        return models
+    }
+    
+    private func map(subreddits: List<Subreddit>) -> [SubredditListItemViewModel] {
         var models = [SubredditListItemViewModel]()
         for subreddit in subreddits {
             let subtitle = "\(NSNumber(value: subreddit.subscribers).convertToCommaWithString() ?? "0") Subcribers"
@@ -74,12 +80,11 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
             model.delegate = self
             models.append(model)
         }
-        models.sort { $0.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) < $1.name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) }
         return models
     }
     
     func didUpdateRecent(subreddits: List<Subreddit>) {
-        let models = mapAndSort(subreddits: subreddits)
+        let models = map(subreddits: subreddits)
         self.controllers[.recent]?.updateModels(models: models)
     }
     

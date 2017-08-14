@@ -28,17 +28,23 @@ class SubscriptionStore {
         do {
             let realm = try Realm()
             guard let account = AppUser.getActiveAccount(realm: realm) else { return }
+            guard let config = AccountConfig.getConfig(for: account.name, realm: realm) else { return }
             self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
             self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
+            self.delegate?.didUpdateRecent(subreddits: config.subredditRecent)
+            self.delegate?.didUpdateFavorites(subreddits: config.subredditFavorites)
             self.tokenSubscriptions = account.subredditSubscriptions.addNotificationBlock({ (_) in
                 self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
             })
             self.tokenMultireddits = account.subredditSubscriptions.addNotificationBlock({ (_) in
                 self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
             })
-            self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
-            self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
-
+            self.tokenFavorites = config.subredditFavorites.addNotificationBlock({ (_) in
+                self.delegate?.didUpdateFavorites(subreddits: config.subredditFavorites)
+            })
+            self.tokenRecent = config.subredditRecent.addNotificationBlock({ (_) in
+                self.delegate?.didUpdateRecent(subreddits: config.subredditRecent)
+            })
             ServiceMe(user: account.name).fetch()
         } catch {
             print(error)
