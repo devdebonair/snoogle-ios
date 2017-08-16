@@ -40,6 +40,10 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Lora-Regular.ttf</string>
+		<string>Lora-Italic.ttf</string>
+		<string>Lora-BoldItalic.ttf</string>
+		<string>Lora-Bold.ttf</string>
 		<string>Merriweather-Black.ttf</string>
 		<string>Merriweather-BlackItalic.ttf</string>
 		<string>Merriweather-Bold.ttf</string>

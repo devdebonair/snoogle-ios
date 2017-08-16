@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeMediaAlbum: ASCellNode, ASCollectionDelegate {
+class CellNodeMediaAlbum: CellNode, ASCollectionDelegate {
     
     var media: [MediaElement]
     let slider: NodeSlide
@@ -39,7 +39,7 @@ class CellNodeMediaAlbum: ASCellNode, ASCollectionDelegate {
         delegate.didTapMedia(selectedIndex: indexPath.row)
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         if media.count == 1, let mediaItem = media.first {
             let ratio = CGFloat(mediaItem.height/mediaItem.width)
             let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: slider)
@@ -49,5 +49,4 @@ class CellNodeMediaAlbum: ASCellNode, ASCollectionDelegate {
         slider.style.preferredSize = CGSize(width: constrainedSize.max.width, height: 300.0)
         return ASInsetLayoutSpec(insets: .zero, child: slider)
     }
-
 }

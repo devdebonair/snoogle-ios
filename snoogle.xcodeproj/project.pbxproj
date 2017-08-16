@@ -144,6 +144,10 @@
 		56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */; };
 		56D907BE1F408B4B0028FAFB /* AccountConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907BD1F408B4B0028FAFB /* AccountConfig.swift */; };
 		56D907C01F42046C0028FAFB /* String+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907BF1F42046C0028FAFB /* String+Trim.swift */; };
+		56D907C61F437A160028FAFB /* Lora-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C21F437A150028FAFB /* Lora-BoldItalic.ttf */; };
+		56D907C71F437A160028FAFB /* Lora-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C31F437A150028FAFB /* Lora-Italic.ttf */; };
+		56D907C81F437A160028FAFB /* Lora-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C41F437A150028FAFB /* Lora-Bold.ttf */; };
+		56D907C91F437A160028FAFB /* Lora-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C51F437A150028FAFB /* Lora-Regular.ttf */; };
 		56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */; };
 		56DAC4921F1AEFEE00AD0D62 /* SubmissionComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */; };
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
@@ -330,6 +334,10 @@
 		56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		56D907BD1F408B4B0028FAFB /* AccountConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfig.swift; sourceTree = "<group>"; };
 		56D907BF1F42046C0028FAFB /* String+Trim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trim.swift"; sourceTree = "<group>"; };
+		56D907C21F437A150028FAFB /* Lora-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-BoldItalic.ttf"; path = "../../../../../Downloads/Lora/Lora-BoldItalic.ttf"; sourceTree = "<group>"; };
+		56D907C31F437A150028FAFB /* Lora-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Italic.ttf"; path = "../../../../../Downloads/Lora/Lora-Italic.ttf"; sourceTree = "<group>"; };
+		56D907C41F437A150028FAFB /* Lora-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Bold.ttf"; path = "../../../../../Downloads/Lora/Lora-Bold.ttf"; sourceTree = "<group>"; };
+		56D907C51F437A150028FAFB /* Lora-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Regular.ttf"; path = "../../../../../Downloads/Lora/Lora-Regular.ttf"; sourceTree = "<group>"; };
 		56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionStore.swift; sourceTree = "<group>"; };
 		56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionComments.swift; sourceTree = "<group>"; };
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
@@ -632,6 +640,7 @@
 		563127AD1EFCEC4E00C6961B /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				56D907C11F4379F00028FAFB /* lora */,
 				569A0EB01F37BE1000787064 /* merriweather */,
 			);
 			path = fonts;
@@ -818,6 +827,17 @@
 			name = "view models";
 			sourceTree = "<group>";
 		};
+		56D907C11F4379F00028FAFB /* lora */ = {
+			isa = PBXGroup;
+			children = (
+				56D907C41F437A150028FAFB /* Lora-Bold.ttf */,
+				56D907C21F437A150028FAFB /* Lora-BoldItalic.ttf */,
+				56D907C31F437A150028FAFB /* Lora-Italic.ttf */,
+				56D907C51F437A150028FAFB /* Lora-Regular.ttf */,
+			);
+			path = lora;
+			sourceTree = "<group>";
+		};
 		56DAC48E1F1AE78E00AD0D62 /* article */ = {
 			isa = PBXGroup;
 			children = (
@@ -941,9 +961,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56D907C71F437A160028FAFB /* Lora-Italic.ttf in Resources */,
 				563127B61EFCECA400C6961B /* Merriweather-Bold.ttf in Resources */,
 				563127BA1EFCECA400C6961B /* Merriweather-Light.ttf in Resources */,
+				56D907C91F437A160028FAFB /* Lora-Regular.ttf in Resources */,
 				563127B81EFCECA400C6961B /* Merriweather-BlackItalic.ttf in Resources */,
+				56D907C81F437A160028FAFB /* Lora-Bold.ttf in Resources */,
 				56A5B3A51E0C597700C6A08E /* LaunchScreen.storyboard in Resources */,
 				563127BD1EFCECA400C6961B /* Merriweather-Regular.ttf in Resources */,
 				563127B71EFCECA400C6961B /* Merriweather-LightItalic.ttf in Resources */,
@@ -951,6 +974,7 @@
 				563127BB1EFCECA400C6961B /* Merriweather-Italic.ttf in Resources */,
 				563127B91EFCECA400C6961B /* Merriweather-BoldItalic.ttf in Resources */,
 				56A5B3A21E0C597700C6A08E /* Assets.xcassets in Resources */,
+				56D907C61F437A160028FAFB /* Lora-BoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

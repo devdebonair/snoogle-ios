@@ -63,6 +63,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
     func cell(index: Int) -> ASCellNode {
         let row = index
         let element = elements[row]
+        let padding: CGFloat = 25
         
         // Meta
         if let element = element as? String, row == 0 {
@@ -75,7 +76,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                     NSParagraphStyleAttributeName: paragraphStyleMeta,
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
                 ])
-            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
+            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
             
             let range = (meta as NSString).range(of: author)
             metaAttributes.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: range)
@@ -87,12 +88,13 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
         }
         
         // Title
-        let titleFont: UIFont = UIFont.systemFont(ofSize: 20, weight: UIFontWeightHeavy)
+        let titleFont = UIFont(name: "Lora-Bold", size: 22)!
+//        let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
         if let element = element as? String, row == 1 {
-            let inset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
             
             let paragraphStyleTitle = NSMutableParagraphStyle()
-            paragraphStyleTitle.lineSpacing = 4.0
+            paragraphStyleTitle.lineSpacing = 0.0
             
             let titleAttributes = NSMutableAttributedString(
                 string: element,
@@ -110,23 +112,14 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
         // Media
         if let media = element as? [MediaElement] {
             let cell = CellNodeMediaAlbum(media: media)
-//            if media.count == 1 {
-//                cell.collectionNode.view.bounces = false
-//                cell.collectionNode.view.isScrollEnabled = false
-//                cell.collectionNode.clipsToBounds = true
-//            }
-//            
-//            if media.count > 1 {
-//                cell.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-//                cell.flowLayout.minimumLineSpacing = 15.0
-//            }
+            cell.inset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
             return cell
         }
         
         // Content
         if let element = element as? NSMutableAttributedString {
-            var inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
-            if index == numberOfCells() - 1 { inset.bottom = 30 }
+            var inset = UIEdgeInsets(top: padding, left: 16, bottom: 0, right: 16)
+            if index == numberOfCells() - 1 { inset.bottom = padding }
             let cell = CellNodeText(attributedText: element)
             cell.inset = inset
             cell.textNode.delegate = self
