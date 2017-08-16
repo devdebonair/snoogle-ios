@@ -107,7 +107,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
         let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
         let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
         
-        let titleFont = UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold)
+        let titleFont = UIFont.systemFont(ofSize: 16, weight: UIFontWeightRegular)
         let titleLineSpacing: CGFloat = 4.0
         
         let metaFont = UIFont.systemFont(ofSize: 10)
