@@ -76,7 +76,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                     NSParagraphStyleAttributeName: paragraphStyleMeta,
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
                 ])
-            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+            let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             
             let range = (meta as NSString).range(of: author)
             metaAttributes.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: range)
@@ -91,7 +91,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
         let titleFont = UIFont(name: "Lora-Bold", size: 22)!
 //        let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
         if let element = element as? String, row == 1 {
-            let inset = UIEdgeInsets(top: 20, left: 20, bottom: 0, right: 20)
+            let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             
             let paragraphStyleTitle = NSMutableParagraphStyle()
             paragraphStyleTitle.lineSpacing = 0.0

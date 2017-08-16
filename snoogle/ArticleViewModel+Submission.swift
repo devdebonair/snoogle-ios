@@ -33,7 +33,7 @@ extension ArticleViewModel {
                 NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
             ]
 //            let font = UIFont(name: "Lora-Regular", size: 16.5)!
-            let font = UIFont(name: "Merriweather-Regular", size: 15)!
+            let font = UIFont(name: "Athelas-Regular", size: 17)!
             let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: font)
             if let block = block {
                 self.newContent.append(block)
