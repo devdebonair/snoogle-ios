@@ -31,9 +31,15 @@ class CellNodeLink: ASCellNode {
     
     override func didLoad() {
         self.borderWidth = 0.6
-        let colorValue: Float = 200/255
+        let colorValue: Float = 220/255
         self.borderColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0).cgColor
-        self.cornerRadius = 5.0
+        
+        self.shadowOffset = CGSize(width: 0, height: 1.0)
+        self.backgroundColor = .white
+        self.clipsToBounds = false
+        self.shadowOpacity = 0.20
+        self.shadowRadius = 1.0
+        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
