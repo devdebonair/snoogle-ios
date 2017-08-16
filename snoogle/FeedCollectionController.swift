@@ -463,7 +463,7 @@ extension FeedCollectionController {
             controller.transition?.finish()
         })
         
-        controller.models = [itemRules, itemFavorite, itemMultireddit, itemResize, itemSubscribe, itemCancel]
+        controller.models = self.store.isSubreddit() ? [itemRules, itemFavorite, itemMultireddit, itemResize, itemSubscribe, itemCancel] : [itemResize, itemCancel]
         
         transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
         

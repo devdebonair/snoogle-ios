@@ -347,4 +347,8 @@ class SubredditStore {
             return false
         }
     }
+    
+    func isSubreddit() -> Bool {
+        return self.source == .subreddit
+    }
 }
