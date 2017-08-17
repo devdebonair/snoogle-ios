@@ -148,6 +148,8 @@
 		56D907C71F437A160028FAFB /* Lora-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C31F437A150028FAFB /* Lora-Italic.ttf */; };
 		56D907C81F437A160028FAFB /* Lora-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C41F437A150028FAFB /* Lora-Bold.ttf */; };
 		56D907C91F437A160028FAFB /* Lora-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C51F437A150028FAFB /* Lora-Regular.ttf */; };
+		56D907CD1F44B90A0028FAFB /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907CC1F44B90A0028FAFB /* TagViewModel.swift */; };
+		56D907CF1F44BB6A0028FAFB /* CellNodeTagList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907CE1F44BB6A0028FAFB /* CellNodeTagList.swift */; };
 		56DAC4901F1AE7DB00AD0D62 /* SubmissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */; };
 		56DAC4921F1AEFEE00AD0D62 /* SubmissionComments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */; };
 		56DDBCA11E81852900923CF5 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDBCA01E81852900923CF5 /* Query.swift */; };
@@ -338,6 +340,8 @@
 		56D907C31F437A150028FAFB /* Lora-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Italic.ttf"; path = "../../../../../Downloads/Lora/Lora-Italic.ttf"; sourceTree = "<group>"; };
 		56D907C41F437A150028FAFB /* Lora-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Bold.ttf"; path = "../../../../../Downloads/Lora/Lora-Bold.ttf"; sourceTree = "<group>"; };
 		56D907C51F437A150028FAFB /* Lora-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-Regular.ttf"; path = "../../../../../Downloads/Lora/Lora-Regular.ttf"; sourceTree = "<group>"; };
+		56D907CC1F44B90A0028FAFB /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
+		56D907CE1F44BB6A0028FAFB /* CellNodeTagList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeTagList.swift; sourceTree = "<group>"; };
 		56DAC48F1F1AE7DB00AD0D62 /* SubmissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionStore.swift; sourceTree = "<group>"; };
 		56DAC4911F1AEFEE00AD0D62 /* SubmissionComments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmissionComments.swift; sourceTree = "<group>"; };
 		56DDBCA01E81852900923CF5 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
@@ -596,6 +600,7 @@
 				569A0EA61F3553BF00787064 /* CellNodeBannerIconStats.swift */,
 				569A0EAA1F360AA200787064 /* CellNodeActivity.swift */,
 				569A0EAE1F36D03000787064 /* CellNodeInfoDicitonary.swift */,
+				56D907CE1F44BB6A0028FAFB /* CellNodeTagList.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -823,6 +828,7 @@
 				56E32E211F2A76C800BB8072 /* MultipleMediaViewModel.swift */,
 				56E32E291F2BA4A200BB8072 /* SearchItemViewModel.swift */,
 				56B978DF1F380EC70098875F /* MenuItemViewModel.swift */,
+				56D907CC1F44B90A0028FAFB /* TagViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -1099,6 +1105,7 @@
 				563127A81EFBDB7E00C6961B /* StatusBar.swift in Sources */,
 				56126EC21E1DAC580063B6ED /* CellNodeSeparator.swift in Sources */,
 				56EE8C941E8A135E0043A9DF /* ServiceFrontpage.swift in Sources */,
+				56D907CF1F44BB6A0028FAFB /* CellNodeTagList.swift in Sources */,
 				566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */,
 				56E8D0EB1F349D2700B3332B /* SubredditAboutViewModel.swift in Sources */,
 				56E32E2C1F2D231100BB8072 /* InsetSectionController.swift in Sources */,
@@ -1146,6 +1153,7 @@
 				561C8C6F1E7C77AD00D9AEB3 /* PrivateMessage.swift in Sources */,
 				5651C0871EE11F79001F3FE9 /* MenuSubredditListCollectionController.swift in Sources */,
 				567B02791E290D9900C32C09 /* CellNodeSortSelection.swift in Sources */,
+				56D907CD1F44B90A0028FAFB /* TagViewModel.swift in Sources */,
 				569A0EAD1F3618B600787064 /* SubredditActivityViewModel.swift in Sources */,
 				56126EC01E1D9DBD0063B6ED /* ViewModelElement.swift in Sources */,
 				568CA6761E201B26009F1289 /* PostViewModel.swift in Sources */,

@@ -17,10 +17,11 @@ class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
     let textSubtitle: ASTextNode
     let separator: ASDisplayNode
     let actionBar: CellNodePostActionBar
+    let media: MediaElement?
     
     var linkView: CellNodeLink
-    
-    let media: MediaElement?
+    var tagsView: NodeSlide? = nil
+    var tagItems = [ViewModelElement]()
     
     var delegate: CellNodePostDelegate? = nil
     
@@ -76,10 +77,20 @@ class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
+        
+        if !tagItems.isEmpty {
+            self.tagsView = NodeSlide(models: self.tagItems)
+            if let layout = self.tagsView?.collectionNode.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.sectionInset.right = 10.0
+            }
+            self.tagsView?.style.preferredSize = CGSize(width: constrainedSize.max.width, height: 20.0)
+            if let tagsView = tagsView {
+                contentLayoutElements.append(tagsView)
+            }
+        }
         
         let linkInset = UIEdgeInsets(top: 5.0, left: 0, bottom: 5.0, right: 0)
         let linkWithInset = ASInsetLayoutSpec(insets: linkInset, child: linkView)

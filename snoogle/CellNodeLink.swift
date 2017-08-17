@@ -37,7 +37,7 @@ class CellNodeLink: ASCellNode {
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
         self.clipsToBounds = false
-        self.shadowOpacity = 0.20
+        self.shadowOpacity = 0.10
         self.shadowRadius = 1.0
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     }
@@ -63,7 +63,6 @@ class CellNodeLink: ASCellNode {
         } else {
             media = ASDisplayNode()
         }
-
         media.style.width = ASDimension(unit: .points, value: 100.0)
         media.style.height = ASDimension(unit: .points, value: 120.0)
         

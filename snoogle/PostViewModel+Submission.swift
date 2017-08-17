@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension PostViewModel {
     convenience init(submission: Submission) {
@@ -23,5 +24,19 @@ extension PostViewModel {
             }
         }
         self.init(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
+        if !submission.linkFlairText.isEmpty {
+            let tagItem = TagViewModel()
+            tagItem.text = submission.linkFlairText.uppercased()
+            tagItem.colorText = UIColor(colorLiteralRed: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
+            tagItem.colorBackground = UIColor(colorLiteralRed: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
+            self.tags.append(tagItem)
+        }
+        if submission.isNSFW {
+            let tagItem = TagViewModel()
+            tagItem.text = "NSFW"
+            tagItem.colorText = .white
+            tagItem.colorBackground = UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+            self.tags.append(tagItem)
+        }
     }
 }

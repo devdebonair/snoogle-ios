@@ -30,7 +30,10 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
     let separator: ASDisplayNode
     let actionBar: CellNodePostActionBar
     
+    var tagItems = [ViewModelElement]()
+    
     var mediaView: ASDisplayNode? = nil
+    var tagsView: NodeSlide? = nil
     var delegate: CellNodePostDelegate? = nil
     
     init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: [MediaElement], vote: VoteType, saved: Bool, numberOfComments: Int = 0) {
@@ -101,10 +104,20 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
+        
+        if !tagItems.isEmpty {
+            self.tagsView = NodeSlide(models: self.tagItems)
+            if let layout = self.tagsView?.collectionNode.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.sectionInset.right = 10.0
+            }
+            self.tagsView?.style.preferredSize = CGSize(width: constrainedSize.max.width, height: 20.0)
+            if let tagsView = tagsView {
+                contentLayoutElements.append(tagsView)
+            }
+        }
         
         if let subtitleText = textSubtitle.attributedText, !subtitleText.string.isEmpty {
             contentLayoutElements.append(textSubtitle)
@@ -132,6 +145,7 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
         stackContainerElements.append(insetContentLayout)
 
         if let mediaView = mediaView as? CellNodeMediaAlbum, let media = media {
+            mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
             if media.count == 1 {
                 stackContainerElements.append(mediaView)
             } else if media.count > 1 {

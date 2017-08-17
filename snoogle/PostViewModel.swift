@@ -34,6 +34,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let hint: PostHintType?
     let domain: String
     
+    var tags = [TagViewModel]()
+    
     var delegate: PostViewModelDelegate? = nil
     
     init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false, hint: PostHintType? = nil, domain: String = "") {
@@ -194,6 +196,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                 linkSubtitle: linkSubtitle)
             
             cell.delegate = self
+            cell.tagItems = tags
             
             return cell
         }
@@ -206,7 +209,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
             vote: vote,
             saved: saved,
             numberOfComments: numberOfComments)
-        
+        post.tagItems = tags
         post.delegate = self
         
         return post

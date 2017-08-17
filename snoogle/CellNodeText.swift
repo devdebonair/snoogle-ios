@@ -19,6 +19,10 @@ class CellNodeText: CellNode {
         textNode.maximumNumberOfLines = 0
     }
     
+    override init(didLoad: ((CellNode) -> Void)?) {
+        super.init(didLoad: didLoad)
+    }
+    
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec(insets: .zero, child: textNode)
     }
