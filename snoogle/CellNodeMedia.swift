@@ -13,10 +13,9 @@ protocol CellNodeMediaDelegate {
     func didTapMedia(selectedIndex: Int)
 }
 
-class CellNodeMedia: ASCellNode {
+class CellNodeMedia: CellNode {
 
     let media: MediaElement
-    let inset: UIEdgeInsets
     var mediaView = ASImageNode()
     var initialTime: CMTime? = nil
     var delegate: CellNodeMediaDelegate? = nil {
@@ -31,11 +30,10 @@ class CellNodeMedia: ASCellNode {
     
     init(media: MediaElement, inset: UIEdgeInsets = .zero) {
         self.media = media
-        self.inset = inset
         
         super.init()
         
-        automaticallyManagesSubnodes = true
+        self.inset = inset
         
         if let media = media as? Photo {
             // Specify order of sizes
@@ -100,11 +98,10 @@ class CellNodeMedia: ASCellNode {
         }
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let ratio = CGFloat(media.height/media.width)
         let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)
-        let insetSpec = ASInsetLayoutSpec(insets: inset, child: ratioSpec)
-        return insetSpec
+        return ratioSpec
     }
 }
 

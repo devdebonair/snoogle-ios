@@ -46,6 +46,7 @@ class SubredditPageStore {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
+                    realm.refresh()
                     let activity = realm.object(ofType: SubredditActivity.self, forPrimaryKey: "\(name):activity")
                     guard let guardedActivity = activity, let delegate = weakSelf.delegate else { return }
                     delegate.didFetchActivity(activity: guardedActivity)

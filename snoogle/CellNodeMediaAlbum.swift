@@ -25,7 +25,6 @@ class CellNodeMediaAlbum: CellNode, ASCollectionDelegate {
     init(media: [MediaElement]) {
         self.media = media
         self.models = [AlbumSlideViewModel(media: media, isStyled: (media.count != 1))]
-        
         self.slider = NodeSlide(models: models)
         
         super.init()
@@ -43,8 +42,7 @@ class CellNodeMediaAlbum: CellNode, ASCollectionDelegate {
         if media.count == 1, let mediaItem = media.first {
             let ratio = CGFloat(mediaItem.height/mediaItem.width)
             let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: slider)
-            let insetSpec = ASInsetLayoutSpec(insets: .zero, child: ratioSpec)
-            return insetSpec
+            return ratioSpec
         }
         slider.style.preferredSize = CGSize(width: constrainedSize.max.width, height: 300.0)
         return ASInsetLayoutSpec(insets: .zero, child: slider)

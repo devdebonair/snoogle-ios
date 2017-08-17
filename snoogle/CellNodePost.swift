@@ -145,7 +145,7 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
         stackContainerElements.append(insetContentLayout)
 
         if let mediaView = mediaView as? CellNodeMediaAlbum, let media = media {
-            mediaView.style.width = ASDimension(unit: .fraction, value: 1.0)
+            mediaView.style.width = ASDimension(unit: .points, value:constrainedSize.max.width)
             if media.count == 1 {
                 stackContainerElements.append(mediaView)
             } else if media.count > 1 {

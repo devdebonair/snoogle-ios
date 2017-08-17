@@ -47,6 +47,7 @@ class SearchStore {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
+                    realm.refresh()
                     let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
@@ -65,6 +66,7 @@ class SearchStore {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
+                    realm.refresh()
                     let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
@@ -83,6 +85,7 @@ class SearchStore {
                 guard let weakSelf = self else { return }
                 do {
                     let realm = try Realm()
+                    realm.refresh()
                     let searchResult = realm.object(ofType: SearchResult.self, forPrimaryKey: "search:\(weakSelf.term):\(weakSelf.time.rawValue)")
                     guard let guardedSearchResult = searchResult else { return }
                     weakSelf.delegate?.didUpdateResults(result: guardedSearchResult)
