@@ -24,7 +24,7 @@ extension PostViewModel {
             }
         }
         let meta = shouldShowSub ? submission.meta : submission.metaIgnoreSub
-        self.init(id: submission.id, meta: meta, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
+        self.init(id: submission.id, meta: meta, title: submission.title, info: submission.selftextTruncated.trimmingCharacters(in: .newlines), media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
         if !submission.linkFlairText.isEmpty {
             let tagItem = TagViewModel()
             tagItem.text = submission.linkFlairText.uppercased()
