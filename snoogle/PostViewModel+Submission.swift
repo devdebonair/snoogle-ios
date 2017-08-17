@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension PostViewModel {
-    convenience init(submission: Submission) {
+    convenience init(submission: Submission, shouldShowSub: Bool = false) {
         var media = [MediaElement]()
         for item in submission.media {
             guard let guardedType = item.mediaType else { continue }
@@ -23,7 +23,8 @@ extension PostViewModel {
                 media.append(toInsert)
             }
         }
-        self.init(id: submission.id, meta: submission.metaIgnoreSub, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
+        let meta = shouldShowSub ? submission.meta : submission.metaIgnoreSub
+        self.init(id: submission.id, meta: meta, title: submission.title, info: submission.selftextTruncated, media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
         if !submission.linkFlairText.isEmpty {
             let tagItem = TagViewModel()
             tagItem.text = submission.linkFlairText.uppercased()

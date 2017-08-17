@@ -76,7 +76,7 @@ class Submission: Object, Mappable {
     }
     
     var meta: String {
-        return "\(metaIgnoreSub) • \(subredditName)"
+        return "\(metaIgnoreSub) • r/\(subredditName)"
     }
     
     var selftextTruncated: String {

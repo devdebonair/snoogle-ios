@@ -171,8 +171,9 @@ extension FeedCollectionController: SubredditStoreDelegate {
     }
     
     func didUpdatePosts(submissions: List<Submission>) {
+        let shouldShowSub = !self.store.isSubreddit()
         self.models = submissions.map({ (submission) -> PostViewModel in
-            let post = PostViewModel(submission: submission)
+            let post = PostViewModel(submission: submission, shouldShowSub: shouldShowSub)
             post.delegate = self
             return post
         })
