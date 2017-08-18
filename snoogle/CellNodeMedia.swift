@@ -59,6 +59,7 @@ class CellNodeMedia: CellNode {
                 mediaView.downloadsIntermediateImages = true
                 mediaView.dataSource = self
                 mediaView.isLayerBacked = true
+                mediaView.contentMode = .scaleAspectFill
             }
         }
         
