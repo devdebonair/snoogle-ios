@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         let rootController = FeedCollectionController()
+//        rootController.store.setSubreddit(name: "", source: .frontpage)
         navigationController = NavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)

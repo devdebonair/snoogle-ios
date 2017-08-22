@@ -49,8 +49,6 @@ class SubredditStore {
     }
     
     func setSubreddit(name: String, source: FeedSource = .subreddit) {
-        guard let user = user else { return }
-        
         self.name = name
         self.sort = .hot
         self.source = source
@@ -62,6 +60,8 @@ class SubredditStore {
             guard let delegate = delegate else { return }
             delegate.didSetToFrontpage()
         }
+        
+        guard let user = user else { return }
         
         if source == .subreddit {
             DispatchQueue.global(qos: .background).async {

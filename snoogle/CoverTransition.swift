@@ -39,11 +39,9 @@ class CoverTransition: Transition {
         to.frame.origin.x = container.frame.width
         
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveEaseOut], animations: {
-            let screenPercentage: CGFloat =  0.01
-            self.snapshot.center.x = container.center.x + (container.frame.width * screenPercentage)
+            let screenPercentage: CGFloat =  0.1
+            self.snapshot.frame.origin.x = 0 - (container.frame.width * screenPercentage)
             self.snapshot.alpha = 0.50
-            let scale: CGFloat = 0.93
-            self.snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
             to.frame.origin.x = 0
         }) { (success: Bool) in
             completion(success)
@@ -52,14 +50,13 @@ class CoverTransition: Transition {
     
     override func animateDismiss(to: UIView, from: UIView, container: UIView, completion: @escaping (Bool) -> Void) {
         from.clipsToBounds = false
-        from.layer.shadowOffset = CGSize(width: -8.0, height: 0.0)
+        from.layer.shadowOffset = CGSize(width: -2.0, height: 0.0)
         from.layer.shadowOpacity = 0.20
         from.layer.shadowRadius = 1.0
         from.layer.shadowPath = UIBezierPath(rect: from.bounds).cgPath
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, options: [.curveLinear], animations: {
-            self.snapshot.transform = .identity
             self.snapshot.alpha = 1.0
-            self.snapshot.center.x = container.center.x
+            self.snapshot.frame.origin.x = 0
             from.frame.origin.x = container.frame.width
         }) { (success: Bool) in
             completion(success)

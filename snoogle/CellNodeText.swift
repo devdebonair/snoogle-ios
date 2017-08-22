@@ -19,6 +19,10 @@ class CellNodeText: CellNode {
         textNode.maximumNumberOfLines = 0
     }
     
+    init() {
+        super.init()
+    }
+    
     override init(didLoad: ((CellNode) -> Void)?) {
         super.init(didLoad: didLoad)
     }

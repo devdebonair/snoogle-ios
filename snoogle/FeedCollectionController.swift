@@ -27,6 +27,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         return controller
     }()
     
+    lazy var settingsController: UIViewController = {
+        let settingsController = SettingsCollectionController()
+        return settingsController
+    }()
+    
     init(name: String? = nil) {
         self.slideTransition = SlideTransition(duration: 0.20)
         super.init()
@@ -58,10 +63,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         
         self.slideTransition.mainController = self.navigationController!
         self.slideTransition.menuController = menuController
+        self.slideTransition.rightController = settingsController
         
         node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "more-vertical"), style: .plain, target: self, action: #selector(didTapUser))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "more-vertical"), style: .plain, target: self, action: #selector(didTapUserSettings))
         
         let fixedBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixedBarButtonItem.width = 40.0
@@ -493,9 +499,10 @@ extension FeedCollectionController {
         self.navigationController?.present(controller, animated: true)
     }
     
-    func didTapUser() {
-        let controller = menuController
-        controller.transitioningDelegate = slideTransition
+    func didTapUserSettings() {
+        let settingsController = SettingsCollectionController()
+        let controller = ASNavigationController(rootViewController: settingsController)
+        self.randomController = controller
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
 }

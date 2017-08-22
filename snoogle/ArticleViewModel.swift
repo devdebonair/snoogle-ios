@@ -15,6 +15,13 @@ protocol ArticleViewModelDelegate {
 }
 
 class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
+    enum CellType: Int {
+        case meta = 0
+        case media = 1
+        case title = 2
+        case content = 3
+    }
+    
     let author: String
     let origin: String
     let created: Date
@@ -50,27 +57,39 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
     private var elements: [Any] {
         var retval = [Any]()
         retval.append(meta)
-        retval.append(title)
         if !media.isEmpty {
             retval.append(media)
         }
+        retval.append(title)
         for paragraph in newContent {
             retval.append(paragraph)
         }
         return retval
     }
     
+    private lazy var cellOrder: [CellType] = {
+        var retval = [CellType]()
+        if !self.media.isEmpty {
+            retval.append(.media)
+        }
+        retval.append(.meta)
+        retval.append(.title)
+        for paragraph in self.newContent {
+            retval.append(.content)
+        }
+        return retval
+    }()
+    
     func cell(index: Int) -> ASCellNode {
-        let row = index
-        let element = elements[row]
+        let cellType = cellOrder[index]
         let padding: CGFloat = 25
         
-        // Meta
-        if let element = element as? String, row == 0 {
+        switch cellType {
+        case .meta:
             let paragraphStyleMeta = NSMutableParagraphStyle()
             paragraphStyleMeta.lineSpacing = 2.0
             let metaAttributes = NSMutableAttributedString(
-                string: element,
+                string: self.meta,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 10),
                     NSParagraphStyleAttributeName: paragraphStyleMeta,
@@ -85,19 +104,19 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             let cell = CellNodeText(attributedText: metaAttributes)
             cell.inset = inset
             return cell
-        }
-        
-        // Title
-        let titleFont = UIFont(name: "Lora-Bold", size: 22)!
-//        let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
-        if let element = element as? String, row == 1 {
+        case .media:
+            let cell = CellNodeMediaAlbum(media: self.media)
+            return cell
+        case .title:
+            //        let titleFont = UIFont(name: "Lora-Bold", size: 22)!
+            let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
             let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             
             let paragraphStyleTitle = NSMutableParagraphStyle()
             paragraphStyleTitle.lineSpacing = 0.0
             
             let titleAttributes = NSMutableAttributedString(
-                string: element,
+                string: self.title,
                 attributes: [
                     NSFontAttributeName: titleFont,
                     NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
@@ -106,32 +125,25 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             
             let cell = CellNodeText(attributedText: titleAttributes)
             cell.inset = inset
+            if index == numberOfCells() - 1 { cell.inset.bottom = padding }
             return cell
-        }
-        
-        // Media
-        if let media = element as? [MediaElement] {
-            let cell = CellNodeMediaAlbum(media: media)
-            cell.inset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-            return cell
-        }
-        
-        // Content
-        if let element = element as? NSMutableAttributedString {
+        case .content:
+            let subArr = Array(cellOrder[0...index])
+            let filterdArr = subArr.filter { $0 == .content }
+            let paragraph = newContent[filterdArr.count-1]
+            
             var inset = UIEdgeInsets(top: padding, left: 16, bottom: 0, right: 16)
             if index == numberOfCells() - 1 { inset.bottom = padding }
-            let cell = CellNodeText(attributedText: element)
+            let cell = CellNodeText(attributedText: paragraph)
             cell.inset = inset
             cell.textNode.delegate = self
             cell.textNode.isUserInteractionEnabled = true
             return cell
         }
-        
-        return ASCellNode()
     }
     
     func numberOfCells() -> Int {
-        return elements.count
+        return cellOrder.count
     }
     
     func footer() -> ASCellNode? {

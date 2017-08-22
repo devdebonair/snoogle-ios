@@ -27,13 +27,12 @@ extension ArticleViewModel {
         
         for item in submission.articleComponents {
             let paragraphStyleDescription = NSMutableParagraphStyle()
-            paragraphStyleDescription.lineSpacing = 8.0
+            paragraphStyleDescription.lineSpacing = 6.0
             let attributesToAdd: [String:Any] = [
                 NSParagraphStyleAttributeName: paragraphStyleDescription,
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                NSForegroundColorAttributeName: UIColor.darkText
             ]
-//            let font = UIFont(name: "Lora-Regular", size: 16.5)!
-            let font = UIFont(name: "Athelas-Regular", size: 17)!
+            let font = UIFont(name: "Charter", size: 17)!
             let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: font)
             if let block = block {
                 self.newContent.append(block)

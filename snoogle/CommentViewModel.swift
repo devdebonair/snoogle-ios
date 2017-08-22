@@ -20,7 +20,7 @@ class CommentViewModel: NSObject, ViewModelElement {
     func cell(index: Int) -> ASCellNode {
         let comment = comments[index]
         let fontSizeMeta: CGFloat = 10
-        let fontSizeBody: CGFloat = 12
+        let fontSizeBody: CGFloat = 13
         
         let metaAttribute = NSMutableAttributedString(
             string: comment.meta,
