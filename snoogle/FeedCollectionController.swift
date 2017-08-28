@@ -29,6 +29,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     lazy var settingsController: UIViewController = {
         let settingsController = SettingsCollectionController()
+        settingsController.delegate = self
         return settingsController
     }()
     
@@ -503,6 +504,15 @@ extension FeedCollectionController {
         let settingsController = SettingsCollectionController()
         let controller = ASNavigationController(rootViewController: settingsController)
         self.randomController = controller
+        self.navigationController?.present(controller, animated: true, completion: nil)
+    }
+}
+
+extension FeedCollectionController: SettingsCollectionControllerDelegate {
+    func didSelectSwitchAccounts() {
+        self.settingsController.dismiss(animated: true, completion: nil)
+        self.slideTransition.finish()
+        let controller = ASNavigationController(rootViewController: SettingsAccountController())
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
 }

@@ -21,6 +21,15 @@ extension ArticleViewModel {
             case .video:
                 let toInsert = Video(width: item.width, height: item.height, url: item.urlOrigin, poster: item.urlPoster, gif: item.urlGif, info: item.info)
                 media.append(toInsert)
+            case .movie:
+                let movie = Movie()
+                movie.height = item.height
+                movie.width = item.width
+                movie.title = item.title
+                movie.url = item.urlOrigin
+                movie.poster = item.urlPoster
+                movie.info = item.info
+                media.append(movie)
             }
         }
         self.init(author: submission.authorName, origin: "r/ \(submission.subredditName)", created: submission.created, title: submission.title, media: media, content: submission.selftextComponents, vote: submission.vote, saved: submission.saved, numberOfComments: submission.numComments)

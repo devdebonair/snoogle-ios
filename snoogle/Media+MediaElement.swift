@@ -18,6 +18,8 @@ extension Media {
                 self.urlMedium, urlLarge: self.urlLarge, urlHuge: self.urlHuge, info: self.info)
         case .video:
             return Video(width: self.width, height: self.height, url: self.urlOrigin, poster: self.urlPoster, gif: self.urlGif, info: self.info)
+        case .movie:
+            return Video(width: self.width, height: self.height, url: self.urlOrigin, poster: self.urlPoster, gif: self.urlGif, info: self.info)
         }
     }
 }

@@ -14,8 +14,8 @@ class Service {
         case https = "https"
     }
     var transfer: TransferProtocol = .http
-    var host = "45.55.221.50"
-//    var host = "192.168.1.249:3000"
+//    var host = "45.55.221.50"
+    var host = "192.168.1.249:3000"
     var version = "v1"
     var base: URL {
         return URL(string: "\(transfer.rawValue)://\(host)/\(version)/")!

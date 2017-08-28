@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         let rootController = FeedCollectionController()
 //        rootController.store.setSubreddit(name: "", source: .frontpage)
+//        let rootController = VideoCollectionController()
         navigationController = NavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)

@@ -11,4 +11,5 @@ import Foundation
 enum MediaType: String {
     case photo = "photo"
     case video = "video"
+    case movie = "movie"
 }

@@ -19,14 +19,32 @@ protocol SubscriptionStoreDelegate {
 
 class SubscriptionStore {
     var delegate: SubscriptionStoreDelegate? = nil
-    private var tokenSubscriptions: RLMNotificationToken?? = nil
+    private var tokenActiveAccount: RLMNotificationToken? = nil
+    private var tokenSubscriptions: RLMNotificationToken? = nil
     private var tokenRecent: RLMNotificationToken? = nil
     private var tokenMultireddits: RLMNotificationToken? = nil
     private var tokenFavorites: RLMNotificationToken? = nil
     
-    func setAccount(id: String) {
+    func setAccount() {
         do {
             let realm = try Realm()
+            if tokenActiveAccount == nil {
+                guard let app = realm.objects(AppUser.self).first else { return }
+                self.tokenActiveAccount = app.addNotificationBlock({ (changeType) in
+                    switch changeType {
+                    case .change(let properties):
+                        for property in properties {
+                            if property.name == "activeAccount" {
+                                self.setAccount()
+                            }
+                        }
+                    case .deleted:
+                        return
+                    case .error:
+                        return
+                    }
+                })
+            }
             guard let account = AppUser.getActiveAccount(realm: realm) else { return }
             guard let config = AccountConfig.getConfig(for: account.name, realm: realm) else { return }
             self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)

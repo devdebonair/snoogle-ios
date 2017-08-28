@@ -23,6 +23,7 @@ class Media: Object, Mappable {
     dynamic var huge: String? = nil
     dynamic var poster: String? = nil
     dynamic var gif: String? = nil
+    dynamic var title: String? = nil
     
     var urlOrigin: URL? {
         return URL(string: url)
@@ -78,5 +79,6 @@ class Media: Object, Mappable {
         huge    <- map["sizes.huge"]
         poster  <- map["poster"]
         gif     <- map["gif"]
+        title   <- map["title"]
     }
 }

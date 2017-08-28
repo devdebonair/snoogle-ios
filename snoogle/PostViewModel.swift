@@ -31,7 +31,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     let isSticky: Bool
     let vote: VoteType
     let saved: Bool
-    let hint: PostHintType?
+    var hint: PostHintType?
     let domain: String
     
     var tags = [TagViewModel]()
@@ -102,6 +102,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
     
     func didTapMedia(index: Int) {
         guard let delegate = delegate else { return }
+        if !self.info.isEmpty { return delegate.didSelectPost(post: self) }
         delegate.didTapMedia(post: self, index: index)
     }
     
@@ -199,6 +200,10 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
             cell.tagItems = tags
             
             return cell
+        }
+        
+        if let hint = hint, hint == .movie, let movie = self.media.first as? Movie {
+            return CellNodePostMovie(meta: meta, title: title, subtitle: description, media: movie, vote: vote, saved: saved)
         }
         
         let post = CellNodePost(

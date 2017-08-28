@@ -9,12 +9,19 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol SettingsCollectionControllerDelegate {
+    func didSelectSwitchAccounts()
+}
+
 class SettingsCollectionController: CollectionController {
+    var delegate: SettingsCollectionControllerDelegate? = nil
+    
     override func viewDidLoad() {
         let switchAccounts = SettingsTextViewModel()
         switchAccounts.text = "Switch Accounts"
         switchAccounts.didSelect = {
-            self.navigationController?.pushViewController(SettingsAccountsController(), animated: true)
+            guard let delegate = self.delegate else { return }
+            delegate.didSelectSwitchAccounts()
         }
         
         let clearCache = SettingsTextViewModel()

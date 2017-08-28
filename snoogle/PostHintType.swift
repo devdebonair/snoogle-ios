@@ -14,4 +14,5 @@ enum PostHintType: String {
     case reddit = "self"
     case videoRich = "rich:video"
     case hostedVideo = "hosted:video"
+    case movie = "movie"
 }

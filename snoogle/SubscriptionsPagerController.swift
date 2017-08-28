@@ -120,7 +120,7 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        store.setAccount(id: "13nczm")
+        store.setAccount()
         
         navigationController?.isNavigationBarHidden = true
         navigationController?.isToolbarHidden = false

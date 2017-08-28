@@ -21,10 +21,22 @@ extension PostViewModel {
             case .video:
                 let toInsert = Video(width: item.width, height: item.height, url: item.urlOrigin, poster: item.urlPoster, gif: item.urlGif, info: item.info)
                 media.append(toInsert)
+            case .movie:
+                let toInsert = Movie()
+                toInsert.height = item.height
+                toInsert.width = item.width
+                toInsert.title = item.title
+                toInsert.url = item.urlOrigin
+                toInsert.poster = item.urlPoster
+                toInsert.info   = item.info
+                media.append(toInsert)
             }
         }
         let meta = shouldShowSub ? submission.meta : submission.metaIgnoreSub
         self.init(id: submission.id, meta: meta, title: submission.title, info: submission.selftextTruncated.trimmingCharacters(in: .newlines), media: media, numberOfComments: submission.numComments, isSticky: submission.stickied, vote: submission.vote, saved: submission.saved, hint: submission.hint, domain: submission.domain)
+        if media.count == 1, let _ = media.first as? Movie {
+            self.hint = .movie
+        }
         if !submission.linkFlairText.isEmpty {
             let tagItem = TagViewModel()
             tagItem.text = submission.linkFlairText.uppercased()
