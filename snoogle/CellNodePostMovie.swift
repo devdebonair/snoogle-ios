@@ -79,6 +79,9 @@ class CellNodePostMovie: ASCellNode, CellNodePostActionBarDelegate, ASVideoNodeD
         self.shadowRadius = 1.0
         self.cornerRadius = 2.0
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        
+        self.buttonVolume.layer.shadowOpacity = 0.25
+        self.buttonVolume.layer.shadowRadius = 4.0
     }
     
     func didTapVolume() {
