@@ -8,6 +8,7 @@
 
 import Foundation
 import AsyncDisplayKit
+import Hero
 
 class CellNode: ASCellNode {
     var hasSeparator: Bool = false
@@ -30,6 +31,7 @@ class CellNode: ASCellNode {
     }
     
     override func didLoad() {
+        self.view.heroID = UUID().uuidString
         if let didLoadBlock = didLoadBlock {
             didLoadBlock(self)
         }

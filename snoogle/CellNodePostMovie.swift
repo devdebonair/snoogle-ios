@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
-class CellNodePostMovie: ASCellNode, CellNodePostActionBarDelegate, ASVideoNodeDelegate {
+class CellNodePostMovie: CellNode, CellNodePostActionBarDelegate, ASVideoNodeDelegate {
     
     let textMeta: ASTextNode
     let textTitle: ASTextNode
@@ -72,6 +72,7 @@ class CellNodePostMovie: ASCellNode, CellNodePostActionBarDelegate, ASVideoNodeD
     }
     
     override func didLoad() {
+        super.didLoad()
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
         self.clipsToBounds = false
@@ -104,7 +105,7 @@ class CellNodePostMovie: ASCellNode, CellNodePostActionBarDelegate, ASVideoNodeD
         }
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)

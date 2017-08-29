@@ -21,7 +21,7 @@ protocol CellNodePostDelegate {
     func didTapMedia(index: Int)
 }
 
-class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDelegate {
+class CellNodePost: CellNode, CellNodePostActionBarDelegate, CellNodeMediaDelegate {
     let media: [MediaElement]?
     
     let textMeta: ASTextNode
@@ -83,6 +83,7 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
     }
     
     override func didLoad() {
+        super.didLoad()
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
         self.clipsToBounds = false
@@ -103,7 +104,7 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
         }
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
@@ -140,10 +141,10 @@ class CellNodePost: ASCellNode, CellNodePostActionBarDelegate, CellNodeMediaDele
         
         let insetContentLayout = ASInsetLayoutSpec(insets: inset, child: stackLayoutContent)
         let insetButtonLayout = ASInsetLayoutSpec(insets: buttonInset, child: actionBar)
-
+        
         var stackContainerElements = [ASLayoutElement]()
         stackContainerElements.append(insetContentLayout)
-
+        
         if let mediaView = mediaView as? CellNodeMediaAlbum, let media = media {
             mediaView.style.width = ASDimension(unit: .points, value:constrainedSize.max.width)
             if media.count == 1 {

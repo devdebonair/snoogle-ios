@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
-class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
+class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
     
     let textMeta: ASTextNode
     let textTitle: ASTextNode
@@ -60,6 +60,7 @@ class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
     }
     
     override func didLoad() {
+        super.didLoad()
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
         self.clipsToBounds = false
@@ -76,7 +77,7 @@ class CellNodePostLink: ASCellNode, CellNodePostActionBarDelegate {
         delegate.didTapLink()
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         var contentLayoutElements = [ASLayoutElement]()
         contentLayoutElements.append(textMeta)
         contentLayoutElements.append(textTitle)
