@@ -32,7 +32,7 @@ class CellNodePost: CellNode, CellNodePostActionBarDelegate, CellNodeMediaDelega
     
     var tagItems = [ViewModelElement]()
     
-    var mediaView: ASDisplayNode? = nil
+    var mediaView: CellNodeMediaAlbum? = nil
     var tagsView: NodeSlide? = nil
     var delegate: CellNodePostDelegate? = nil
     
@@ -70,10 +70,7 @@ class CellNodePost: CellNode, CellNodePostActionBarDelegate, CellNodeMediaDelega
         
         if !media.isEmpty {
             mediaView = CellNodeMediaAlbum(media: media)
-        }
-        
-        if let mediaView = mediaView as? CellNodeMediaAlbum {
-            mediaView.delegate = self
+            mediaView?.delegate = self
         }
     }
     
@@ -92,13 +89,13 @@ class CellNodePost: CellNode, CellNodePostActionBarDelegate, CellNodeMediaDelega
         self.cornerRadius = 2.0
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
         
-        if let media = media, media.count == 1, let mediaView = mediaView as? CellNodeMediaAlbum {
+        if let media = media, media.count == 1, let mediaView = mediaView {
             mediaView.collectionNode.view.bounces = false
             mediaView.collectionNode.view.isScrollEnabled = false
             mediaView.collectionNode.clipsToBounds = true
         }
         
-        if let media = media, media.count > 1, let mediaView = mediaView as? CellNodeMediaAlbum {
+        if let media = media, media.count > 1, let mediaView = mediaView {
             mediaView.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             mediaView.flowLayout.minimumLineSpacing = 15.0
         }
@@ -145,7 +142,7 @@ class CellNodePost: CellNode, CellNodePostActionBarDelegate, CellNodeMediaDelega
         var stackContainerElements = [ASLayoutElement]()
         stackContainerElements.append(insetContentLayout)
         
-        if let mediaView = mediaView as? CellNodeMediaAlbum, let media = media {
+        if let mediaView = mediaView, let media = media {
             mediaView.style.width = ASDimension(unit: .points, value:constrainedSize.max.width)
             if media.count == 1 {
                 stackContainerElements.append(mediaView)

@@ -19,9 +19,10 @@ protocol PostViewModelDelegate {
     func didUnvote(post: PostViewModel)
     func didTapComments(post: PostViewModel)
     func didTapMedia(post: PostViewModel, index: Int)
+    func didTapMovie(post: PostViewModel)
 }
 
-class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
+class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate, CellNodePostMovieDelegate {
     let meta: String
     let title: String
     let info: String
@@ -187,7 +188,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                     NSParagraphStyleAttributeName: paragraphStyleLinkSubtitle
                 ])
             
-            let cell = CellNodePostLink(
+            let post = CellNodePostLink(
                 meta: meta,
                 title: title,
                 subtitle: description,
@@ -197,13 +198,18 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
                 linkTitle: linkTitle,
                 linkSubtitle: linkSubtitle)
             
-            cell.delegate = self
-            cell.tagItems = tags
-            return cell
+            post.delegate = self
+            post.tagItems = tags
+            self.cell = post
+            return post
         }
         
         if let hint = hint, hint == .movie, let movie = self.media.first as? Movie {
-            return CellNodePostMovie(meta: meta, title: title, subtitle: description, media: movie, vote: vote, saved: saved)
+            let post = CellNodePostMovie(meta: meta, title: title, subtitle: description, media: movie, vote: vote, saved: saved)
+            self.cell = post
+            post.delegate = self
+            post.delegateMovie = self
+            return post
         }
         
         let post = CellNodePost(
@@ -216,7 +222,11 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate {
             numberOfComments: numberOfComments)
         post.tagItems = tags
         post.delegate = self
-        
+        self.cell = post
         return post
+    }
+    
+    func didTapMovie() {
+        self.delegate?.didTapMovie(post: self)
     }
 }

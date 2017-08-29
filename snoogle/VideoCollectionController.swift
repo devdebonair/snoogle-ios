@@ -9,18 +9,22 @@
 import Foundation
 import AsyncDisplayKit
 import UIKit
+import Hero
 
-class VideoCollectionController: ASViewController<CellNodeVideoPlayer> {
-    init() {
-        let videoURL = URL(string: "https://r6---sn-hp57kn6l.googlevideo.com/videoplayback?signature=CB1A7BBB612D33034B283F58D59D1DE9F5117673.0DE5F92DE90993090E93B93091A7BCD612B2C14E&ratebypass=yes&key=yt6&lmt=1502366353044529&itag=22&mm=31&mn=sn-hp57kn6l&id=o-AOuIY2DNzFbjqI0pmEKJoells1AQBK8ygqCS1DDJl81a&mime=video%2Fmp4&pl=52&gcr=us&ipbits=0&ip=2602%3A306%3A8065%3A2680%3A2853%3Af655%3A915a%3Ad822&requiressl=yes&mt=1503837760&mv=m&ms=au&dur=119.977&initcwndbps=1068750&ei=sr6iWdbvBYOTuwWzo6aIDg&expire=1503859474&sparams=dur%2Cei%2Cgcr%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&source=youtube")
-        let posterURL = URL(string: "https://i.ytimg.com/vi/jKMES2-HDCQ/maxresdefault.jpg")
-        let movie = Movie()
-        movie.height = 720
-        movie.width = 1280
-        movie.url = videoURL
-        movie.poster = posterURL
-        let player = CellNodeVideoPlayer(media: movie, didLoad: nil)
-        super.init(node: player)
+class VideoCollectionController: ASViewController<ASDisplayNode> {
+    var panGR: UIPanGestureRecognizer!
+    let videoNode: CellNodeVideoPlayer
+    var portraitFrame: CGRect = .zero
+    
+    init(movie: Movie) {
+        self.videoNode = CellNodeVideoPlayer(media: movie, didLoad: nil)
+        super.init(node: ASDisplayNode())
+        self.isHeroEnabled = true
+        videoNode.player.shouldAutoplay = true
+        videoNode.player.muted = true
+        videoNode.player.shouldAutorepeat = true
+        videoNode.player.backgroundColor = .black
+        videoNode.player.placeholderColor = .black
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,6 +33,44 @@ class VideoCollectionController: ASViewController<CellNodeVideoPlayer> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.isNavigationBarHidden = true
+        self.node.addSubnode(videoNode)
+        node.backgroundColor = .black
+        videoNode.frame.size.width = node.frame.width
+        videoNode.view.center = node.view.center
+        panGR = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        videoNode.view.addGestureRecognizer(panGR)
+        videoNode.view.heroModifiers = [.useScaleBasedSizeChange]
+        self.portraitFrame = videoNode.frame
+    }
+    
+    @objc func pan() {
+        let translation = panGR.translation(in: nil)
+        let progress = translation.y.magnitude / 2 / self.node.bounds.height
+        switch panGR.state {
+        case .began:
+            hero_dismissViewController()
+        case .changed:
+            Hero.shared.update(progress: Double(progress))
+            let currentPos = CGPoint(x: translation.x + node.view.center.x, y: translation.y + node.view.center.y)
+            Hero.shared.apply(modifiers: [.position(currentPos)], to: videoNode.view)
+        default:
+            if progress + panGR.velocity(in: nil).y / node.bounds.height > 0.3 {
+                Hero.shared.end()
+            } else {
+                Hero.shared.cancel()
+            }
+        }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        print(UIDevice.current.orientation)
+        videoNode.view.center = self.node.view.center
+        if UIDevice.current.orientation.isPortrait {
+            videoNode.view.frame = self.portraitFrame
+        }
+        
+        if UIDevice.current.orientation.isLandscape {
+            videoNode.frame = self.node.frame
+        }
     }
 }

@@ -11,6 +11,7 @@ import IGListKit
 import RealmSwift
 import AsyncDisplayKit
 import SafariServices
+import Hero
 
 class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
     let store = SubredditStore()
@@ -273,42 +274,20 @@ extension FeedCollectionController: PostViewModelDelegate {
     }
     
     func didTapMedia(post: PostViewModel, index: Int) {
-        let sectionIndex = models.index { (model) -> Bool in
-            guard let model = model as? PostViewModel else { return false }
-            return model.id == post.id
-        }
-        
-        guard let guardedSectionIndex = sectionIndex else { return }
-        
-        let postCellIndexPath = IndexPath(item: 0, section: guardedSectionIndex)
-        guard let postCell = collectionNode.nodeForItem(at: postCellIndexPath) as? CellNodePost, let albumCell = postCell.mediaView as? CellNodeMediaAlbum, let postLayout = collectionNode.collectionViewLayout.layoutAttributesForItem(at: postCellIndexPath) else { return }
-        
-        let postLocation = self.collectionNode.convert(postLayout.frame, to: self.collectionNode)
-        
-        let mediaCellIndexPath = IndexPath(row: index, section: 0)
-        guard let mediaCell = albumCell.collectionNode.nodeForItem(at: mediaCellIndexPath) as? CellNodeMedia else { return }
-        guard let selectedMediaCellLayout = albumCell.collectionNode.collectionViewLayout.layoutAttributesForItem(at: mediaCellIndexPath) else { return }
-        
-        let xOrigin: CGFloat = selectedMediaCellLayout.frame.origin.x - albumCell.collectionNode.view.contentOffset.x
-        let yOrigin: CGFloat = postLocation.origin.y + postCell.mediaView!.frame.origin.y - self.collectionNode.view.contentOffset.y
-        let origin = CGRect(x: xOrigin, y: yOrigin, width: selectedMediaCellLayout.frame.width, height: selectedMediaCellLayout.frame.height)
-        
-        let height = aspectHeight(self.collectionNode.frame.size, mediaCell.frame.size)
-        let destination: CGRect = CGRect(x: 0, y: 0, width: node.frame.width, height: height)
-        
-        transition = FrameTransition(duration: 0.8, delay: 1.0, origin: origin, destination: destination, node: mediaCell)
-        
         let controller = MediaCollectionController(media: post.media)
-        controller.transitioningDelegate = transition
         controller.startingIndex = index
-        
-        if let videoMedia = mediaCell.mediaView as? ASVideoNode {
-            if let currentTime = videoMedia.currentItem?.currentTime() {
-                controller.startingTime = currentTime
-            }
+        let cellNode = controller.mediaForIndex(index: index)
+        let mediaIndexPath = IndexPath(row: index, section: 0)
+        if let cellNode = cellNode, let postCell = post.cell as? CellNodePost {
+            guard let albumCell = postCell.mediaView else { return }
+            guard let tappedMediaCell = albumCell.collectionNode.nodeForItem(at: mediaIndexPath) as? CellNodeMedia else { return }
+            let heroID = UUID().uuidString
+            cellNode.view.heroID = heroID
+            tappedMediaCell.view.heroID = heroID
+            cellNode.view.heroModifiers = [HeroModifier.duration(0.4)]
+            self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
+            self.navigationController?.present(controller, animated: true, completion: nil)
         }
-        
-        self.present(controller, animated: true, completion: nil)
     }
     
     func didUpvote(post: PostViewModel) {
@@ -329,6 +308,19 @@ extension FeedCollectionController: PostViewModelDelegate {
     
     func didUnvote(post: PostViewModel) {
         store.unvote(id: post.id)
+    }
+    
+    func didTapMovie(post: PostViewModel) {
+        guard let cell = post.cell as? CellNodePostMovie else { return }
+        let id = UUID().uuidString
+        cell.movieNode.view.heroID = id
+        let controller = VideoCollectionController(movie: cell.movieNode.media)
+        controller.videoNode.view.heroID = id
+        controller.videoNode.player.asset = cell.movieNode.player.asset
+        controller.videoNode.frame.size = cell.movieNode.frame.size
+        controller.videoNode.view.heroModifiers = [HeroModifier.duration(0.4)]
+        self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
 }
 

@@ -10,6 +10,10 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
+protocol CellNodePostMovieDelegate {
+    func didTapMovie()
+}
+
 class CellNodePostMovie: CellNode, CellNodePostActionBarDelegate, ASVideoNodeDelegate {
     
     let textMeta: ASTextNode
@@ -25,6 +29,7 @@ class CellNodePostMovie: CellNode, CellNodePostActionBarDelegate, ASVideoNodeDel
     var movieNode: CellNodeVideoPlayer
     
     var delegate: CellNodePostDelegate? = nil
+    var delegateMovie: CellNodePostMovieDelegate? = nil
     
     let buttonVolume = ASButtonNode()
     
@@ -83,6 +88,10 @@ class CellNodePostMovie: CellNode, CellNodePostActionBarDelegate, ASVideoNodeDel
         
         self.buttonVolume.layer.shadowOpacity = 0.25
         self.buttonVolume.layer.shadowRadius = 4.0
+    }
+    
+    func didTap(_ videoNode: ASVideoNode) {
+        self.delegateMovie?.didTapMovie()
     }
     
     func didTapVolume() {

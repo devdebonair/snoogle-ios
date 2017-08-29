@@ -10,6 +10,7 @@ import Foundation
 import IGListKit
 import RealmSwift
 import AsyncDisplayKit
+import Hero
 
 class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate {
     
@@ -47,6 +48,12 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         pagerNode.setDataSource(self)
         pagerNode.setDelegate(self)
         pagerNode.view.allowsSelection = true
+        self.isHeroEnabled = true
+        self.pagerNode.isHidden = true
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        self.pagerNode.isHidden = false
     }
 
     @objc private func didTapClose() {
@@ -114,15 +121,15 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     
     func pagerNode(_ pagerNode: ASPagerNode, nodeBlockAt index: Int) -> ASCellNodeBlock {
         let mediaItem = media[index]
-        let startingTime = self.startingTime
-        let startingIndex = self.startingIndex
         return { () -> ASCellNode in
             let cell = CellNodeMediaPage(media: mediaItem)
-            if let _ = cell.cellMedia.mediaView as? ASVideoNode, index == startingIndex {
-                cell.cellMedia.initialTime = startingTime
-            }
             return cell
         }
+    }
+
+    func mediaForIndex(index: Int) -> CellNodeMedia? {
+        guard let pageNode = self.pagerNode.nodeForPage(at: index) as? CellNodeMediaPage else { return nil }
+        return pageNode.cellMedia
     }
     
     override func viewWillAppear(_ animated: Bool) {

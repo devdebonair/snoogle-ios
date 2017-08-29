@@ -20,7 +20,6 @@ class CellNodeVideoPlayer: CellNode {
         player.url = media.poster
         player.placeholderFadeDuration = 2.0
         player.backgroundColor = .black
-        player.isUserInteractionEnabled = false
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
