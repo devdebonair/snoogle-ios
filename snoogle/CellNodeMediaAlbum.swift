@@ -35,7 +35,7 @@ class CellNodeMediaAlbum: CellNode, ASCollectionDelegate {
     
     func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
         guard let delegate = delegate else { return }
-        delegate.didTapMedia(selectedIndex: indexPath.row)
+//        delegate.didTapMedia(selectedIndex: indexPath.row)
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {

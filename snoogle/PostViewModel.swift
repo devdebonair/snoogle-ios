@@ -18,11 +18,11 @@ protocol PostViewModelDelegate {
     func didUnsave(post: PostViewModel)
     func didUnvote(post: PostViewModel)
     func didTapComments(post: PostViewModel)
-    func didTapMedia(post: PostViewModel, index: Int)
-    func didTapMovie(post: PostViewModel)
+    func didTapMedia(media: CellNodeMedia)
+    func didTapMovie(movie: CellNodeMinimalMovie)
 }
 
-class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate, CellNodePostMovieDelegate {
+class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, CellNodeMediaDelegate {
     let meta: String
     let title: String
     let info: String
@@ -102,12 +102,6 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate, CellNodeP
         delegate.didTapComments(post: self)
     }
     
-    func didTapMedia(index: Int) {
-        guard let delegate = delegate else { return }
-        if !self.info.isEmpty { return delegate.didSelectPost(post: self) }
-        delegate.didTapMedia(post: self, index: index)
-    }
-    
     func cell(index: Int) -> ASCellNode {
         let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
         let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
@@ -163,9 +157,35 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate, CellNodeP
                 NSParagraphStyleAttributeName: paragraphStyleDescription
             ])
         
+        let post = CellNodePost(
+            meta: meta,
+            title: title,
+            subtitle: description,
+            media: self.media,
+            vote: vote,
+            saved: saved,
+            numberOfComments: numberOfComments)
+        self.cell = post
         
+        post.textMeta.attributedText = meta
+        post.textTitle.attributedText = title
+        post.media = self.media
+        post.textSubtitle.attributedText = description
+        post.textSubtitle.maximumNumberOfLines = 5
+        post.tagItems = tags
         
-        if let hint = hint, hint == .link {
+        guard let hint = hint else { return post }
+        
+        switch hint {
+            
+        case .movie:
+            if let movie = self.media.first as? Movie {
+                let movieNode = CellNodeMinimalMovie(media: movie)
+                post.add(attachment: movieNode)
+                movieNode.delegate = self
+            }
+            
+        case .link:
             let paragraphStyleLinkTitle = NSMutableParagraphStyle()
             paragraphStyleLinkTitle.lineSpacing = linkTitleLineSpacing
             
@@ -187,46 +207,42 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostDelegate, CellNodeP
                     NSForegroundColorAttributeName: linkSubtitleColor,
                     NSParagraphStyleAttributeName: paragraphStyleLinkSubtitle
                 ])
+            let linkView = CellNodeLink(didLoad: { (cell) in
+                let tap = UITapGestureRecognizer(target: self, action: #selector(self.didTapLink))
+                cell.view.addGestureRecognizer(tap)
+            })
+            linkView.preview = self.media.first
+            linkView.title = linkTitle
+            linkView.subtitle = linkSubtitle
+            let linkInset = UIEdgeInsets(top: 0, left: post.INSET_PADDING, bottom: post.INSET_PADDING, right: post.INSET_PADDING)
+            let linkWithInset = ASInsetLayoutSpec(insets: linkInset, child: linkView)
+            post.add(attachment: linkWithInset)
             
-            let post = CellNodePostLink(
-                meta: meta,
-                title: title,
-                subtitle: description,
-                media: self.media.first,
-                vote: vote,
-                saved: saved,
-                linkTitle: linkTitle,
-                linkSubtitle: linkSubtitle)
-            
-            post.delegate = self
-            post.tagItems = tags
-            self.cell = post
-            return post
+        default:
+            if !media.isEmpty {
+                if media.count > 1 {
+                    let slider = CellNodeMediaAlbum(media: media)
+                    let inset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+                    let insetLayout = ASInsetLayoutSpec(insets: inset, child: slider)
+                    slider.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: post.INSET_PADDING, bottom: 0, right: post.INSET_PADDING)
+                    post.add(attachment: insetLayout)
+                }
+                if let media = self.media.first, self.media.count == 1 {
+                    let mediaView = CellNodeMedia(media: media)
+                    mediaView.delegate = self
+                    post.add(attachment: mediaView)
+                }
+            }
         }
         
-        if let hint = hint, hint == .movie, let movie = self.media.first as? Movie {
-            let post = CellNodePostMovie(meta: meta, title: title, subtitle: description, media: movie, vote: vote, saved: saved)
-            self.cell = post
-            post.delegate = self
-            post.delegateMovie = self
-            return post
-        }
-        
-        let post = CellNodePost(
-            meta: meta,
-            title: title,
-            subtitle: description,
-            media: self.media,
-            vote: vote,
-            saved: saved,
-            numberOfComments: numberOfComments)
-        post.tagItems = tags
-        post.delegate = self
-        self.cell = post
         return post
     }
     
-    func didTapMovie() {
-        self.delegate?.didTapMovie(post: self)
+    func didTapMovie(movie: CellNodeMinimalMovie) {
+        self.delegate?.didTapMovie(movie: movie)
+    }
+    
+    func didTapMedia(media: CellNodeMedia) {
+        self.delegate?.didTapMedia(media: media)
     }
 }

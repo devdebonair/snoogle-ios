@@ -24,7 +24,13 @@ class Media: Object, Mappable {
     dynamic var poster: String? = nil
     dynamic var gif: String? = nil
     dynamic var title: String? = nil
+    dynamic var logo: String = ""
+    dynamic var author: String? = nil
     
+    var urlLogo: URL? {
+        return URL(string: logo)
+    }
+
     var urlOrigin: URL? {
         return URL(string: url)
     }
@@ -80,5 +86,7 @@ class Media: Object, Mappable {
         poster  <- map["poster"]
         gif     <- map["gif"]
         title   <- map["title"]
+        author  <- map["author"]
+        logo    <- map["logo"]
     }
 }

@@ -28,7 +28,9 @@ extension PostViewModel {
                 toInsert.title = item.title
                 toInsert.url = item.urlOrigin
                 toInsert.poster = item.urlPoster
-                toInsert.info   = item.info
+                toInsert.info  = item.info
+                toInsert.logo = item.logo
+                toInsert.author = item.author
                 media.append(toInsert)
             }
         }
@@ -47,8 +49,8 @@ extension PostViewModel {
         if submission.isNSFW {
             let tagItem = TagViewModel()
             tagItem.text = "NSFW"
-            tagItem.colorText = .white
-            tagItem.colorBackground = UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+            tagItem.colorText = UIColor(colorLiteralRed: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
+            tagItem.colorBackground = UIColor(colorLiteralRed: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
             self.tags.append(tagItem)
         }
     }

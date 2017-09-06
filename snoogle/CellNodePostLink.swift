@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 import UIKit
 
-class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
+class CellNodePostLink: CellNode {
     
     let textMeta: ASTextNode
     let textTitle: ASTextNode
@@ -23,14 +23,12 @@ class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
     var tagsView: NodeSlide? = nil
     var tagItems = [ViewModelElement]()
     
-    var delegate: CellNodePostDelegate? = nil
-    
     init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: MediaElement? = nil, vote: VoteType, saved: Bool, numberOfComments: Int = 0, linkTitle: NSMutableAttributedString, linkSubtitle: NSMutableAttributedString) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
         separator = ASDisplayNode()
-        linkView = CellNodeLink(preview: media, title: linkTitle, subtitle: linkSubtitle)
+        linkView = CellNodeLink(didLoad: nil)
         actionBar = CellNodePostActionBar(vote: vote, saved: saved, numberOfComments: numberOfComments)
         
         self.media = media
@@ -41,9 +39,7 @@ class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
         textTitle.isLayerBacked = true
         textSubtitle.isLayerBacked = true
         separator.isLayerBacked = true
-        
-        actionBar.delegate = self
-        
+
         automaticallyManagesSubnodes = true
         
         textMeta.attributedText = meta
@@ -73,8 +69,8 @@ class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
     }
     
     func didTapLink(gesture: UITapGestureRecognizer) {
-        guard let delegate = delegate else { return }
-        delegate.didTapLink()
+//        guard let delegate = delegate else { return }
+//        delegate.didTapLink()
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -133,35 +129,5 @@ class CellNodePostLink: CellNode, CellNodePostActionBarDelegate {
             children: stackContainerElements)
         
         return stackContainer
-    }
-    
-    func didSave() {
-        guard let delegate = delegate else { return }
-        delegate.didSave()
-    }
-    
-    func didUnsave() {
-        guard let delegate = delegate else { return }
-        delegate.didUnsave()
-    }
-    
-    func didUnvote() {
-        guard let delegate = delegate else { return }
-        delegate.didUnvote()
-    }
-    
-    func didUpvote() {
-        guard let delegate = delegate else { return }
-        delegate.didUpvote()
-    }
-    
-    func didDownvote() {
-        guard let delegate = delegate else { return }
-        delegate.didDownvote()
-    }
-    
-    func didTapComments() {
-        guard let delegate = delegate else { return }
-        delegate.didTapComments()
     }
 }

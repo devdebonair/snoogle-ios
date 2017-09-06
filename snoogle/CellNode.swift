@@ -37,7 +37,10 @@ class CellNode: ASCellNode {
         }
     }
     
+    func willBuildLayout(constrainedSize: ASSizeRange) {}
+    
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        self.willBuildLayout(constrainedSize: constrainedSize)
         let contentLayout = ASInsetLayoutSpec(insets: inset, child: buildLayout(constrainedSize: constrainedSize))
         contentLayout.style.width = ASDimension(unit: .fraction, value: 1.0)
         if let separator = separator {

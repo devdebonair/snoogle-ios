@@ -15,10 +15,11 @@ import Hero
 class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSource, ASPagerDelegate {
     
     private var isInitialAppearance = true
-    
+    var panGR: UIPanGestureRecognizer!
     let media: [MediaElement]
     let pagerNode: ASPagerNode
-    
+    var mediaInTransition: CellNodeMedia? = nil
+    fileprivate var shouldTransition = false
     var startingIndex: Int = 0
     
     let buttonClose = ASButtonNode()
@@ -33,7 +34,7 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         layout.sectionInset = .zero
         
         // TODO: https://stackoverflow.com/questions/42486960/uicollectionview-horizontal-paging-with-space-between-pages
-        layout.minimumLineSpacing = 0.0
+        layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0.0
         
         pagerNode = ASPagerNode(collectionViewLayout: layout)
@@ -53,17 +54,42 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.pagerNode.isHidden = false
     }
 
     @objc private func didTapClose() {
-        self.dismiss(animated: true, completion: nil)
+        self.hero_dismissViewController()
+    }
+    
+    @objc func pan() {
+        let translation = panGR.translation(in: nil)
+        let progress = translation.y.magnitude / 2 / self.pagerNode.bounds.height
+        switch panGR.state {
+        case .began:
+            hero_dismissViewController()
+        case .changed:
+            Hero.shared.update(progress)
+            let currentPos = CGPoint(x: translation.x + pagerNode.view.center.x, y: translation.y + pagerNode.view.center.y)
+//            Hero.shared.apply(modifiers: [.position(currentPos)], to: mediaInTransition!.view)
+            mediaInTransition?.position = currentPos
+        default:
+            if progress + panGR.velocity(in: nil).y / pagerNode.bounds.height > 0.3 {
+                Hero.shared.finish()
+            } else {
+                Hero.shared.cancel()
+            }
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let totalXOffset = scrollView.contentSize.width - scrollView.frame.width
         let progress: Float = Float(scrollView.contentOffset.x) / Float(totalXOffset)
         actionBar.setProgress(progress)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.mediaInTransition = self.mediaForIndex(index: self.pagerNode.currentPageIndex)
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
@@ -108,6 +134,10 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         automaticallyAdjustsScrollViewInsets = false
         pagerNode.allowsAutomaticInsetsAdjustment = false
         pagerNode.view.alwaysBounceVertical = false
+        
+        panGR = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        panGR.delegate = self
+        self.pagerNode.view.addGestureRecognizer(panGR)
     }
     
     func pagerNode(_ pagerNode: ASPagerNode, constrainedSizeForNodeAt index: Int) -> ASSizeRange {
@@ -136,10 +166,10 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         super.viewWillAppear(animated)
         StatusBar.hide()
         pagerNode.frame = node.frame
-        
         if isInitialAppearance {
             pagerNode.reloadData {
                 self.pagerNode.scrollToPage(at: self.startingIndex, animated: false)
+                self.mediaInTransition = self.mediaForIndex(index: self.startingIndex)
             }
         }
         isInitialAppearance = false
@@ -154,3 +184,15 @@ class MediaCollectionController: ASViewController<ASDisplayNode>, ASPagerDataSou
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+extension MediaCollectionController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if self.media.count == 1 { return true }
+        return shouldTransition
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+

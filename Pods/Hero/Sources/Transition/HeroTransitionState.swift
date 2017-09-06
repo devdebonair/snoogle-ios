@@ -20,22 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-public class HeroIndependentController: HeroBaseController {
-  public override init() {
-    super.init()
-  }
+public enum HeroTransitionState: Int {
+  // Hero is able to start a new transition
+  case possible
 
-  public func transition(rootView: UIView, fromViews: [UIView], toViews: [UIView], completion: ((Bool) -> Void)? = nil) {
-    transitionContainer = rootView
-    completionCallback = completion
+  // UIKit has notified Hero about a pending transition.
+  // Hero haven't started preparing.
+  case notified
 
-    prepareForTransition()
-    context.defaultCoordinateSpace = .sameParent
-    context.set(fromViews: fromViews, toViews: toViews)
-    processContext()
-    prepareForAnimation()
-    animate()
-  }
+  // Hero's `start` method has been called. Preparing the animation.
+  case starting
+
+  // Hero's `animate` method has been called. Animation has started.
+  case animating
+
+  // Hero's `complete` method has been called. Transition is ended or cancelled. Hero is doing cleanup.
+  case completing
 }

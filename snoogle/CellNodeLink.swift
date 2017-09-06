@@ -9,27 +9,19 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeLink: ASCellNode {
+class CellNodeLink: CellNode {
     
-    let preview: MediaElement?
-    let title: NSMutableAttributedString?
-    let subtitle: NSMutableAttributedString?
+    var preview: MediaElement?
+    var title: NSMutableAttributedString?
+    var subtitle: NSMutableAttributedString?
     
-    var inset: UIEdgeInsets = .zero
-    
-    init(preview: MediaElement? = nil, title: NSMutableAttributedString? = nil, subtitle: NSMutableAttributedString? = nil){
-        self.preview = preview
-        self.title = title
-        self.subtitle = subtitle
-        
-        super.init()
-        
+    override init(didLoad: ((CellNode)->Void)? = nil){
+        super.init(didLoad: didLoad)
         self.selectionStyle = .gray
-        
-        automaticallyManagesSubnodes = true
     }
     
     override func didLoad() {
+        super.didLoad()
         self.borderWidth = 0.6
         let colorValue: Float = 220/255
         self.borderColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0).cgColor
@@ -42,7 +34,7 @@ class CellNodeLink: ASCellNode {
         self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let textTitle = ASTextNode()
         let textSubtitle = ASTextNode()
         
@@ -73,7 +65,6 @@ class CellNodeLink: ASCellNode {
         let stackContainer = ASStackLayoutSpec(direction: .horizontal, spacing: 0.0, justifyContent: .start, alignItems: .start, children: [media, stackTextWithInset])
         stackContainer.style.width = ASDimension(unit: .fraction, value: 1.0)
         
-        return ASInsetLayoutSpec(insets: inset, child: stackContainer)
+        return stackContainer
     }
-    
 }

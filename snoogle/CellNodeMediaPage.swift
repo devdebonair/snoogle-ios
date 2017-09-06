@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeMediaPage: ASCellNode {
+class CellNodeMediaPage: CellNode {
     let media: MediaElement
     let cellMedia: CellNodeMedia
     
@@ -17,10 +17,9 @@ class CellNodeMediaPage: ASCellNode {
         self.media = media
         self.cellMedia = CellNodeMedia(media: media)
         super.init()
-        automaticallyManagesSubnodes = true
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         return ASCenterLayoutSpec(centeringOptions: [.Y], sizingOptions: [], child: cellMedia)
     }
 }

@@ -28,14 +28,29 @@ class SettingsAccountController: CollectionController, SettingsAccountStoreDeleg
     }
     
     func didChangeActiveAccount(account: Account?) {
-        print("we changed active account")
+        for model in self.models {
+            guard let model = model as? SettingsTextIconStateViewModel else { continue }
+            if model.text.trimmedLowercase() == account?.name.trimmedLowercase(), let selectedCell = model.cell {
+                print("we are here")
+                selectedCell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(UIColor.red)
+            }
+        }
     }
     
-    func didChangeAccounts(accounts: List<Account>) {
-        let models = accounts.map { (account) -> SettingsTextViewModel in
-            let model = SettingsTextViewModel()
+    func didChangeAccounts(accounts: List<Account>, active: Account?) {
+        let models = accounts.map { (account) -> SettingsTextIconStateViewModel in
+            let model = SettingsTextIconStateViewModel()
+            model.imageEnabled = #imageLiteral(resourceName: "check")
+            model.imageDisabled = nil
             model.text = account.name.trimmedLowercase()
+            if account.name.trimmedLowercase() == active?.name.trimmedLowercase() {
+                model.isSelected = true
+            }
             model.didSelect = {
+                for viewModel in self.models {
+                    guard let viewModel = viewModel as? SettingsTextIconStateViewModel, viewModel != model else { continue }
+                    viewModel.isSelected = false
+                }
                 self.store.setAccount(name: account.name)
             }
             return model

@@ -12,6 +12,7 @@ import AsyncDisplayKit
 class SettingsTextViewModel: NSObject, ViewModelElement {
     var text: String = ""
     var didSelect: (()->Void)? = nil
+    var cell: CellNode? = nil
     
     deinit {
         didSelect = nil
@@ -34,6 +35,7 @@ class SettingsTextViewModel: NSObject, ViewModelElement {
         cell.separatorColor = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 0.3)
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         cell.backgroundColor = .white
+        self.cell = cell
         return cell
     }
     

@@ -12,7 +12,7 @@ import RealmSwift
 
 protocol SettingsAccountStoreDelegate {
     func didChangeActiveAccount(account: Account?)
-    func didChangeAccounts(accounts: List<Account>)
+    func didChangeAccounts(accounts: List<Account>, active: Account?)
 }
 
 class SettingsAccountStore {
@@ -26,7 +26,7 @@ class SettingsAccountStore {
             guard let app = realm.objects(AppUser.self).first else { return }
             self.accountsToken = app.accounts.addNotificationBlock({ (_) in
                 guard let delegate = self.delegate else { return }
-                delegate.didChangeAccounts(accounts: app.accounts)
+                delegate.didChangeAccounts(accounts: app.accounts, active: app.activeAccount)
             })
             self.activeAccountToken = app.activeAccount?.addNotificationBlock({ (_) in
                 guard let delegate = self.delegate else { return }

@@ -18,7 +18,7 @@ protocol CellNodePostActionBarDelegate {
     func didTapComments()
 }
 
-class CellNodePostActionBar: ASCellNode {
+class CellNodePostActionBar: CellNode {
     
     let colorUp = UIColor(colorLiteralRed: 255/255, green: 69/255, blue: 0, alpha: 1.0)
     let colorDown = UIColor(colorLiteralRed: 135/255, green: 135/255, blue: 1, alpha: 1.0)
@@ -170,7 +170,7 @@ class CellNodePostActionBar: ASCellNode {
         delegate.didTapComments()
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let buttonSize: CGFloat = 16
         buttonSave.style.height = ASDimension(unit: .points, value: buttonSize)
         buttonUpVote.style.height = ASDimension(unit: .points, value: buttonSize)

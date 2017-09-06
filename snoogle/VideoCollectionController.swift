@@ -50,12 +50,12 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
         case .began:
             hero_dismissViewController()
         case .changed:
-            Hero.shared.update(progress: Double(progress))
+            Hero.shared.update(progress)
             let currentPos = CGPoint(x: translation.x + node.view.center.x, y: translation.y + node.view.center.y)
             Hero.shared.apply(modifiers: [.position(currentPos)], to: videoNode.view)
         default:
             if progress + panGR.velocity(in: nil).y / node.bounds.height > 0.3 {
-                Hero.shared.end()
+                Hero.shared.finish()
             } else {
                 Hero.shared.cancel()
             }

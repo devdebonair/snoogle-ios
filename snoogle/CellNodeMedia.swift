@@ -10,7 +10,7 @@ import Foundation
 import AsyncDisplayKit
 
 protocol CellNodeMediaDelegate {
-    func didTapMedia(selectedIndex: Int)
+    func didTapMedia(media: CellNodeMedia)
 }
 
 class CellNodeMedia: CellNode {
@@ -20,21 +20,20 @@ class CellNodeMedia: CellNode {
     var initialTime: CMTime? = nil
     var delegate: CellNodeMediaDelegate? = nil {
         didSet {
-            guard let _ = delegate else { return }
-            if let mediaView = mediaView as? ASMultiplexImageNode {
-                mediaView.isLayerBacked = false
+            DispatchQueue.main.async {
+                guard let _ = self.delegate else { self.mediaView.isLayerBacked = true; return }
+                self.mediaView.isLayerBacked = false
+                let tap = UITapGestureRecognizer(target: self, action: #selector(self.didTapMedia(gesture:)))
+                self.view.addGestureRecognizer(tap)
             }
-            mediaView.addTarget(self, action: #selector(didTapMedia(gesture:)), forControlEvents: .touchUpInside)
         }
     }
     
-    init(media: MediaElement, inset: UIEdgeInsets = .zero) {
+    init(media: MediaElement, didLoad: ((CellNode)->Void)? = nil) {
         self.media = media
         
-        super.init()
-        
-        self.inset = inset
-        
+        super.init(didLoad: didLoad)
+
         if let media = media as? Photo {
             // Specify order of sizes
             let urlKeys: [PhotoSizeType] = [.huge, .large, .medium, .small]
@@ -81,8 +80,7 @@ class CellNodeMedia: CellNode {
     }
     
     func didTapMedia(gesture: UITapGestureRecognizer) {
-        guard let delegate = delegate else { return }
-        delegate.didTapMedia(selectedIndex: 0)
+        delegate?.didTapMedia(media: self)
     }
     
     override func didEnterDisplayState() {

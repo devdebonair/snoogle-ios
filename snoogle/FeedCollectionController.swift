@@ -273,21 +273,16 @@ extension FeedCollectionController: PostViewModelDelegate {
         self.navigationController?.present(controller, animated: true)
     }
     
-    func didTapMedia(post: PostViewModel, index: Int) {
-        let controller = MediaCollectionController(media: post.media)
-        controller.startingIndex = index
-        let cellNode = controller.mediaForIndex(index: index)
-        let mediaIndexPath = IndexPath(row: index, section: 0)
-        if let cellNode = cellNode, let postCell = post.cell as? CellNodePost {
-            guard let albumCell = postCell.mediaView else { return }
-            guard let tappedMediaCell = albumCell.collectionNode.nodeForItem(at: mediaIndexPath) as? CellNodeMedia else { return }
-            let heroID = UUID().uuidString
-            cellNode.view.heroID = heroID
-            tappedMediaCell.view.heroID = heroID
-            cellNode.view.heroModifiers = [HeroModifier.duration(0.4)]
-            self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
-            self.navigationController?.present(controller, animated: true, completion: nil)
-        }
+    func didTapMedia(media: CellNodeMedia) {
+        let controller = MediaCollectionController(media: [media.media])
+        controller.startingIndex = 0
+        let cellNode = controller.mediaForIndex(index: 0)
+        let heroID = UUID().uuidString
+        cellNode?.view.heroID = heroID
+        media.view.heroID = heroID
+        cellNode?.view.heroModifiers = [HeroModifier.duration(0.4)]
+        self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
+        self.navigationController?.present(controller, animated: true, completion: nil)
     }
     
     func didUpvote(post: PostViewModel) {
@@ -310,14 +305,13 @@ extension FeedCollectionController: PostViewModelDelegate {
         store.unvote(id: post.id)
     }
     
-    func didTapMovie(post: PostViewModel) {
-        guard let cell = post.cell as? CellNodePostMovie else { return }
+    func didTapMovie(movie: CellNodeMinimalMovie) {
         let id = UUID().uuidString
-        cell.movieNode.view.heroID = id
-        let controller = VideoCollectionController(movie: cell.movieNode.media)
+        movie.view.heroID = id
+        let controller = VideoCollectionController(movie: movie.media)
         controller.videoNode.view.heroID = id
-        controller.videoNode.player.asset = cell.movieNode.player.asset
-        controller.videoNode.frame.size = cell.movieNode.frame.size
+        controller.videoNode.player.asset = movie.movieNode.player.asset
+        controller.videoNode.frame.size = movie.frame.size
         controller.videoNode.view.heroModifiers = [HeroModifier.duration(0.4)]
         self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
         self.navigationController?.present(controller, animated: true, completion: nil)
