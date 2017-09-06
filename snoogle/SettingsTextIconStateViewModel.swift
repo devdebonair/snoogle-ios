@@ -1,5 +1,5 @@
 //
-//  SettingsTextIconViewModel.swift
+//  SettingsTextIconStateViewModel.swift
 //  snoogle
 //
 //  Created by Vincent Moore on 8/18/17.
