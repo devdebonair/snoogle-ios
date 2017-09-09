@@ -106,16 +106,19 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
         let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
         let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
         
-        let titleFont = UIFont.systemFont(ofSize: 16, weight: UIFontWeightRegular)
-        let titleLineSpacing: CGFloat = 4.0
+        let titleColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+//        let titleFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightBold)
+        let titleFont = UIFont(name: "Charter-Bold", size: 16)!
+        let titleLineSpacing: CGFloat = 2.0
         
         let metaFont = UIFont.systemFont(ofSize: 10)
         let metaColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let metaLineSpacing: CGFloat = 2.0
         
         let descriptionFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightRegular)
-        let descriptionColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
-        let descriptionLineSpacing: CGFloat = 4.0
+//        let descriptionFont = UIFont(name: "Charter", size: 14)!
+        let descriptionColor = UIColor(colorLiteralRed: 110/255, green: 110/255, blue: 110/255, alpha: 1.0)
+        let descriptionLineSpacing: CGFloat = 2.0
         
         let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
         let linkTitleColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
@@ -142,7 +145,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
             string: self.title,
             attributes: [
                 NSFontAttributeName: (isSticky ? stickyFont : titleFont),
-                NSForegroundColorAttributeName: (isSticky ? stickyColor : UIColor.black),
+                NSForegroundColorAttributeName: (isSticky ? stickyColor : titleColor),
                 NSParagraphStyleAttributeName: paragraphStyleTitle
             ])
         
@@ -165,6 +168,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
             vote: vote,
             saved: saved,
             numberOfComments: numberOfComments)
+        
         self.cell = post
         
         post.textMeta.attributedText = meta
@@ -180,9 +184,45 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
             
         case .movie:
             if let movie = self.media.first as? Movie {
-                let movieNode = CellNodeMinimalMovie(media: movie)
-                post.add(attachment: movieNode)
-                movieNode.delegate = self
+                let photo = Photo(width: 1280, height: 720, url: nil, urlSmall: nil, urlMedium: nil, urlLarge: nil, urlHuge: movie.poster, info: movie.info)
+                let posterNode = CellNodeMovieMetaInfo(photo: photo)
+                posterNode.imageNodePlay.imageModificationBlock = ASImageNodeTintColorModificationBlock(.white)
+                posterNode.imageNodeLogo.url = movie.logo
+                let logoSize: CGFloat = 35
+                posterNode.imageNodeLogo.style.preferredSize = CGSize(width: logoSize, height: logoSize)
+                
+                posterNode.textNodeTitle.attributedText = NSMutableAttributedString(
+                    string: movie.title ?? "",
+                    attributes: [
+                        NSForegroundColorAttributeName: titleColor,
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightRegular)
+                    ])
+                
+                posterNode.textNodeDomain.attributedText = NSMutableAttributedString(
+                    string: self.domain.uppercased(),
+                    attributes: [
+                        NSForegroundColorAttributeName: titleColor,
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 11, weight: UIFontWeightBold)
+                    ])
+                
+                posterNode.textNodeAuthor.attributedText = NSMutableAttributedString(
+                    string: movie.author ?? "",
+                    attributes: [
+                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 100/255, green: 105/255, blue: 130/255, alpha: 1.0),
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
+                    ])
+                
+                posterNode.inset = UIEdgeInsets(top: 0, left: 12, bottom: 10, right: 12)
+                let movieMargin: CGFloat = 4
+                posterNode.cellNodeMoviePoster.inset.left = -posterNode.INSET_FOR_STACK + -posterNode.inset.left + movieMargin
+                posterNode.cellNodeMoviePoster.inset.right = -posterNode.INSET_FOR_STACK + -posterNode.inset.right + movieMargin
+                posterNode.cellNodeMoviePoster.clipsToBounds = false
+                posterNode.clipsToBounds = false
+                posterNode.backgroundNode.borderWidth = 1.0
+                let color: Float = 220/255
+                posterNode.backgroundNode.borderColor = UIColor(colorLiteralRed: color, green: color, blue: color, alpha: 1.0).cgColor
+                
+                post.add(attachment: posterNode)
             }
             
         case .link:

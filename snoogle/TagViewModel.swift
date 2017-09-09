@@ -26,7 +26,7 @@ class TagViewModel: NSObject, ViewModelElement {
                 NSFontAttributeName: UIFont.systemFont(ofSize: 10, weight: UIFontWeightMedium)
         ])
         let cell = CellNodeText { (cell) in
-            cell.cornerRadius = 3.0
+//            cell.cornerRadius = 3.0
         }
         cell.textNode.attributedText = attributes
         cell.inset = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)

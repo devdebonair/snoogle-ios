@@ -17,6 +17,6 @@ class Movie: NSObject, MediaElement {
     var info: String?
     var title: String?
     var author: String?
-    var logo: String?
+    var logo: URL?
 }
 

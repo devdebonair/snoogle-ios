@@ -19,7 +19,16 @@ struct AlbumSlideViewModel: ViewModelElement {
     }
     
     func cell(index: Int) -> ASCellNode {
-        let mediaItem = media[index]
+        var mediaItem = media[index]
+        // Force square aspect ratio for images that may stretch over screen
+        if mediaItem.width > mediaItem.height {
+            if let item = mediaItem as? Video {
+                mediaItem = Video(width: 1, height: 1, url: item.url, poster: item.poster, gif: item.gif, info: item.info)
+            }
+            if let item = mediaItem as? Photo {
+                mediaItem = Photo(width: 1, height: 1, url: item.url, urlSmall: item.urlSmall, urlMedium: item.urlMedium, urlLarge: item.urlLarge, urlHuge: item.urlHuge, info: item.info)
+            }
+        }
         let cell = CellNodeMedia(media: mediaItem)
         if isStyled {            
             cell.mediaView.borderColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0).cgColor

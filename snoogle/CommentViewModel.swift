@@ -20,7 +20,8 @@ class CommentViewModel: NSObject, ViewModelElement {
     func cell(index: Int) -> ASCellNode {
         let comment = comments[index]
         let fontSizeMeta: CGFloat = 10
-        let fontSizeBody: CGFloat = 13
+        let fontSizeBody: CGFloat = 14
+        let fontColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         
         let metaAttribute = NSMutableAttributedString(
             string: comment.meta,
@@ -36,7 +37,7 @@ class CommentViewModel: NSObject, ViewModelElement {
             string: comment.body,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: fontSizeBody),
-                NSForegroundColorAttributeName: UIColor.darkText,
+                NSForegroundColorAttributeName: fontColor,
                 NSParagraphStyleAttributeName: paragraph
             ])
         

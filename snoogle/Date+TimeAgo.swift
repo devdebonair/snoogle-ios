@@ -21,19 +21,15 @@ extension Date {
             return shortened ? "\(components.year!)y" : "\(components.year!) years ago"
         } else if (components.year! >= 1){
             if (numericDates){
-                return "1 year ago"
-            } else if shortened {
-                return "1y"
+                return shortened ? "1y" : "1 year ago"
             } else {
                 return "Last year"
             }
         } else if (components.month! >= 2) {
-            return "\(components.month!) months ago"
+            return shortened ? "\(components.month!)M" : "\(components.month!) months ago"
         } else if (components.month! >= 1){
             if (numericDates){
-                return "1 month ago"
-            }  else if shortened {
-                return "1m"
+                return shortened ? "1m" : "1 month ago"
             } else {
                 return "Last month"
             }
@@ -41,9 +37,7 @@ extension Date {
             return shortened ? "\(components.weekOfYear!)w" : "\(components.weekOfYear!) weeks ago"
         } else if (components.weekOfYear! >= 1){
             if (numericDates){
-                return "1 week ago"
-            }  else if shortened {
-                return "1w"
+                return shortened ? "1w" : "1 week ago"
             } else {
                 return "Last week"
             }
@@ -51,9 +45,7 @@ extension Date {
             return shortened ? "\(components.day!)d" : "\(components.day!) days ago"
         } else if (components.day! >= 1){
             if (numericDates){
-                return "1 day ago"
-            }  else if shortened {
-                return "1d"
+                return shortened ? "1d" : "1 day ago"
             } else {
                 return "Yesterday"
             }
@@ -61,9 +53,7 @@ extension Date {
             return shortened ? "\(components.hour!)h" : "\(components.hour!) hours ago"
         } else if (components.hour! >= 1){
             if (numericDates){
-                return "1 hour ago"
-            }  else if shortened {
-                return "1h"
+                return shortened ? "1h" : "1 hour ago"
             } else {
                 return "An hour ago"
             }
@@ -71,16 +61,12 @@ extension Date {
             return shortened ? "\(components.minute!)m" : "\(components.minute!) minutes ago"
         } else if (components.minute! >= 1){
             if (numericDates){
-                return "1 minute ago"
-            }  else if shortened {
-                return "1m"
+                return shortened ? "1m" : "1 minute ago"
             } else {
                 return "A minute ago"
             }
         } else if (components.second! >= 3) {
             return shortened ? "\(components.second!)s" : "\(components.second!) seconds ago"
-        }  else if shortened {
-            return "\(components.second!)s"
         } else {
             return "Just now"
         }

@@ -82,7 +82,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
     
     func cell(index: Int) -> ASCellNode {
         let cellType = cellOrder[index]
-        let padding: CGFloat = 25
+        let padding: CGFloat = 20
         
         switch cellType {
         case .meta:
@@ -108,8 +108,9 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             let cell = CellNodeMediaAlbum(media: self.media)
             return cell
         case .title:
-            //        let titleFont = UIFont(name: "Lora-Bold", size: 22)!
-            let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
+                    let titleFont = UIFont(name: "Charter-Bold", size: 22)!
+                    let titleColor = UIColor.darkText
+//            let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
             let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             
             let paragraphStyleTitle = NSMutableParagraphStyle()
@@ -119,7 +120,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                 string: self.title,
                 attributes: [
                     NSFontAttributeName: titleFont,
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: titleColor,
                     NSParagraphStyleAttributeName: paragraphStyleTitle
                 ])
             

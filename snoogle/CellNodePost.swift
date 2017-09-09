@@ -11,7 +11,7 @@ import AsyncDisplayKit
 import UIKit
 
 class CellNodePost: CellNode {
-    let INSET_PADDING: CGFloat = 20.0
+    var INSET_PADDING: CGFloat = 20.0
     
     var media = [MediaElement]()
     
@@ -51,8 +51,8 @@ class CellNodePost: CellNode {
     
     override func didLoad() {
         super.didLoad()
-        self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
+        self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.clipsToBounds = false
         self.shadowOpacity = 0.20
         self.shadowRadius = 1.0
@@ -87,7 +87,7 @@ class CellNodePost: CellNode {
         
         let insetLayoutTextMeta = ASInsetLayoutSpec(insets: insetForNoneAttachments, child: textMeta)
         let insetLayoutTextTitle = ASInsetLayoutSpec(insets: insetForNoneAttachments, child: textTitle)
-        
+
         contentLayoutElements.append(insetLayoutTextMeta)
         contentLayoutElements.append(insetLayoutTextTitle)
         

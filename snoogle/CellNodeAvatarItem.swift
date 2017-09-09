@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class CellNodeAvatarItem: ASCellNode {
+class CellNodeAvatarItem: CellNode {
     
     let textNodeTitle = ASTextNode()
     let textNodeSubtitle = ASTextNode()
@@ -52,7 +52,7 @@ class CellNodeAvatarItem: ASCellNode {
         imageNode.url = url
     }
     
-    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+    override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         imageNode.style.preferredSize = CGSize(width: imageHeight, height: imageHeight)
         
         let textStack = ASStackLayoutSpec(
@@ -71,5 +71,4 @@ class CellNodeAvatarItem: ASCellNode {
         
         return ASInsetLayoutSpec(insets: UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20), child: layout)
     }
-    
 }

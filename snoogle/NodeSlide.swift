@@ -42,7 +42,7 @@ class NodeSlide: ASDisplayNode {
     }
     
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        return ASInsetLayoutSpec(insets: .zero, child: collectionNode)
+        return ASWrapperLayoutSpec(layoutElement: collectionNode)
     }
 }
 

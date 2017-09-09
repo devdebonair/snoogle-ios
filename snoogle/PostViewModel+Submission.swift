@@ -29,7 +29,7 @@ extension PostViewModel {
                 toInsert.url = item.urlOrigin
                 toInsert.poster = item.urlPoster
                 toInsert.info  = item.info
-                toInsert.logo = item.logo
+                toInsert.logo = item.urlLogo
                 toInsert.author = item.author
                 media.append(toInsert)
             }
