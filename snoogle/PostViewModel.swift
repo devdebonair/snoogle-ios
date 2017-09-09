@@ -195,7 +195,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
                     string: movie.title ?? "",
                     attributes: [
                         NSForegroundColorAttributeName: titleColor,
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightRegular)
+                        NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular)
                     ])
                 
                 posterNode.textNodeDomain.attributedText = NSMutableAttributedString(
