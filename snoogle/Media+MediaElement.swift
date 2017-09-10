@@ -19,7 +19,16 @@ extension Media {
         case .video:
             return Video(width: self.width, height: self.height, url: self.urlOrigin, poster: self.urlPoster, gif: self.urlGif, info: self.info)
         case .movie:
-            return Video(width: self.width, height: self.height, url: self.urlOrigin, poster: self.urlPoster, gif: self.urlGif, info: self.info)
+            let movie = Movie()
+            movie.width = self.width
+            movie.height = self.height
+            movie.url = self.urlOrigin
+            movie.poster = self.urlPoster
+            movie.info = self.info
+            movie.title = self.title
+            movie.author = self.author
+            movie.logo = self.urlLogo
+            return movie
         }
     }
 }

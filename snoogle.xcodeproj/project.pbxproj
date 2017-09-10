@@ -82,6 +82,8 @@
 		563B97241F63994E008B8580 /* CellNodeMoviePoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563B97231F63994E008B8580 /* CellNodeMoviePoster.swift */; };
 		563B97261F63ABEB008B8580 /* CellNodeMovieMetaInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563B97251F63ABEB008B8580 /* CellNodeMovieMetaInfo.swift */; };
 		563B97281F63ADAC008B8580 /* CellNodeAvatarMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563B97271F63ADAC008B8580 /* CellNodeAvatarMeta.swift */; };
+		563B972A1F658122008B8580 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563B97291F658121008B8580 /* Slider.swift */; };
+		563B972C1F65848A008B8580 /* UIImage+Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563B972B1F65848A008B8580 /* UIImage+Scale.swift */; };
 		563D037F1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */; };
 		563D03831E257A8B00BD24D4 /* CellNodeMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */; };
 		56486D201EF57BCA00E68B53 /* ArticleMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */; };
@@ -289,6 +291,8 @@
 		563B97231F63994E008B8580 /* CellNodeMoviePoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMoviePoster.swift; sourceTree = "<group>"; };
 		563B97251F63ABEB008B8580 /* CellNodeMovieMetaInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeMovieMetaInfo.swift; sourceTree = "<group>"; };
 		563B97271F63ADAC008B8580 /* CellNodeAvatarMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeAvatarMeta.swift; sourceTree = "<group>"; };
+		563B97291F658121008B8580 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		563B972B1F65848A008B8580 /* UIImage+Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Scale.swift"; sourceTree = "<group>"; };
 		563D037E1E24C69C00BD24D4 /* CellNodeMediaAlbum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMediaAlbum.swift; sourceTree = "<group>"; };
 		563D03821E257A8B00BD24D4 /* CellNodeMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellNodeMedia.swift; sourceTree = "<group>"; };
 		56486D1F1EF57BCA00E68B53 /* ArticleMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMeta.swift; sourceTree = "<group>"; };
@@ -596,6 +600,7 @@
 				562586721E1977580006E593 /* String+Integer+Subscript.swift */,
 				56E32E251F2B997C00BB8072 /* UISearchBar+BorderColor.swift */,
 				56D907BF1F42046C0028FAFB /* String+Trim.swift */,
+				563B972B1F65848A008B8580 /* UIImage+Scale.swift */,
 			);
 			name = extensions;
 			sourceTree = "<group>";
@@ -700,6 +705,7 @@
 		563D037D1E24C66F00BD24D4 /* nodes */ = {
 			isa = PBXGroup;
 			children = (
+				563B97291F658121008B8580 /* Slider.swift */,
 				562BD4591E26983600F1DC01 /* NodeSlide.swift */,
 				56FBFD871F2FC91400A777AD /* NodePager.swift */,
 			);
@@ -1209,6 +1215,7 @@
 				566DD88E1F21752C005049EB /* FrameTransition.swift in Sources */,
 				56E8D0EB1F349D2700B3332B /* SubredditAboutViewModel.swift in Sources */,
 				56E32E2C1F2D231100BB8072 /* InsetSectionController.swift in Sources */,
+				563B972C1F65848A008B8580 /* UIImage+Scale.swift in Sources */,
 				56938F681EF80DDA0026565F /* MarkdownDelete.swift in Sources */,
 				56938F641EF808810026565F /* MarkdownInlineElement.swift in Sources */,
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
@@ -1236,6 +1243,7 @@
 				560475921F23CAA1009CEFAD /* CellNodeMoreChevron.swift in Sources */,
 				5651C07B1EDFC555001F3FE9 /* MenuUserProfileViewModel.swift in Sources */,
 				5605292D1F257DF90046D946 /* SearchStore.swift in Sources */,
+				563B972A1F658122008B8580 /* Slider.swift in Sources */,
 				56BAA3701F4C9852008DA246 /* SettingsAccountStore.swift in Sources */,
 				56ABC6191EF8136300DC3B46 /* MarkdownEmphasis.swift in Sources */,
 				56E8D0E51F33564C00B3332B /* SubredditPageCollectionController.swift in Sources */,

@@ -9,6 +9,10 @@
 import Foundation
 import AsyncDisplayKit
 
+protocol CellNodeMovieMetaInfoDelegate {
+    func didTapPoster(poster: CellNodeMoviePoster)
+}
+
 class CellNodeMovieMetaInfo: CellNode {
     let INSET_FOR_STACK: CGFloat = 10
     
@@ -29,9 +33,21 @@ class CellNodeMovieMetaInfo: CellNode {
         return self.cellNodeMoviePoster.imageNodePlay
     }
     
+    var delegate: CellNodeMovieMetaInfoDelegate? = nil
+    
     init(photo: Photo, didLoad: ((CellNode) -> Void)? = nil) {
         self.cellNodeMoviePoster = CellNodeMoviePoster(photo: photo)
         super.init(didLoad: didLoad)
+    }
+    
+    override func didLoad() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPoster))
+        self.cellNodeMoviePoster.view.addGestureRecognizer(tap)
+    }
+    
+    func didTapPoster() {
+        guard let delegate = delegate else { return }
+        delegate.didTapPoster(poster: self.cellNodeMoviePoster)
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -40,10 +56,14 @@ class CellNodeMovieMetaInfo: CellNode {
             spacing: 12.0,
             justifyContent: .start,
             alignItems: .start,
-            children: [
-                cellNodeAvatarItem,
-                textNodeTitle,
-                cellNodeMoviePoster])
+            children: [])
+        
+        stackLayout.children?.append(cellNodeAvatarItem)
+        if let titleText = textNodeTitle.attributedText, !titleText.string.isEmpty {
+            stackLayout.children?.append(textNodeTitle)
+        }
+        stackLayout.children?.append(cellNodeMoviePoster)
+        
         let insetForStack = UIEdgeInsets(top: INSET_FOR_STACK, left: INSET_FOR_STACK, bottom: INSET_FOR_STACK, right: INSET_FOR_STACK)
         let insetLayout = ASInsetLayoutSpec(insets: insetForStack, child: stackLayout)
         let backgroundLayout = ASBackgroundLayoutSpec(child: insetLayout, background: backgroundNode)

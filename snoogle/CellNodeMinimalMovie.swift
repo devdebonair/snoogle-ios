@@ -30,7 +30,7 @@ class CellNodeMinimalMovie: CellNode, ASVideoNodeDelegate {
         buttonVolume.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.white)
         self.media = media
         
-        movieNode = CellNodeVideoPlayer(media: media, didLoad: nil)
+        movieNode = CellNodeVideoPlayer(size: .zero, didLoad: nil)
         movieNode.player.shouldAutoplay = true
         movieNode.player.muted = true
         movieNode.player.shouldAutorepeat = true

@@ -47,7 +47,6 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         self.store.delegate = self
         self.store.set(term: term, time: .week)
         self.title = term.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        pager.delegate = self
     }
     
     func didUpdateResults(result: SearchResult) {

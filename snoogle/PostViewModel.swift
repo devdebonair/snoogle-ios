@@ -19,10 +19,10 @@ protocol PostViewModelDelegate {
     func didUnvote(post: PostViewModel)
     func didTapComments(post: PostViewModel)
     func didTapMedia(media: CellNodeMedia)
-    func didTapMovie(movie: CellNodeMinimalMovie)
+    func didTapPoster(poster: CellNodeMoviePoster, movie: Movie, post: PostViewModel)
 }
 
-class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, CellNodeMediaDelegate {
+class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNodeMovieMetaInfoDelegate {
     let meta: String
     let title: String
     let info: String
@@ -212,6 +212,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
                     ])
                 
+                posterNode.delegate = self
+                
                 posterNode.inset = UIEdgeInsets(top: 0, left: 12, bottom: 10, right: 12)
                 let movieMargin: CGFloat = 4
                 posterNode.cellNodeMoviePoster.inset.left = -posterNode.INSET_FOR_STACK + -posterNode.inset.left + movieMargin
@@ -278,8 +280,9 @@ class PostViewModel: NSObject, ViewModelElement, CellNodePostMovieDelegate, Cell
         return post
     }
     
-    func didTapMovie(movie: CellNodeMinimalMovie) {
-        self.delegate?.didTapMovie(movie: movie)
+    func didTapPoster(poster: CellNodeMoviePoster) {
+        guard let delegate = delegate, let movie = self.media.first as? Movie else { return }
+        self.delegate?.didTapPoster(poster: poster, movie: movie, post: self)
     }
     
     func didTapMedia(media: CellNodeMedia) {

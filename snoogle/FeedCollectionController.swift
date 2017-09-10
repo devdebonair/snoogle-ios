@@ -305,16 +305,24 @@ extension FeedCollectionController: PostViewModelDelegate {
         store.unvote(id: post.id)
     }
     
-    func didTapMovie(movie: CellNodeMinimalMovie) {
-        let id = UUID().uuidString
-        movie.view.heroID = id
-        let controller = VideoCollectionController(movie: movie.media)
-        controller.videoNode.view.heroID = id
-        controller.videoNode.player.asset = movie.movieNode.player.asset
-        controller.videoNode.frame.size = movie.frame.size
-        controller.videoNode.view.heroModifiers = [HeroModifier.duration(0.4)]
-        self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
-        self.navigationController?.present(controller, animated: true, completion: nil)
+    func didTapPoster(poster: CellNodeMoviePoster, movie: Movie, post: PostViewModel) {
+        do {
+            let realm = try Realm()
+            let submission = realm.object(ofType: Submission.self, forPrimaryKey: post.id)
+            guard let guardedSubmission = submission else { return }
+            
+            let id = UUID().uuidString
+            poster.view.heroID = id
+            
+            let controller = VideoCollectionController(movie: movie, submission: guardedSubmission)
+            controller.videoNode.view.heroID = id
+            controller.videoNode.frame.size = poster.frame.size
+            controller.pager.view.heroModifiers = [.translate(y: UIScreen.main.bounds.height)]
+            self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
+            self.navigationController?.present(controller, animated: true, completion: nil)
+        } catch {
+            print(error)
+        }
     }
 }
 
