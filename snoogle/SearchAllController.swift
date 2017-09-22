@@ -12,7 +12,7 @@ import AsyncDisplayKit
 class SearchAllController: CollectionController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
     }
     
     func updateModels(models: [IGListDiffable]) {

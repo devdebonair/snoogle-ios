@@ -60,7 +60,9 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
             }
             if !result.photos.isEmpty {
                 let photos = result.photos.count >= 6 ? List<Submission>(result.photos[0..<6]) : result.photos
-                models.append(PhotoGridGroupViewModel(submissions: photos))
+                let model = PhotoGridGroupViewModel(submissions: photos)
+                model.delegate = self
+                models.append(model)
             }
             if !result.discussions.isEmpty {
                 let discussions = result.discussions.count >= 3 ? List<Submission>(result.discussions[0..<3]) : result.discussions
@@ -116,14 +118,17 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         store.fetchPhotos()
         store.fetchSubreddits()
         store.fetchDiscussions()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
@@ -173,12 +178,12 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
                 if type == time {
                     item.setTitleTextAttributes([
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+                        NSForegroundColorAttributeName: UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
                     ], for: [])
                 } else {
                     item.setTitleTextAttributes([
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
+                        NSForegroundColorAttributeName: UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
                     ], for: [])
                 }
             }
@@ -328,5 +333,12 @@ extension SearchPageController: SubredditPageCollectionControllerDelegate {
             delegate.didSelectSubreddit(name: name)
         })
         randomController?.transition?.finish()
+    }
+}
+
+extension SearchPageController: PhotoGridGroupViewModelDelegate {
+    func didSelectMorePhotos() {
+        guard let index = pageOrder.index(of: .photos) else { return }
+        self.pager.scrollToPage(at: index, animated: true)
     }
 }

@@ -28,7 +28,7 @@ class LoginViewController: ASViewController<ASDisplayNode> {
         
         button.cornerRadius = 5.0
         button.frame.size = CGSize(width: node.frame.width * 0.7, height: 60)
-        button.backgroundColor = UIColor(colorLiteralRed: 0, green: 185/255, blue: 254/255, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 0, green: 185/255, blue: 254/255, alpha: 1.0)
         button.view.center = self.node.view.center
         button.frame.origin.y = self.node.frame.height * 0.8
         

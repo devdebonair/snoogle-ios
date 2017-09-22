@@ -17,8 +17,8 @@ class CellNodeSeparator: ASCellNode {
     override init() {
         super.init()
         
-//        separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
-        separator.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+//        separator.backgroundColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        separator.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         automaticallyManagesSubnodes = true
     }
     

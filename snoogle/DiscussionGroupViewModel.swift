@@ -53,8 +53,8 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
                 ])
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-            let colorValue: Float = 240/255
-            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            let colorValue: CGFloat = 240/255
+            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.hasSeparator = true
             cell.backgroundColor = .white
             return cell
@@ -62,7 +62,7 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
         case .footer:
             let cell = CellNodeMoreChevron()
             let font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
-            let color = UIColor(colorLiteralRed: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
+            let color = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
             let attributes = NSMutableAttributedString(
                 string: "More Discussions",
                 attributes: [

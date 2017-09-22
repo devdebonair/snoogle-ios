@@ -75,7 +75,7 @@ class SettingsAccountController: CollectionController, SettingsAccountStoreDeleg
         self.navigationController?.navigationBar.isTranslucent = false
         self.title = "Accounts"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.didTapDone))
-        self.node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         store.getApp()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveAuthToken), name: notification, object: nil)

@@ -10,7 +10,7 @@ import Foundation
 import IGListKit
 import AsyncDisplayKit
 
-class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDelegate, IGListAdapterDataSource {
+class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegate, IGListAdapterDataSource {
     var transition: Transition? = nil
     let flowLayout: UICollectionViewLayout
     let collectionNode: ASCollectionNode
@@ -26,14 +26,17 @@ class CollectionController: ASViewController<ASCollectionNode>, ASCollectionDele
     init(collectionLayout: UICollectionViewLayout = UICollectionViewFlowLayout()) {
         self.flowLayout = collectionLayout
         collectionNode = ASCollectionNode(collectionViewLayout: flowLayout)
-        super.init(node: collectionNode)
+        super.init(node: ASDisplayNode())
         collectionNode.delegate = self
         transitioningDelegate = self.transition
         self.adapter.setASDKCollectionNode(collectionNode)
+        self.node.addSubnode(collectionNode)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionNode.frame = node.frame
+        collectionNode.backgroundColor = node.backgroundColor
         self.updateModels()
     }
     

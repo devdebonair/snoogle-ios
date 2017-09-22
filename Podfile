@@ -8,5 +8,7 @@ target 'snoogle' do
   pod 'ObjectMapper+Realm'
   pod 'Texture/IGListKit'
   pod 'KeychainSwift', '~> 8.0'
-  pod 'Hero', :git=> 'https://github.com/lkzhao/Hero.git'
+  pod 'Hero', :git => 'https://github.com/lkzhao/Hero.git'
+  pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+  
 end

@@ -20,9 +20,9 @@ protocol CellNodePostActionBarDelegate {
 
 class CellNodePostActionBar: CellNode {
     
-    let colorUp = UIColor(colorLiteralRed: 255/255, green: 69/255, blue: 0, alpha: 1.0)
-    let colorDown = UIColor(colorLiteralRed: 135/255, green: 135/255, blue: 1, alpha: 1.0)
-    let colorSave = UIColor(colorLiteralRed: 251/255, green: 195/255, blue: 51/255, alpha: 1.0)
+    let colorUp = UIColor(red: 255/255, green: 69/255, blue: 0, alpha: 1.0)
+    let colorDown = UIColor(red: 135/255, green: 135/255, blue: 1, alpha: 1.0)
+    let colorSave = UIColor(red: 251/255, green: 195/255, blue: 51/255, alpha: 1.0)
     
     let buttonDiscussion: ASButtonNode
     let buttonSave: ASButtonNode
@@ -116,7 +116,7 @@ class CellNodePostActionBar: CellNode {
         }
         
         let commentFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
-        let commentColor = UIColor(colorLiteralRed: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
+        let commentColor = UIColor(red: 50/255, green: 48/255, blue: 48/255, alpha: 1.0)
         let discussionButtonAttributes = NSMutableAttributedString(
             string: "\(numberOfComments) Comments",
             attributes: [

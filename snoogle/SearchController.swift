@@ -45,14 +45,11 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         guard let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
         let frame = keyboardFrame.cgRectValue
         let keyboardHeight = frame.height
-        collectionNode.frame.size.height = collectionNode.frame.size.height - keyboardHeight
+        collectionNode.frame.size.height = UIScreen.main.bounds.height - keyboardHeight
     }
     
     func keyboardWillDisappear(notification: Notification) {
-        guard let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let frame = keyboardFrame.cgRectValue
-        let keyboardHeight = frame.height
-        collectionNode.frame.size.height = collectionNode.frame.size.height + keyboardHeight
+        collectionNode.frame.size.height = UIScreen.main.bounds.height
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,14 +64,14 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         searchController.searchBar.showsCancelButton = true
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.tintColor = UIColor(colorLiteralRed: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
-        searchController.searchBar.setBorder(color: UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
+        searchController.searchBar.tintColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
+        searchController.searchBar.setBorder(color: UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
         
         self.navigationItem.titleView = searchController.searchBar
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.navigationController?.navigationBar.barTintColor = .white
-        self.node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         self.definesPresentationContext = true
         self.updateModels()

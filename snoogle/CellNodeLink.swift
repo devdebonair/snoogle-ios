@@ -12,8 +12,9 @@ import AsyncDisplayKit
 class CellNodeLink: CellNode {
     
     var preview: MediaElement?
-    var title: NSMutableAttributedString?
-    var subtitle: NSMutableAttributedString?
+    var textTitle = ASTextNode()
+    let textSubtitle = ASTextNode()
+    var media = ASDisplayNode()
     
     override init(didLoad: ((CellNode)->Void)? = nil){
         super.init(didLoad: didLoad)
@@ -23,8 +24,8 @@ class CellNodeLink: CellNode {
     override func didLoad() {
         super.didLoad()
         self.borderWidth = 0.6
-        let colorValue: Float = 220/255
-        self.borderColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0).cgColor
+        let colorValue: CGFloat = 220/255
+        self.borderColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0).cgColor
         
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.backgroundColor = .white
@@ -35,12 +36,7 @@ class CellNodeLink: CellNode {
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
-        let textTitle = ASTextNode()
-        let textSubtitle = ASTextNode()
-        
-        textTitle.attributedText = title
         textTitle.maximumNumberOfLines = 3
-        textSubtitle.attributedText = subtitle
         
         textTitle.style.width = ASDimension(unit: .points, value: 250)
         
@@ -49,12 +45,16 @@ class CellNodeLink: CellNode {
             mediaItems.append(preview)
         }
         
-        let media: ASDisplayNode
         if let preview = preview {
             media = CellNodeMedia(media: preview)
         } else {
             media = ASDisplayNode()
         }
+        
+        if let media = media as? CellNodeMedia {
+            media.mediaView.cropRect = CGRect(x: 0.5, y: 0, width: 0, height: 0)
+        }
+        
         media.style.width = ASDimension(unit: .points, value: 100.0)
         media.style.height = ASDimension(unit: .points, value: 120.0)
         

@@ -51,7 +51,7 @@ class CellNodePostLink: CellNode {
         textSubtitle.truncationAttributedText = truncationText
         textSubtitle.maximumNumberOfLines = 5
         
-        let separatorColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        let separatorColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
         separator.backgroundColor = separatorColor
     }
     

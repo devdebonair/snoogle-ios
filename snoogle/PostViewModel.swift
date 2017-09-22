@@ -103,29 +103,29 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
     }
     
     func cell(index: Int) -> ASCellNode {
-        let stickyColor = UIColor(colorLiteralRed: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
+        let stickyColor = UIColor(red: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
         let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
         
-        let titleColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        let titleColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
 //        let titleFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightBold)
         let titleFont = UIFont(name: "Charter-Bold", size: 16)!
         let titleLineSpacing: CGFloat = 2.0
         
         let metaFont = UIFont.systemFont(ofSize: 10)
-        let metaColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let metaColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let metaLineSpacing: CGFloat = 2.0
         
         let descriptionFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightRegular)
 //        let descriptionFont = UIFont(name: "Charter", size: 14)!
-        let descriptionColor = UIColor(colorLiteralRed: 110/255, green: 110/255, blue: 110/255, alpha: 1.0)
+        let descriptionColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1.0)
         let descriptionLineSpacing: CGFloat = 2.0
         
         let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
-        let linkTitleColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        let linkTitleColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         let linkTitleLineSpacing: CGFloat = 2.0
         
         let linkSubtitleFont = UIFont.systemFont(ofSize: 13)
-        let linkSubtitleColor = UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let linkSubtitleColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
         let linkSubtitleLineSpacing: CGFloat = 2.0
         
         let paragraphStyleMeta = NSMutableParagraphStyle()
@@ -208,7 +208,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
                 posterNode.textNodeAuthor.attributedText = NSMutableAttributedString(
                     string: movie.author ?? "",
                     attributes: [
-                        NSForegroundColorAttributeName: UIColor(colorLiteralRed: 100/255, green: 105/255, blue: 130/255, alpha: 1.0),
+                        NSForegroundColorAttributeName: UIColor(red: 100/255, green: 105/255, blue: 130/255, alpha: 1.0),
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightRegular)
                     ])
                 
@@ -221,8 +221,15 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
                 posterNode.cellNodeMoviePoster.clipsToBounds = false
                 posterNode.clipsToBounds = false
                 posterNode.backgroundNode.borderWidth = 1.0
-                let color: Float = 220/255
-                posterNode.backgroundNode.borderColor = UIColor(colorLiteralRed: color, green: color, blue: color, alpha: 1.0).cgColor
+                let color: CGFloat = 220/255
+                posterNode.backgroundNode.borderColor = UIColor(red: color, green: color, blue: color, alpha: 1.0).cgColor
+                
+                posterNode.backgroundNode.isLayerBacked = true
+                posterNode.imageNodeLogo.isLayerBacked = true
+                posterNode.textNodeAuthor.isLayerBacked = true
+                posterNode.textNodeDomain.isLayerBacked = true
+                posterNode.imageNodePlay.isLayerBacked = true
+                posterNode.textNodeTitle.isLayerBacked = true
                 
                 post.add(attachment: posterNode)
             }
@@ -254,10 +261,15 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
                 cell.view.addGestureRecognizer(tap)
             })
             linkView.preview = self.media.first
-            linkView.title = linkTitle
-            linkView.subtitle = linkSubtitle
+            linkView.textTitle.attributedText = linkTitle
+            linkView.textSubtitle.attributedText = linkSubtitle
             let linkInset = UIEdgeInsets(top: 0, left: post.INSET_PADDING, bottom: post.INSET_PADDING, right: post.INSET_PADDING)
             let linkWithInset = ASInsetLayoutSpec(insets: linkInset, child: linkView)
+            
+            linkView.textTitle.isLayerBacked = true
+            linkView.textSubtitle.isLayerBacked = true
+            linkView.media.isLayerBacked = true
+            
             post.add(attachment: linkWithInset)
             
         default:
@@ -282,7 +294,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
     
     func didTapPoster(poster: CellNodeMoviePoster) {
         guard let delegate = delegate, let movie = self.media.first as? Movie else { return }
-        self.delegate?.didTapPoster(poster: poster, movie: movie, post: self)
+        delegate.didTapPoster(poster: poster, movie: movie, post: self)
     }
     
     func didTapMedia(media: CellNodeMedia) {

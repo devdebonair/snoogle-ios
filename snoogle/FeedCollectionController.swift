@@ -20,10 +20,12 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     var context: ASBatchContext? = nil
     var randomController: UIViewController? = nil
     var name: String? = nil
+    var lastScrollOffset: CGFloat = 0.0
+    var previousScrollViewYOffset: CGFloat = 0.0
     
     lazy var menuController: UIViewController = {
         let pageController = SubscriptionsPagerController()
-        let controller = ASNavigationController(rootViewController: pageController)
+        let controller = NavigationController(rootViewController: pageController)
         pageController.delegate = self
         return controller
     }()
@@ -41,16 +43,86 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         definesPresentationContext = true
         navigationController?.delegate = transition
         self.name = name
+        self.adapter.scrollViewDelegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        StatusBar.set(color: .clear)
+        StatusBar.set(color: .white)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        StatusBar.set(color: .clear)
+        StatusBar.set(color: .white)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        stoppedScrolling()
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            stoppedScrolling()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let navigationBar = self.navigationController?.navigationBar else { return }
+        var frame: CGRect = navigationBar.frame
+        let size: CGFloat = frame.size.height - 21
+        let framePercentageHidden: CGFloat = (20 - frame.origin.y) / (frame.size.height - 1)
+        let scrollOffset: CGFloat = scrollView.contentOffset.y
+        let scrollDiff: CGFloat = scrollOffset - previousScrollViewYOffset
+        let scrollHeight: CGFloat = scrollView.frame.size.height
+        let scrollContentSizeHeight: CGFloat = scrollView.contentSize.height + scrollView.contentInset.bottom
+        if scrollOffset <= -scrollView.contentInset.top {
+            frame.origin.y = 20
+        }
+        else if (scrollOffset + scrollHeight) >= scrollContentSizeHeight {
+            frame.origin.y = -size
+        }
+        else {
+            frame.origin.y = min(20, max(-size, frame.origin.y - scrollDiff))
+        }
+        
+        navigationBar.frame = frame
+        updateBarButtonItems((1 - framePercentageHidden))
+        previousScrollViewYOffset = scrollOffset
+    }
+
+    
+    func stoppedScrolling() {
+        guard let navigationBar = self.navigationController?.navigationBar else { return }
+        let frame: CGRect = navigationBar.frame
+        if frame.origin.y < 20 {
+            animateNavBar(to: -(frame.size.height - 21))
+        }
+    }
+    
+    func updateBarButtonItems(_ alpha: CGFloat) {
+        if let leftItems = navigationItem.leftBarButtonItems {
+            for item in leftItems {
+                item.customView?.alpha = alpha
+            }
+        }
+        if let rightItems = navigationItem.rightBarButtonItems {
+            for item in rightItems {
+                item.customView?.alpha = alpha
+            }
+        }
+        navigationItem.titleView?.alpha = alpha
+        navigationController?.navigationBar.tintColor = navigationController?.navigationBar.tintColor.withAlphaComponent(alpha)
+    }
+
+    func animateNavBar(to y: CGFloat) {
+        UIView.animate(withDuration: 0.2, animations: {() -> Void in
+            guard let navigationBar = self.navigationController?.navigationBar else { return }
+            var frame: CGRect = navigationBar.frame
+            let alpha: CGFloat = (frame.origin.y >= y ? 0 : 1)
+            frame.origin.y = y
+            navigationBar.frame = frame
+            self.updateBarButtonItems(alpha)
+        })
     }
     
     override func viewDidLoad() {
@@ -63,11 +135,17 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.toolbar.isTranslucent = false
         navigationController?.isToolbarHidden = false
         
+        edgesForExtendedLayout = [.top]
+        extendedLayoutIncludesOpaqueBars = true
+        
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
+        
         self.slideTransition.mainController = self.navigationController!
         self.slideTransition.menuController = menuController
         self.slideTransition.rightController = settingsController
         
-        node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "more-vertical"), style: .plain, target: self, action: #selector(didTapUserSettings))
         
@@ -86,10 +164,10 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             fixedBarButtonItem
             ], animated: false)
         
-        let colorValue: Float = 200/255
-        let tintColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+        let colorValue: CGFloat = 200/255
+        let tintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.tintColor = tintColor
-        navigationController?.navigationBar.tintColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        navigationController?.navigationBar.tintColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         
         if let name = self.name {
             self.store.setSubreddit(name: name)
@@ -99,20 +177,20 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     func setLeftBarButton(subredditName: String) {
-        let color = UIColor(colorLiteralRed: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
+        let color = UIColor(red: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
             NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack),
-            NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+            NSForegroundColorAttributeName: UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
             ])
         let range = (attributeString.string as NSString).range(of: "r/")
         attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
         
-        let textNode = ASTextNode()
-        textNode.attributedText = attributeString
-        let size = textNode.calculateSizeThatFits(navigationController!.navigationBar.frame.size)
-        textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
+        let label = UILabel()
+        label.attributedText = attributeString
+        let size = label.sizeThatFits(navigationController!.navigationBar.frame.size)
+
+        label.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: label)
     }
     
     func transitionToSubreddit(name: String, source: SubredditStore.FeedSource = .subreddit) {
@@ -122,7 +200,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.setLeftBarButton(subredditName: "")
         self.updateModels(completion: { (success) in
             self.setLeftBarButton(subredditName: name)
-            self.node.view.contentOffset = CGPoint(x: 0.0, y: 0.0)
+            self.collectionNode.view.contentOffset = CGPoint(x: 0.0, y: -self.topLayoutGuide.length)
             if source == .subreddit {
                 self.store.setSubreddit(name: name)
             }
@@ -317,8 +395,7 @@ extension FeedCollectionController: PostViewModelDelegate {
             let controller = VideoCollectionController(movie: movie, submission: guardedSubmission)
             controller.videoNode.view.heroID = id
             controller.videoNode.frame.size = poster.frame.size
-            controller.pager.view.heroModifiers = [.translate(y: UIScreen.main.bounds.height)]
-            self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: 100)]
+            self.navigationController?.view.heroModifiers = [HeroModifier.duration(0.3), .fade, .scale(0.9), HeroModifier.translate(y: -10)]
             self.navigationController?.present(controller, animated: true, completion: nil)
         } catch {
             print(error)
@@ -391,6 +468,7 @@ extension FeedCollectionController {
         })
         
         controller.models = [itemHot, itemNew, itemRising, itemTop, itemCancel]
+        controller.node.backgroundColor = .white
         
         transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
         
@@ -466,6 +544,7 @@ extension FeedCollectionController {
         })
         
         controller.models = self.store.isSubreddit() ? [itemRules, itemFavorite, itemMultireddit, itemResize, itemSubscribe, itemCancel] : [itemResize, itemCancel]
+        controller.node.backgroundColor = .white
         
         transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
         
@@ -496,6 +575,7 @@ extension FeedCollectionController {
     
     func didTapUserSettings() {
         let settingsController = SettingsCollectionController()
+        settingsController.node.backgroundColor = .white
         let controller = ASNavigationController(rootViewController: settingsController)
         self.randomController = controller
         self.navigationController?.present(controller, animated: true, completion: nil)

@@ -16,7 +16,7 @@ class CellNodeArticleButtonBar: ASCellNode {
     let separatorBottom = ASDisplayNode()
     let actionBar: CellNodePostActionBar
     
-    let COLOR_DISABLED = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+    let COLOR_DISABLED = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
     
     init(vote: VoteType = .none, saved: Bool = false, numberOfComments: Int = 0) {
         actionBar = CellNodePostActionBar(vote: vote, saved: saved, numberOfComments: numberOfComments)

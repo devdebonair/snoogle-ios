@@ -96,6 +96,12 @@ class CellNodeMedia: CellNode {
         }
     }
     
+//    override func didExitDisplayState() {
+//        if let mediaView = mediaView as? ASVideoNode {
+//            mediaView.asset = nil
+//        }
+//    }
+    
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
         let ratio = CGFloat(media.height/media.width)
         let ratioSpec = ASRatioLayoutSpec(ratio: ratio, child: mediaView)

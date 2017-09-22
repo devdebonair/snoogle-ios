@@ -46,7 +46,7 @@ class NodePager: ASDisplayNode {
         pagerNode.allowsAutomaticInsetsAdjustment = false
         
         headerNode.backgroundColor = .white
-        headerNode.textColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        headerNode.textColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
         headerNode.clipsToBounds = false

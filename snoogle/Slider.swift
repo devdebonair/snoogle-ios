@@ -10,19 +10,9 @@ import Foundation
 import UIKit
 
 class Slider: UISlider {
-//    override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float)->CGRect {
-//        
-//        var thumbRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
-//        
-//        //determine value dependent offset
-//        var offsetForValue: CGFloat = 0
-//        if value != 0 {
-//            offsetForValue = thumbRect.size.width * CGFloat(value / (self.maximumValue - self.minimumValue)) - ((value > 0) ? 2 : -2)
-//        }
-//        
-//        //apply offset to thumb rect
-//        thumbRect.origin.x += offsetForValue
-//        
-//        return thumbRect
-//    }
+    func attachmentPoint() -> CGPoint {
+        let trackRect = self.trackRect(forBounds: self.bounds)
+        let thumbRect = self.thumbRect(forBounds: self.bounds, trackRect: trackRect, value: self.value)
+        return CGPoint(x: thumbRect.midX + self.frame.origin.x, y: self.frame.origin.y - 50)
+    }
 }

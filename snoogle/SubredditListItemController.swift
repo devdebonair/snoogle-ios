@@ -34,7 +34,7 @@ class SubredditListItemController: CollectionController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let navigationController = navigationController else { return }
-        let color = UIColor(colorLiteralRed: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+        let color = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: "Recent Subreddits", attributes: [
             NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
             NSForegroundColorAttributeName: color

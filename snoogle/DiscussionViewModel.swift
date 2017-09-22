@@ -48,8 +48,8 @@ class DiscussionViewModel: NSObject, ViewModelElement {
         cell.textNodeFootnote.attributedText = footNoteAttributes
         cell.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         cell.hasSeparator = true
-        let colorValue: Float = 240/255
-        cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+        let colorValue: CGFloat = 240/255
+        cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         cell.backgroundColor = .white
         return cell
     }

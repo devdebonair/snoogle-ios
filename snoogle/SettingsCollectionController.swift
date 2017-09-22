@@ -16,6 +16,10 @@ protocol SettingsCollectionControllerDelegate {
 class SettingsCollectionController: CollectionController {
     var delegate: SettingsCollectionControllerDelegate? = nil
     
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     override func viewDidLoad() {
         let switchAccounts = SettingsTextViewModel()
         switchAccounts.text = "Switch Accounts"
@@ -50,7 +54,7 @@ class SettingsCollectionController: CollectionController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
-        self.node.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {

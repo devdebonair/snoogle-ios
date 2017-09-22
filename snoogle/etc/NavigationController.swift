@@ -10,6 +10,7 @@ import Foundation
 import AsyncDisplayKit
 
 class NavigationController: ASNavigationController {
+    
     var transition: Transition? = nil {
         didSet {
             self.transitioningDelegate = transition

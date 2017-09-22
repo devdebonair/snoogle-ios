@@ -38,18 +38,18 @@ class SearchItemViewModel: NSObject, ViewModelElement {
         switch cellType {
         case .separator:
             let cell = CellNodeSeparator()
-            cell.separator.backgroundColor = UIColor(colorLiteralRed: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+            cell.separator.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
             return cell
         case .cell:
             let cell = CellNodeButtonTextLeft()
             cell.textNode.attributedText = NSMutableAttributedString(
                 string: text,
                 attributes: [
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightRegular)
                 ])
             cell.imageNode.image = #imageLiteral(resourceName: "search")
-            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0))
+            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0))
             cell.backgroundColor = .white
             cell.inset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
             return cell

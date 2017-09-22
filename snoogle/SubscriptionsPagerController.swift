@@ -35,8 +35,8 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     
     let store = SubscriptionStore()
     let pagerNode: ASPagerNode
-    let pageBackgroundColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
-    let pageToolbarColor = UIColor(colorLiteralRed: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
+    let pageBackgroundColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
+    let pageToolbarColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
     let pageControl: UIPageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
     
     var delegate: SubscriptionsPagerControllerDelegate? = nil

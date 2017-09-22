@@ -21,7 +21,7 @@ class CommentViewModel: NSObject, ViewModelElement {
         let comment = comments[index]
         let fontSizeMeta: CGFloat = 10
         let fontSizeBody: CGFloat = 14
-        let fontColor = UIColor(colorLiteralRed: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        let fontColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         
         let metaAttribute = NSMutableAttributedString(
             string: comment.meta,
@@ -43,8 +43,7 @@ class CommentViewModel: NSObject, ViewModelElement {
         
         let margin: CGFloat = 15
         let inset = UIEdgeInsets(top: 15.0, left: margin, bottom: 15.0, right: margin)
-        let gutterColorValue: Float = 235/255
-        let gutterColor = UIColor(colorLiteralRed: gutterColorValue, green: gutterColorValue, blue: gutterColorValue, alpha: 1.0)
+        let gutterColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         let cell = CellNodeComment(meta: metaAttribute, body: bodyAttribute, inset: inset, numberOfGutters: comment.level, gutterColor: gutterColor)
         cell.backgroundColor = .white
         cell.selectionStyle = .none

@@ -42,7 +42,7 @@ class CellNodePost: CellNode {
         textSubtitle.isLayerBacked = true
         separator.isLayerBacked = true
         
-        separator.backgroundColor = UIColor(colorLiteralRed: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+        separator.backgroundColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
     }
     
     override func willBuildLayout(constrainedSize: ASSizeRange) {

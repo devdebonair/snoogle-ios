@@ -36,22 +36,22 @@ class SubredditIconStatViewModel: NSObject, ViewModelElement {
             string: "Subscribers",
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightHeavy),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
+                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
         cell.iconStatCellNode.statRightTitleNode.attributedText = NSMutableAttributedString(
             string: "Created",
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightHeavy),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
+                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
         cell.iconStatCellNode.statLeftSubtitleNode.attributedText = NSMutableAttributedString(
             string: NSNumber(value: numberOfSubscribers).convertToCommaWithString() ?? "\(numberOfSubscribers)",
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 13.0, weight: UIFontWeightBold),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
+                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
         cell.iconStatCellNode.statRightSubtitleNode.attributedText = NSMutableAttributedString(
             string: "\(created.timeAgo(numericDates: true, shortened: true))",
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 13.0, weight: UIFontWeightBold),
-                NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
+                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)])
         return cell
     }
 }

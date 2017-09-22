@@ -28,17 +28,17 @@ class SubredditListCollectionController: CollectionController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let navigationController = navigationController else { return }
-        let color = UIColor(colorLiteralRed: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
+        let color = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
         let attributeString = NSMutableAttributedString(string: titleHeader.capitalized, attributes: [
             NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
             NSForegroundColorAttributeName: color
             ])
         
-        let textNode = ASTextNode()
+        let textNode = UILabel()
         textNode.attributedText = attributeString
-        let size = textNode.calculateSizeThatFits(navigationController.navigationBar.frame.size)
+        let size = textNode.sizeThatFits(navigationController.navigationBar.frame.size)
         textNode.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode.view)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: textNode)
         
         self.node.backgroundColor = navigationController.navigationBar.barTintColor
         navigationController.toolbar.isTranslucent = false

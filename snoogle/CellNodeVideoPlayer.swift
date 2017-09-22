@@ -6,9 +6,10 @@
 //  Copyright © 2017 Vincent Moore. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import AsyncDisplayKit
-import UIKit
+import ChameleonFramework
 
 class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
     let player = ASVideoNode()
@@ -19,18 +20,33 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
     let nodeSlider: ASDisplayNode
     let buttonPlayState = ASButtonNode()
     let buttonResize = ASButtonNode()
+    let nodeOverlay = ASDisplayNode()
+    let imageThumbNode = ASImageNode()
+    
+    var assetURL: URL? {
+        didSet {
+            DispatchQueue.global(qos: .background).async {
+                if let url = self.assetURL {
+                    let asset = AVAsset(url: url)
+                    DispatchQueue.main.async {
+                        self.player.asset = asset
+                    }
+                }
+            }
+        }
+    }
     
     var isPlaying: Bool {
         return self.player.isPlaying()
     }
     
-    var isControlsHidden: Bool = false {
+    var isControlsHidden: Bool = true {
         didSet {
-            self.textCurrentTime.isHidden = self.isControlsHidden
-            self.textLeftoverTime.isHidden = self.isControlsHidden
-            self.nodeSlider.isHidden = self.isControlsHidden
-            self.buttonPlayState.isHidden = self.isControlsHidden
-            self.buttonResize.isHidden = self.isControlsHidden
+            if self.isControlsHidden {
+                self.hideControls()
+            } else {
+                self.showControls()
+            }
         }
     }
     var isSliderBinded: Bool = true
@@ -50,9 +66,11 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         self.slider.maximumValue = 1
         self.slider.value = 0
         self.slider.addTarget(self, action: #selector(sliderDidChange(sender:)), for: .valueChanged)
-        self.slider.addTarget(self, action: #selector(sliderDidStart(sender:)), for: UIControlEvents.touchDown)
+        self.slider.addTarget(self, action: #selector(sliderDidStart(sender:)), for: .touchDown)
+        self.slider.addTarget(self, action: #selector(sliderDidEnd(sender:)), for: UIControlEvents.touchUpInside)
+        self.slider.addTarget(self, action: #selector(sliderDidEnd(sender:)), for: UIControlEvents.touchUpOutside)
         self.slider.minimumTrackTintColor = .white
-        self.slider.isContinuous = false
+        self.slider.isContinuous = true
         
         self.buttonPlayState.setImage(#imageLiteral(resourceName: "pause"), for: [])
         self.buttonPlayState.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(.white)
@@ -65,8 +83,15 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         self.buttonResize.imageNode.contentMode = .scaleAspectFit
         self.buttonResize.style.preferredSize = CGSize(width: 15, height: 15)
         
-        textCurrentTime.isLayerBacked = true
-        textLeftoverTime.isLayerBacked = true
+        self.nodeOverlay.isUserInteractionEnabled = false
+        
+        self.textCurrentTime.alpha = 0.0
+        self.textLeftoverTime.alpha = 0.0
+        self.nodeSlider.alpha = 0.0
+        self.buttonPlayState.alpha = 0.0
+        self.buttonResize.alpha = 0.0
+        self.nodeOverlay.alpha = 0.0
+        self.imageThumbNode.alpha = 0.0
         
         textCurrentTime.attributedText = NSMutableAttributedString(string: "0:00", attributes: [
             NSForegroundColorAttributeName: UIColor.white,
@@ -79,13 +104,69 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         ])
         
         self.player.delegate = self
+        
+        self.imageThumbNode.borderColor = UIColor.white.cgColor
+        self.imageThumbNode.borderWidth = 1.0
+        self.imageThumbNode.backgroundColor = .black
+        
+        automaticallyManagesSubnodes = false
+        
+        addSubnode(player)
+        addSubnode(nodeOverlay)
+        addSubnode(nodeSlider)
+        addSubnode(textCurrentTime)
+        addSubnode(textLeftoverTime)
+        addSubnode(buttonPlayState)
+        addSubnode(buttonResize)
+        addSubnode(imageThumbNode)
+    }
+    
+    override func layout() {
+        let sizeToFit = CGSize(width: self.frame.width * 0.3, height: self.frame.height * 0.3)
+        self.imageThumbNode.frame.size = self.size.fit(in: sizeToFit)
+        self.nodeOverlay.backgroundColor = UIColor(gradientStyle: .topToBottom, withFrame: nodeOverlay.bounds, andColors: [UIColor.black.withAlphaComponent(0.6), .clear, .clear, .clear])
+    }
+    
+    func hideControls() {
+        UIView.animate(withDuration: 0.2, delay: 0.1, options: [.curveEaseOut], animations: {
+            self.textCurrentTime.alpha = 0.0
+            self.textLeftoverTime.alpha = 0.0
+            self.nodeSlider.alpha = 0.0
+            self.buttonPlayState.alpha = 0.0
+            self.buttonResize.alpha = 0.0
+            self.nodeOverlay.alpha = 0.0
+        }, completion: nil)
+    }
+    
+    func showControls() {
+        UIView.animate(withDuration: 0.1, delay: 0.1, options: [.curveEaseOut], animations: {
+            self.textCurrentTime.alpha = 1.0
+            self.textLeftoverTime.alpha = 1.0
+            self.nodeSlider.alpha = 1.0
+            self.buttonPlayState.alpha = 1.0
+            self.buttonResize.alpha = 1.0
+            self.nodeOverlay.alpha = 1.0
+        }, completion: nil)
     }
     
     func sliderDidStart(sender: UISlider) {
         self.isSliderBinded = false
+        UIView.animate(withDuration: 0.8) {
+            self.imageThumbNode.alpha = 1.0
+        }
     }
     
-    func sliderDidChange(sender: UISlider) {
+    func sliderDidChange(sender: Slider) {
+        self.imageThumbNode.view.center = sender.attachmentPoint()
+        DispatchQueue.global(qos: .background).async {
+            let image = self.player.generateThumbnail(percentage: Double(sender.value))
+            DispatchQueue.main.async {
+                self.imageThumbNode.image = image
+            }
+        }
+    }
+    
+    func sliderDidEnd(sender: UISlider) {
         guard let currentItem = self.player.currentItem else { return }
         self.player.pause()
         let percentage = Double(sender.value)
@@ -93,6 +174,9 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         currentItem.seek(to: time)
         self.player.play()
         self.isSliderBinded = true
+        UIView.animate(withDuration: 0.8) {
+            self.imageThumbNode.alpha = 0.0
+        }
     }
     
     override func buildLayout(constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -112,9 +196,10 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         let relativeStack = ASRelativeLayoutSpec(horizontalPosition: .center, verticalPosition: .end, sizingOption: .minimumSize, child: trackStack)
         let insetLayout = ASInsetLayoutSpec(insets: trackInset, child: relativeStack)
         
-        let backgroundStack = ASBackgroundLayoutSpec(child: insetLayout, background: player)
+        let backgroundStack = ASBackgroundLayoutSpec(child: insetLayout, background: nodeOverlay)
+        let backgroundOverlayStack = ASBackgroundLayoutSpec(child: backgroundStack, background: player)
         
-        return ASRatioLayoutSpec(ratio: ratio, child: backgroundStack)
+        return ASRatioLayoutSpec(ratio: ratio, child: backgroundOverlayStack)
     }
     
     func videoNode(_ videoNode: ASVideoNode, didPlayToTimeInterval timeInterval: TimeInterval) {
@@ -124,6 +209,7 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
         if isSliderBinded {
             let percentage = elapsedSeconds / totalSeconds
             self.slider.value = percentage
+            self.imageThumbNode.view.center = self.slider.attachmentPoint()
         }
         
         let totalSecondsPassed = Int(elapsedSeconds.truncatingRemainder(dividingBy: 60))

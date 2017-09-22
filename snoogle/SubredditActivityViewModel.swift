@@ -37,7 +37,7 @@ class SubredditActivityViewModel: NSObject, ViewModelElement {
     
     private func buildStatAttribute(_ string: String) -> NSMutableAttributedString {
         return NSMutableAttributedString(string: string, attributes: [
-            NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+            NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
             NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
         ])
     }
@@ -51,7 +51,7 @@ class SubredditActivityViewModel: NSObject, ViewModelElement {
                 attributes: [
                     NSKernAttributeName: CGFloat(1.3),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightHeavy),
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
                 ])
             let cell = CellNodeText(attributedText: header)
             cell.inset = UIEdgeInsets(top: 20, left: 25, bottom: 15, right: 25)
@@ -68,7 +68,7 @@ class SubredditActivityViewModel: NSObject, ViewModelElement {
             return cell
         case .discussions:
             let cell = CellNodeActivity()
-            let progressColor = UIColor(colorLiteralRed: 26/255, green: 206/255, blue: 206/255, alpha: 1.0)
+            let progressColor = UIColor(red: 26/255, green: 206/255, blue: 206/255, alpha: 1.0)
             let trackColor = UIColor.lightGray
             let progressString = "\(Int(self.percentageDiscussion * 100))%"
             cell.set(progressColor: progressColor)
@@ -77,20 +77,20 @@ class SubredditActivityViewModel: NSObject, ViewModelElement {
             cell.textNodeProgress.attributedText = NSMutableAttributedString(
                 string: progressString,
                 attributes: [
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
                 ])
             cell.textNodeLabel.attributedText = NSMutableAttributedString(
                 string: "Discussions",
                 attributes: [
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
                 ])
             cell.inset = UIEdgeInsets(top: 0, left: 25, bottom: 15, right: 25)
             return cell
         case .links:
             let cell = CellNodeActivity()
-            let progressColor = UIColor(colorLiteralRed: 26/255, green: 206/255, blue: 206/255, alpha: 1.0)
+            let progressColor = UIColor(red: 26/255, green: 206/255, blue: 206/255, alpha: 1.0)
             let trackColor = UIColor.lightGray
             let progressString = "\(Int(self.percentageLinks * 100))%"
             cell.set(progressColor: progressColor)
@@ -99,18 +99,18 @@ class SubredditActivityViewModel: NSObject, ViewModelElement {
             cell.textNodeProgress.attributedText = NSMutableAttributedString(
                 string: progressString,
                 attributes: [
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
                 ])
             cell.textNodeLabel.attributedText = NSMutableAttributedString(
                 string: "Links & Media",
                 attributes: [
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
                 ])
             cell.inset = UIEdgeInsets(top: 0, left: 25, bottom: 30, right: 25)
             cell.hasSeparator = true
-            cell.separatorColor = UIColor(colorLiteralRed: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+            cell.separatorColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
             cell.separatorThickness = 2.0
             cell.separatorInset = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
             return cell

@@ -161,6 +161,7 @@
 		56C084391EFF1FD1004128F4 /* SubredditListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C084381EFF1FD1004128F4 /* SubredditListItemViewModel.swift */; };
 		56C0843B1EFF2265004128F4 /* SubredditListItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C0843A1EFF2265004128F4 /* SubredditListItemController.swift */; };
 		56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */; };
+		56D509341F66616800E28D17 /* ASVideoNode+Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D509331F66616800E28D17 /* ASVideoNode+Thumbnail.swift */; };
 		56D907BE1F408B4B0028FAFB /* AccountConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907BD1F408B4B0028FAFB /* AccountConfig.swift */; };
 		56D907C01F42046C0028FAFB /* String+Trim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D907BF1F42046C0028FAFB /* String+Trim.swift */; };
 		56D907C61F437A160028FAFB /* Lora-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56D907C21F437A150028FAFB /* Lora-BoldItalic.ttf */; };
@@ -372,6 +373,7 @@
 		56C084381EFF1FD1004128F4 /* SubredditListItemViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditListItemViewModel.swift; sourceTree = "<group>"; };
 		56C0843A1EFF2265004128F4 /* SubredditListItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubredditListItemController.swift; sourceTree = "<group>"; };
 		56C4E2C01E228D700080E6E0 /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		56D509331F66616800E28D17 /* ASVideoNode+Thumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASVideoNode+Thumbnail.swift"; sourceTree = "<group>"; };
 		56D907BD1F408B4B0028FAFB /* AccountConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfig.swift; sourceTree = "<group>"; };
 		56D907BF1F42046C0028FAFB /* String+Trim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trim.swift"; sourceTree = "<group>"; };
 		56D907C21F437A150028FAFB /* Lora-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lora-BoldItalic.ttf"; path = "../../../../../Downloads/Lora/Lora-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -587,6 +589,7 @@
 		562C1F0C1E145FD2001BA898 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				56D509331F66616800E28D17 /* ASVideoNode+Thumbnail.swift */,
 				56E62B041EC9E90700ACFC51 /* ArticleViewModel+Submission.swift */,
 				56EE8CA71E8B4CB10043A9DF /* ASButtonNode+Animate.swift */,
 				566DD8911F225A04005049EB /* CGRect+Distance.swift */,
@@ -1100,6 +1103,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-snoogle/Pods-snoogle-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
@@ -1114,6 +1118,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
@@ -1288,6 +1293,7 @@
 				561B1DB01F2469A4006501E3 /* SearchResult.swift in Sources */,
 				56978ACF1E1F7D9E0060B558 /* CellNodeComment.swift in Sources */,
 				565AAFE71EDC08780024CB65 /* CellNodeMenuItem.swift in Sources */,
+				56D509341F66616800E28D17 /* ASVideoNode+Thumbnail.swift in Sources */,
 				56C4E2C11E228D700080E6E0 /* CommentViewModel.swift in Sources */,
 				560529391F27ACD40046D946 /* Media+MediaElement.swift in Sources */,
 				5651C06D1EDF35C0001F3FE9 /* MenuComposeViewModel.swift in Sources */,

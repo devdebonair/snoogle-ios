@@ -93,7 +93,7 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 10),
                     NSParagraphStyleAttributeName: paragraphStyleMeta,
-                    NSForegroundColorAttributeName: UIColor(colorLiteralRed: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
                 ])
             let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             

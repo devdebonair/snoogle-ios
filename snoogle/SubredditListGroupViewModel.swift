@@ -54,15 +54,15 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
             cell.hasSeparator = true
-            let colorValue: Float = 240/255
-            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            let colorValue: CGFloat = 240/255
+            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.backgroundColor = .white
             return cell
 
         case .footer:
             let cell = CellNodeMoreChevron()
             let font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
-            let color = UIColor(colorLiteralRed: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
+            let color = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
             let attributes = NSMutableAttributedString(
                 string: "More Subreddits",
                 attributes: [
@@ -95,9 +95,9 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
                     NSForegroundColorAttributeName: textColor
                 ])
             let cell = CellNodeSubredditListItem(title: title, subtitle: subtitle, url: model.imageUrl, imageHeight: 55.0)
-            let colorValue: Float = 240/255
+            let colorValue: CGFloat = 240/255
             cell.hasSeparator = true
-            cell.separatorColor = UIColor(colorLiteralRed: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
             cell.textNodeSubtitle.maximumNumberOfLines = 2
             cell.backgroundColor = .white
             cell.inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)

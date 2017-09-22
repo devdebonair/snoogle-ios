@@ -42,15 +42,15 @@ extension PostViewModel {
         if !submission.linkFlairText.isEmpty {
             let tagItem = TagViewModel()
             tagItem.text = submission.linkFlairText.uppercased()
-            tagItem.colorText = UIColor(colorLiteralRed: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
-            tagItem.colorBackground = UIColor(colorLiteralRed: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
+            tagItem.colorText = UIColor(red: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
+            tagItem.colorBackground = UIColor(red: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
             self.tags.append(tagItem)
         }
         if submission.isNSFW {
             let tagItem = TagViewModel()
             tagItem.text = "NSFW"
-            tagItem.colorText = UIColor(colorLiteralRed: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
-            tagItem.colorBackground = UIColor(colorLiteralRed: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
+            tagItem.colorText = UIColor(red: 51/255, green: 102/255, blue: 153/255, alpha: 1.0)
+            tagItem.colorBackground = UIColor(red: 206/255, green: 227/255, blue: 248/255, alpha: 1.0)
             self.tags.append(tagItem)
         }
     }
