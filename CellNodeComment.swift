@@ -88,7 +88,6 @@ class CellNodeComment: ASCellNode {
         
         backgroundNode.style.height = ASDimension(unit: .points, value: 10.0)
         backgroundNode.style.width = ASDimension(unit: .fraction, value: 1.0)
-        backgroundNode.backgroundColor = gutterColor
         
         let containerWithBackground = ASStackLayoutSpec(
             direction: .vertical,

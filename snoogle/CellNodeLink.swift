@@ -24,11 +24,7 @@ class CellNodeLink: CellNode {
     override func didLoad() {
         super.didLoad()
         self.borderWidth = 0.6
-        let colorValue: CGFloat = 220/255
-        self.borderColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0).cgColor
-        
         self.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.backgroundColor = .white
         self.clipsToBounds = false
         self.shadowOpacity = 0.10
         self.shadowRadius = 1.0

@@ -1,5 +1,5 @@
 //
-//  CommentController.swift
+//  CommentCollectionController.swift
 //  snoogle
 //
 //  Created by Vincent Moore on 7/17/17.
@@ -14,6 +14,7 @@ import AsyncDisplayKit
 class CommentCollectionController: CollectionController, CommentStoreDelegate {
     
     let store = CommentStore()
+    var titleLabel: UILabel = UILabel()
     
     init() {
         super.init()
@@ -34,11 +35,29 @@ class CommentCollectionController: CollectionController, CommentStoreDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.backgroundColor = .white
+        
+        edgesForExtendedLayout = [.top]
+        extendedLayoutIncludesOpaqueBars = true
+        
+        if let navigationController = navigationController {
+            self.titleLabel.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack)
+            self.titleLabel.textColor = ThemeManager.navigationItem()
+            let size = self.titleLabel.sizeThatFits(navigationController.navigationBar.frame.size)
+            self.titleLabel.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.titleLabel)
+        }
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissController))
+        
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
     }
     
     func dismissController() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.dismiss(animated: true, completion: nil)
+        if let transition = self.navigationController?.transitioningDelegate as? CardTransition {
+            transition.finish()
+        }
     }
 }
 

@@ -75,9 +75,6 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         if let subredditController = controllers[.subreddits] as? SearchSubredditController {
             let models = result.subreddits.map({ (subreddit) -> SubredditListItemViewModel in
                 let model = SubredditListItemViewModel(name: subreddit.displayName, subtitle: subreddit.publicDescriptionStripped, imageUrl: subreddit.urlValidImage)
-                model.backgroundColor = .white
-                model.titleColor = .darkText
-                model.subtitleColor = .darkText
                 model.delegate = self
                 return model
             })
@@ -127,18 +124,25 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
         
-        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        self.pager.backgroundColor = ThemeManager.background()
+        self.pager.headerNode.backgroundColor = ThemeManager.navigation()
+        self.pager.headerNode.textColor = ThemeManager.textPrimary()
+        self.pager.pagerNode.backgroundColor = ThemeManager.background()
         
-        navigationController?.navigationBar.barTintColor = .white
+        node.backgroundColor = ThemeManager.background()
+        
+        navigationController?.navigationBar.barTintColor = ThemeManager.navigation()
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
+        navigationController?.navigationBar.tintColor = ThemeManager.navigationItem()
         
         navigationController?.toolbar.isTranslucent = false
-        navigationController?.toolbar.barTintColor = .white
+        navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
         
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -178,12 +182,12 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
                 if type == time {
                     item.setTitleTextAttributes([
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+                        NSForegroundColorAttributeName: ThemeManager.toolbarItem()
                     ], for: [])
                 } else {
                     item.setTitleTextAttributes([
                         NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1.0)
+                        NSForegroundColorAttributeName: ThemeManager.toolbarItem().withAlphaComponent(0.2)
                     ], for: [])
                 }
             }

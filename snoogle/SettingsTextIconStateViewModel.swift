@@ -53,16 +53,16 @@ class SettingsTextIconStateViewModel: NSObject, ViewModelElement {
             string: self.text,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 16, weight: UIFontWeightBold),
-                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                NSForegroundColorAttributeName: ThemeManager.textPrimary()
             ])
         cell.imageNode.contentMode = .scaleAspectFit
-        cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(colorActive)
+        cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(ThemeManager.cellAccessory())
         cell.imageNode.style.preferredSize = CGSize(width: 25, height: 25)
         cell.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 30)
         cell.hasSeparator = true
-        cell.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 228/255, alpha: 0.3)
+        cell.separatorColor = ThemeManager.background()
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        cell.backgroundColor = .white
+        cell.backgroundColor = ThemeManager.cellBackground()
         self.cell = cell
         return cell
     }

@@ -36,10 +36,11 @@ class SubredditAboutViewModel: NSObject, ViewModelElement {
                 attributes: [
                     NSKernAttributeName: CGFloat(1.3),
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightHeavy),
-                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             let cell = CellNodeText(attributedText: header)
             cell.inset = UIEdgeInsets(top: 0, left: 25, bottom: 5, right: 25)
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
         case .text:
             let style = NSMutableParagraphStyle()
@@ -49,14 +50,15 @@ class SubredditAboutViewModel: NSObject, ViewModelElement {
                 attributes: [
                     NSParagraphStyleAttributeName: style,
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular),
-                    NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 5, left: 25, bottom: 5, right: 25)
             cell.hasSeparator = true
-            cell.separatorColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+            cell.separatorColor = ThemeManager.background()
             cell.separatorThickness = 2.0
             cell.separatorInset = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
         }
     }

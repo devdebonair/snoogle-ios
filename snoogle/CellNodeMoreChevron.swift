@@ -20,7 +20,6 @@ class CellNodeMoreChevron: ASCellNode {
     
     override func didLoad() {
         self.shadowOffset = CGSize(width: 0, height: 1.0)
-        self.backgroundColor = .white
         self.clipsToBounds = false
         self.shadowOpacity = 0.20
         self.shadowRadius = 1.0

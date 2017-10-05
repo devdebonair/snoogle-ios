@@ -35,22 +35,21 @@ class DiscussionViewModel: NSObject, ViewModelElement {
             string: self.title,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightSemibold),
-                NSForegroundColorAttributeName: UIColor.darkText
+                NSForegroundColorAttributeName: ThemeManager.textPrimary()
             ])
         let footNoteAttributes = NSMutableAttributedString(
             string: self.meta,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 10, weight: UIFontWeightRegular),
-                NSForegroundColorAttributeName: UIColor.lightGray
+                NSForegroundColorAttributeName: ThemeManager.textSecondary()
             ])
         let cell = CellNodeHeaderFootnote()
         cell.textNodeHeader.attributedText = titleAttributes
         cell.textNodeFootnote.attributedText = footNoteAttributes
         cell.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         cell.hasSeparator = true
-        let colorValue: CGFloat = 240/255
-        cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-        cell.backgroundColor = .white
+        cell.separatorColor = ThemeManager.background()
+        cell.backgroundColor = ThemeManager.cellBackground()
         return cell
     }
     

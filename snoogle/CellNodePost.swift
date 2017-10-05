@@ -1,5 +1,5 @@
 //
-//  CellNodeDetail.swift
+//  CellNodePost.swift
 //  snoogle
 //
 //  Created by Vincent Moore on 12/26/16.
@@ -19,30 +19,38 @@ class CellNodePost: CellNode {
     let textTitle: ASTextNode
     let textSubtitle: ASTextNode
     let separator: ASDisplayNode
-    let actionBar: CellNodePostActionBar
+    let actionBar: CellNodePostAction
     
     var tagItems = [TagViewModel]()
     
     var mediaView: CellNodeMediaAlbum? = nil
     var tagsView: CellNodeTagsSlide? = nil
     
-    private var attachments = [ASLayoutElement]()
+    var attachments = [ASLayoutElement]()
     
-    init(meta: NSMutableAttributedString?, title: NSMutableAttributedString?, subtitle: NSMutableAttributedString?, media: [MediaElement], vote: VoteType, saved: Bool, numberOfComments: Int = 0) {
+    var delegatePostAction: CellNodePostActionDelegate? = nil {
+        didSet {
+            actionBar.delegate = delegatePostAction
+        }
+    }
+    
+    var vote: VoteType
+    var saved: Bool
+    
+    init(vote: VoteType, saved: Bool) {
         textMeta = ASTextNode()
         textTitle = ASTextNode()
         textSubtitle = ASTextNode()
         separator = ASDisplayNode()
-        actionBar = CellNodePostActionBar(vote: vote, saved: saved, numberOfComments: numberOfComments)
-        
+        actionBar = CellNodePostAction()
+        self.vote = vote
+        self.saved = saved
         super.init()
         
         textMeta.isLayerBacked = true
         textTitle.isLayerBacked = true
         textSubtitle.isLayerBacked = true
         separator.isLayerBacked = true
-        
-        separator.backgroundColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
     }
     
     override func willBuildLayout(constrainedSize: ASSizeRange) {
@@ -51,7 +59,6 @@ class CellNodePost: CellNode {
     
     override func didLoad() {
         super.didLoad()
-        self.backgroundColor = .white
         self.shadowOffset = CGSize(width: 0, height: 1.0)
         self.clipsToBounds = false
         self.shadowOpacity = 0.20
@@ -68,6 +75,21 @@ class CellNodePost: CellNode {
         if media.count > 1, let mediaView = mediaView {
             mediaView.flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             mediaView.flowLayout.minimumLineSpacing = 15.0
+        }
+        
+        switch vote {
+        case .up:
+            actionBar.buttonVote.selectState(state: actionBar.stateUpvote)
+        case .down:
+            actionBar.buttonVote.selectState(state: actionBar.stateDownvote)
+        case .none:
+            actionBar.buttonVote.selectState(state: actionBar.stateUnvote)
+        }
+        
+        if saved {
+            actionBar.buttonSave.selectState(state: actionBar.stateSaveEnabled)
+        } else {
+            actionBar.buttonSave.selectState(state: actionBar.stateSaveDisabled)
         }
     }
     

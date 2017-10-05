@@ -39,8 +39,6 @@ class SubredditPageCollectionController: CollectionController, SubredditPageStor
         self.edgesForExtendedLayout = []
         self.automaticallyAdjustsScrollViewInsets = true
         
-        self.collectionNode.backgroundColor = .white
-        
         self.collectionNode.view.bounces = false
     }
     
@@ -65,11 +63,10 @@ class SubredditPageCollectionController: CollectionController, SubredditPageStor
         super.viewWillAppear(animated)
         StatusBar.hide()
         self.navigationController?.isToolbarHidden = false
-        self.navigationController?.toolbar.barTintColor = .white
         self.navigationController?.toolbar.isTranslucent = false
         let browseButton = UIBarButtonItem(title: "Browse Subreddit", style: .plain, target: self, action: #selector(didTapBrowse))
         browseButton.setTitleTextAttributes([
-            NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0),
+            NSForegroundColorAttributeName: ThemeManager.toolbarItem(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBold)
         ], for: [])
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)

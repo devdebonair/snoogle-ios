@@ -35,9 +35,37 @@ class CollectionController: ASViewController<ASDisplayNode>, ASCollectionDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isTranslucent = false
         collectionNode.frame = node.frame
-        collectionNode.backgroundColor = node.backgroundColor
-        self.updateModels()
+        setTheme()
+        receiveThemeChanges()
+    }
+    
+    func setTheme() {
+        collectionNode.backgroundColor = ThemeManager.background()
+        node.backgroundColor = ThemeManager.background()
+        self.navigationController?.navigationBar.tintColor = ThemeManager.navigationItem()
+        self.navigationController?.navigationBar.barTintColor = ThemeManager.navigation()
+        self.navigationController?.navigationBar.backgroundColor = ThemeManager.navigation()
+        self.navigationController?.toolbar.backgroundColor = ThemeManager.toolbar()
+        self.navigationController?.toolbar.tintColor = ThemeManager.background()
+        self.navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
+        StatusBar.set(color: ThemeManager.navigation())
+        if let toolbarItems = self.toolbarItems {
+            for item in toolbarItems {
+                item.tintColor = ThemeManager.toolbarItem()
+            }
+        }
+        if let rightBarButtonItems = self.navigationItem.rightBarButtonItems {
+            for item in rightBarButtonItems {
+                item.tintColor = ThemeManager.navigationItem()
+            }
+        }
+        if let leftBarButtonItem = self.navigationItem.leftBarButtonItems {
+            for item in leftBarButtonItem {
+                item.tintColor = ThemeManager.navigationItem()
+            }
+        }
     }
     
     func fetch(context: ASBatchContext) {
@@ -76,5 +104,13 @@ extension CollectionController {
     
     func shouldBatchFetch(for collectionNode: ASCollectionNode) -> Bool {
         return shouldFetch()
+    }
+}
+
+extension CollectionController: ThemableElement {
+    func configureTheme() {
+        UIView.animate(withDuration: 0.8) {
+            self.setTheme()
+        }
     }
 }

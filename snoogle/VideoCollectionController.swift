@@ -20,6 +20,7 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
     
     fileprivate enum Pages: Int {
         case comments = 0
+        case details = 1
     }
     
     fileprivate var orientation: UIDeviceOrientation = .portrait {
@@ -29,10 +30,11 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
     }
     
     fileprivate let controllers: [Pages: UIViewController] = [
+        .details: CollectionController(),
         .comments: CommentCollectionController()
     ]
     
-    fileprivate let pageOrder: [Pages] = [.comments]
+    fileprivate let pageOrder: [Pages] = [.details, .comments]
     fileprivate var originalVideoFrame: CGRect = .zero
     fileprivate var originalPagerFrame: CGRect = .zero
     
@@ -40,6 +42,7 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
     fileprivate var submission: Submission
     fileprivate var panGR: UIPanGestureRecognizer!
     fileprivate let motionManager: CMMotionManager
+    fileprivate let movie: Movie
     
     let videoNode: CellNodeVideoPlayer
     
@@ -48,6 +51,8 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
         self.pager = NodePager()
         self.videoNode = CellNodeVideoPlayer(size: CGSize(width: 1280, height: 760))
         self.motionManager = CMMotionManager()
+        self.movie = movie
+        self.submission = submission
         
         super.init(node: ASDisplayNode())
         
@@ -107,7 +112,12 @@ class VideoCollectionController: ASViewController<ASDisplayNode> {
         self.node.addSubnode(pager)
         self.node.addSubnode(videoNode)
         
-        node.backgroundColor = .black
+        node.backgroundColor = ThemeManager.background()
+        
+        self.pager.backgroundColor = ThemeManager.background()
+        self.pager.headerNode.backgroundColor = ThemeManager.navigation()
+        self.pager.headerNode.textColor = ThemeManager.textPrimary()
+        self.pager.pagerNode.backgroundColor = ThemeManager.background()
         
         panGR = UIPanGestureRecognizer(target: self, action: #selector(pan))
         videoNode.frame.origin = .zero
@@ -207,8 +217,14 @@ extension VideoCollectionController: NodePagerDelegate {
     }
     
     func pager(controllerAtIndex index: Int) -> UIViewController {
-        let page = controllers[pageOrder[index]]
+        let pageType = pageOrder[index]
+        let page = controllers[pageType]
         guard let guardedPage = page else { return UIViewController() }
+        if pageType == .details, let guardedPage = guardedPage as? CollectionController {
+            let movieModel = MovieDetailsViewModel(movie: self.movie, submission: self.submission)
+            guardedPage.models.append(movieModel)
+            guardedPage.updateModels()
+        }
         return guardedPage
     }
 }

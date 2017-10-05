@@ -15,7 +15,6 @@ extension UISearchBar {
             if s is UITextField {
                 s.layer.borderWidth = 1.0
                 s.layer.borderColor = color.cgColor
-                s.layer.cornerRadius = 5.0
             }
         }
     }

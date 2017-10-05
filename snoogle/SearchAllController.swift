@@ -12,7 +12,10 @@ import AsyncDisplayKit
 class SearchAllController: CollectionController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
+        edgesForExtendedLayout = [.top]
+        extendedLayoutIncludesOpaqueBars = true
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
     }
     
     func updateModels(models: [IGListDiffable]) {

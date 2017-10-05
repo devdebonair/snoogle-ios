@@ -9,7 +9,7 @@
 import Foundation
 import AsyncDisplayKit
 
-class SettingsTextViewModel: NSObject, ViewModelElement {
+class SettingsTextViewModel: NSObject, ViewModelElement, ThemableElement {
     var text: String = ""
     var didSelect: (()->Void)? = nil
     var cell: CellNode? = nil
@@ -24,19 +24,31 @@ class SettingsTextViewModel: NSObject, ViewModelElement {
     
     func cell(index: Int) -> ASCellNode {
         let cell = CellNodeText()
+        cell.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        cell.hasSeparator = true
+        cell.separatorColor = ThemeManager.background()
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        self.setTheme(cell: cell)
+        self.cell = cell
+        return cell
+    }
+    
+    func setTheme(cell: CellNodeText) {
         cell.textNode.attributedText = NSMutableAttributedString(
             string: self.text,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium),
-                NSForegroundColorAttributeName: UIColor(red: 45/255, green: 46/255, blue: 48/255, alpha: 1.0)
+                NSForegroundColorAttributeName: ThemeManager.textPrimary()
             ])
-        cell.inset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        cell.hasSeparator = true
-        cell.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 228/255, alpha: 0.3)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        cell.backgroundColor = .white
-        self.cell = cell
-        return cell
+        cell.separatorColor = ThemeManager.background()
+        cell.backgroundColor = ThemeManager.cellBackground()
+    }
+    
+    func configureTheme() {
+        guard let cell = cell as? CellNodeText else { return }
+        UIView.animate(withDuration: 0.8) {
+            self.setTheme(cell: cell)
+        }
     }
     
     func didSelect(index: Int) {

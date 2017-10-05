@@ -12,6 +12,7 @@ import RealmSwift
 import AsyncDisplayKit
 import SafariServices
 import Hero
+import ChameleonFramework
 
 class FeedCollectionController: CollectionController, UINavigationControllerDelegate {
     let store = SubredditStore()
@@ -22,6 +23,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     var name: String? = nil
     var lastScrollOffset: CGFloat = 0.0
     var previousScrollViewYOffset: CGFloat = 0.0
+    var titleLabel: UILabel = UILabel()
     
     lazy var menuController: UIViewController = {
         let pageController = SubscriptionsPagerController()
@@ -44,16 +46,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         navigationController?.delegate = transition
         self.name = name
         self.adapter.scrollViewDelegate = self
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        StatusBar.set(color: .white)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        StatusBar.set(color: .white)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -127,11 +119,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.toolbar.backgroundColor = .white
-        navigationController?.toolbar.barTintColor = .white
         navigationController?.toolbar.isTranslucent = false
         navigationController?.isToolbarHidden = false
         
@@ -145,16 +132,13 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         self.slideTransition.menuController = menuController
         self.slideTransition.rightController = settingsController
         
-        node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "more-vertical"), style: .plain, target: self, action: #selector(didTapUserSettings))
         
         let fixedBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         fixedBarButtonItem.width = 40.0
-        
         setToolbarItems([
             fixedBarButtonItem,
-            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows"), style: .plain, target: self, action: #selector(didTapSort)),
+            UIBarButtonItem(image: #imageLiteral(resourceName: "arrows").withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapSort)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: #imageLiteral(resourceName: "compose"), style: .plain, target: self, action: #selector(didTapCompose)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -167,7 +151,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         let colorValue: CGFloat = 200/255
         let tintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
         navigationController?.toolbar.tintColor = tintColor
-        navigationController?.navigationBar.tintColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
         
         if let name = self.name {
             self.store.setSubreddit(name: name)
@@ -176,21 +159,17 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         }
     }
     
+    override func setTheme() {
+        super.setTheme()
+        self.titleLabel.textColor = ThemeManager.navigationItem()
+    }
+    
     func setLeftBarButton(subredditName: String) {
-        let color = UIColor(red: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
-        let attributeString = NSMutableAttributedString(string: "r/ \(subredditName)", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack),
-            NSForegroundColorAttributeName: UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-            ])
-        let range = (attributeString.string as NSString).range(of: "r/")
-        attributeString.addAttribute(NSForegroundColorAttributeName, value: color, range: range)
-        
-        let label = UILabel()
-        label.attributedText = attributeString
-        let size = label.sizeThatFits(navigationController!.navigationBar.frame.size)
-
-        label.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: label)
+        self.titleLabel.font = UIFont.systemFont(ofSize: 13, weight: UIFontWeightBlack)
+        self.titleLabel.text = "r/ \(subredditName)"
+        let size = self.titleLabel.sizeThatFits(navigationController!.navigationBar.frame.size)
+        self.titleLabel.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: self.titleLabel)
     }
     
     func transitionToSubreddit(name: String, source: SubredditStore.FeedSource = .subreddit) {
@@ -212,7 +191,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     override func sectionController() -> GenericSectionController {
-        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
         return sectionController
     }
     
@@ -260,6 +239,7 @@ extension FeedCollectionController: SubredditStoreDelegate {
         let shouldShowSub = !self.store.isSubreddit()
         self.models = submissions.map({ (submission) -> PostViewModel in
             let post = PostViewModel(submission: submission, shouldShowSub: shouldShowSub)
+            post.receiveThemeChanges()
             post.delegate = self
             return post
         })
@@ -333,21 +313,21 @@ extension FeedCollectionController: PostViewModelDelegate {
     }
     
     func didTapComments(post: PostViewModel) {
-        transition = CardTransition(duration: 0.25)
-        if let transition = transition as? CardTransition {
-            transition.automaticallyManageGesture = true
-            transition.cardHeight = 0.9
-            transition.overlayAlpha = 0.9
-            transition.scaleValue = 1.0
-        }
+        let transition = CardTransition(duration: 0.25)
+        transition.automaticallyManageGesture = true
+        transition.cardHeight = 0.9
+        transition.overlayAlpha = 0.9
+        transition.scaleValue = 1.0
+        
         let commentController = CommentCollectionController()
         commentController.store.fetchComments(submissionId: post.id, sort: .hot)
+        commentController.titleLabel.text = "\(post.numberOfComments) Comments"
         commentController.collectionNode.view.bounces = false
-        commentController.title = "Comments"
-        let controller = ASNavigationController(rootViewController: commentController)
-        controller.transitioningDelegate = transition
-        controller.navigationBar.barTintColor = .white
+        
+        let controller = NavigationController(rootViewController: commentController)
+        controller.transition = transition
         controller.navigationBar.frame.size = CGSize(width: node.frame.width, height: 120.0)
+        
         self.navigationController?.present(controller, animated: true)
     }
     
@@ -420,7 +400,7 @@ extension FeedCollectionController {
         controller.transition = transition
         
         let attributes = [
-            NSForegroundColorAttributeName: UIColor.darkText,
+            NSForegroundColorAttributeName: ThemeManager.toolbarItem(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium)
         ]
         
@@ -468,7 +448,11 @@ extension FeedCollectionController {
         })
         
         controller.models = [itemHot, itemNew, itemRising, itemTop, itemCancel]
-        controller.node.backgroundColor = .white
+        
+        for item in controller.models {
+            guard let item = item as? MenuItemViewModel else { continue }
+            item.imageColor = ThemeManager.toolbarItem()
+        }
         
         transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
         
@@ -492,7 +476,7 @@ extension FeedCollectionController {
         controller.transition = transition
         
         let attributes = [
-            NSForegroundColorAttributeName: UIColor.darkText,
+            NSForegroundColorAttributeName: ThemeManager.toolbarItem(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 15, weight: UIFontWeightMedium)
         ]
         
@@ -544,7 +528,11 @@ extension FeedCollectionController {
         })
         
         controller.models = self.store.isSubreddit() ? [itemRules, itemFavorite, itemMultireddit, itemResize, itemSubscribe, itemCancel] : [itemResize, itemCancel]
-        controller.node.backgroundColor = .white
+        
+        for item in controller.models {
+            guard let item = item as? MenuItemViewModel else { continue }
+            item.imageColor = ThemeManager.toolbarItem()
+        }
         
         transition.cardDimension = ASDimension(unit: .points, value: (CGFloat(controller.models.count) * 50.0 + 15.0))
         

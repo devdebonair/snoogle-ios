@@ -8,6 +8,7 @@
 
 import Foundation
 import AsyncDisplayKit
+import ChameleonFramework
 
 protocol PostViewModelDelegate {
     func didSelectPost(post: PostViewModel)
@@ -39,6 +40,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
     
     var delegate: PostViewModelDelegate? = nil
     var cell: CellNode? = nil
+    var cellLink: CellNodeLink? = nil
     
     init(id: String, meta: String = "", title: String = "", info: String = "", media: [MediaElement] = [], numberOfComments: Int = 0, inSub: Bool = false, isSticky: Bool = false, vote: VoteType = .none, saved: Bool = false, hint: PostHintType? = nil, domain: String = "") {
         self.id = id
@@ -62,31 +64,6 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
         return 1
     }
     
-    func didUpvote() {
-        guard let delegate = delegate else { return }
-        delegate.didUpvote(post: self)
-    }
-    
-    func didDownvote() {
-        guard let delegate = delegate else { return }
-        delegate.didDownvote(post: self)
-    }
-    
-    func didSave() {
-        guard let delegate = delegate else { return }
-        delegate.didSave(post: self)
-    }
-    
-    func didUnsave() {
-        guard let delegate = delegate else { return }
-        delegate.didUnsave(post: self)
-    }
-    
-    func didUnvote() {
-        guard let delegate = delegate else { return }
-        delegate.didUnvote(post: self)
-    }
-    
     func didTapLink() {
         guard let delegate = delegate else { return }
         delegate.didTapLink(post: self)
@@ -97,84 +74,26 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
         delegate.didSelectPost(post: self)
     }
     
-    func didTapComments() {
-        guard let delegate = delegate else { return }
-        delegate.didTapComments(post: self)
-    }
-    
     func cell(index: Int) -> ASCellNode {
-        let stickyColor = UIColor(red: 38/255, green: 166/255, blue: 91/255, alpha: 1.0)
-        let stickyFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightHeavy)
-        
-        let titleColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-//        let titleFont = UIFont.systemFont(ofSize: 15, weight: UIFontWeightBold)
-        let titleFont = UIFont(name: "Charter-Bold", size: 16)!
-        let titleLineSpacing: CGFloat = 2.0
-        
-        let metaFont = UIFont.systemFont(ofSize: 10)
-        let metaColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
-        let metaLineSpacing: CGFloat = 2.0
-        
-        let descriptionFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightRegular)
-//        let descriptionFont = UIFont(name: "Charter", size: 14)!
-        let descriptionColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1.0)
-        let descriptionLineSpacing: CGFloat = 2.0
-        
         let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
-        let linkTitleColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
+        let linkTitleColor = ThemeManager.textPrimary()
         let linkTitleLineSpacing: CGFloat = 2.0
         
         let linkSubtitleFont = UIFont.systemFont(ofSize: 13)
-        let linkSubtitleColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1.0)
+        let linkSubtitleColor = ThemeManager.textSecondary()
         let linkSubtitleLineSpacing: CGFloat = 2.0
         
-        let paragraphStyleMeta = NSMutableParagraphStyle()
-        paragraphStyleMeta.lineSpacing = metaLineSpacing
-        let meta = NSMutableAttributedString(
-            string: self.meta,
-            attributes: [
-                NSFontAttributeName: metaFont,
-                NSForegroundColorAttributeName: metaColor,
-                NSParagraphStyleAttributeName: paragraphStyleMeta
-            ])
-        
-        let paragraphStyleTitle = NSMutableParagraphStyle()
-        paragraphStyleTitle.lineSpacing = titleLineSpacing
-        
-        let title = NSMutableAttributedString(
-            string: self.title,
-            attributes: [
-                NSFontAttributeName: (isSticky ? stickyFont : titleFont),
-                NSForegroundColorAttributeName: (isSticky ? stickyColor : titleColor),
-                NSParagraphStyleAttributeName: paragraphStyleTitle
-            ])
-        
-        let paragraphStyleDescription = NSMutableParagraphStyle()
-        paragraphStyleDescription.lineSpacing = descriptionLineSpacing
-        
-        let description = NSMutableAttributedString(
-            string: self.info,
-            attributes: [
-                NSFontAttributeName: descriptionFont,
-                NSForegroundColorAttributeName: descriptionColor,
-                NSParagraphStyleAttributeName: paragraphStyleDescription
-            ])
-        
         let post = CellNodePost(
-            meta: meta,
-            title: title,
-            subtitle: description,
-            media: self.media,
             vote: vote,
-            saved: saved,
-            numberOfComments: numberOfComments)
+            saved: saved)
+        
+        post.delegatePostAction = self
+        
+        setTheme(cell: post)
         
         self.cell = post
-        
-        post.textMeta.attributedText = meta
-        post.textTitle.attributedText = title
+
         post.media = self.media
-        post.textSubtitle.attributedText = description
         post.textSubtitle.maximumNumberOfLines = 5
         post.tagItems = tags
         
@@ -194,14 +113,14 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
                 posterNode.textNodeTitle.attributedText = NSMutableAttributedString(
                     string: movie.title ?? "",
                     attributes: [
-                        NSForegroundColorAttributeName: titleColor,
+                        NSForegroundColorAttributeName: ThemeManager.textPrimary(),
                         NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular)
                     ])
                 
                 posterNode.textNodeDomain.attributedText = NSMutableAttributedString(
                     string: self.domain.uppercased(),
                     attributes: [
-                        NSForegroundColorAttributeName: titleColor,
+                        NSForegroundColorAttributeName: ThemeManager.textPrimary(),
                         NSFontAttributeName: UIFont.systemFont(ofSize: 11, weight: UIFontWeightBold)
                     ])
                 
@@ -259,6 +178,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
             let linkView = CellNodeLink(didLoad: { (cell) in
                 let tap = UITapGestureRecognizer(target: self, action: #selector(self.didTapLink))
                 cell.view.addGestureRecognizer(tap)
+                cell.borderColor = ThemeManager.cellBackground().darken(byPercentage: 0.2)!.cgColor
+                cell.backgroundColor = ThemeManager.cellBackground().darken(byPercentage: 0.03)!
             })
             linkView.preview = self.media.first
             linkView.textTitle.attributedText = linkTitle
@@ -269,6 +190,8 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
             linkView.textTitle.isLayerBacked = true
             linkView.textSubtitle.isLayerBacked = true
             linkView.media.isLayerBacked = true
+            
+            self.cellLink = linkView
             
             post.add(attachment: linkWithInset)
             
@@ -292,6 +215,101 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
         return post
     }
     
+    func setTheme(cell: CellNodePost) {
+        cell.backgroundColor = ThemeManager.cellBackground()
+        
+        let metaFont = UIFont.systemFont(ofSize: 10)
+        let metaColor = ThemeManager.textSecondary()
+        let metaLineSpacing: CGFloat = 2.0
+        let paragraphStyleMeta = NSMutableParagraphStyle()
+        paragraphStyleMeta.lineSpacing = metaLineSpacing
+        
+        let titleColor: UIColor = ThemeManager.textPrimary()
+        let titleFont = UIFont(name: "Charter-Bold", size: 16)!
+        let titleLineSpacing: CGFloat = 2.0
+        let paragraphStyleTitle = NSMutableParagraphStyle()
+        paragraphStyleTitle.lineSpacing = titleLineSpacing
+        
+        let descriptionFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightRegular)
+        let descriptionColor = ThemeManager.textSecondary()
+        let descriptionLineSpacing: CGFloat = 2.0
+        let paragraphStyleDescription = NSMutableParagraphStyle()
+        paragraphStyleDescription.lineSpacing = descriptionLineSpacing
+        
+        let meta = NSMutableAttributedString(
+            string: self.meta,
+            attributes: [
+                NSFontAttributeName: metaFont,
+                NSForegroundColorAttributeName: metaColor,
+                NSParagraphStyleAttributeName: paragraphStyleMeta
+            ])
+        
+        let title = NSMutableAttributedString(
+            string: self.title,
+            attributes: [
+                NSFontAttributeName: titleFont,
+                NSForegroundColorAttributeName: titleColor,
+                NSParagraphStyleAttributeName: paragraphStyleTitle
+            ])
+        
+        
+        let description = NSMutableAttributedString(
+            string: self.info,
+            attributes: [
+                NSFontAttributeName: descriptionFont,
+                NSForegroundColorAttributeName: descriptionColor,
+                NSParagraphStyleAttributeName: paragraphStyleDescription
+            ])
+        
+        cell.textMeta.attributedText = meta
+        cell.textTitle.attributedText = title
+        cell.textSubtitle.attributedText = description
+        cell.separator.backgroundColor = ThemeManager.background()
+        
+        for item in cell.attachments {
+            if let item = item as? ASCellNode {
+                item.backgroundColor = ThemeManager.cellBackground()
+            }
+        }
+        
+        if let linkCell = self.cellLink {
+            let linkTitleFont = UIFont.systemFont(ofSize: 13, weight: UIFontWeightMedium)
+            let linkTitleColor = ThemeManager.textPrimary()
+            let linkTitleLineSpacing: CGFloat = 2.0
+            
+            let linkSubtitleFont = UIFont.systemFont(ofSize: 13)
+            let linkSubtitleColor = ThemeManager.textSecondary()
+            let linkSubtitleLineSpacing: CGFloat = 2.0
+            
+            let paragraphStyleLinkTitle = NSMutableParagraphStyle()
+            paragraphStyleLinkTitle.lineSpacing = linkTitleLineSpacing
+            
+            let paragraphStyleLinkSubtitle = NSMutableParagraphStyle()
+            paragraphStyleLinkSubtitle.lineSpacing = linkSubtitleLineSpacing
+            
+            let linkTitle = NSMutableAttributedString(
+                string: self.title,
+                attributes: [
+                    NSFontAttributeName: linkTitleFont,
+                    NSForegroundColorAttributeName: linkTitleColor,
+                    NSParagraphStyleAttributeName: paragraphStyleLinkTitle
+                ])
+            
+            let linkSubtitle = NSMutableAttributedString(
+                string: domain,
+                attributes: [
+                    NSFontAttributeName: linkSubtitleFont,
+                    NSForegroundColorAttributeName: linkSubtitleColor,
+                    NSParagraphStyleAttributeName: paragraphStyleLinkSubtitle
+                ])
+            
+            linkCell.backgroundColor = ThemeManager.cellBackground().darken(byPercentage: 0.03)!
+            linkCell.textTitle.attributedText = linkTitle
+            linkCell.textSubtitle.attributedText = linkSubtitle
+            linkCell.borderColor = ThemeManager.cellBackground().cgColor
+        }
+    }
+    
     func didTapPoster(poster: CellNodeMoviePoster) {
         guard let delegate = delegate, let movie = self.media.first as? Movie else { return }
         delegate.didTapPoster(poster: poster, movie: movie, post: self)
@@ -299,5 +317,46 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
     
     func didTapMedia(media: CellNodeMedia) {
         self.delegate?.didTapMedia(media: media)
+    }
+}
+
+extension PostViewModel: ThemableElement {
+    func configureTheme() {
+        guard let cell = cell as? CellNodePost else { return }
+        UIView.animate(withDuration: 0.8, animations: {
+            self.setTheme(cell: cell)
+        })
+    }
+}
+
+extension PostViewModel: CellNodePostActionDelegate {
+    func didUpvote() {
+        guard let delegate = delegate else { return }
+        delegate.didUpvote(post: self)
+    }
+    
+    func didDownvote() {
+        guard let delegate = delegate else { return }
+        delegate.didDownvote(post: self)
+    }
+    
+    func didSave() {
+        guard let delegate = delegate else { return }
+        delegate.didSave(post: self)
+    }
+    
+    func didUnsave() {
+        guard let delegate = delegate else { return }
+        delegate.didUnsave(post: self)
+    }
+    
+    func didUnvote() {
+        guard let delegate = delegate else { return }
+        delegate.didUnvote(post: self)
+    }
+    
+    func didComment() {
+        guard let delegate = delegate else { return }
+        delegate.didTapComments(post: self)
     }
 }

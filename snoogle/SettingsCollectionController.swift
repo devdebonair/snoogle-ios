@@ -15,46 +15,55 @@ protocol SettingsCollectionControllerDelegate {
 
 class SettingsCollectionController: CollectionController {
     var delegate: SettingsCollectionControllerDelegate? = nil
-    
-    override var shouldAutorotate: Bool {
-        return false
-    }
+    var backgroundColor: UIColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         let switchAccounts = SettingsTextViewModel()
         switchAccounts.text = "Switch Accounts"
         switchAccounts.didSelect = {
             guard let delegate = self.delegate else { return }
             delegate.didSelectSwitchAccounts()
         }
+        switchAccounts.receiveThemeChanges()
         
         let clearCache = SettingsTextViewModel()
         clearCache.text = "Free Up Space"
         clearCache.didSelect = {
             print("selected cache")
         }
+        clearCache.receiveThemeChanges()
         
         let changeTheme = SettingsTextViewModel()
         changeTheme.text = "Change Theme"
         changeTheme.didSelect = {
-            print("changing theme")
+            ThemeManager.backgroundColor = UIColor.flatBlack.darken(byPercentage: 0.05)!
+            ThemeManager.colorCellBackground = .flatBlack
+            ThemeManager.colorTextPrimary = .flatWhite
+            ThemeManager.colorTextSecondary = .flatWhite
+            ThemeManager.colorNavigation = ThemeManager.colorCellBackground
+            ThemeManager.colorNavigationItem = .flatWhite
+            ThemeManager.colorToolbar = ThemeManager.colorCellBackground
+            ThemeManager.colorToolbarItem = UIColor.flatGrayDark
+            ThemeManager.colorCellAccessory = UIColor.flatGrayDark
+            ThemeManager.sendThemeChangeNotification()
         }
+        changeTheme.receiveThemeChanges()
         
         let safeMode = SettingsSwitchViewModel()
         safeMode.text = "Safe Mode"
+        safeMode.receiveThemeChanges()
         
         let spoilers = SettingsSwitchViewModel()
         spoilers.text = "Spoilers"
+        spoilers.receiveThemeChanges()
         
         self.models = [switchAccounts, clearCache, changeTheme, safeMode, spoilers]
         self.updateModels()
         
-        navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        
-        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {

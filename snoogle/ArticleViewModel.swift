@@ -103,13 +103,14 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             
             let cell = CellNodeText(attributedText: metaAttributes)
             cell.inset = inset
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
         case .media:
             let cell = CellNodeMediaAlbum(media: self.media)
             return cell
         case .title:
-                    let titleFont = UIFont(name: "Charter-Bold", size: 22)!
-                    let titleColor = UIColor.darkText
+            let titleFont = UIFont(name: "Charter-Bold", size: 22)!
+            let titleColor = ThemeManager.textPrimary()
 //            let titleFont: UIFont = UIFont.systemFont(ofSize: 22, weight: UIFontWeightBlack)
             let inset = UIEdgeInsets(top: 20, left: 16, bottom: 0, right: 16)
             
@@ -127,18 +128,24 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
             let cell = CellNodeText(attributedText: titleAttributes)
             cell.inset = inset
             if index == numberOfCells() - 1 { cell.inset.bottom = padding }
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
         case .content:
             let subArr = Array(cellOrder[0...index])
             let filterdArr = subArr.filter { $0 == .content }
             let paragraph = newContent[filterdArr.count-1]
             
-            var inset = UIEdgeInsets(top: padding, left: 16, bottom: 0, right: 16)
-            if index == numberOfCells() - 1 { inset.bottom = padding }
             let cell = CellNodeText(attributedText: paragraph)
+            var inset = UIEdgeInsets(top: padding, left: 16, bottom: 0, right: 16)
+            if index == numberOfCells() - 1 {
+                inset.bottom = padding
+                cell.hasSeparator = true
+                cell.separatorColor = ThemeManager.background()
+            }
             cell.inset = inset
             cell.textNode.delegate = self
             cell.textNode.isUserInteractionEnabled = true
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
         }
     }
@@ -148,8 +155,10 @@ class ArticleViewModel: NSObject, ViewModelElement, ASTextNodeDelegate {
     }
     
     func footer() -> ASCellNode? {
-        let cell = CellNodeArticleButtonBar(vote: vote, saved: saved, numberOfComments: numberOfComments)
-        cell.backgroundColor = .white
+        let cell = CellNodePostAction()
+        let inset = UIEdgeInsets(top: 14, left: 20, bottom: 14, right: 20)
+        cell.backgroundColor = ThemeManager.cellBackground()
+        cell.inset = inset
         return cell
     }
     

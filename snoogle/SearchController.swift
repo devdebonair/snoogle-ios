@@ -64,14 +64,16 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         searchController.searchBar.showsCancelButton = true
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.tintColor = UIColor(red: 130/255, green: 130/255, blue: 130/255, alpha: 1.0)
-        searchController.searchBar.setBorder(color: UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0))
+        searchController.searchBar.barTintColor = ThemeManager.navigation()
+        searchController.searchBar.backgroundColor = ThemeManager.navigation()
+        searchController.searchBar.tintColor = ThemeManager.background()
+        searchController.searchBar.setCancel(color: ThemeManager.textPrimary())
+        searchController.searchBar.setBorder(color: ThemeManager.background())
+        searchController.searchBar.setTextField(color: ThemeManager.background())
+        searchController.searchBar.setText(color: ThemeManager.textPrimary())
         
         self.navigationItem.titleView = searchController.searchBar
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        self.navigationController?.navigationBar.barTintColor = .white
-        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         
         self.definesPresentationContext = true
         self.updateModels()

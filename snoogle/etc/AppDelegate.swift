@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         let rootController = FeedCollectionController()
 //        rootController.store.setSubreddit(name: "", source: .frontpage)
-//        let rootController = VideoCollectionController()
         navigationController = NavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -61,6 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Error with audio sessions")
         }
+        
+//        ThemeManager.setup()
         
         return true
     }

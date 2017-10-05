@@ -8,10 +8,13 @@
 
 import Foundation
 import AsyncDisplayKit
+import UIKit
 
 class CellNodeTextSwitch: CellNode {
     let textNode = ASTextNode()
-    let switchView = UISwitch()
+    lazy var switchView: UISwitch = {
+        return UISwitch()
+    }()
     lazy var switchNode = ASDisplayNode { () -> UIView in
         return self.switchView
     }
@@ -22,7 +25,10 @@ class CellNodeTextSwitch: CellNode {
             spacing: 0,
             justifyContent: .spaceBetween,
             alignItems: .center,
-            children: [textNode, switchNode])
+            children: [textNode])
+        DispatchQueue.main.async {
+            stack.children?.append(self.switchNode)
+        }
         switchNode.style.preferredSize = CGSize(width: 50.0, height: 30.0)
         stack.style.width = ASDimension(unit: .fraction, value: 1.0)
         return stack

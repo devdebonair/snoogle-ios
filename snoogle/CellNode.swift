@@ -12,7 +12,11 @@ import Hero
 
 class CellNode: ASCellNode {
     var hasSeparator: Bool = false
-    var separatorColor: UIColor = .clear
+    var separatorColor: UIColor = .clear {
+        didSet {
+            self.separator?.backgroundColor = separatorColor
+        }
+    }
     var separatorThickness: CGFloat = 1.0
     var inset: UIEdgeInsets = .zero
     var didLoadBlock: ((CellNode)->Void)? = nil

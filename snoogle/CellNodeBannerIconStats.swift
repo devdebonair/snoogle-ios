@@ -16,7 +16,6 @@ class CellNodeBannerIconStats: CellNode {
     init(banner: MediaElement) {
         self.bannerImageNode = CellNodeMedia(media: banner)
         iconStatCellNode = CellNodeIconStats(didLoad: { (cell) in
-            cell.backgroundColor = .white
             cell.cornerRadius = 10.0
             cell.shadowOffset = CGSize(width: 0, height: -1.0)
             cell.clipsToBounds = false

@@ -49,31 +49,29 @@ class DiscussionGroupViewModel: NSObject, ViewModelElement {
                 string: "Discussions",
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
-                    NSForegroundColorAttributeName: UIColor.darkText
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-            let colorValue: CGFloat = 240/255
-            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            cell.separatorColor = ThemeManager.background()
             cell.hasSeparator = true
-            cell.backgroundColor = .white
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
             
         case .footer:
             let cell = CellNodeMoreChevron()
             let font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
-            let color = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
             let attributes = NSMutableAttributedString(
                 string: "More Discussions",
                 attributes: [
                     NSFontAttributeName: font,
-                    NSForegroundColorAttributeName: color
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             cell.imageNode.image = #imageLiteral(resourceName: "right-chevron")
-            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(color)
+            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(ThemeManager.cellAccessory())
             cell.textNode.attributedText = attributes
             cell.imageNode.contentMode = .scaleAspectFit
-            cell.backgroundColor = .white
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
             
         case .discussion:

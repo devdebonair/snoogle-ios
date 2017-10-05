@@ -13,6 +13,7 @@ class MenuItemViewModel: NSObject, ViewModelElement {
     let image: UIImage
     let text: NSMutableAttributedString
     let didSelect: ()->Void
+    var imageColor: UIColor? = nil
     
     init(image: UIImage, text: NSMutableAttributedString, didSelect: @escaping ()->Void) {
         self.image = image
@@ -33,6 +34,11 @@ class MenuItemViewModel: NSObject, ViewModelElement {
         cell.imageSize = 20
         cell.imageNode.contentMode = .scaleAspectFit
         cell.spacing = 20
+        
+        if let imageColor = imageColor {
+            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(imageColor)
+        }
+        
         return cell
     }
     

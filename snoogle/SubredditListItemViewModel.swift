@@ -21,10 +21,6 @@ class SubredditListItemViewModel: NSObject, ViewModelElement {
     
     var delegate: SubredditListItemViewModelDelegate? = nil
     
-    var titleColor: UIColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
-    var subtitleColor: UIColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
-    var backgroundColor: UIColor = .clear
-    
     init(name: String, subtitle: String, imageUrl: URL?) {
         self.name = name
         self.subtitle = subtitle
@@ -36,17 +32,17 @@ class SubredditListItemViewModel: NSObject, ViewModelElement {
             string: self.name,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
-                NSForegroundColorAttributeName: titleColor
+                NSForegroundColorAttributeName: ThemeManager.textPrimary()
             ])
         
         let subtitle = NSMutableAttributedString(
             string: self.subtitle,
             attributes: [
                 NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium),
-                NSForegroundColorAttributeName: subtitleColor
+                NSForegroundColorAttributeName: ThemeManager.textSecondary()
             ])
         let cell = CellNodeSubredditListItem(title: title, subtitle: subtitle, url: imageUrl, imageHeight: 55.0)
-        cell.backgroundColor = backgroundColor
+        cell.backgroundColor = ThemeManager.cellBackground()
         return cell
     }
     

@@ -39,7 +39,7 @@ extension ArticleViewModel {
             paragraphStyleDescription.lineSpacing = 6.0
             let attributesToAdd: [String:Any] = [
                 NSParagraphStyleAttributeName: paragraphStyleDescription,
-                NSForegroundColorAttributeName: UIColor.darkText
+                NSForegroundColorAttributeName: ThemeManager.textPrimary()
             ]
             let font = UIFont(name: "Charter", size: 17)!
             let block = MarkdownBuilder(customAttributes: attributesToAdd).parseComponent(component: item, font: font)

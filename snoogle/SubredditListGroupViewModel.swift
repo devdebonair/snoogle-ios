@@ -49,57 +49,53 @@ class SubredditListGroupViewModel: NSObject, ViewModelElement {
                 string: "Subreddits",
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
-                    NSForegroundColorAttributeName: UIColor.darkText
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             let cell = CellNodeText(attributedText: text)
             cell.inset = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
             cell.hasSeparator = true
-            let colorValue: CGFloat = 240/255
-            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-            cell.backgroundColor = .white
+            cell.separatorColor = ThemeManager.background()
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
 
         case .footer:
             let cell = CellNodeMoreChevron()
             let font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
-            let color = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1.0)
             let attributes = NSMutableAttributedString(
                 string: "More Subreddits",
                 attributes: [
                     NSFontAttributeName: font,
-                    NSForegroundColorAttributeName: color
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             cell.imageNode.image = #imageLiteral(resourceName: "right-chevron")
-            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(color)
+            cell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(ThemeManager.cellAccessory())
             cell.textNode.attributedText = attributes
             cell.imageNode.contentMode = .scaleAspectFit
-            cell.backgroundColor = .white
+            cell.backgroundColor = ThemeManager.cellBackground()
             return cell
 
         case .subreddit:
             let subArr = Array(cellOrder[0...index])
             let filterdArr = subArr.filter { $0 == .subreddit }
             let model = models[filterdArr.count-1]
-            let textColor: UIColor = .darkText
             let title = NSMutableAttributedString(
                 string: model.name,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightBold),
-                    NSForegroundColorAttributeName: textColor
+                    NSForegroundColorAttributeName: ThemeManager.textPrimary()
                 ])
             
             let subtitle = NSMutableAttributedString(
                 string: model.subtitle,
                 attributes: [
                     NSFontAttributeName: UIFont.systemFont(ofSize: 14, weight: UIFontWeightRegular),
-                    NSForegroundColorAttributeName: textColor
+                    NSForegroundColorAttributeName: ThemeManager.textSecondary()
                 ])
             let cell = CellNodeSubredditListItem(title: title, subtitle: subtitle, url: model.imageUrl, imageHeight: 55.0)
-            let colorValue: CGFloat = 240/255
             cell.hasSeparator = true
-            cell.separatorColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+            cell.separatorColor = ThemeManager.background()
             cell.textNodeSubtitle.maximumNumberOfLines = 2
-            cell.backgroundColor = .white
+            cell.backgroundColor = ThemeManager.cellBackground()
             cell.inset = UIEdgeInsets(top: 15, left: 20, bottom: 15, right: 20)
             return cell
         }

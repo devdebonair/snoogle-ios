@@ -54,20 +54,8 @@ class ArticleCollectionController: CollectionController, ArticleViewModelDelegat
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        StatusBar.hide()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        StatusBar.show()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionNode.view.bounces = false
-        self.collectionNode.backgroundColor = .white
         self.navigationController?.navigationBar.isHidden = true
         self.extendedLayoutIncludesOpaqueBars = true
         self.edgesForExtendedLayout = []
@@ -93,4 +81,3 @@ extension ArticleCollectionController: UIGestureRecognizerDelegate {
         return true
     }
 }
-

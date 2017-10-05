@@ -38,16 +38,13 @@ class NodePager: ASDisplayNode {
         
         pagerNode.setDelegate(self)
         pagerNode.setDataSource(self)
+        headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
     }
     
     override func didLoad() {
         super.didLoad()
         pagerNode.view.alwaysBounceVertical = false
         pagerNode.allowsAutomaticInsetsAdjustment = false
-        
-        headerNode.backgroundColor = .white
-        headerNode.textColor = UIColor(red: 44/255, green: 45/255, blue: 48/255, alpha: 1.0)
-        headerNode.textFont = UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         headerNode.shadowOffset = CGSize(width: 0, height: 1.0)
         headerNode.clipsToBounds = false
         headerNode.shadowOpacity = 0.10

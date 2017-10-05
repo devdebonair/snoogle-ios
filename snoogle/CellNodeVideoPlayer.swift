@@ -158,8 +158,9 @@ class CellNodeVideoPlayer: CellNode, ASVideoNodeDelegate {
     
     func sliderDidChange(sender: Slider) {
         self.imageThumbNode.view.center = sender.attachmentPoint()
+        let percentage = Double(sender.value)
         DispatchQueue.global(qos: .background).async {
-            let image = self.player.generateThumbnail(percentage: Double(sender.value))
+            let image = self.player.generateThumbnail(percentage: percentage)
             DispatchQueue.main.async {
                 self.imageThumbNode.image = image
             }

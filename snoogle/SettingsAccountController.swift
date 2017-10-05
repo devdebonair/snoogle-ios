@@ -27,15 +27,7 @@ class SettingsAccountController: CollectionController, SettingsAccountStoreDeleg
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didChangeActiveAccount(account: Account?) {
-        for model in self.models {
-            guard let model = model as? SettingsTextIconStateViewModel else { continue }
-            if model.text.trimmedLowercase() == account?.name.trimmedLowercase(), let selectedCell = model.cell {
-                print("we are here")
-                selectedCell.imageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(UIColor.red)
-            }
-        }
-    }
+    func didChangeActiveAccount(account: Account?) {}
     
     func didChangeAccounts(accounts: List<Account>, active: Account?) {
         let models = accounts.map { (account) -> SettingsTextIconStateViewModel in
@@ -71,12 +63,11 @@ class SettingsAccountController: CollectionController, SettingsAccountStoreDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.navigationBar.isTranslucent = false
         self.title = "Accounts"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.didTapDone))
-        self.node.backgroundColor = UIColor(red: 239/255, green: 239/255, blue: 244/255, alpha: 1.0)
         store.getApp()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.textPrimary()]
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveAuthToken), name: notification, object: nil)
     }

@@ -25,7 +25,10 @@ class SearchPhotoCollectionController: CollectionController, MosaicCollectionVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        node.backgroundColor = .white
+        edgesForExtendedLayout = [.top]
+        extendedLayoutIncludesOpaqueBars = true
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
     }
     
     required init?(coder aDecoder: NSCoder) {
