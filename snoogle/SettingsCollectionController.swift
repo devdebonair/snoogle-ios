@@ -37,15 +37,28 @@ class SettingsCollectionController: CollectionController {
         let changeTheme = SettingsTextViewModel()
         changeTheme.text = "Change Theme"
         changeTheme.didSelect = {
-            ThemeManager.backgroundColor = UIColor.flatBlack.darken(byPercentage: 0.05)!
-            ThemeManager.colorCellBackground = .flatBlack
-            ThemeManager.colorTextPrimary = .flatWhite
-            ThemeManager.colorTextSecondary = .flatWhite
-            ThemeManager.colorNavigation = ThemeManager.colorCellBackground
-            ThemeManager.colorNavigationItem = .flatWhite
-            ThemeManager.colorToolbar = ThemeManager.colorCellBackground
-            ThemeManager.colorToolbarItem = UIColor.flatGrayDark
-            ThemeManager.colorCellAccessory = UIColor.flatGrayDark
+//            ThemeManager.backgroundColor = UIColor.flatBlack.darken(byPercentage: 0.05)!
+//            ThemeManager.colorCellBackground = .flatBlack
+//            ThemeManager.colorTextPrimary = .flatWhite
+//            ThemeManager.colorTextSecondary = .flatWhite
+//            ThemeManager.colorNavigation = ThemeManager.colorCellBackground
+//            ThemeManager.colorNavigationItem = .flatWhite
+//            ThemeManager.colorToolbar = ThemeManager.colorCellBackground
+//            ThemeManager.colorToolbarItem = UIColor.flatGrayDark
+//            ThemeManager.colorCellAccessory = UIColor.flatGrayDark
+            
+            ThemeManager.colorNavigation = UIColor(hexString: "3b5998")!
+            ThemeManager.colorNavigationItem = UIColor(hexString: "ffffff")!
+            ThemeManager.backgroundColor = UIColor(hexString: "E9EBEE")!
+            ThemeManager.colorCellBackground = UIColor(hexString: "ffffff")!
+            ThemeManager.colorCellAccessory = UIColor(hexString: "616770")!
+            ThemeManager.colorTextPrimary = UIColor.darkText
+            ThemeManager.colorTextSecondary = UIColor(hexString: "90949C")!
+            ThemeManager.colorToolbar = UIColor.white
+            ThemeManager.colorToolbarItem = UIColor(hexString: "616770")!
+            
+            
+            
             ThemeManager.sendThemeChangeNotification()
         }
         changeTheme.receiveThemeChanges()

@@ -187,7 +187,7 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
     }
     
     override func sectionController() -> GenericSectionController {
-        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
+        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
         return sectionController
     }
     

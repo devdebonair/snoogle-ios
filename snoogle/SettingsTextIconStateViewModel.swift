@@ -14,8 +14,8 @@ class SettingsTextIconStateViewModel: NSObject, ViewModelElement {
     var didSelect: (()->Void)? = nil
     var cell: CellNodeTextIcon? = nil
     
-    var colorEnabled = UIColor(red: 206/255, green: 224/255, blue: 239/255, alpha: 1.0)
-    var colorDisabled = UIColor(red: 224/255, green: 224/255, blue: 228/255, alpha: 1.0)
+    var colorEnabled = ThemeManager.cellAccessory()
+    var colorDisabled = UIColor.clear
     var colorActive: UIColor {
         return isSelected ? colorEnabled : colorDisabled
     }

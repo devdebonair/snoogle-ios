@@ -43,7 +43,7 @@ class CellNodePostAction: CellNode {
     
     init() {
         let textSaveDisabled = NSMutableAttributedString(string: "Save", attributes: [
-            NSForegroundColorAttributeName: UIColor.flatGrayDark,
+            NSForegroundColorAttributeName: ThemeManager.cellAccessory(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
         ])
         let textSaveEnabled = NSMutableAttributedString(string: "Saved", attributes: [
@@ -51,11 +51,11 @@ class CellNodePostAction: CellNode {
             NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
             ])
         let textComment = NSMutableAttributedString(string: "Comment", attributes: [
-            NSForegroundColorAttributeName: UIColor.flatGrayDark,
+            NSForegroundColorAttributeName: ThemeManager.cellAccessory(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
             ])
         let textUnvote = NSMutableAttributedString(string: "Upvote", attributes: [
-            NSForegroundColorAttributeName: UIColor.flatGrayDark,
+            NSForegroundColorAttributeName: ThemeManager.cellAccessory(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium)
             ])
         let textUpvote = NSMutableAttributedString(string: "Upvoted", attributes: [

@@ -67,7 +67,7 @@ class SettingsAccountController: CollectionController, SettingsAccountStoreDeleg
         self.title = "Accounts"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.didTapDone))
         store.getApp()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.textPrimary()]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveAuthToken), name: notification, object: nil)
     }
