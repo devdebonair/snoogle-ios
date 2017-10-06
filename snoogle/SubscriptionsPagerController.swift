@@ -35,8 +35,6 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     
     let store = SubscriptionStore()
     let pagerNode: ASPagerNode
-    let pageBackgroundColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
-    let pageToolbarColor = UIColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1.0)
     let pageControl: UIPageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
     
     var delegate: SubscriptionsPagerControllerDelegate? = nil
@@ -124,8 +122,7 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         
         navigationController?.isNavigationBarHidden = true
         navigationController?.isToolbarHidden = false
-        let colorValue: CGFloat = 25/255
-        navigationController?.toolbar.barTintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
+        navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
         navigationController?.toolbar.isTranslucent = false
         
         node.addSubnode(pagerNode)
@@ -133,19 +130,21 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         
         edgesForExtendedLayout = []
         extendedLayoutIncludesOpaqueBars = false
-        automaticallyAdjustsScrollViewInsets = false
         pagerNode.allowsAutomaticInsetsAdjustment = false
         pagerNode.view.alwaysBounceVertical = false
         
-        StatusBar.set(color: pageBackgroundColor)
-        pagerNode.backgroundColor = pageBackgroundColor
+        pagerNode.backgroundColor = ThemeManager.background()
         
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(customView: pageControl),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            ], animated: false)
+        ], animated: false)
+        
         pageControl.numberOfPages = controllers.count
+        pageControl.backgroundColor = ThemeManager.toolbar()
+        pageControl.currentPageIndicatorTintColor = ThemeManager.toolbarItem()
+        pageControl.pageIndicatorTintColor = ThemeManager.toolbarItem().withAlphaComponent(0.1)
     }
     
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
@@ -169,7 +168,6 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         let page = pageOrder[index]
         let controllers = self.controllers
         
-        let navigationColor = self.pageBackgroundColor
         return { () -> ASCellNode in
             var pageController: SubredditListCollectionController? = nil
             switch page {
@@ -186,9 +184,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
             guard let guardedPageController = pageController else { return ASCellNode() }
             
             return ASCellNode(viewControllerBlock: { () -> UIViewController in
-                let navigation = ASNavigationController(rootViewController: guardedPageController)
+                let navigation = NavigationController(rootViewController: guardedPageController)
                 navigation.navigationBar.isTranslucent = false
-                navigation.navigationBar.barTintColor = navigationColor
+                navigation.navigationBar.barTintColor = ThemeManager.navigation()
                 return navigation
             }, didLoad: nil)
         }

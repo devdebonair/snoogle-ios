@@ -41,7 +41,6 @@ class SubredditPageCollectionController: CollectionController, SubredditPageStor
         
         self.extendedLayoutIncludesOpaqueBars = true
         self.edgesForExtendedLayout = []
-        self.automaticallyAdjustsScrollViewInsets = true
         
         self.collectionNode.view.bounces = false
     }
