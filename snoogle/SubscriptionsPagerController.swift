@@ -122,7 +122,6 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         
         navigationController?.isNavigationBarHidden = true
         navigationController?.isToolbarHidden = false
-        navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
         navigationController?.toolbar.isTranslucent = false
         
         node.addSubnode(pagerNode)
@@ -133,8 +132,6 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         pagerNode.allowsAutomaticInsetsAdjustment = false
         pagerNode.view.alwaysBounceVertical = false
         
-        pagerNode.backgroundColor = ThemeManager.background()
-        
         setToolbarItems([
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(customView: pageControl),
@@ -142,9 +139,9 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
         ], animated: false)
         
         pageControl.numberOfPages = controllers.count
-        pageControl.backgroundColor = ThemeManager.toolbar()
-        pageControl.currentPageIndicatorTintColor = ThemeManager.toolbarItem()
-        pageControl.pageIndicatorTintColor = ThemeManager.toolbarItem().withAlphaComponent(0.1)
+        
+        configureTheme()
+        self.receiveThemeChanges()
     }
     
     func didSelectSubreddit(subreddit: SubredditListItemViewModel) {
@@ -205,5 +202,15 @@ class SubscriptionsPagerController: ASViewController<ASDisplayNode>, ASPagerData
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension SubscriptionsPagerController: ThemableElement {
+    func configureTheme() {
+        pagerNode.backgroundColor = ThemeManager.background()
+        pageControl.backgroundColor = ThemeManager.toolbar()
+        pageControl.currentPageIndicatorTintColor = ThemeManager.toolbarItem()
+        pageControl.pageIndicatorTintColor = ThemeManager.toolbarItem().withAlphaComponent(0.1)
+        navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
     }
 }
