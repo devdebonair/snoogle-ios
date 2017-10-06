@@ -24,6 +24,16 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
     var delegate: SearchPageControllerDelegate? = nil
     var randomController: NavigationController? = nil
     
+    var statusBarShouldBeHidden = false
+    
+    override var prefersStatusBarHidden: Bool {
+        return statusBarShouldBeHidden
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .slide
+    }
+    
     fileprivate enum Pages: Int {
         case all = 0
         case subreddits = 1
@@ -124,22 +134,29 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
         
-        self.pager.backgroundColor = ThemeManager.background()
-        self.pager.headerNode.backgroundColor = ThemeManager.navigation()
-        self.pager.headerNode.textColor = ThemeManager.textPrimary()
-        self.pager.pagerNode.backgroundColor = ThemeManager.background()
+        edgesForExtendedLayout = []
+        extendedLayoutIncludesOpaqueBars = false
         
         node.backgroundColor = ThemeManager.background()
         
-        navigationController?.navigationBar.barTintColor = ThemeManager.navigation()
+        pager.backgroundColor = ThemeManager.background()
+        pager.headerNode.backgroundColor = ThemeManager.navigation()
+        pager.headerNode.textColor = ThemeManager.textPrimary()
+        pager.pagerNode.backgroundColor = ThemeManager.background()
+        
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = false
+        }
+        
+//        navigationController?.navigationBar.shadowImage = UIImage()
+//        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
-        navigationController?.navigationBar.tintColor = ThemeManager.navigationItem()
+//        navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "arrow-left")
+//        navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "arrow-left")
+        navigationController?.navigationBar.barTintColor = ThemeManager.navigation()
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
         
         navigationController?.toolbar.isTranslucent = false
         navigationController?.toolbar.barTintColor = ThemeManager.toolbar()
@@ -164,9 +181,16 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: nil)
         
-        edgesForExtendedLayout = []
-        extendedLayoutIncludesOpaqueBars = false
-        automaticallyAdjustsScrollViewInsets = false
+        if let rightBarButtonItems = self.navigationItem.rightBarButtonItems {
+            for item in rightBarButtonItems {
+                item.tintColor = ThemeManager.navigationItem()
+            }
+        }
+        if let leftBarButtonItem = self.navigationItem.leftBarButtonItems {
+            for item in leftBarButtonItem {
+                item.tintColor = ThemeManager.navigationItem()
+            }
+        }
     }
     
     func createToolBarButton(text: String, selector: Selector? = nil) -> UIBarButtonItem {
@@ -177,37 +201,37 @@ class SearchPageController: ASViewController<ASDisplayNode>, SearchStoreDelegate
     fileprivate func selectBarItem(time: SearchTimeType) {
         guard let items = self.toolbarItems else { return }
         for item in items {
-            if let title = item.title {
-                let type = SearchTimeType(rawValue: title.lowercased())
-                if type == time {
-                    item.setTitleTextAttributes([
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: ThemeManager.toolbarItem()
+            guard let title = item.title else { continue }
+            let type = SearchTimeType(rawValue: title.lowercased())
+            if type == time {
+                item.setTitleTextAttributes([
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
+                    NSForegroundColorAttributeName: ThemeManager.toolbarItem()
                     ], for: [])
-                } else {
-                    item.setTitleTextAttributes([
-                        NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
-                        NSForegroundColorAttributeName: ThemeManager.toolbarItem().withAlphaComponent(0.2)
+            } else {
+                item.setTitleTextAttributes([
+                    NSFontAttributeName: UIFont.systemFont(ofSize: 12, weight: UIFontWeightBold),
+                    NSForegroundColorAttributeName: ThemeManager.toolbarItem().withAlphaComponent(0.2)
                     ], for: [])
-                }
             }
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isTranslucent = false
+        statusBarShouldBeHidden = false
+        UIView.animate(withDuration: 0.25) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.tintColor = .darkText
         self.navigationController?.isToolbarHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.isToolbarHidden = true
+//        self.navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+//        self.navigationController?.navigationBar.shadowImage = nil
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -285,9 +309,14 @@ extension SearchPageController: SubredditListItemViewModelDelegate, SubredditLis
         subredditPageController.delegate = self
         let controller = NavigationController(rootViewController: subredditPageController)
         controller.transition = transition
-        controller.isToolbarHidden = true
-        controller.isNavigationBarHidden = true
+//        controller.isToolbarHidden = true
+//        controller.isNavigationBarHidden = true
         self.randomController = controller
+        
+        self.statusBarShouldBeHidden = true
+        UIView.animate(withDuration: 0.25) {
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
     func didSelectMoreSubreddits() {

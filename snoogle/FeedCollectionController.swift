@@ -148,10 +148,6 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
             fixedBarButtonItem
             ], animated: false)
         
-        let colorValue: CGFloat = 200/255
-        let tintColor = UIColor(red: colorValue, green: colorValue, blue: colorValue, alpha: 1.0)
-        navigationController?.toolbar.tintColor = tintColor
-        
         if let name = self.name {
             self.store.setSubreddit(name: name)
             self.store.fetchListing()
@@ -306,6 +302,10 @@ extension FeedCollectionController: PostViewModelDelegate {
             guard let guardedSubmission = submission, let url = guardedSubmission.urlOrigin else { return }
             transition = nil
             let controller = SFSafariViewController(url: url)
+            controller.preferredBarTintColor = ThemeManager.navigation()
+            controller.preferredControlTintColor = ThemeManager.navigationItem()
+            controller.navigationController?.navigationBar.isTranslucent = false
+            controller.navigationController?.toolbar.isTranslucent = false
             self.present(controller, animated: true, completion: nil)
         } catch {
             print(error)

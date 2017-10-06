@@ -96,7 +96,7 @@ class PostViewModel: NSObject, ViewModelElement, CellNodeMediaDelegate, CellNode
         post.media = self.media
         post.textSubtitle.maximumNumberOfLines = 5
         post.tagItems = tags
-        
+                
         guard let hint = hint else { return post }
         
         switch hint {

@@ -14,7 +14,7 @@ class SearchSubredditController: CollectionController {
         super.viewDidLoad()
         edgesForExtendedLayout = [.top]
         extendedLayoutIncludesOpaqueBars = true
-        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 200
         collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
     }
     

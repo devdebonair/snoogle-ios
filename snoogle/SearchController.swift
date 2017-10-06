@@ -24,6 +24,12 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationController?.navigationBar.largeTitleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
+            self.searchController.searchBar.backgroundColor = ThemeManager.navigation()
+        }
+        
         do {
             let realm = try Realm()
             self.previousResults = realm.objects(SearchResult.self)
@@ -32,8 +38,11 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
         } catch {
             print(error)
         }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        self.navigationController?.isToolbarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,22 +67,41 @@ class SearchController: CollectionController, UISearchResultsUpdating, UISearchB
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.tintColor = ThemeManager.navigationItem()
+        
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
+        
+        if #available(iOS 11.0, *) {
+            searchController.searchBar.tintColor = ThemeManager.navigationItem()
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
+        } else {
+            searchController.searchBar.setTextField(color: ThemeManager.background())
+            searchController.searchBar.setText(color: ThemeManager.textPrimary())
+            searchController.searchBar.setBorder(color: ThemeManager.background())
+            searchController.searchBar.setCancel(color: ThemeManager.navigationItem())
+        }
+        
         searchController.searchBar.showsCancelButton = true
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.barTintColor = ThemeManager.navigation()
         searchController.searchBar.backgroundColor = ThemeManager.navigation()
-        searchController.searchBar.tintColor = ThemeManager.background()
-        searchController.searchBar.setCancel(color: ThemeManager.textPrimary())
-        searchController.searchBar.setBorder(color: ThemeManager.background())
-        searchController.searchBar.setTextField(color: ThemeManager.background())
-        searchController.searchBar.setText(color: ThemeManager.textPrimary())
+        searchController.searchBar.tintColor = ThemeManager.navigationItem()
         
-        self.navigationItem.titleView = searchController.searchBar
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        // TODO: Solve issue with search leaving blank space in next controller
+        // iOS 11 introduced bug
+        // https://stackoverflow.com/questions/45350035/ios-11-searchbar-in-navigationbar
+        // https://stackoverflow.com/questions/46318022/uisearchbar-increases-navigation-bar-height-in-ios-11
+        if #available(iOS 11.0, *) {
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = false
+            self.title = "Search"
+            self.searchController.hidesNavigationBarDuringPresentation = true
+        } else {
+            self.navigationItem.titleView = searchController.searchBar
+        }
         
         self.definesPresentationContext = true
         self.updateModels()

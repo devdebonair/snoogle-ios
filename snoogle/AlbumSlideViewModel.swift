@@ -31,11 +31,11 @@ struct AlbumSlideViewModel: ViewModelElement {
         }
         let cell = CellNodeMedia(media: mediaItem)
         if isStyled {            
-            cell.mediaView.borderColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0).cgColor
+            cell.mediaView.borderColor = ThemeManager.cellAccessory().cgColor
             cell.mediaView.cornerRadius = 5.0
             cell.mediaView.clipsToBounds = true
             cell.mediaView.borderWidth = 0.5
-            cell.mediaView.backgroundColor = UIColor(red: 223/255, green: 223/255, blue: 227/255, alpha: 1.0)
+            cell.mediaView.backgroundColor = ThemeManager.cellAccessory()
         }
         return cell
     }

@@ -16,9 +16,13 @@ protocol SubredditPageCollectionControllerDelegate {
 
 class SubredditPageCollectionController: CollectionController, SubredditPageStoreDelegate {
     let store = SubredditPageStore()
-    let name: String
     
+    let name: String
     var delegate: SubredditPageCollectionControllerDelegate? = nil
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     init(name: String) {
         self.name = name
@@ -61,7 +65,6 @@ class SubredditPageCollectionController: CollectionController, SubredditPageStor
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        StatusBar.hide()
         self.navigationController?.isToolbarHidden = false
         self.navigationController?.toolbar.isTranslucent = false
         let browseButton = UIBarButtonItem(title: "Browse Subreddit", style: .plain, target: self, action: #selector(didTapBrowse))
@@ -71,11 +74,6 @@ class SubredditPageCollectionController: CollectionController, SubredditPageStor
         ], for: [])
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         self.setToolbarItems([flexButton, browseButton, flexButton], animated: false)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        StatusBar.show()
     }
     
     func didTapBrowse() {

@@ -14,7 +14,7 @@ class SearchAllController: CollectionController {
         super.viewDidLoad()
         edgesForExtendedLayout = [.top]
         extendedLayoutIncludesOpaqueBars = true
-        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 20
+        let bottomInset: CGFloat = (self.navigationController?.toolbar.frame.height ?? 0) + self.bottomLayoutGuide.length + 200
         collectionNode.view.contentInset = UIEdgeInsets(top: self.topLayoutGuide.length, left: 0, bottom: bottomInset, right: 0)
     }
     
@@ -24,7 +24,7 @@ class SearchAllController: CollectionController {
     }
     
     override func sectionController() -> GenericSectionController {
-        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
+        let sectionController = InsetSectionController(inset: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
         return sectionController
     }
 }
