@@ -58,6 +58,7 @@
 		561CAE431EF4E58900FE1CE6 /* ArticleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */; };
 		561EAB0B1F1EB65F00C55CD3 /* MediaCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561EAB0A1F1EB65F00C55CD3 /* MediaCollectionController.swift */; };
 		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
+		56294F771F88668400FA3167 /* ColorPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F761F88668400FA3167 /* ColorPickerController.swift */; };
 		562A8E361F28DF1000DF5041 /* CellNodePagerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */; };
 		562A8E381F29874300DF5041 /* CellNodeTextCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */; };
 		562A8E3D1F29B63500DF5041 /* MosaicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */; };
@@ -276,6 +277,7 @@
 		561CAE421EF4E58900FE1CE6 /* ArticleComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleComponent.swift; sourceTree = "<group>"; };
 		561EAB0A1F1EB65F00C55CD3 /* MediaCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionController.swift; sourceTree = "<group>"; };
 		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
+		56294F761F88668400FA3167 /* ColorPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerController.swift; sourceTree = "<group>"; };
 		562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodePagerHeader.swift; sourceTree = "<group>"; };
 		562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeTextCenter.swift; sourceTree = "<group>"; };
 		562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -594,6 +596,14 @@
 			name = media;
 			sourceTree = "<group>";
 		};
+		56294F751F88666400FA3167 /* color picker */ = {
+			isa = PBXGroup;
+			children = (
+				56294F761F88668400FA3167 /* ColorPickerController.swift */,
+			);
+			name = "color picker";
+			sourceTree = "<group>";
+		};
 		562A8E3B1F29B60D00DF5041 /* layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -754,6 +764,7 @@
 		566E6FB91EFAB48C0014E077 /* libraries */ = {
 			isa = PBXGroup;
 			children = (
+				56294F751F88666400FA3167 /* color picker */,
 				56938F621EF6FB670026565F /* markdown */,
 				561B1DB11F2469DD006501E3 /* network */,
 				56E29B511F78BF1D000C8F38 /* theme */,
@@ -1368,6 +1379,7 @@
 				56BAA3621F471E67008DA246 /* SettingsCollectionController.swift in Sources */,
 				566DD8921F225A04005049EB /* CGRect+Distance.swift in Sources */,
 				560475901F23BE8B009CEFAD /* SearchPageController.swift in Sources */,
+				56294F771F88668400FA3167 /* ColorPickerController.swift in Sources */,
 				566ECF311F74C3C600AF2D66 /* MovieDetailsViewModel.swift in Sources */,
 				562A8E361F28DF1000DF5041 /* CellNodePagerHeader.swift in Sources */,
 				564A8B931F7A75B5009650D8 /* ThemableElement.swift in Sources */,

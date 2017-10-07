@@ -24,13 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        } catch let error {
 //            print(error)
 //        }
-        let rootController = FeedCollectionController()
+        
+//        let rootController = FeedCollectionController()
 //        rootController.store.setSubreddit(name: "", source: .frontpage)
-        navigationController = NavigationController(rootViewController: rootController)
+//        navigationController = NavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = navigationController
+//        window?.rootViewController = navigationController
+        window?.rootViewController = ColorPickerController()
         
         do {
             let realm = try Realm()
