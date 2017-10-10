@@ -58,6 +58,11 @@ class FeedCollectionController: CollectionController, UINavigationControllerDele
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.titleLabel.alpha = 1.0
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let navigationBar = self.navigationController?.navigationBar else { return }
         var frame: CGRect = navigationBar.frame
