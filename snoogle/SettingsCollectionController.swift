@@ -11,6 +11,7 @@ import AsyncDisplayKit
 
 protocol SettingsCollectionControllerDelegate {
     func didSelectSwitchAccounts()
+    func didSelectChangeTheme()
 }
 
 class SettingsCollectionController: CollectionController {
@@ -57,9 +58,10 @@ class SettingsCollectionController: CollectionController {
             ThemeManager.colorToolbar = UIColor.white
             ThemeManager.colorToolbarItem = UIColor(hexString: "616770")!
             
-            
-            
             ThemeManager.sendThemeChangeNotification()
+            
+            guard let delegate = self.delegate else { return }
+            delegate.didSelectChangeTheme()
         }
         changeTheme.receiveThemeChanges()
         

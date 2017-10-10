@@ -59,6 +59,11 @@
 		561EAB0B1F1EB65F00C55CD3 /* MediaCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561EAB0A1F1EB65F00C55CD3 /* MediaCollectionController.swift */; };
 		562586731E1977580006E593 /* String+Integer+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562586721E1977580006E593 /* String+Integer+Subscript.swift */; };
 		56294F771F88668400FA3167 /* ColorPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F761F88668400FA3167 /* ColorPickerController.swift */; };
+		56294F791F8909CC00FA3167 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F781F8909CC00FA3167 /* Color.swift */; };
+		56294F7B1F890D6700FA3167 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F7A1F890D6700FA3167 /* Theme.swift */; };
+		56294F7D1F8927AA00FA3167 /* CellNodeStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F7C1F8927AA00FA3167 /* CellNodeStack.swift */; };
+		56294F7F1F89287400FA3167 /* SettingsIconTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F7E1F89287400FA3167 /* SettingsIconTextViewModel.swift */; };
+		56294F811F892FFE00FA3167 /* SettingsThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56294F801F892FFE00FA3167 /* SettingsThemeController.swift */; };
 		562A8E361F28DF1000DF5041 /* CellNodePagerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */; };
 		562A8E381F29874300DF5041 /* CellNodeTextCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */; };
 		562A8E3D1F29B63500DF5041 /* MosaicCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */; };
@@ -278,6 +283,11 @@
 		561EAB0A1F1EB65F00C55CD3 /* MediaCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionController.swift; sourceTree = "<group>"; };
 		562586721E1977580006E593 /* String+Integer+Subscript.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Integer+Subscript.swift"; sourceTree = "<group>"; };
 		56294F761F88668400FA3167 /* ColorPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerController.swift; sourceTree = "<group>"; };
+		56294F781F8909CC00FA3167 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		56294F7A1F890D6700FA3167 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		56294F7C1F8927AA00FA3167 /* CellNodeStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeStack.swift; sourceTree = "<group>"; };
+		56294F7E1F89287400FA3167 /* SettingsIconTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsIconTextViewModel.swift; sourceTree = "<group>"; };
+		56294F801F892FFE00FA3167 /* SettingsThemeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsThemeController.swift; sourceTree = "<group>"; };
 		562A8E351F28DF1000DF5041 /* CellNodePagerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodePagerHeader.swift; sourceTree = "<group>"; };
 		562A8E371F29874300DF5041 /* CellNodeTextCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellNodeTextCenter.swift; sourceTree = "<group>"; };
 		562A8E3C1F29B63500DF5041 /* MosaicCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MosaicCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -584,6 +594,8 @@
 				569A0EA81F357B4300787064 /* SubredditActivity.swift */,
 				566237AD1F3F3010002D7DB7 /* ListingFrontpage.swift */,
 				56D907BD1F408B4B0028FAFB /* AccountConfig.swift */,
+				56294F781F8909CC00FA3167 /* Color.swift */,
+				56294F7A1F890D6700FA3167 /* Theme.swift */,
 			);
 			name = realm;
 			sourceTree = "<group>";
@@ -682,6 +694,7 @@
 				56BAA3791F53330B008DA246 /* CellNodeMinimalMovie.swift */,
 				563B97251F63ABEB008B8580 /* CellNodeMovieMetaInfo.swift */,
 				563B97271F63ADAC008B8580 /* CellNodeAvatarMeta.swift */,
+				56294F7C1F8927AA00FA3167 /* CellNodeStack.swift */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -715,6 +728,7 @@
 				56E8D0E71F33585400B3332B /* subreddit page */,
 				566237A71F3B34F0002D7DB7 /* LoginViewController.swift */,
 				56BAA3611F471E67008DA246 /* SettingsCollectionController.swift */,
+				56294F801F892FFE00FA3167 /* SettingsThemeController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -940,6 +954,7 @@
 				56BAA3671F47E6DF008DA246 /* SettingsTextViewModel.swift */,
 				56BAA3711F4CED05008DA246 /* SettingsButtonTextViewModel.swift */,
 				566ECF301F74C3C600AF2D66 /* MovieDetailsViewModel.swift */,
+				56294F7E1F89287400FA3167 /* SettingsIconTextViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -1212,6 +1227,7 @@
 				561C8C651E7C75BE00D9AEB3 /* Account.swift in Sources */,
 				5696FC161F334A6500253172 /* SubredditIconStatViewModel.swift in Sources */,
 				5651C0791EDFC121001F3FE9 /* CellNodeUserKarma.swift in Sources */,
+				56294F7D1F8927AA00FA3167 /* CellNodeStack.swift in Sources */,
 				56BAA37A1F53330B008DA246 /* CellNodeMinimalMovie.swift in Sources */,
 				569A0EAF1F36D03000787064 /* CellNodeInfoDicitonary.swift in Sources */,
 				56BAA3681F47E6DF008DA246 /* SettingsTextViewModel.swift in Sources */,
@@ -1243,8 +1259,10 @@
 				5696FC141F322D5400253172 /* CellNodeIconStats.swift in Sources */,
 				562A8E381F29874300DF5041 /* CellNodeTextCenter.swift in Sources */,
 				566DD8901F21B484005049EB /* Math.swift in Sources */,
+				56294F811F892FFE00FA3167 /* SettingsThemeController.swift in Sources */,
 				5605293B1F27B3920046D946 /* MediaViewModel.swift in Sources */,
 				5605292F1F267EE60046D946 /* CellNodeHeaderFootnote.swift in Sources */,
+				56294F7F1F89287400FA3167 /* SettingsIconTextViewModel.swift in Sources */,
 				56E32E241F2B740D00BB8072 /* SearchController.swift in Sources */,
 				5651C0691EDC92BC001F3FE9 /* SubmissionSortViewModel.swift in Sources */,
 				567EDE041F82978E00203DD4 /* UISearchBar+TextColor.swift in Sources */,
@@ -1271,6 +1289,7 @@
 				56EE8C9E1E8A14540043A9DF /* ServiceMessage.swift in Sources */,
 				56C084391EFF1FD1004128F4 /* SubredditListItemViewModel.swift in Sources */,
 				56ABC6291EF8374100DC3B46 /* MarkdownCode.swift in Sources */,
+				56294F791F8909CC00FA3167 /* Color.swift in Sources */,
 				566237AC1F3CABA3002D7DB7 /* ServiceReddit.swift in Sources */,
 				56FBFD841F2E9B1500A777AD /* NavigationController.swift in Sources */,
 				565113141E89E1DA00DC9D69 /* VoteType.swift in Sources */,
@@ -1352,6 +1371,7 @@
 				5610F94D1F0832330097E3A2 /* Transition.swift in Sources */,
 				561C8C6D1E7C778300D9AEB3 /* Multireddit.swift in Sources */,
 				5651C0711EDFA0E0001F3FE9 /* MenuItemComposeController.swift in Sources */,
+				56294F7B1F890D6700FA3167 /* Theme.swift in Sources */,
 				560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */,
 				56BAA3661F4724C1008DA246 /* SettingsSwitchViewModel.swift in Sources */,
 				565AAFEB1EDC0D760024CB65 /* TextNodeViewController.swift in Sources */,

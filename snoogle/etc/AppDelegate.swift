@@ -14,7 +14,7 @@ import AsyncDisplayKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var navigationController: ASNavigationController!
+    var navigationController: NavigationController!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         print(Realm.Configuration.defaultConfiguration.fileURL ?? "File does not exist")
@@ -25,14 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print(error)
 //        }
         
-//        let rootController = FeedCollectionController()
-//        rootController.store.setSubreddit(name: "", source: .frontpage)
-//        navigationController = NavigationController(rootViewController: rootController)
+        let rootController = FeedCollectionController()
+        navigationController = NavigationController(rootViewController: rootController)
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-//        window?.rootViewController = navigationController
-        window?.rootViewController = ColorPickerController()
+        window?.rootViewController = navigationController
         
         do {
             let realm = try Realm()
@@ -62,9 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Error with audio sessions")
         }
-        
-//        ThemeManager.setup()
-        
         return true
     }
 

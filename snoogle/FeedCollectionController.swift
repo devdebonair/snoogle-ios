@@ -577,5 +577,12 @@ extension FeedCollectionController: SettingsCollectionControllerDelegate {
         let controller = ASNavigationController(rootViewController: SettingsAccountController())
         self.navigationController?.present(controller, animated: true, completion: nil)
     }
+    
+    func didSelectChangeTheme() {
+        self.settingsController.dismiss(animated: true, completion: nil)
+        self.slideTransition.finish()
+        let controller = NavigationController(rootViewController: SettingsThemeController())
+        self.present(controller, animated: true, completion: nil)
+    }
 }
 

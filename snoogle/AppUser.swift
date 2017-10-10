@@ -16,6 +16,7 @@ class AppUser: Object {
     }
     
     dynamic var activeAccount: Account?
+    dynamic var activeTheme: Theme?
     var accounts = List<Account>()
     
     static func addAccount(name: String, isActive: Bool = false) throws {
