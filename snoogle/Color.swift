@@ -12,9 +12,9 @@ import ObjectMapper
 import ObjectMapper_Realm
 
 class Color: Object {
-    dynamic var red: Int = 0
-    dynamic var green: Int = 0
-    dynamic var blue: Int = 0
+    dynamic var red: Double = 0
+    dynamic var green: Double = 0
+    dynamic var blue: Double = 0
     dynamic var alpha: Double = 1.0
     dynamic var id: String = UUID().uuidString
     

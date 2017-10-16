@@ -11,7 +11,7 @@ import AsyncDisplayKit
 
 class SettingsIconTextViewModel: NSObject, ViewModelElement {
     var spacing: CGFloat = 0.0
-    var didSelect: (()->Void)? = nil
+    var didSelect: ((SettingsIconTextViewModel)->Void)? = nil
     var icon: ASDisplayNode? = nil
     let textNode = ASTextNode()
     
@@ -42,6 +42,6 @@ class SettingsIconTextViewModel: NSObject, ViewModelElement {
     
     func didSelect(index: Int) {
         guard let didSelect = didSelect else { return }
-        didSelect()
+        didSelect(self)
     }
 }

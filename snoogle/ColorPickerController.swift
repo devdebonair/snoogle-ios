@@ -100,7 +100,6 @@ class ColorPickerController: ASViewController<ASDisplayNode> {
         
         self.backgroundNode.frame = self.node.frame
         
-        self.color = .white
         let pan = UIPanGestureRecognizer(target: self, action: #selector(didPan(sender:)))
         self.node.view.addGestureRecognizer(pan)
         

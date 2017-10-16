@@ -21,6 +21,8 @@
 		560529391F27ACD40046D946 /* Media+MediaElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560529381F27ACD40046D946 /* Media+MediaElement.swift */; };
 		5605293B1F27B3920046D946 /* MediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5605293A1F27B3920046D946 /* MediaViewModel.swift */; };
 		5605293D1F282F5F0046D946 /* SearchSubredditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5605293C1F282F5F0046D946 /* SearchSubredditController.swift */; };
+		5609057C1F8C65D6009B72DF /* SliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609057B1F8C65D6009B72DF /* SliderViewModel.swift */; };
+		5609057E1F8D00F2009B72DF /* ColorPickerSlideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609057D1F8D00F2009B72DF /* ColorPickerSlideController.swift */; };
 		560FB7BF1E27E73E00382958 /* AlbumSlideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */; };
 		5610F94A1F0832330097E3A2 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9461F0832320097E3A2 /* CardTransition.swift */; };
 		5610F94B1F0832330097E3A2 /* SlideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5610F9471F0832320097E3A2 /* SlideTransition.swift */; };
@@ -245,6 +247,8 @@
 		560529381F27ACD40046D946 /* Media+MediaElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Media+MediaElement.swift"; sourceTree = "<group>"; };
 		5605293A1F27B3920046D946 /* MediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewModel.swift; sourceTree = "<group>"; };
 		5605293C1F282F5F0046D946 /* SearchSubredditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSubredditController.swift; sourceTree = "<group>"; };
+		5609057B1F8C65D6009B72DF /* SliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderViewModel.swift; sourceTree = "<group>"; };
+		5609057D1F8D00F2009B72DF /* ColorPickerSlideController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerSlideController.swift; sourceTree = "<group>"; };
 		560FB7BE1E27E73E00382958 /* AlbumSlideViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSlideViewModel.swift; sourceTree = "<group>"; };
 		5610F9461F0832320097E3A2 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardTransition.swift; path = ../snoogle/snoogle/CardTransition.swift; sourceTree = "<group>"; };
 		5610F9471F0832320097E3A2 /* SlideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlideTransition.swift; path = snoogle/SlideTransition.swift; sourceTree = "<group>"; };
@@ -729,6 +733,7 @@
 				566237A71F3B34F0002D7DB7 /* LoginViewController.swift */,
 				56BAA3611F471E67008DA246 /* SettingsCollectionController.swift */,
 				56294F801F892FFE00FA3167 /* SettingsThemeController.swift */,
+				5609057D1F8D00F2009B72DF /* ColorPickerSlideController.swift */,
 			);
 			name = controllers;
 			sourceTree = "<group>";
@@ -955,6 +960,7 @@
 				56BAA3711F4CED05008DA246 /* SettingsButtonTextViewModel.swift */,
 				566ECF301F74C3C600AF2D66 /* MovieDetailsViewModel.swift */,
 				56294F7E1F89287400FA3167 /* SettingsIconTextViewModel.swift */,
+				5609057B1F8C65D6009B72DF /* SliderViewModel.swift */,
 			);
 			name = "view models";
 			sourceTree = "<group>";
@@ -1227,6 +1233,7 @@
 				561C8C651E7C75BE00D9AEB3 /* Account.swift in Sources */,
 				5696FC161F334A6500253172 /* SubredditIconStatViewModel.swift in Sources */,
 				5651C0791EDFC121001F3FE9 /* CellNodeUserKarma.swift in Sources */,
+				5609057E1F8D00F2009B72DF /* ColorPickerSlideController.swift in Sources */,
 				56294F7D1F8927AA00FA3167 /* CellNodeStack.swift in Sources */,
 				56BAA37A1F53330B008DA246 /* CellNodeMinimalMovie.swift in Sources */,
 				569A0EAF1F36D03000787064 /* CellNodeInfoDicitonary.swift in Sources */,
@@ -1259,6 +1266,7 @@
 				5696FC141F322D5400253172 /* CellNodeIconStats.swift in Sources */,
 				562A8E381F29874300DF5041 /* CellNodeTextCenter.swift in Sources */,
 				566DD8901F21B484005049EB /* Math.swift in Sources */,
+				5609057C1F8C65D6009B72DF /* SliderViewModel.swift in Sources */,
 				56294F811F892FFE00FA3167 /* SettingsThemeController.swift in Sources */,
 				5605293B1F27B3920046D946 /* MediaViewModel.swift in Sources */,
 				5605292F1F267EE60046D946 /* CellNodeHeaderFootnote.swift in Sources */,

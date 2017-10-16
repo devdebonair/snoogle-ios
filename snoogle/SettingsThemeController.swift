@@ -30,15 +30,15 @@ class SettingsThemeController: CollectionController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: ThemeManager.navigationItem()]
         
         self.models = [
-            buildModel(name: "Navigation Background", color: .flatLime),
-            buildModel(name: "Navigation Item", color: .flatLime),
-            buildModel(name: "Toolbar Background", color: .flatLime),
-            buildModel(name: "Toolbar Item", color: .flatLime),
-            buildModel(name: "Background", color: .flatLime),
-            buildModel(name: "Card Background", color: .flatLime),
-            buildModel(name: "Card Accessory", color: .flatLime),
-            buildModel(name: "Text Primary", color: .flatLime),
-            buildModel(name: "Text Secondary", color: .flatLime)
+            buildModel(name: "Navigation Background", color: .randomFlat),
+            buildModel(name: "Navigation Item", color: .randomFlat),
+            buildModel(name: "Toolbar Background", color: .randomFlat),
+            buildModel(name: "Toolbar Item", color: .randomFlat),
+            buildModel(name: "Background", color: .randomFlat),
+            buildModel(name: "Card Background", color: .randomFlat),
+            buildModel(name: "Card Accessory", color: .randomFlat),
+            buildModel(name: "Text Primary", color: .randomFlat),
+            buildModel(name: "Text Secondary", color: .randomFlat)
         ]
         
         self.updateModels()
@@ -47,7 +47,7 @@ class SettingsThemeController: CollectionController {
     func buildModel(name: String, color: UIColor) -> IGListDiffable {
         let model = SettingsIconTextViewModel()
         model.icon = ASDisplayNode()
-        model.icon?.backgroundColor = .randomFlat
+        model.icon?.backgroundColor = color
         model.textNode.attributedText = NSAttributedString(string: name, attributes: [
             NSForegroundColorAttributeName: ThemeManager.textPrimary(),
             NSFontAttributeName: UIFont.systemFont(ofSize: 17, weight: UIFontWeightRegular)
@@ -58,6 +58,14 @@ class SettingsThemeController: CollectionController {
         model.icon?.clipsToBounds = true
         model.icon?.borderColor = ThemeManager.cellAccessory().cgColor
         model.icon?.borderWidth = 0.5
+        model.didSelect = { model in
+            guard let color = model.icon?.backgroundColor else { return }
+            let controller = ColorPickerSlideController()
+            controller.colorNode.backgroundColor = color
+            controller.edgesForExtendedLayout = [.top]
+            controller.extendedLayoutIncludesOpaqueBars = true
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
         return model
     }
     
