@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 import ObjectMapper
 import ObjectMapper_Realm
+import UIKit
 
 class Color: Object {
     dynamic var red: Double = 0
@@ -20,5 +21,19 @@ class Color: Object {
     
     override static func primaryKey() -> String? {
         return "id"
+    }
+    
+    static func create(color: UIColor) -> Color {
+        let ciColor = CIColor(color: color)
+        let realmColor = Color()
+        realmColor.red = Double(ciColor.red)
+        realmColor.green = Double(ciColor.green)
+        realmColor.blue = Double(ciColor.blue)
+        realmColor.alpha = Double(ciColor.alpha)
+        return realmColor
+    }
+    
+    func getColor() -> UIColor {
+        return UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
     }
 }

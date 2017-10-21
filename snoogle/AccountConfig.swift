@@ -55,7 +55,7 @@ class AccountConfig: Object {
             self.subredditFavorites.append(sub)
         case .recent:
             if let index = self.subredditRecent.index(of: sub) {
-                self.subredditRecent.remove(objectAtIndex: index)
+                self.subredditRecent.remove(at: index)
             }
             self.subredditRecent.insert(sub, at: 0)
         }
@@ -73,11 +73,11 @@ class AccountConfig: Object {
         switch from {
         case .favorites:
             if let index = self.subredditFavorites.index(of: sub) {
-                self.subredditFavorites.remove(objectAtIndex: index)
+                self.subredditFavorites.remove(at: index)
             }
         case .recent:
             if let index = self.subredditRecent.index(of: sub) {
-                self.subredditRecent.remove(objectAtIndex: index)
+                self.subredditRecent.remove(at: index)
             }
         }
     }

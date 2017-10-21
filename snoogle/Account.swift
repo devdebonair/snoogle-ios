@@ -76,7 +76,7 @@ class Account: Object, Mappable {
         let subreddit = Query<Subreddit>().key("displayName").eqlStr(subreddit).exec(realm: realm).first
         guard let guardedSubreddit = subreddit else { throw AccountError.invalidSubreddit }
         if let index = self.subredditSubscriptions.index(of: guardedSubreddit) {
-            self.subredditSubscriptions.remove(objectAtIndex: index)
+            self.subredditSubscriptions.remove(at: index)
         }
     }
     

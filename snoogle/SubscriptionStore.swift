@@ -30,7 +30,7 @@ class SubscriptionStore {
             let realm = try Realm()
             if tokenActiveAccount == nil {
                 guard let app = realm.objects(AppUser.self).first else { return }
-                self.tokenActiveAccount = app.addNotificationBlock({ (changeType) in
+                self.tokenActiveAccount = app.observe({ (changeType) in
                     switch changeType {
                     case .change(let properties):
                         for property in properties {
@@ -51,16 +51,16 @@ class SubscriptionStore {
             self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
             self.delegate?.didUpdateRecent(subreddits: config.subredditRecent)
             self.delegate?.didUpdateFavorites(subreddits: config.subredditFavorites)
-            self.tokenSubscriptions = account.subredditSubscriptions.addNotificationBlock({ (_) in
+            self.tokenSubscriptions = account.subredditSubscriptions.observe({ (_) in
                 self.delegate?.didUpdateSubscriptions(subreddits: account.subredditSubscriptions)
             })
-            self.tokenMultireddits = account.subredditSubscriptions.addNotificationBlock({ (_) in
+            self.tokenMultireddits = account.subredditSubscriptions.observe({ (_) in
                 self.delegate?.didUpdateMultireddits(multireddits: account.multireddits)
             })
-            self.tokenFavorites = config.subredditFavorites.addNotificationBlock({ (_) in
+            self.tokenFavorites = config.subredditFavorites.observe({ (_) in
                 self.delegate?.didUpdateFavorites(subreddits: config.subredditFavorites)
             })
-            self.tokenRecent = config.subredditRecent.addNotificationBlock({ (_) in
+            self.tokenRecent = config.subredditRecent.observe({ (_) in
                 self.delegate?.didUpdateRecent(subreddits: config.subredditRecent)
             })
             ServiceMe(user: account.name).fetch()

@@ -26,4 +26,9 @@ class Theme: Object {
     override static func primaryKey() -> String? {
         return "name"
     }
+    
+    static func get(name: String) throws -> Theme? {
+        let realm = try Realm()
+        return realm.object(ofType: Theme.self, forPrimaryKey: name)
+    }
 }

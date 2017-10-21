@@ -17,6 +17,12 @@ class ColorPickerSlideController: CollectionController {
     var modelBlue: SliderViewModel? = nil
     var modelGreen: SliderViewModel? = nil
     
+    var didChangeColor: ((UIColor)->Void)? = nil
+    
+    deinit {
+        didChangeColor = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.node.addSubnode(colorNode)
@@ -90,5 +96,11 @@ class ColorPickerSlideController: CollectionController {
         }
         model.slider.value = value
         return model
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let didChangeColor = didChangeColor, let color = colorNode.backgroundColor else { return }
+        didChangeColor(color)
     }
 }

@@ -24,11 +24,11 @@ class SettingsAccountStore {
         do {
             let realm = try Realm()
             guard let app = realm.objects(AppUser.self).first else { return }
-            self.accountsToken = app.accounts.addNotificationBlock({ (_) in
+            self.accountsToken = app.accounts.observe({ (_) in
                 guard let delegate = self.delegate else { return }
                 delegate.didChangeAccounts(accounts: app.accounts, active: app.activeAccount)
             })
-            self.activeAccountToken = app.activeAccount?.addNotificationBlock({ (_) in
+            self.activeAccountToken = app.activeAccount?.observe({ (_) in
                 guard let delegate = self.delegate else { return }
                 delegate.didChangeActiveAccount(account: app.activeAccount)
             })

@@ -38,7 +38,7 @@ class SubredditStore {
         do {
             let realm = try Realm()
             let apps = realm.objects(AppUser.self)
-            self.tokenApp = apps.addNotificationBlock({ (_) in
+            self.tokenApp = apps.observe({ (_) in
                 self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             })
             guard let app = apps.first else { return }
@@ -76,7 +76,7 @@ class SubredditStore {
                                 try AppUser.getActiveAccount(realm: realm)?.getConfig(realm: realm)?.add(subreddit: weakSelf.name, to: .recent, realm: realm)
                             }
                             guard let delegate = weakSelf.delegate else { return }
-                            weakSelf.tokenSubreddit = subreddit.addNotificationBlock({ (_) in
+                            weakSelf.tokenSubreddit = subreddit.observe({ (_) in
                                 delegate.didUpdateSubreddit(subreddit: subreddit)
                             })
                             delegate.didUpdateSubreddit(subreddit: subreddit)
@@ -123,7 +123,7 @@ class SubredditStore {
                                 realm.refresh()
                                 let listing = realm.object(ofType: ListingFrontpage.self, forPrimaryKey: "frontpage:\(user):\(weakSelf.sort.rawValue)")
                                 guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
-                                weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                                weakSelf.tokenListing = guardedListing.observe({ (_) in
                                     delegate.didUpdatePosts(submissions: guardedListing.submissions)
                                 })
                                 delegate.didUpdatePosts(submissions: guardedListing.submissions)
@@ -148,7 +148,7 @@ class SubredditStore {
                                 realm.refresh()
                                 let listing = realm.object(ofType: ListingSubreddit.self, forPrimaryKey: "listing:\(weakSelf.name):\(weakSelf.sort.rawValue)")
                                 guard let guardedListing = listing, let delegate = weakSelf.delegate else { return }
-                                weakSelf.tokenListing = guardedListing.addNotificationBlock({ (_) in
+                                weakSelf.tokenListing = guardedListing.observe({ (_) in
                                     delegate.didUpdatePosts(submissions: guardedListing.submissions)
                                 })
                                 delegate.didUpdatePosts(submissions: guardedListing.submissions)
@@ -165,8 +165,8 @@ class SubredditStore {
     func clear() {
         guard let delegate = delegate else { return }
         self.name = ""
-        self.tokenListing?.stop()
-        self.tokenSubreddit?.stop()
+        self.tokenListing?.invalidate()
+        self.tokenSubreddit?.invalidate()
         self.tokenSubreddit = nil
         self.tokenListing = nil
         self.sort = .hot

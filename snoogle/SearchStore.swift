@@ -25,7 +25,7 @@ class SearchStore {
         do {
             let realm = try Realm()
             let apps = realm.objects(AppUser.self)
-            self.tokenApp = apps.addNotificationBlock({ (_) in
+            self.tokenApp = apps.observe({ (_) in
                 self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             })
             guard let app = apps.first else { return }

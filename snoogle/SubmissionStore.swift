@@ -27,7 +27,7 @@ class SubmissionStore {
         do {
             let realm = try Realm()
             let apps = realm.objects(AppUser.self)
-            self.tokenApp = apps.addNotificationBlock({ (_) in
+            self.tokenApp = apps.observe({ (_) in
                 self.user = AppUser.getActiveAccount(realm: realm)?.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             })
             guard let app = apps.first else { return }
@@ -46,7 +46,7 @@ class SubmissionStore {
             let realm = try Realm()
             let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
             if let submission = submission, let delegate = delegate {
-                self.tokenSubmission = submission.addNotificationBlock({ (_) in
+                self.tokenSubmission = submission.observe({ (_) in
                     delegate.didUpdateSubmission(submission: submission)
                 })
                 delegate.didUpdateSubmission(submission: submission)
@@ -63,7 +63,7 @@ class SubmissionStore {
 //                        let realm = try Realm()
 //                        let submission = realm.object(ofType: Submission.self, forPrimaryKey: id)
 //                        guard let guardedSubmission = submission, let delegate = weakSelf.delegate else { return }
-//                        weakSelf.tokenSubmission = guardedSubmission.addNotificationBlock({ (_) in
+//                        weakSelf.tokenSubmission = guardedSubmission.observe({ (_) in
 //                            delegate.didUpdateSubmission(submission: guardedSubmission)
 //                        })
 //                        delegate.didUpdateSubmission(submission: guardedSubmission)
@@ -80,7 +80,7 @@ class SubmissionStore {
             let realm = try Realm()
             let comments = realm.object(ofType: SubmissionComments.self, forPrimaryKey: "comments:\(self.id):\(sort.rawValue)")
             if let comments = comments, let delegate = delegate {
-                self.tokenComments = comments.addNotificationBlock({ (_) in
+                self.tokenComments = comments.observe({ (_) in
                     delegate.didUpdateComments(comments: comments.comments)
                 })
                 delegate.didUpdateComments(comments: comments.comments)
@@ -100,7 +100,7 @@ class SubmissionStore {
                         realm.refresh()
                         let comments = realm.object(ofType: SubmissionComments.self, forPrimaryKey: "comments:\(weakSelf.id):\(sort.rawValue)")
                         guard let guardedComments = comments, let delegate = weakSelf.delegate else { return }
-                        weakSelf.tokenComments = guardedComments.addNotificationBlock({ (_) in
+                        weakSelf.tokenComments = guardedComments.observe({ (_) in
                             delegate.didUpdateComments(comments: guardedComments.comments)
                         })
                         delegate.didUpdateComments(comments: guardedComments.comments)
